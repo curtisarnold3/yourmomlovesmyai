@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open vs. Closed AI Models · How Model Weights, Inference, and Compute Are Reshaping the AI Industry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060b16; --bg2:#0a1324; --panel:rgba(16,26,46,.62); --panel2:rgba(22,34,60,.78);
+  --line:rgba(140,170,220,.16); --line2:rgba(140,170,220,.3);
+  --text:#e9eef8; --muted:#93a3bf; --dim:#64748f;
+  --cyan:#38d6f5; --amber:#f6b13c; --violet:#a78bfa; --teal:#2dd4bf; --coral:#ff7a6b; --silver:#c9d4e6;
+  --glow-c:0 0 18px rgba(56,214,245,.45); --glow-v:0 0 18px rgba(167,139,250,.5);
+  --r:18px;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --head:'Space Grotesk',Inter,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(1200px 700px at 80% -10%,rgba(167,139,250,.11),transparent 60%),
+             radial-gradient(900px 600px at -10% 40%,rgba(56,214,245,.07),transparent 60%),
+             linear-gradient(180deg,#060b16 0%,#08101f 50%,#060b16 100%);}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.35;
+  background-image:linear-gradient(rgba(120,150,200,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(120,150,200,.05) 1px,transparent 1px);
+  background-size:48px 48px;mask-image:radial-gradient(circle at 50% 30%,#000 30%,transparent 80%)}
+a{color:var(--cyan)}
+h1,h2,h3,h4{font-family:var(--head);letter-spacing:-.01em;margin:0}
+p{margin:0 0 1em}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+.v{color:var(--violet)} .c{color:var(--cyan)} .t{color:var(--teal)} .a{color:var(--amber)} .k{color:var(--coral)}
+
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--teal),var(--amber));width:0;z-index:50}
+#rail{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:9px}
+#rail a{display:flex;align-items:center;justify-content:flex-end;gap:8px;text-decoration:none;color:var(--muted);font:600 11px var(--mono)}
+#rail a span{opacity:0;transform:translateX(6px);transition:.2s;white-space:nowrap;background:var(--panel2);padding:2px 8px;border-radius:99px;border:1px solid var(--line)}
+#rail a:hover span,#rail a:focus-visible span{opacity:1;transform:none}
+#rail a i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--dim);display:block;transition:.2s}
+#rail a.on i{background:var(--violet);border-color:var(--violet);box-shadow:var(--glow-v)}
+@media(max-width:1100px){#rail{display:none}}
+
+.hero{min-height:100vh;display:grid;align-items:center;padding:70px 0 40px;position:relative}
+.kicker{font:600 12px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--violet)}
+.hero h1{font-size:clamp(46px,8.2vw,112px);line-height:.92;margin:.25em 0 .15em;font-weight:700;
+  background:linear-gradient(180deg,#fff 30%,#a99be0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .vs{font-size:.45em;vertical-align:middle;-webkit-text-fill-color:var(--dim);letter-spacing:.1em}
+.hero h2{font-size:clamp(20px,2.6vw,30px);line-height:1.25;font-weight:500;color:#cfd9ec;max-width:640px}
+.hero .lede{max-width:600px;color:var(--muted);font-size:17.5px;margin-top:22px}
+.hero-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:20px;align-items:center}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:26px;font:500 12.5px Inter}
+.legend span{display:inline-flex;align-items:center;gap:7px;color:#c8d3e6}
+.sw{width:26px;height:4px;border-radius:3px;display:inline-block}
+.scrollcue{margin-top:30px;color:var(--dim);font:500 12px var(--mono);letter-spacing:.14em}
+
+.act{padding:90px 0 10px;text-align:center}
+.act .kicker{color:var(--dim)}
+.act h3{font:600 clamp(26px,3.4vw,40px)/1.1 var(--head);margin-top:8px;color:#dfe6f5}
+.act p{color:var(--muted);max-width:620px;margin:10px auto 0}
+
+.chapter{padding:100px 0 50px;position:relative}
+.ch-head{display:grid;grid-template-columns:auto 1fr;gap:6px 22px;align-items:end;margin-bottom:26px}
+.ch-num{font:700 84px/0.8 var(--head);color:transparent;-webkit-text-stroke:1.2px rgba(170,160,240,.38)}
+.ch-head .kicker{grid-column:2}
+.ch-head h2{grid-column:2;font-size:clamp(28px,4vw,48px);line-height:1.06}
+.ch-head .q{grid-column:2;color:var(--muted);font-size:18px;margin-top:6px}
+@media(max-width:600px){.ch-num{font-size:56px}}
+.prose{max-width:720px;color:#d3dced;font-size:17.3px}
+.prose b{color:#fff}
+.tweet{font:600 clamp(19px,2.3vw,26px)/1.3 var(--head);color:#fff;border-left:3px solid var(--violet);padding:4px 0 4px 18px;margin:30px 0;max-width:760px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 30px 80px -40px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.04)}
+.pad{padding:22px}
+.note{font-size:12.8px;color:var(--muted);line-height:1.5}
+.tag{display:inline-block;font:600 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+.tag.src{color:#e2dbff;border-color:rgba(167,139,250,.5);background:rgba(167,139,250,.08)}
+.tag.sim{color:var(--cyan);border-color:rgba(56,214,245,.45);background:rgba(56,214,245,.07)}
+.tag.ver{color:var(--teal);border-color:rgba(45,212,191,.45);background:rgba(45,212,191,.07)}
+.tag.ctx{color:var(--silver)}
+.tag.unv{color:var(--coral);border-color:rgba(255,122,107,.45);background:rgba(255,122,107,.07)}
+.tag.cor{color:var(--amber);border-color:rgba(246,177,60,.45);background:rgba(246,177,60,.07)}
+.figure svg{width:100%;height:auto;display:block}
+@media(max-width:700px){.figure.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}.figure.wide svg{min-width:720px}.figure.wide::before{content:"← swipe to explore →";display:block;font:600 10px var(--mono);letter-spacing:.12em;color:var(--dim);margin-bottom:6px}}
+.cap{font-size:13px;color:var(--muted);margin-top:10px}
+svg text{font-family:Inter,sans-serif}
+svg .m{font-family:'JetBrains Mono',monospace}
+
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;align-items:center}
+.seg button,.btn{font:600 13px Inter;color:#cdd8ea;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:99px;padding:8px 14px;cursor:pointer;transition:.18s}
+.seg button:hover,.btn:hover{border-color:var(--violet);color:#fff}
+.seg button[aria-pressed="true"]{background:rgba(167,139,250,.16);border-color:var(--violet);color:#fff;box-shadow:var(--glow-v)}
+.seg .lbl{font:600 11px var(--mono);color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-right:4px}
+.btn.pri{background:rgba(167,139,250,.18);border-color:var(--violet);color:#fff}
+
+.scrolly{display:grid;grid-template-columns:1.25fr .75fr;gap:34px;position:relative}
+.scrolly .stick{position:sticky;top:7vh;height:min(86vh,780px);display:flex;flex-direction:column;justify-content:center}
+.scrolly .steps{padding:10vh 0 22vh}
+.step{min-height:60vh;display:flex;align-items:center}
+.step .card{padding:20px 22px;border-radius:16px;background:var(--panel2);border:1px solid var(--line);opacity:.35;transition:.35s;transform:translateY(10px)}
+.step.active .card{opacity:1;transform:none;border-color:var(--line2)}
+.step h4{font-size:19px;margin-bottom:6px}
+@media(max-width:900px){
+  .scrolly{grid-template-columns:1fr}
+  .scrolly .stick{top:0;height:auto;z-index:2;background:linear-gradient(var(--bg) 88%,transparent);padding:8px 0}
+  .step{min-height:48vh}
+}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.g-side{display:grid;grid-template-columns:1.35fr .65fr;gap:20px;align-items:start}
+@media(max-width:900px){.g2,.g3,.g-side{grid-template-columns:1fr}}
+.g2>*,.g3>*,.g-side>*,.scrolly>*,.memwrap>*,.trainer>*{min-width:0}
+
+/* layer stack */
+.layer-info h4{font-size:20px;margin:6px 0}
+.layer-info ul{margin:8px 0 0;padding-left:18px;color:#cfd9ec;font-size:14.5px}
+.lyr{cursor:pointer}
+.lyr:hover polygon{filter:brightness(1.3)}
+
+/* roster */
+.roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.co{padding:16px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--line);animation:pop .35s ease both}
+.co h4{font-size:17px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.co .grp{font:600 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.co .row{display:grid;grid-template-columns:62px 1fr;gap:8px;margin-top:9px;font-size:13.3px;color:#cdd7ea}
+.co .row b{font:700 10.5px var(--mono);letter-spacing:.08em;padding-top:3px}
+.co .row.cl b{color:var(--coral)} .co .row.op b{color:var(--teal)}
+.co .none{color:var(--dim);font-style:italic}
+.co .fn{font-size:12px;color:var(--muted);margin-top:8px;border-top:1px dashed var(--line);padding-top:7px}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}}
+
+/* spectrum */
+.spec{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:18px;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.spec>div{padding:16px 14px;border-right:1px solid var(--line);min-height:210px}
+.spec>div:last-child{border-right:0}
+.spec h5{font:700 13px var(--head);margin:0 0 4px;letter-spacing:.02em}
+.spec .what{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+.spec .ex{display:flex;flex-wrap:wrap;gap:6px}
+.spec .ex span{font:600 11px var(--mono);padding:3px 7px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid var(--line)}
+.spec .gets{font-size:12px;margin-top:10px;color:#cdd7ea}
+@media(max-width:900px){.spec{grid-template-columns:1fr 1fr}.spec>div{border-bottom:1px solid var(--line)}}
+
+/* tokenizer */
+.tokin{width:100%;font:500 16px var(--mono);background:rgba(0,0,0,.3);color:#fff;border:1px solid var(--line2);border-radius:10px;padding:10px 12px}
+.tokrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tk{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 9px;border-radius:10px;background:rgba(56,214,245,.07);border:1px solid rgba(56,214,245,.35);min-width:58px}
+.tk .s{font:600 14px var(--mono);color:#fff;white-space:pre}
+.tk .id{font:600 11px var(--mono);color:var(--cyan)}
+.tk .vec{display:grid;grid-template-columns:repeat(8,7px);gap:2px}
+.tk .vec i{width:7px;height:16px;border-radius:2px;display:block}
+.stage{position:relative}
+.stage .layer{transition:opacity .6s,transform .6s}
+
+/* training */
+.trainer{display:grid;grid-template-columns:1.05fr .95fr;gap:20px}
+@media(max-width:980px){.trainer{grid-template-columns:1fr}}
+.bars{display:grid;gap:6px}
+.bar{display:grid;grid-template-columns:80px 1fr 52px;gap:8px;align-items:center;font:500 13px var(--mono)}
+.bar .tr{height:14px;border-radius:7px;background:rgba(255,255,255,.05);overflow:hidden}
+.bar .fl{height:100%;background:linear-gradient(90deg,rgba(56,214,245,.6),var(--cyan));border-radius:7px;transition:width .15s}
+.bar.tgt .fl{background:linear-gradient(90deg,rgba(45,212,191,.6),var(--teal))}
+.bar .pct{text-align:right;color:var(--muted)}
+.hm{display:grid;gap:2px}
+.hm i{display:block;aspect-ratio:1;border-radius:3px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:700px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.kpi .l{font:600 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kpi .val{font:700 22px var(--head)}
+.eq{font:500 14px var(--mono);color:#dfe7f5;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:10px;padding:10px 12px;line-height:1.8;overflow-x:auto}
+
+/* checkpoint file */
+.files{font:500 13px var(--mono);line-height:1.9}
+.files .f{display:grid;grid-template-columns:1fr auto;gap:10px;padding:2px 8px;border-radius:6px}
+.files .f:hover{background:rgba(167,139,250,.08)}
+.files .f span:last-child{color:var(--muted)}
+.tensors{font:500 12px var(--mono);color:#cdd7ea;max-height:230px;overflow:auto;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.tensors div{display:grid;grid-template-columns:1fr auto auto;gap:12px;white-space:nowrap}
+.tensors div span:nth-child(2){color:var(--violet)}
+.tensors div span:nth-child(3){color:var(--dim)}
+
+/* compare table */
+.cmp{width:100%;border-collapse:collapse;font-size:14.5px}
+.cmp th{text-align:left;font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:8px 10px;border-bottom:1px solid var(--line)}
+.cmp td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;color:#cbd5e8}
+.cmp td:first-child{color:var(--muted);font-weight:600;width:170px}
+.gen{font:500 20px var(--mono);min-height:64px;padding:14px 16px;border-radius:12px;background:rgba(0,0,0,.3);border:1px solid var(--line)}
+.gen .p{color:var(--muted)}
+.gen .o{color:var(--cyan);animation:pop .3s ease both}
+.gen .cur{display:inline-block;width:10px;height:20px;background:var(--cyan);vertical-align:-3px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* memory */
+.memwrap{display:grid;grid-template-columns:1fr 320px;gap:20px}
+@media(max-width:980px){.memwrap{grid-template-columns:1fr}}
+.dev{display:grid;grid-template-columns:1fr auto;gap:6px;font-size:13.5px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);margin-bottom:6px;transition:.25s}
+.dev.fit{border-color:rgba(45,212,191,.5);background:rgba(45,212,191,.07)}
+.dev.nofit{opacity:.55}
+.dev .cap2{font:600 12px var(--mono);color:var(--muted)}
+.dev .verdict{grid-column:1/-1;font:600 11px var(--mono);letter-spacing:.06em}
+.dev.fit .verdict{color:var(--teal)} .dev.nofit .verdict{color:var(--coral)}
+input[type=range]{width:100%;accent-color:var(--violet)}
+.tip{position:absolute;pointer-events:none;background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:8px 10px;font-size:12.5px;max-width:260px;opacity:0;transition:opacity .15s;z-index:5}
+
+/* misc */
+.warnbox{border:1px solid rgba(255,122,107,.4);background:rgba(255,122,107,.07);border-radius:12px;padding:12px 14px;font-size:14px;color:#ffdcd6}
+.okbox{border:1px solid rgba(45,212,191,.35);background:rgba(45,212,191,.06);border-radius:12px;padding:12px 14px;font-size:14px;color:#cff7f1}
+.fixbox{border:1px solid rgba(246,177,60,.45);background:rgba(246,177,60,.07);border-radius:12px;padding:12px 14px;font-size:14px;color:#ffe9c4}
+.fixbox b,.warnbox b,.okbox b{color:#fff}
+.timeline{position:relative;margin:10px 0 0;padding-left:22px;border-left:2px solid var(--line2)}
+.timeline div{position:relative;margin-bottom:14px;font-size:14px;color:#cfd9ec}
+.timeline div::before{content:"";position:absolute;left:-29px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--violet)}
+.timeline div.pend::before{border-style:dashed;border-color:var(--amber)}
+.timeline div>b:first-child{font:600 12px var(--mono);color:var(--violet);display:block}
+.timeline div.pend>b:first-child{color:var(--amber)}
+.smap{width:100%;border-collapse:collapse;font-size:13.5px}
+.smap th{text-align:left;font:600 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:8px;border-bottom:1px solid var(--line)}
+.smap td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top;color:#cbd5e8}
+.smap td:nth-child(2){width:150px}
+.smap tr.hide{display:none}
+.sources ol{font-size:12.6px;color:var(--muted);padding-left:20px}
+.sources li{margin-bottom:6px;word-break:break-all}
+footer{padding:60px 0 80px;color:var(--dim);font-size:13px}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s,transform .8s}
+.reveal.in{opacity:1;transform:none}
+.flowdash{stroke-dasharray:8 8;animation:dash 1.1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-32}}
+.pulse{animation:pls 2.4s ease-in-out infinite}
+@keyframes pls{50%{opacity:.45}}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+<nav id="rail" aria-label="Chapters"></nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="gVtop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="rgba(196,180,255,.75)"/><stop offset="1" stop-color="rgba(140,110,240,.35)"/></linearGradient>
+  <linearGradient id="gVl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(120,90,220,.55)"/><stop offset="1" stop-color="rgba(60,40,140,.25)"/></linearGradient>
+  <linearGradient id="gVr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(160,130,250,.55)"/><stop offset="1" stop-color="rgba(90,60,190,.22)"/></linearGradient>
+  <linearGradient id="gMetalTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5d6f8c"/><stop offset="1" stop-color="#34425a"/></linearGradient>
+  <linearGradient id="gMetalL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a364b"/><stop offset="1" stop-color="#161e2d"/></linearGradient>
+  <linearGradient id="gMetalR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4862"/><stop offset="1" stop-color="#202a3d"/></linearGradient>
+  <marker id="mC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#38d6f5"/></marker>
+  <marker id="mA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#f6b13c"/></marker>
+  <marker id="mV" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#a78bfa"/></marker>
+  <marker id="mT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2dd4bf"/></marker>
+  <marker id="mK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff7a6b"/></marker>
+  <marker id="mS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c9d4e6"/></marker>
+  <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="8"/></filter>
+</defs>
+</svg>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="kicker">AI Stack Visual Documentary · Part 5 · Layer 4: Models</div>
+      <h1>OPEN <span class="vs">VS.</span><br>CLOSED</h1>
+      <h2>How model weights, inference, and compute are reshaping the AI industry</h2>
+      <p class="lede">Every large language model ends its training the same way: as a very large file of numbers. What a company does with that one file, lock it in a vault or post it for anyone to download, decides who can run it, who gets paid, and which chips light up when you ask it a question.</p>
+      <div class="legend" aria-label="Color key">
+        <span><i class="sw" style="background:var(--violet)"></i>Learned weights &amp; model math</span>
+        <span><i class="sw" style="background:var(--cyan)"></i>Data in / data out</span>
+        <span><i class="sw" style="background:var(--teal)"></i>Open-weight distribution</span>
+        <span><i class="sw" style="background:var(--amber)"></i>Hardware &amp; compute cost</span>
+        <span><i class="sw" style="background:var(--coral)"></i>Access boundaries &amp; limits</span>
+      </div>
+      <div class="scrollcue">SCROLL TO BEGIN ↓ &nbsp;·&nbsp; 15 CHAPTERS · 4 ACTS</div>
+    </div>
+    <div class="figure" id="heroFig" role="img" aria-label="A violet glass block representing a trained model checkpoint. A cyan stream of training data flows into it from above. Below, the path forks: on the left the same block sits inside a coral-outlined provider boundary reachable only through an API doorway; on the right, teal pathways carry copies of the block to a laptop, a server rack and a cloud region."></div>
+  </div>
+</header>
+
+<!-- ================= ACT I ================= -->
+<section class="act" id="act1"><div class="wrap reveal">
+  <div class="kicker">Act I</div><h3>The landscape</h3>
+  <p>Before we open up a model, let's find where models live in the AI economy, and who makes them.</p>
+</div></section>
+
+<!-- CH 1 STACK -->
+<section class="chapter" id="c1" data-title="Five-layer cake">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">01</div><div class="kicker">Orientation</div><h2>A five-layer cake</h2><div class="q">Where do AI models sit in the economy?</div></div>
+  <div class="g-side">
+    <div class="panel pad figure reveal" id="stackFig" role="img" aria-label="Isometric stack of five layers: energy at the bottom, then chips, infrastructure, models, and applications on top. The models layer is highlighted in violet."></div>
+    <div class="reveal">
+      <div class="prose">
+        <p>Nvidia CEO Jensen Huang likes to describe AI as a <b>five-layer cake</b>: energy at the bottom, then chips, then the data-center infrastructure that rents out compute, then the models, and finally the applications we actually touch.</p>
+        <p>Nvidia is the poster child for layer two. Anthropic and OpenAI are the poster children for layer four. But here's the twist the original whiteboard flagged with a question mark: <b>Nvidia makes models too.</b></p>
+      </div>
+      <div class="panel pad layer-info" id="layerInfo" aria-live="polite"></div>
+      <p class="note" style="margin-top:8px">Tap any layer. Earlier episodes in this series covered layers 1–3.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CH 2 ROSTER -->
+<section class="chapter" id="c2" data-title="Who makes what">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">02</div><div class="kicker">The players</div><h2>Who releases what?</h2><div class="q">Openness is a decision made model by model, not company by company.</div></div>
+  <div class="prose reveal">
+    <p>The original whiteboard sorted companies into three camps. <b>Frontier labs</b> mostly keep their weights closed. <b>Hyperscalers</b> do both. <b>Chinese labs</b> mostly publish their weights. That's a useful first sketch, and it mostly holds up in November 2026. But zoom in and almost every company is running two strategies at once: a closed flagship it charges for, and smaller or older open models it gives away.</p>
+  </div>
+  <div class="seg reveal" role="group" aria-label="Filter companies">
+    <span class="lbl">Show</span>
+    <button aria-pressed="true" data-f="all">All</button>
+    <button aria-pressed="false" data-f="frontier">Frontier labs</button>
+    <button aria-pressed="false" data-f="hyper">Hyperscalers</button>
+    <button aria-pressed="false" data-f="china">Chinese labs</button>
+    <button aria-pressed="false" data-f="chip">Chipmaker</button>
+  </div>
+  <div class="roster" id="roster" aria-live="polite"></div>
+  <p class="note reveal" style="margin-top:14px">Status as of mid-November 2026, compiled from company announcements and press coverage listed in the sources. "Reported" marks items we could only confirm through press reports, not a company's own release.</p>
+  <div class="tweet reveal">Almost nobody is purely "open" or purely "closed." The real question is which model, under which license, released when.</div>
+</div>
+</section>
+
+<!-- CH 3 SPECTRUM -->
+<section class="chapter" id="c3" data-title="Open ≠ open source">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">03</div><div class="kicker">Vocabulary</div><h2>“Open weights” isn’t “open source”</h2><div class="q">What do you actually get when a model is called open?</div></div>
+  <div class="prose reveal">
+    <p>The recording says Nvidia's models are "open source." In everyday speech, sure. But there's a distinction worth keeping straight, because people make expensive decisions on it.</p>
+    <p>A model has several separable ingredients: the <b class="v">trained weights</b>, the code that runs them, the training code, and the <b>training data</b>. "Open weights" means you can download the first one. You may or may not get the rest, and the weights arrive with a license that can range from "do anything" to "no commercial use."</p>
+  </div>
+  <div class="spec reveal" role="table" aria-label="Spectrum of model openness">
+    <div style="background:rgba(255,122,107,.06)"><h5 class="k">Closed weights</h5><div class="what">Weights never leave the provider. You send text in, get text back.</div><div class="ex"><span>Claude Fable 5</span><span>GPT-5.x</span><span>Gemini 3</span><span>Muse Spark</span></div><div class="gets">You get: an API, an app, a price per token.</div></div>
+    <div style="background:rgba(201,212,230,.04)"><h5 style="color:#c9d4e6">Open weights, restrictive license</h5><div class="what">Downloadable, but with limits on use, scale or what you build with it.</div><div class="ex"><span>Grok 2.5</span><span>Llama 4</span><span>Kimi K3*</span></div><div class="gets">You get: the file, plus terms to read carefully.</div></div>
+    <div style="background:rgba(45,212,191,.06)"><h5 class="t">Open weights, permissive license</h5><div class="what">Apache 2.0 or MIT-style: use, modify, sell, with attribution.</div><div class="ex"><span>gpt-oss</span><span>Gemma 4</span><span>Grok-1</span><span>many Qwen</span></div><div class="gets">You get: the file and broad freedom to use it.</div></div>
+    <div style="background:rgba(56,214,245,.05)"><h5 class="c">Fully open</h5><div class="what">Weights plus training code and (most or all of) the data recipe.</div><div class="ex"><span>Some Nemotron releases</span><span>research models</span></div><div class="gets">You get: what's needed to study or roughly reproduce it.</div></div>
+  </div>
+  <p class="note reveal" style="margin-top:10px">*Kimi K3 ships under its own "Kimi K3 License," which press coverage describes as a modified-MIT style license with conditions tied to company size or revenue. Licenses change between releases; always read the one attached to the exact file you download.</p>
+  <div class="g2 reveal" style="margin-top:22px">
+    <div class="okbox"><b>Open weights let you:</b> run the model on hardware you choose, fine-tune it on your own data, inspect its numbers, and keep using a version forever even if the maker moves on.</div>
+    <div class="warnbox"><b>Open weights don't automatically give you:</b> the training data, a guarantee of unrestricted commercial use, or the ability to retrain the model from scratch.</div>
+  </div>
+</div>
+</section>
+
+<!-- ================= ACT II ================= -->
+<section class="act" id="act2"><div class="wrap reveal">
+  <div class="kicker">Act II</div><h3>Inside the model</h3>
+  <p>To see why a file of numbers is worth billions, we have to watch one being made, starting from a single sentence.</p>
+</div></section>
+
+<!-- CH 4 TOKENS -->
+<section class="chapter" id="c4" data-title="Text → numbers">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">04</div><div class="kicker">Tokenization</div><h2>Text becomes numbers</h2><div class="q">A computer can't do math on the word "dog." So what does it do?</div></div>
+  <div class="scrolly">
+    <div class="stick">
+      <div class="panel pad stage" id="tokStage" data-step="0" aria-live="polite">
+        <div class="note mono" style="letter-spacing:.1em;text-transform:uppercase">Training example</div>
+        <div id="tsText" class="layer" style="font:600 clamp(24px,3.4vw,38px) var(--head);margin:6px 0 14px">“The dog is sleeping”</div>
+        <div id="tsTok" class="layer"><div class="note mono">① TOKENS</div><div class="tokrow" id="tsTokRow"></div></div>
+        <div id="tsEmb" class="layer" style="margin-top:16px"><div class="note mono">③ EMBEDDING TABLE &nbsp;<span style="color:var(--dim)">(one learned row per token in the vocabulary)</span></div><div id="tsTable"></div></div>
+        <div id="tsFlow" class="layer" style="margin-top:14px"><div class="note mono">④ INTO THE NETWORK</div><div id="tsFlowSvg"></div></div>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step" data-s="0"><div class="card"><h4>Start with text</h4><p>Training data is mostly text: web pages, books, code, conversations. Our whole story will follow one tiny sentence through the process.</p></div></div>
+      <div class="step" data-s="1"><div class="card"><h4>Chop it into tokens</h4><p>A <b>tokenizer</b> splits text into pieces from a fixed vocabulary. Common words usually become one token (often with their leading space attached); rare words get split into fragments like <span class="mono c">sleep</span> + <span class="mono c">ing</span>. Production vocabularies hold roughly 100,000 to 250,000 pieces.</p></div></div>
+      <div class="step" data-s="2"><div class="card"><h4>Each token has an ID</h4><p>Every piece in the vocabulary has a number, its <b class="c">token ID</b>. The ID is just a label, like a locker number. Token 5679 isn't "bigger" or "more" than token 374 in any meaningful way.</p><p class="note">These IDs come from our toy vocabulary, not a real tokenizer.</p></div></div>
+      <div class="step" data-s="3"><div class="card"><h4>The ID opens a locker</h4><p>The ID points to one row of an <b class="v">embedding table</b>. That row is a list of numbers called a <b>vector</b>, and unlike the ID, those numbers are <b>learned during training</b>. The ID is the address; the vector is what lives there.</p><p class="note">We draw 8 numbers per token. Real models use thousands per token.</p></div></div>
+      <div class="step" data-s="4"><div class="card"><h4>Vectors flow into the network</h4><p>The sequence of vectors enters the model's layers, where they get mixed, compared and transformed by matrix math. Everything the model does from here on is arithmetic on numbers like these.</p></div></div>
+    </div>
+  </div>
+  <div class="panel pad reveal" style="margin-top:10px">
+    <div class="g-side">
+      <div>
+        <h4 style="font-size:18px;margin-bottom:8px">Try it: toy tokenizer</h4>
+        <label for="tokIn" class="note">Type a sentence. Watch how unusual words get split into pieces.</label>
+        <input id="tokIn" class="tokin" value="The dog is sleeping on the unbelievably warm keyboard" maxlength="120" style="margin-top:6px">
+        <div class="tokrow" id="tokOut"></div>
+      </div>
+      <div class="note" style="align-self:center">
+        <p><b style="color:#fff">What's real here:</b> the idea of splitting text into a fixed vocabulary of pieces, and of mapping each piece to an ID and then to a learned vector.</p>
+        <p><b style="color:#fff">What's simplified:</b> our splitting rules, IDs and vector values are made up for illustration. Real tokenizers (byte-pair encoding and relatives) learn their vocabulary from data, and real vectors are much longer.</p>
+        <p style="margin:0" id="tokCount"></p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CH 5 PARAMETERS -->
+<section class="chapter" id="c5" data-title="What's a parameter?">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">05</div><div class="kicker">Parameters</div><h2>One knob, then billions</h2><div class="q">What exactly is a "weight"?</div></div>
+  <div class="g-side">
+    <div class="panel pad reveal">
+      <div class="figure" id="regFig" role="img" aria-label="Scatter plot of daily returns of one stock against the S&P 500 with an adjustable best-fit line. The slope of the line is the stock's beta."></div>
+      <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-top:10px">
+        <div><label for="betaS" class="note">Turn the knob: slope (β) = <b class="mono v" id="betaV">0.50</b></label><input type="range" id="betaS" min="-0.5" max="2.5" step="0.01" value="0.5"></div>
+        <button class="btn pri" id="fitBtn">Fit it for me</button>
+      </div>
+      <div class="kpis" style="grid-template-columns:repeat(2,1fr);margin-top:10px">
+        <div class="kpi"><div class="l">Error (sum of squared misses)</div><div class="val mono" id="regErr">–</div></div>
+        <div class="kpi"><div class="l">Best possible β for this data</div><div class="val mono v" id="regBest">?</div></div>
+      </div>
+      <p class="cap">Illustrative data: 120 simulated daily returns for a stock with a "true" beta of 1.3. Not real market data.</p>
+    </div>
+    <div class="reveal">
+      <div class="prose">
+        <p>The recording reaches for a finance-nerd analogy, and it's a good one. Plot a stock's daily returns against the S&P 500's. Draw the best line through the cloud. Its slope is the stock's <b>beta</b>: one number, learned from data, that turns an input (market move) into a prediction (stock move).</p>
+        <p>That slope is a <b class="v">parameter</b>. "Fitting" means turning the knob until the line misses the dots by as little as possible.</p>
+        <p>A language model is that idea pushed to an absurd extreme. Instead of <span class="mono">y = βx + α</span>, each layer computes something like <span class="mono">y = Wx + b</span>, where <span class="mono v">W</span> is a whole grid of knobs. Stack enough grids and you reach billions or trillions of parameters, the words "parameters" and "weights" being used interchangeably.</p>
+      </div>
+      <div class="warnbox" style="margin-top:12px"><b>Where the analogy stops.</b> A beta is one linear knob you can read and interpret. A model's weights interact through many nonlinear layers, so no single weight "means" anything on its own. And regression has a neat formula for the best fit; a neural network has to search for good weights step by step.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CH 6 TRAINING -->
+<section class="chapter" id="c6" data-title="Training">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">06</div><div class="kicker">Training</div><h2>Nudging the knobs</h2><div class="q">How does random noise turn into something that predicts language?</div></div>
+  <div class="prose reveal">
+    <p>When training begins, every weight is random noise. The model's guesses are garbage. Then a loop runs, over and over: <b class="c">show</b> the model some text, let it <b class="c">guess</b> the next token, <b class="k">measure</b> how wrong it was, and <b class="v">nudge</b> every weight a tiny bit in whichever direction would have made it less wrong. That last step, computing the direction for every weight at once, is called <b>backpropagation</b>, and the nudging is <b>gradient descent</b>.</p>
+    <p>Below is a <b>real</b> neural network training live in your browser. It's microscopic, 90 parameters learning from 7 sentences, but the loop is the same one that, at vastly larger scale, produced every model in this story.</p>
+  </div>
+  <div class="panel pad reveal" id="trainer">
+    <div class="seg">
+      <button class="btn pri" id="trPlay">▶ Train</button>
+      <button class="btn" id="trStep">+1 step</button>
+      <button class="btn" id="trReset">↺ Re-randomize</button>
+      <span class="lbl" style="margin-left:10px">Context</span>
+      <select id="trCtx" class="btn" aria-label="Choose context" style="padding:7px 10px"></select>
+    </div>
+    <div class="kpis" style="margin-bottom:16px">
+      <div class="kpi"><div class="l">Training steps</div><div class="val mono" id="trSteps">0</div></div>
+      <div class="kpi"><div class="l">Loss (lower = better)</div><div class="val mono k" id="trLoss">–</div></div>
+      <div class="kpi"><div class="l">Parameters</div><div class="val mono v">90</div></div>
+      <div class="kpi"><div class="l">Corpus</div><div class="val mono" style="font-size:14px;padding-top:6px">7 sentences</div></div>
+    </div>
+    <div class="trainer">
+      <div>
+        <div class="note mono" style="margin-bottom:6px">MODEL'S GUESS FOR THE NEXT WORD AFTER "<span id="trCtxL" class="c"></span> ___"</div>
+        <div class="bars" id="trBars"></div>
+        <div class="note" style="margin-top:8px">Teal bar = the words that actually follow this context in the training sentences.</div>
+        <div style="margin-top:14px"><div class="note mono">LOSS OVER TIME</div><svg id="trCurve" viewBox="0 0 400 90" style="width:100%;height:90px;display:block"></svg></div>
+      </div>
+      <div>
+        <div class="note mono" style="margin-bottom:6px">THE WEIGHTS <span style="color:var(--dim)">(violet = positive, coral = negative)</span></div>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:start">
+          <div class="note mono" style="padding-top:2px">E<br><span style="color:var(--dim)">10×4</span></div><div class="hm" id="hmE" style="grid-template-columns:repeat(4,1fr);max-width:120px"></div>
+          <div class="note mono" style="padding-top:2px">W<br><span style="color:var(--dim)">4×10</span></div><div class="hm" id="hmW" style="grid-template-columns:repeat(10,1fr);max-width:300px"></div>
+          <div class="note mono" style="padding-top:2px">b</div><div class="hm" id="hmB" style="grid-template-columns:repeat(10,1fr);max-width:300px"></div>
+        </div>
+        <div class="note" style="margin-top:12px"><b style="color:#fff">How it works:</b> each word in the context looks up its 4-number embedding row in <span class="mono v">E</span>; those rows are averaged; the result is multiplied by <span class="mono v">W</span> and added to <span class="mono v">b</span> to score all 10 vocabulary words; a softmax turns scores into probabilities. Each training step adjusts all 90 numbers to raise the probability of the word that really came next.</div>
+        <details class="note" style="margin-top:8px"><summary style="cursor:pointer;color:var(--violet)">See the training sentences</summary><div class="mono" id="trCorpus" style="margin-top:6px;line-height:1.8"></div></details>
+      </div>
+    </div>
+  </div>
+  <div class="g2 reveal" style="margin-top:18px">
+    <div class="okbox"><b>Notice the probabilities don't go to 100%.</b> "The dog is" is followed by "sleeping" in some sentences and "at" in another, so the model learns a <i>distribution</i>. Each training example says "the answer was X" with 100% certainty; the model learns how often, across many examples, each answer shows up.</div>
+    <div class="fixbox"><b>Scale check.</b> Our model has 90 parameters and trains in seconds on 7 sentences. Frontier training runs adjust hundreds of billions to trillions of parameters over many trillions of tokens, on thousands of accelerators for weeks or months. The shape of the loop is the same; the bill is not.</div>
+  </div>
+</div>
+</section>
+
+<!-- CH 7 EMBEDDINGS -->
+<section class="chapter" id="c7" data-title="King − man + woman">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">07</div><div class="kicker">Meaning as geometry</div><h2>King − man + woman ≈ queen</h2><div class="q">Do learned numbers actually capture meaning?</div></div>
+  <div class="g-side">
+    <div class="panel pad reveal">
+      <div class="seg" role="group" aria-label="Choose analogy">
+        <button aria-pressed="true" data-an="0">king : queen</button>
+        <button aria-pressed="false" data-an="1">Paris : France</button>
+        <button aria-pressed="false" data-an="2">walking : walked</button>
+      </div>
+      <div class="figure" id="anFig" role="img" aria-label="Two-dimensional map of word vectors. An arrow from king subtracts man and adds woman, landing next to queen."></div>
+      <div class="eq" id="anEq" style="margin-top:8px"></div>
+      <p class="cap">Hand-placed 2-D illustration. Real word vectors have hundreds of dimensions; any flat picture of them is a projection that distorts distances.</p>
+    </div>
+    <div class="reveal prose">
+      <p>In 2013, a team at Google led by Tomas Mikolov trained word vectors on a large text corpus and noticed something uncanny. Take the vector for <b>king</b>, subtract <b>man</b>, add <b>woman</b>, and the nearest word to where you land is <b>queen</b>.</p>
+      <p>Nobody programmed "royalty" or "gender" into those numbers. The directions emerged because words used in similar contexts get nudged toward similar vectors during training. Meaning, at least some slice of it, shows up as geometry.</p>
+      <p class="note"><b style="color:#fff">The fine print:</b> the trick works for some relationships and fails for many others; the classic demo excludes the input words when searching for the nearest neighbor; and modern LLMs build context-dependent representations, so "bank" near "river" ends up somewhere different from "bank" near "loan." The 2013 result is a window into the idea, not a description of how a 2026 model works internally.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CH 8 CHECKPOINT -->
+<section class="chapter" id="c8" data-title="The checkpoint">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">08</div><div class="kicker">The central object</div><h2>The frozen file</h2><div class="q">What's left when training ends?</div></div>
+  <div class="g-side">
+    <div class="reveal">
+      <div class="prose">
+        <p>When training stops, the weights stop moving. They're <b>frozen</b> and saved. That saved set of numbers is the <b class="v">checkpoint</b>, and it's the single most valuable object in this whole story. It's what a lab spends hundreds of millions or billions of dollars of compute to produce.</p>
+        <p>Physically, it's unglamorous: a folder of large files full of numbers, plus a few small files describing the architecture and the tokenizer. Hold on to this image. In a few chapters, the exact same folder will either stay locked in a vault or get posted for the world.</p>
+      </div>
+      <div class="panel pad" style="margin-top:6px">
+        <div class="note mono" style="margin-bottom:6px">A TYPICAL OPEN-WEIGHT RELEASE FOLDER <span style="color:var(--dim)">(representative layout)</span></div>
+        <div class="files" id="ckFiles"></div>
+        <div class="note mono" style="margin:12px 0 6px">INSIDE ONE SHARD: NAMED GRIDS OF NUMBERS</div>
+        <div class="tensors" id="ckTensors" tabindex="0" aria-label="Example list of weight tensors with their shapes"></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="panel pad figure" id="ckFig" role="img" aria-label="The violet checkpoint block shown as stacked layers of numerical matrices."></div>
+      <div class="warnbox" style="margin-top:14px"><b>Weights are not the training data.</b> A model trained on trillions of words doesn't store a copy of them; the checkpoint is far smaller than its training set. That said, models can memorize and reproduce some passages they saw often, which is why "it's just numbers" isn't the whole story either.</div>
+      <div class="okbox" style="margin-top:10px"><b>File size ≈ parameters × bytes per parameter.</b> A 120-billion-parameter model stored at 16-bit precision (2 bytes each) is about 240 GB. Store each weight in 4 bits instead and it shrinks to about 60 GB. We'll come back to this; it decides where a model can run.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ================= ACT III ================= -->
+<section class="act" id="act3"><div class="wrap reveal">
+  <div class="kicker">Act III</div><h3>Out into the world</h3>
+  <p>A frozen checkpoint does nothing on its own. It earns its keep when someone asks it a question. That's where open and closed finally part ways.</p>
+</div></section>
+
+<!-- CH 9 INFERENCE -->
+<section class="chapter" id="c9" data-title="Training vs inference">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">09</div><div class="kicker">Two different jobs</div><h2>Training builds it. Inference uses it.</h2><div class="q">What happens when you hit "send"?</div></div>
+  <div class="g2">
+    <div class="reveal">
+      <div class="prose">
+        <p><b>Inference</b> is the model doing its job: you hand it a prompt, and it runs the frozen weights forward to predict one next token. Then it appends that token to the text and predicts again. And again. Every word you've ever watched stream out of a chatbot appeared this way, one token at a time.</p>
+        <p>Here's our little model from Chapter 6, now <b>frozen</b>, generating text. No weights change. Same file, different job.</p>
+      </div>
+      <div class="panel pad">
+        <div class="gen" id="genOut" aria-live="polite"><span class="p">the</span><span class="cur"></span></div>
+        <div class="seg" style="margin-top:12px">
+          <button class="btn pri" id="genGo">▶ Generate</button>
+          <span class="lbl">Start with</span>
+          <button aria-pressed="true" data-start="the">the</button>
+          <button aria-pressed="false" data-start="the cat">the cat</button>
+          <button aria-pressed="false" data-start="the human is">the human is</button>
+        </div>
+        <p class="note" id="genNote">Each word is sampled from the model's probability guess, so runs can differ. If you skipped Chapter 6, we quietly trained it for you.</p>
+      </div>
+    </div>
+    <div class="reveal">
+      <table class="cmp" aria-label="Training versus inference">
+        <thead><tr><th></th><th class="v">Training</th><th class="c">Inference</th></tr></thead>
+        <tbody>
+          <tr><td>What it does</td><td>Creates and adjusts the weights</td><td>Uses fixed weights to answer prompts</td></tr>
+          <tr><td>Math per token</td><td>Forward pass + backward pass + weight update</td><td>Forward pass only</td></tr>
+          <tr><td>How often</td><td>A big run per model generation (plus fine-tuning)</td><td>Every single request, forever</td></tr>
+          <tr><td>Hardware shape</td><td>Thousands of tightly linked accelerators running for weeks</td><td>Anything from a phone to a GPU rack, scaled to traffic</td></tr>
+          <tr><td>What limits speed</td><td>Raw compute and chip-to-chip networking</td><td>Often memory capacity and memory bandwidth: every token re-reads the weights it uses</td></tr>
+          <tr><td>Who pays</td><td>The model maker, up front</td><td>Whoever runs it: the provider, a cloud customer, or you</td></tr>
+        </tbody>
+      </table>
+      <div class="fixbox" style="margin-top:14px"><b>A claim worth sharpening.</b> The recording says inference chips "don't have to be nearly as sophisticated" as training chips. Partly true: inference skips the backward pass and can tolerate lower numerical precision, which is why Google (TPU), Amazon (Inferentia for inference; Trainium, built for training but also used for serving), Microsoft (Maia), Meta (MTIA) and OpenAI (with Broadcom) have all built or announced their own chips. But serving big models fast is its own hard engineering problem, and a lot of frontier inference still runs on top-end GPUs. "Different," more than "simpler."</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CH 10 FORK -->
+<section class="chapter" id="c10" data-title="The fork">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">10</div><div class="kicker">Distribution</div><h2>Same file, two destinies</h2><div class="q">Where does the checkpoint go after training?</div></div>
+  <div class="prose reveal">
+    <p>Here is the fork the whole episode has been building toward. Follow the <b class="c">cyan</b> request as it travels each path. Notice the <b class="v">violet checkpoint</b> is identical on both sides. What differs is the boundary around it.</p>
+  </div>
+  <div class="seg reveal" role="group" aria-label="Choose path">
+    <span class="lbl">Follow</span>
+    <button aria-pressed="true" data-path="both">Both paths</button>
+    <button aria-pressed="false" data-path="closed">Closed weights</button>
+    <button aria-pressed="false" data-path="open">Open weights</button>
+  </div>
+  <div class="panel pad figure wide reveal" id="forkFig" role="img" aria-label="Diagram. A trained checkpoint at the top splits into two paths. Closed path: the checkpoint stays inside a provider boundary; users reach it only through the provider's app or API, or through licensed cloud partners; the provider chooses the hardware. Open path: the checkpoint is uploaded to Hugging Face, downloaded by a developer, loaded by serving software such as vLLM, and run on the developer's own computer or on rented cloud GPUs."></div>
+  <div class="g2 reveal" style="margin-top:16px">
+    <div class="panel pad" style="border-color:rgba(255,122,107,.35)">
+      <h4 class="k" style="margin-bottom:6px">Closed weights</h4>
+      <p style="font-size:15px;color:#d3dced">The maker never hands over the file. You pay the maker, or one of its licensed partners, for access by the token or by subscription. Claude, for example, is available through Anthropic's own API and also through Amazon Bedrock, Google Cloud's Vertex AI and Microsoft Foundry. Closed doesn't mean "one cloud." It means the weights stay under the maker's control, and the maker decides what hardware serves them.</p>
+      <p class="note" style="margin:0">Whiteboard detail: Anthropic runs Claude on a mix of Google TPUs, AWS Trainium and Nvidia GPUs. OpenAI runs on Nvidia GPUs, has a multi-gigawatt AMD deal starting in late 2026, and is co-designing its own inference chip with Broadcom (the whiteboard's "Jalapeño").</p>
+    </div>
+    <div class="panel pad" style="border-color:rgba(45,212,191,.35)">
+      <h4 class="t" style="margin-bottom:6px">Open weights</h4>
+      <p style="font-size:15px;color:#d3dced">The maker posts the file, usually on <b>Hugging Face</b>. A developer downloads it and needs two more things: <b class="a">compute</b> (their own GPU, a Mac, or rented cloud servers) and <b>serving software</b> such as vLLM, SGLang, llama.cpp, Ollama or Nvidia's TensorRT-LLM to turn the file into a fast, working endpoint.</p>
+      <p class="note" style="margin:0">Whiteboard steps, preserved: 1. Hugging Face → 2. Compute → 3. "Serving software," e.g. vLLM.</p>
+    </div>
+  </div>
+  <div class="tweet reveal">Closed: you rent answers. Open: you get the engine, and you have to find the fuel and the garage.</div>
+</div>
+</section>
+
+<!-- CH 11 MEMORY -->
+<section class="chapter" id="c11" data-title="Will it fit?">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">11</div><div class="kicker">Memory math</div><h2>Will it fit?</h2><div class="q">Why can you run some open models on a laptop, but not others?</div></div>
+  <div class="prose reveal">
+    <p>To answer a prompt quickly, a model's weights need to sit in fast memory, usually the GPU's. So the first question about any open model is brutally simple: <b>does the file fit?</b> The original whiteboard plotted parameters against memory and drew a line at roughly <b>100 GB</b>: below it, you can often run locally; above it, you typically rent a data center.</p>
+  </div>
+  <div class="memwrap reveal">
+    <div class="panel pad" style="position:relative">
+      <div class="seg" role="group" aria-label="Numerical precision">
+        <span class="lbl">Bytes per weight</span>
+        <button aria-pressed="false" data-prec="2">16-bit (2 B)</button>
+        <button aria-pressed="true" data-prec="1">8-bit (1 B)</button>
+        <button aria-pressed="false" data-prec="0.5">4-bit (0.5 B)</button>
+      </div>
+      <div class="figure wide" id="memFig" role="img" aria-label="Log-log chart of model parameters, from one million to ten trillion, against the memory needed to hold the weights. A shaded band below about 100 gigabytes marks models that can usually run locally; above it, cloud hardware is typically needed. Open-weight models are plotted as teal dots; a closed model's estimated size is shown as a coral range."></div>
+      <div class="tip" id="memTip"></div>
+      <p class="cap">Weights only. Running a model also needs working memory for the conversation (the "KV cache") and the software itself, often adding 10–30% or much more for very long prompts. Teal = open weights released; hollow = announced, not released; coral range = closed model, size undisclosed (outside estimates only).</p>
+    </div>
+    <div class="panel pad">
+      <label for="memP" class="note">Your model size: <b class="mono v" id="memPV">70B</b> parameters</label>
+      <input type="range" id="memP" min="6" max="13" step="any" value="10.8451">
+      <div class="kpis" style="grid-template-columns:1fr 1fr;margin:10px 0">
+        <div class="kpi"><div class="l">Weights</div><div class="val mono a" id="memW">–</div></div>
+        <div class="kpi"><div class="l">+ ~20% to run</div><div class="val mono" id="memR">–</div></div>
+      </div>
+      <div id="devList"></div>
+    </div>
+  </div>
+  <div class="g2 reveal" style="margin-top:16px">
+    <div class="fixbox"><b>Correcting the rule of thumb.</b> The recording says ~100 GB "typically supports around 100 billion parameters." That's true at <b>8-bit</b> precision (1 byte per weight). At 16-bit, 100B parameters need ~200 GB; squeezed to 4-bit, ~50 GB. Precision is the hidden third axis of this chart. OpenAI's gpt-oss-120b, for example, ships most of its weights in a ~4-bit format precisely so it fits on a single 80 GB GPU.</div>
+    <div class="warnbox"><b>Bigger isn't automatically smarter.</b> More parameters <i>tends</i> to mean more capability, but training data, training method and architecture matter enormously. Google says its 31B Gemma 4 beats much larger models on some leaderboards. And "mixture-of-experts" models like Kimi K3 store 2.8 trillion parameters but use only ~104 billion per token: all of them must sit in memory, yet each answer touches a small slice.</div>
+  </div>
+</div>
+</section>
+
+<!-- CH 12 LOCAL VS CLOUD -->
+<section class="chapter" id="c12" data-title="Local vs cloud">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">12</div><div class="kicker">Deployment</div><h2>On your desk or in the cloud</h2><div class="q">What changes when the model runs on your machine?</div></div>
+  <div class="g2">
+    <div class="panel pad reveal">
+      <div class="figure" id="localFig" role="img" aria-label="Isometric laptop with a small violet checkpoint inside it; the cyan prompt and answer loop stays within the device."></div>
+      <h4 style="margin:8px 0 6px" class="t">Local</h4>
+      <ul style="margin:0;padding-left:18px;color:#d3dced;font-size:15px">
+        <li>Upfront hardware cost, then roughly free per question (plus electricity).</li>
+        <li>Prompts can stay on the machine: a strong privacy and compliance property, <i>if</i> the surrounding apps, plugins and telemetry also stay local.</li>
+        <li>Works offline; nobody can change or retire the model on you.</li>
+        <li>Limited to models that fit (Chapter 11), usually at lower speed than a data center.</li>
+      </ul>
+    </div>
+    <div class="panel pad reveal">
+      <div class="figure" id="cloudFig" role="img" aria-label="Isometric data-center racks in amber with violet checkpoints spread across many accelerators; many cyan request streams arrive from outside."></div>
+      <h4 style="margin:8px 0 6px" class="a">Cloud</h4>
+      <ul style="margin:0;padding-left:18px;color:#d3dced;font-size:15px">
+        <li>Pay per token or per GPU-hour; scale up and down with demand.</li>
+        <li>The only practical option for the biggest models: a 2.8T-parameter model needs over a terabyte of fast memory even at 4-bit.</li>
+        <li>Open models run in the cloud too: hyperscalers, neoclouds and inference startups all host them.</li>
+        <li>Data leaves your machine, so contracts and provider controls carry the privacy burden.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="okbox reveal" style="margin-top:16px"><b>Three myths, retired.</b> (1) "Open means local." Plenty of open-weight usage runs in someone else's cloud. (2) "Local means private." Only if every piece of software around the model behaves. (3) "Closed means one cloud." Closed models are sold through multiple partners; what's closed is the file, not the venue.</div>
+</div>
+</section>
+
+<!-- ================= ACT IV ================= -->
+<section class="act" id="act4"><div class="wrap reveal">
+  <div class="kicker">Act IV</div><h3>The business</h3>
+  <p>Why would anyone give away a file that cost a fortune to make? Follow the money on every request.</p>
+</div></section>
+
+<!-- CH 13 MONEY -->
+<section class="chapter" id="c13" data-title="Follow the money">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">13</div><div class="kicker">Economics</div><h2>Free model, paid compute</h2><div class="q">Who gets paid when you ask a question?</div></div>
+  <div class="prose reveal">
+    <p>The recording offers a sharp explanation for why Google and Alibaba give models away: <b>they make money on compute.</b> A free model that runs best on your cloud is a funnel into your cloud. And every model, open or closed, has to run on <i>something</i>, which is the part Nvidia sells.</p>
+  </div>
+  <div class="seg reveal" role="group" aria-label="Choose scenario">
+    <span class="lbl">Scenario</span>
+    <button aria-pressed="true" data-sc="0">Closed model via API</button>
+    <button aria-pressed="false" data-sc="1">Closed via cloud partner</button>
+    <button aria-pressed="false" data-sc="2">Open model, rented cloud</button>
+    <button aria-pressed="false" data-sc="3">Open model, own hardware</button>
+  </div>
+  <div class="g-side reveal">
+    <div class="panel pad figure wide" id="moneyFig" role="img" aria-label="Flow of money from a user through providers to hardware makers, changing with the selected scenario."></div>
+    <div class="panel pad" id="moneyTxt" aria-live="polite"></div>
+  </div>
+  <p class="note reveal" style="margin-top:10px">Conceptual flows, not measured revenue splits. Real arrangements include revenue-sharing deals, reserved-capacity contracts and cross-investments that this diagram leaves out.</p>
+  <div class="tweet reveal">Model makers sell answers. Clouds sell hours. Chipmakers sell the shovels for both, and open models create more digging.</div>
+</div>
+</section>
+
+<!-- CH 14 NVIDIA -->
+<section class="chapter" id="c14" data-title="Nvidia's double game">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">14</div><div class="kicker">Layer 2 meets layer 4</div><h2>Why a chipmaker wants open models</h2><div class="q">What is Nvidia doing on both sides of the cake?</div></div>
+  <div class="g-side">
+    <div class="reveal">
+      <div class="prose">
+        <p>Nvidia's biggest customers, Google, Amazon, Microsoft, Meta and OpenAI, are all building their own chips, especially for inference. That's the threat. If the most-used models are closed and served only inside those companies' clouds, more of the world's inference could quietly migrate onto in-house silicon.</p>
+        <p>Open models change that math. Anyone, anywhere, can run them, and the default place to run almost anything is still an Nvidia GPU with Nvidia's software. So Nvidia has moved up the cake on three fronts:</p>
+      </div>
+      <div class="panel pad figure wide" id="nvFig" role="img" aria-label="Diagram of Nvidia's position: chips and software at layer 2, Nemotron open models at layer 4, and the pending Hugging Face acquisition as the distribution hub between model makers and users, with arrows of pressure from hyperscaler custom chips."></div>
+    </div>
+    <div class="reveal">
+      <div class="panel pad">
+        <h4 style="margin-bottom:8px">Fact check: what actually happened</h4>
+        <div class="timeline">
+          <div><b>JUN 2026</b>Nvidia releases Nemotron 3 Ultra, an open-weight mixture-of-experts model reported at ~550B parameters.</div>
+          <div><b>AUG 11, 2026</b>The Information reports Nvidia is training <b>Nemotron 4</b>, with the largest model expected at <b>≥1 trillion parameters</b>. Nvidia confirms it's working on Nemotron 4 but not the size or timing.</div>
+          <div><b>AUG 27, 2026</b>The Information reports Nvidia agreed to buy Hugging Face for ~$12.9B.</div>
+          <div><b>SEP 2–3, 2026</b>Nvidia signs a definitive agreement (per its SEC 8-K) and announces it: <b>$12.93B</b> total, ≈$11.9B to stockholders plus up to ≈$1.0B in retention equity. Nvidia pledges Hugging Face stays open and that Nvidia compute won't be required.</div>
+          <div class="pend"><b>H1 2027 (EXPECTED)</b>Closing, subject to regulatory approval. Press reports in November 2026 describe a DOJ inquiry. As of this page, <b>the deal has not closed</b>.</div>
+        </div>
+      </div>
+      <div class="fixbox" style="margin-top:12px"><b>Correction to the recording.</b> One version says Nvidia "bought Hugging Face" in August 2026; the other says it's "paying $13 billion." The second is closer: the deal was reported in August, signed and announced in early September, and is still pending. Nemotron 4's trillion-plus size is a credible report, not an announced spec, and the model had not been released as of our check.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CH 15 SWITCHING -->
+<section class="chapter" id="c15" data-title="The switching threat">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">15</div><div class="kicker">Competition</div><h2>The switching question</h2><div class="q">Is open-weight AI a threat to Anthropic and OpenAI?</div></div>
+  <div class="prose reveal">
+    <p>The recording ends on its thesis: as open-weight models get better and easier to run, the biggest competitive threat to closed labs is <b>customers switching</b>. That's an argument, not a fact, so here are both sides as their advocates would make them.</p>
+  </div>
+  <div class="g2 reveal">
+    <div class="panel pad" style="border-color:rgba(45,212,191,.35)">
+      <h4 class="t" style="margin-bottom:8px">The case that switching pressure is real</h4>
+      <ul style="margin:0;padding-left:18px;color:#d3dced;font-size:15px">
+        <li>The gap is narrowing. In July–August 2026, Kimi K3 (2.8T) and Qwen3.8-Max (2.4T) shipped open weights; Alibaba's own announcement claimed Qwen3.8 was "second only to Fable 5."</li>
+        <li>Switching is cheap in code: most serving software exposes the same style of API many apps already call, so swapping the model behind an app can be a configuration change.</li>
+        <li>Open models give control over cost, data location and model versions, which regulated buyers value.</li>
+        <li>Companies with something else to sell (cloud, chips, ads) can afford to give strong models away.</li>
+      </ul>
+    </div>
+    <div class="panel pad" style="border-color:rgba(255,122,107,.35)">
+      <h4 class="k" style="margin-bottom:8px">The case that closed labs keep their edge</h4>
+      <ul style="margin:0;padding-left:18px;color:#d3dced;font-size:15px">
+        <li>Benchmarks aren't the job. Closed labs argue their models still lead on long, messy, real-world tasks, and vendor benchmark claims often await independent checks.</li>
+        <li>Running a 2-trillion-parameter model well is hard and expensive; a managed API hides that cost and effort.</li>
+        <li>Products, safety testing, enterprise contracts and support are part of what customers buy.</li>
+        <li>Anthropic argues capable models should pass safety testing before release, and that once weights are public, safeguards can't be added back.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note reveal" style="margin-top:12px">Fact: Anthropic has never released an open-weight model. In a July 2026 position statement, CEO Dario Amodei wrote that Anthropic "has never advocated for a ban on open-weights models." Whether open weights become the dominant threat is an open question that no one can settle yet.</p>
+</div>
+</section>
+
+<!-- EPILOGUE -->
+<section class="chapter" id="epi" data-title="Epilogue">
+<div class="wrap">
+  <div class="g-side">
+    <div class="panel pad figure reveal" id="epiFig" role="img" aria-label="The violet checkpoint block once more, with both the coral closed boundary and the teal open pathways drawn around it."></div>
+    <div class="reveal prose">
+      <div class="kicker" style="margin-bottom:8px">Epilogue</div>
+      <h3 style="font:600 30px/1.15 var(--head);margin-bottom:14px">It was always about one file</h3>
+      <p>Text became tokens. Tokens became vectors. Random knobs got nudged, trillions of times, until they captured something about language. Then the knobs froze into a checkpoint.</p>
+      <p>Everything after that, API or download, laptop or data center, Nvidia or custom silicon, is a decision about who gets to hold that file and who gets paid to run it.</p>
+      <p>Next time you read that a model is "open," you'll know to ask the better questions: open <i>how</i>, under what license, and running on whose hardware?</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SOURCE MAP -->
+<section class="chapter" id="smap" data-title="Source map">
+<div class="wrap">
+  <div class="ch-head reveal"><div class="ch-num">§</div><div class="kicker">Accountability</div><h2>Source map</h2><div class="q">What came from the recording, what we checked, and what we simplified.</div></div>
+  <div class="seg reveal" role="group" aria-label="Filter source map">
+    <span class="lbl">Filter</span>
+    <button aria-pressed="true" data-sm="all">All</button>
+    <button aria-pressed="false" data-sm="src">Source statement</button>
+    <button aria-pressed="false" data-sm="ver">Verified</button>
+    <button aria-pressed="false" data-sm="cor">Corrected</button>
+    <button aria-pressed="false" data-sm="sim">Simplified demo</button>
+    <button aria-pressed="false" data-sm="ctx">Added context</button>
+    <button aria-pressed="false" data-sm="unv">Unverified / disputed</button>
+  </div>
+  <div class="panel pad reveal" style="overflow-x:auto">
+    <table class="smap" id="smapT"><thead><tr><th>Claim</th><th>Status</th><th>Notes &amp; sources [n]</th></tr></thead><tbody></tbody></table>
+  </div>
+  <div class="sources reveal" style="margin-top:30px">
+    <h4 style="margin-bottom:10px">Sources</h4>
+    <ol id="srcList"></ol>
+  </div>
+</div>
+</section>
+
+<footer><div class="wrap">
+  <p>AI Stack Visual Documentary · Part 5 of the series. Adapted from a hand-drawn explainer reel by The Wall Street Skinny (whiteboard "Open vs. Closed Models," Recording 2, 0:00–2:41 and 10:16–12:55), with independent fact-checking as of November 14, 2026. All diagrams are schematic. The toy tokenizer, the 90-parameter network and the embedding map are teaching demonstrations, not production systems. Nothing here is investment advice.</p>
+</div></footer>
+
+<script>
+(function(){
+'use strict';
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function rng(seed){let s=seed>>>0||1;return()=>{s^=s<<13;s>>>=0;s^=s>>17;s^=s<<5;s>>>=0;return (s%1e9)/1e9;}}
+function gauss(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+window.__ep5={$,$$,rng,gauss,esc};
+
+/* ---------- isometric checkpoint cube ---------- */
+function cube(cx,cy,s,o={}){
+  const A=[cx,cy],B=[cx+s,cy+s/2],C=[cx,cy+s],D=[cx-s,cy+s/2],h=o.h||s;
+  const C2=[C[0],C[1]+h],B2=[B[0],B[1]+h],D2=[D[0],D[1]+h];
+  const P=a=>a.map(p=>p.join(',')).join(' ');
+  const n=o.n||4, sw=Math.max(.5,s/90), st='rgba(220,210,255,.35)';
+  let g='';
+  for(let i=1;i<n;i++){const t=i/n;
+    g+=`<line x1="${A[0]+s*t}" y1="${A[1]+s/2*t}" x2="${D[0]+s*t}" y2="${D[1]+s/2*t}" stroke="${st}" stroke-width="${sw}"/>`;
+    g+=`<line x1="${A[0]-s*t}" y1="${A[1]+s/2*t}" x2="${B[0]-s*t}" y2="${B[1]+s/2*t}" stroke="${st}" stroke-width="${sw}"/>`;
+    g+=`<line x1="${D[0]+s*t}" y1="${D[1]+s/2*t}" x2="${D2[0]+s*t}" y2="${D2[1]+s/2*t}" stroke="${st}" stroke-width="${sw}"/>`;
+    g+=`<line x1="${D[0]}" y1="${D[1]+h*t}" x2="${C[0]}" y2="${C[1]+h*t}" stroke="${st}" stroke-width="${sw}"/>`;
+    g+=`<line x1="${C[0]+s*t}" y1="${C[1]-s/2*t}" x2="${C2[0]+s*t}" y2="${C2[1]-s/2*t}" stroke="${st}" stroke-width="${sw}"/>`;
+    g+=`<line x1="${C[0]}" y1="${C[1]+h*t}" x2="${B[0]}" y2="${B[1]+h*t}" stroke="${st}" stroke-width="${sw}"/>`;
+  }
+  const glow=o.glow===false?'':`<ellipse cx="${cx}" cy="${cy+s+h*0.95}" rx="${s*1.1}" ry="${s*.32}" fill="rgba(167,139,250,.35)" filter="url(#soft)"/>`;
+  return `<g class="cube ${o.cls||''}">${glow}
+    <polygon points="${P([D,C,C2,D2])}" fill="url(#gVl)" stroke="#a78bfa" stroke-width="${sw*1.4}"/>
+    <polygon points="${P([C,B,B2,C2])}" fill="url(#gVr)" stroke="#a78bfa" stroke-width="${sw*1.4}"/>
+    <polygon points="${P([A,B,C,D])}" fill="url(#gVtop)" stroke="#d9ceff" stroke-width="${sw*1.4}"/>${g}</g>`;
+}
+function slab(cx,cy,w,h,top,l,r,stroke){
+  const A=[cx,cy],B=[cx+w,cy+w/2],C=[cx,cy+w],D=[cx-w,cy+w/2];
+  const P=a=>a.map(p=>p.join(',')).join(' ');
+  return `<polygon points="${P([D,C,[C[0],C[1]+h],[D[0],D[1]+h]])}" fill="${l}" stroke="${stroke}" stroke-width="1"/>
+  <polygon points="${P([C,B,[B[0],B[1]+h],[C[0],C[1]+h]])}" fill="${r}" stroke="${stroke}" stroke-width="1"/>
+  <polygon points="${P([A,B,C,D])}" fill="${top}" stroke="${stroke}" stroke-width="1.2"/>`;
+}
+function box(x,y,w,h,s,top,l,r,stroke){ // iso box with footprint w (x-dir) and d=s
+  // simple iso box: top face parallelogram
+  const P=a=>a.map(p=>p.join(',')).join(' ');
+  const A=[x,y],B=[x+w,y+w/2],C=[x+w-s,y+w/2+s/2],D=[x-s,y+s/2];
+  return `<polygon points="${P([D,C,[C[0],C[1]+h],[D[0],D[1]+h]])}" fill="${l}" stroke="${stroke}" stroke-width="1"/>
+  <polygon points="${P([C,B,[B[0],B[1]+h],[C[0],C[1]+h]])}" fill="${r}" stroke="${stroke}" stroke-width="1"/>
+  <polygon points="${P([A,B,C,D])}" fill="${top}" stroke="${stroke}" stroke-width="1"/>`;
+}
+window.__ep5.cube=cube;
+
+/* ---------- HERO ---------- */
+(function hero(){
+  const toks=['The','dog','is','sleep','ing','.','code','{','def','€','的','data'];
+  let chips='';
+  toks.forEach((t,i)=>{
+    const x=230+((i*53)%170), d=(i*0.55).toFixed(2);
+    chips+=`<g><g opacity="0">
+      <rect x="${x-17}" y="-12" width="34" height="18" rx="5" fill="rgba(56,214,245,.12)" stroke="#38d6f5" stroke-width="1"/>
+      <text x="${x}" y="1" font-size="10" fill="#bff3ff" text-anchor="middle" class="m">${esc(t)}</text>
+      ${RM?'':`<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.2;.7;1" dur="3.3s" begin="${d}s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="0 0;${(310-x)*.8} 112" dur="3.3s" begin="${d}s" repeatCount="indefinite"/>`}
+    </g></g>`;
+  });
+  const svg=`<svg viewBox="0 0 640 600" aria-hidden="true">
+    <text x="320" y="18" text-anchor="middle" font-size="11" fill="#38d6f5" class="m" letter-spacing="2">TRAINING DATA → TOKENS</text>
+    <g transform="translate(0,28)">${chips}</g>
+    ${cube(320,150,78,{n:6})}
+    <text x="430" y="188" font-size="12.5" fill="#d9ceff" font-weight="600">Trained checkpoint</text>
+    <text x="430" y="205" font-size="11" fill="#93a3bf">billions of frozen weights</text>
+    <path d="M320 320 C320 360 180 360 175 400" fill="none" stroke="#ff7a6b" stroke-width="2" stroke-dasharray="5 6"/>
+    <path d="M320 320 C320 360 470 360 470 392" fill="none" stroke="#2dd4bf" stroke-width="2.5"/>
+    <!-- closed side -->
+    <rect x="40" y="398" width="270" height="180" rx="18" fill="rgba(255,122,107,.05)" stroke="#ff7a6b" stroke-width="1.5" stroke-dasharray="7 6"/>
+    <text x="56" y="420" font-size="10.5" fill="#ff9d91" class="m" letter-spacing="1.5">CLOSED · PROVIDER BOUNDARY</text>
+    ${cube(150,450,38,{n:4})}
+    <rect x="282" y="478" width="56" height="40" rx="8" fill="#0d1628" stroke="#ff7a6b"/>
+    <text x="310" y="502" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">API</text>
+    <path id="hReq" d="M410 560 C380 560 360 498 338 498 L200 498" fill="none" stroke="rgba(56,214,245,.35)" stroke-width="1.5" stroke-dasharray="3 5"/>
+    <text x="414" y="566" font-size="11" fill="#bff3ff">you</text>
+    <circle r="5" fill="#38d6f5">${RM?'':'<animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#hReq"/></animateMotion>'}</circle>
+    <!-- open side -->
+    <text x="420" y="384" font-size="10.5" fill="#5eead4" class="m" letter-spacing="1.5">OPEN · COPIES ANYWHERE</text>
+    <path d="M470 400 L405 450 M470 400 L500 450 M470 400 L590 445" stroke="#2dd4bf" stroke-width="1.5" fill="none" class="${RM?'':'flowdash'}"/>
+    ${box(380,462,52,8,30,'#2a3550','#141c2c','#1d273b','#5b6d8f')}
+    <path d="M384 462 l0 -34 l48 -24 l0 34 z" fill="#0d1628" stroke="#5b6d8f"/>
+    ${cube(406,432,11,{n:2,glow:false})}
+    <text x="372" y="530" font-size="10.5" fill="#93a3bf">laptop</text>
+    ${box(486,452,28,58,24,'#4b5b79','#1c2537','#2b3750','#6b7c9c')}
+    ${cube(492,474,10,{n:2,glow:false})}
+    <text x="474" y="548" font-size="10.5" fill="#93a3bf">server</text>
+    <path d="M556 452 q6 -22 28 -16 q10 -18 30 -6 q20 0 18 20 q12 10 -2 22 l-74 0 q-14 -10 0 -20z" fill="rgba(246,177,60,.08)" stroke="#f6b13c"/>
+    ${cube(592,446,10,{n:2,glow:false})}
+    <text x="570" y="500" font-size="10.5" fill="#93a3bf">cloud</text>
+  </svg>`;
+  $('#heroFig').innerHTML=svg;
+})();
+
+/* ---------- rail / progress / reveal ---------- */
+(function nav(){
+  const secs=$$('section.chapter[data-title]'); const rail=$('#rail');
+  rail.innerHTML=secs.map(s=>`<a href="#${s.id}"><span>${esc(s.dataset.title)}</span><i></i></a>`).join('');
+  const links=$$('a',rail);
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const i=secs.indexOf(e.target);links.forEach((l,j)=>l.classList.toggle('on',i===j));}}),{rootMargin:'-45% 0px -50% 0px'});
+  secs.forEach(s=>io.observe(s));
+  const pr=$('#progress');
+  addEventListener('scroll',()=>{const h=document.documentElement;pr.style.width=(100*h.scrollTop/(h.scrollHeight-h.clientHeight))+'%';},{passive:true});
+  const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target);}}),{threshold:.08});
+  $$('.reveal').forEach(el=>ro.observe(el));
+})();
+
+/* generic scrolly */
+window.__ep5.scrolly=function(container,onStep){
+  const steps=$$('.step',container);
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){steps.forEach(s=>s.classList.toggle('active',s===e.target));onStep(+e.target.dataset.s);}}),{rootMargin:'-45% 0px -45% 0px'});
+  steps.forEach(s=>io.observe(s));
+};
+
+/* ---------- CH1 STACK ---------- */
+(function stack(){
+  const L=[
+    {n:5,name:'Applications',col:['rgba(201,212,230,.25)','rgba(120,135,160,.35)','rgba(150,165,190,.3)','#c9d4e6'],who:'ChatGPT, Claude apps, Copilot, coding agents, search, robotics',
+     txt:'Where people and businesses actually meet AI, and where Huang argues economic value gets created.',bul:['What most people ever see','Can switch the model underneath without users noticing']},
+    {n:4,name:'Models',col:['rgba(167,139,250,.55)','rgba(110,80,210,.5)','rgba(140,110,240,.45)','#c4b5fd'],who:'Anthropic, OpenAI, Google DeepMind, Meta, xAI/SpaceXAI, Alibaba Qwen, Moonshot, DeepSeek… and Nvidia',
+     txt:'This episode. The layer that turns compute into a trained checkpoint, then rents out or gives away its answers.',bul:['Poster children: Anthropic and OpenAI','Whiteboard: "NVIDIA?" (yes, via its Nemotron open models)']},
+    {n:3,name:'Infrastructure',col:['rgba(56,214,245,.3)','rgba(20,110,150,.4)','rgba(30,140,180,.35)','#7fe6fb'],who:'AWS, Microsoft Azure, Google Cloud, Oracle; neoclouds such as CoreWeave, Nebius, Lambda',
+     txt:'Data centers that bundle power, cooling, networking and chips into rentable compute. Covered in Part 4 (Neoclouds).',bul:['Where most inference physically happens','Hosts both closed and open models']},
+    {n:2,name:'Chips',col:['rgba(246,177,60,.4)','rgba(160,100,20,.45)','rgba(200,130,30,.4)','#fcd38a'],who:'Nvidia GPUs; Google TPU, AWS Trainium/Inferentia, Microsoft Maia, Meta MTIA; AMD',
+     txt:'The processors that do the math, for training and for inference. Covered in Parts 1–3.',bul:['Poster child: Nvidia','Hyperscalers increasingly design their own, especially for inference']},
+    {n:1,name:'Energy',col:['rgba(201,212,230,.18)','rgba(90,100,120,.35)','rgba(110,120,140,.3)','#93a3bf'],who:'Power plants, grid connections, cooling',
+     txt:'Every token is electricity turned into arithmetic. Huang calls energy the binding constraint.',bul:['Sets the ceiling on how much AI can run']}
+  ];
+  const cx=200,w=150,th=26,gap=66,y0=40;
+  $('#stackFig').innerHTML=`<svg viewBox="0 0 560 500">${[...L.keys()].reverse().map(i=>{
+    const l=L[i],y=y0+i*gap;
+    return `<g class="lyr" data-i="${i}" tabindex="0" role="button" aria-label="Layer ${l.n}: ${l.name}">${slab(cx,y,w,th,l.col[0],l.col[1],l.col[2],l.col[3])}
+      ${l.n===4?cube(cx,y+w/2-40,22,{n:3,glow:false}):''}
+      <line x1="${cx+w}" y1="${y+w/2}" x2="${cx+w+22}" y2="${y+w/2}" stroke="${l.col[3]}" stroke-width="1"/>
+      <text x="${cx+w+28}" y="${y+w/2-3}" font-size="13.5" font-weight="700" fill="${l.col[3]}">${l.n} · ${l.name.toUpperCase()}</text>
+      <text x="${cx+w+28}" y="${y+w/2+13}" font-size="11" fill="#93a3bf">${l.n===4?'Anthropic · OpenAI · Nvidia?':l.n===2?'Nvidia':''}</text></g>`;}).join('')}</svg>`;
+  const info=$('#layerInfo');
+  function show(i){const l=L[i];
+    info.innerHTML=`<span class="tag" style="color:${l.col[3]};border-color:${l.col[3]}">Layer ${l.n}</span><h4 style="color:${l.col[3]}">${l.name}</h4><p style="margin:0 0 6px;color:#d3dced">${l.txt}</p><div class="note"><b style="color:#fff">Who:</b> ${l.who}</div><ul>${l.bul.map(b=>`<li>${b}</li>`).join('')}</ul>`;
+    $$('#stackFig .lyr').forEach(el=>el.style.opacity=(+el.dataset.i===i)?1:.45);
+  }
+  $$('#stackFig .lyr').forEach(el=>{el.addEventListener('click',()=>show(+el.dataset.i));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show(+el.dataset.i);}});});
+  show(1);
+})();
+
+/* ---------- CH2 ROSTER ---------- */
+(function roster(){
+  const D=[
+    {co:'Anthropic',g:'frontier',lbl:'Frontier lab',cl:'Claude family (Opus, Sonnet, Haiku; Fable 5 since Jun 2026; Mythos 5 for limited partners)',op:null,fn:'Has never released an open-weight model. July 2026 position statement: does not seek a ban on open weights; argues for pre-release safety testing.'},
+    {co:'OpenAI',g:'frontier',lbl:'Frontier lab',cl:'GPT-5.x series, ChatGPT',op:'gpt-oss-120b & gpt-oss-20b (Aug 2025, Apache 2.0)',fn:'gpt-oss was its first open-weight language model since GPT-2 (2019).'},
+    {co:'SpaceXAI (xAI)',g:'frontier',lbl:'Frontier lab',cl:'Current Grok models',op:'Grok-1 (2024, Apache 2.0); Grok 2.5 (Aug 2025, custom license); Grok 3 promised',fn:'Pattern: open-sources a model once a newer one replaces it. xAI was acquired by SpaceX in early 2026 (reported).'},
+    {co:'Google',g:'hyper',lbl:'Hyperscaler',cl:'Gemini 3 family',op:'Gemma 4 (Apr 2026, Apache 2.0): E2B, E4B, 26B MoE, 31B dense',fn:'Gemma 4 was built from Gemini 3 research; earlier Gemmas used a custom license.'},
+    {co:'Meta',g:'hyper',lbl:'Hyperscaler',cl:'Muse Spark (Apr 2026), Muse Spark 1.1 paid API (Jul 2026)',op:'Llama family (still downloadable); Muse Glimmer (reported, 2026)',fn:'The whiteboard lists Meta as closed (Muse). True of its new flagship; Llama made Meta the best-known open-weight champion for three years.'},
+    {co:'Alibaba',g:'china',lbl:'Hyperscaler · Chinese lab',cl:'Qwen-Max line, historically (through Qwen3.7-Max)',op:'Most Qwen models; Qwen3.8-Max (2.4T, weights Aug 2026, reported)',fn:'Listed under both camps on the whiteboard, which fits: Alibaba Cloud sells the compute.'},
+    {co:'Moonshot AI',g:'china',lbl:'Chinese lab',cl:'Hosted Kimi app & API',op:'Kimi K3 (2.8T total / ~104B active, weights Jul 27 2026, Kimi K3 License)',fn:'Largest open-weight model released as of Nov 2026, per its maker and press coverage.'},
+    {co:'DeepSeek',g:'china',lbl:'Chinese lab',cl:'Hosted API',op:'DeepSeek V4 family incl. V4-Pro (~1.6T, reported)',fn:'DeepSeek-R1 (Jan 2025) is the model Nvidia itself cites as proof open models "activate demand across the entire stack."'},
+    {co:'Nvidia',g:'chip',lbl:'Chipmaker',cl:'— (recording: "never released a closed-weight model"; not independently verified)',op:'Nemotron family: Nemotron 3 Ultra (~550B, Jun 2026), Nemotron 3.5 Lightning (30B, Aug 2026); Nemotron 4 (≥1T) reported in training',fn:'Nvidia calls itself the largest contributor of open models and data to Hugging Face (500+ models, 250+ datasets).'}
+  ];
+  const el=$('#roster');
+  function render(f){
+    el.innerHTML=D.filter(d=>f==='all'||d.g===f||(f==='hyper'&&d.co==='Alibaba')).map(d=>`<article class="co">
+      <h4>${d.co}<span class="grp">${d.lbl}</span></h4>
+      <div class="row cl"><b>CLOSED</b><div>${d.cl||'<span class="none">none</span>'}</div></div>
+      <div class="row op"><b>OPEN</b><div>${d.op||'<span class="none">none released</span>'}</div></div>
+      <div class="fn">${d.fn}</div></article>`).join('');
+  }
+  $$('#c2 .seg button').forEach(b=>b.addEventListener('click',()=>{$$('#c2 .seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));render(b.dataset.f);}));
+  render('all');
+})();
+
+/* ---------- CH4 TOKENS ---------- */
+(function tokens(){
+  const {rng}=window.__ep5;
+  const FIX={'The':791,'the':279,'dog':5679,'is':374,'sleep':6212,'ing':287,'sleeping':21811,'on':389,'warm':8369,'cat':8415,'.':13,',':11,'a':264,'and':323,'AI':15836,'model':1646,'weights':14661};
+  const SUF=['ingly','ably','ness','ment','ing','ed','ly','er','est','s'];
+  function hid(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}return 1000+(h%98000);}
+  function idOf(p){const k=p.trim();return FIX[k]!==undefined?FIX[k]+(p.startsWith(' ')&&k!=='ing'?0:0):hid(p);}
+  function split(word){ // returns pieces
+    const w=word; if(w.length<=7||FIX[w]) return [w];
+    for(const s of SUF){ if(w.endsWith(s)&&w.length-s.length>=3){ return [...split(w.slice(0,-s.length)),s]; } }
+    const out=[]; for(let i=0;i<w.length;i+=5) out.push(w.slice(i,i+5)); return out;
+  }
+  function tokenize(text){
+    const res=[]; const re=/\s*[A-Za-z]+|\s*\d+|\s*[^\sA-Za-z\d]/g; let m;
+    while((m=re.exec(text))){const raw=m[0];const sp=/^\s/.test(raw);const w=raw.trim();
+      split(w).forEach((p,i)=>res.push({s:(sp&&i===0?'␣':'')+p,id:idOf(p)}));}
+    return res;
+  }
+  function vec(id){const r=rng(id*7919+13);return Array.from({length:8},()=>(r()*2-1));}
+  function cell(v){const a=Math.min(1,Math.abs(v));return v>=0?`rgba(167,139,250,${.15+.85*a})`:`rgba(255,122,107,${.15+.85*a})`;}
+  function chip(t,opt){return `<div class="tk"><span class="s">${window.__ep5.esc(t.s)}</span>${opt.id?`<span class="id">${t.id}</span>`:''}${opt.vec?`<span class="vec">${vec(t.id).map(v=>`<i style="background:${cell(v)}"></i>`).join('')}</span>`:''}</div>`;}
+  // stage
+  const toks=[{s:'The',id:791},{s:'␣dog',id:5679},{s:'␣is',id:374},{s:'␣sleeping',id:21811}];
+  const stage=$('#tokStage');
+  const tableIds=[13,279,374,389,791,1646,5679,6212,8415,14661,21811,99999];
+  const tableLbl={13:'.',279:'␣the',374:'␣is',389:'␣on',791:'The',1646:'␣model',5679:'␣dog',6212:'sleep',8415:'␣cat',14661:'␣weights',21811:'␣sleeping',99999:'…'};
+  function table(hl){
+    return `<div style="display:grid;grid-template-columns:auto auto repeat(8,1fr);gap:2px 3px;align-items:center;font:500 11px var(--mono);max-width:440px;margin-top:6px">${tableIds.map(id=>{
+      const on=hl&&toks.some(t=>t.id===id); const v=id===99999?null:vec(id);
+      return `<span style="color:${on?'#38d6f5':'#64748f'};text-align:right;padding-right:4px">${id===99999?'⋮':id}</span><span style="color:${on?'#fff':'#64748f'};padding-right:6px">${tableLbl[id]}</span>${v?v.map(x=>`<i style="display:block;height:10px;border-radius:2px;background:${cell(x)};opacity:${on?1:.28};outline:${on?'1px solid rgba(255,255,255,.5)':'none'}"></i>`).join(''):'<i></i>'.repeat(8)}`;}).join('')}</div>`;
+  }
+  function flow(){
+    const xs=[30,80,130,180];
+    let s=`<svg viewBox="0 0 460 120" style="width:100%;max-width:460px">`;
+    toks.forEach((t,i)=>{const v=vec(t.id);v.forEach((x,j)=>{s+=`<rect x="${xs[i]}" y="${8+j*12}" width="22" height="10" rx="2" fill="${cell(x)}"/>`;});
+      s+=`<path d="M${xs[i]+24} ${56} C ${xs[i]+90} 56, 250 60, 262 60" stroke="#38d6f5" stroke-width="1.3" fill="none" marker-end="url(#mC)" class="flowdash"/>`;});
+    s+=`<rect x="270" y="20" width="120" height="80" rx="12" fill="rgba(167,139,250,.16)" stroke="#a78bfa"/><text x="330" y="55" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e9e3ff">transformer</text><text x="330" y="72" text-anchor="middle" font-size="11" fill="#c4b5fd">layers (weights)</text>
+    <path d="M392 60 L440 60" stroke="#38d6f5" stroke-width="1.5" marker-end="url(#mC)"/><text x="446" y="64" font-size="12" fill="#bff3ff">?</text></svg>`;
+    return s;
+  }
+  $('#tsFlowSvg').innerHTML=flow();
+  function set(n){
+    stage.dataset.step=n;
+    $('#tsTokRow').innerHTML=toks.map(t=>chip(t,{id:n>=2,vec:n>=3})).join('');
+    $('#tsTok').style.opacity=n>=1?1:.08;
+    $('#tsEmb').style.opacity=n>=3?1:.08; $('#tsTable').innerHTML=table(n>=3);
+    $('#tsFlow').style.opacity=n>=4?1:.08;
+  }
+  set(0); window.__ep5.scrolly($('#c4 .scrolly'),set);
+  // playground
+  const inp=$('#tokIn'),out=$('#tokOut'),cnt=$('#tokCount');
+  function run(){const t=tokenize(inp.value);out.innerHTML=t.map(x=>chip(x,{id:1,vec:1})).join('');
+    const words=inp.value.trim().split(/\s+/).filter(Boolean).length;
+    cnt.innerHTML=`<b style="color:#fff">${words}</b> words → <b class="c">${t.length}</b> tokens in our toy tokenizer. A common rule of thumb for English is roughly ¾ of a word per token.`;}
+  inp.addEventListener('input',run); run();
+})();
+
+/* ---------- CH5 REGRESSION ---------- */
+(function reg(){
+  const {rng,gauss}=window.__ep5; const r=rng(42);
+  const pts=Array.from({length:120},()=>{const x=gauss(r)*1.0;return [x,1.3*x+0.05+gauss(r)*0.9];});
+  const n=pts.length,mx=pts.reduce((a,p)=>a+p[0],0)/n,my=pts.reduce((a,p)=>a+p[1],0)/n;
+  const bOLS=pts.reduce((a,p)=>a+(p[0]-mx)*(p[1]-my),0)/pts.reduce((a,p)=>a+(p[0]-mx)**2,0);
+  const W=460,H=320,X=v=>230+v*62,Y=v=>160-v*36;
+  const fig=$('#regFig'); let beta=.5, found=false;
+  function sse(b){const a=my-b*mx;return pts.reduce((s,p)=>s+(p[1]-(a+b*p[0]))**2,0);}
+  function draw(){
+    const a=my-beta*mx; let s=`<svg viewBox="0 0 ${W} ${H}">`;
+    s+=`<line x1="20" y1="160" x2="440" y2="160" stroke="#3a4862"/><line x1="230" y1="10" x2="230" y2="310" stroke="#3a4862"/>
+      <text x="440" y="176" text-anchor="end" font-size="11" fill="#93a3bf">S&amp;P 500 daily return (%) →</text>
+      <text x="236" y="20" font-size="11" fill="#93a3bf" stroke="#0a1324" stroke-width="4" paint-order="stroke">↑ Stock daily return (%)</text>`;
+    pts.forEach((p,i)=>{const yh=a+beta*p[0]; if(i%3===0) s+=`<line x1="${X(p[0])}" y1="${Y(p[1])}" x2="${X(p[0])}" y2="${Y(yh)}" stroke="rgba(255,122,107,.35)" stroke-width="1"/>`;});
+    pts.forEach(p=>{s+=`<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="3" fill="#38d6f5" opacity=".75"/>`;});
+    const x1=-3.3,x2=3.3; s+=`<line x1="${X(x1)}" y1="${Y(a+beta*x1)}" x2="${X(x2)}" y2="${Y(a+beta*x2)}" stroke="#a78bfa" stroke-width="3"/>`;
+    s+=`<text x="${X(1.5)}" y="${Y(a+beta*1.5)-14}" font-size="13" font-weight="700" fill="#d9ceff" stroke="#0a1324" stroke-width="4" paint-order="stroke">slope β = ${beta.toFixed(2)}</text></svg>`;
+    fig.innerHTML=s; $('#betaV').textContent=beta.toFixed(2); $('#regErr').textContent=sse(beta).toFixed(0);
+    $('#regBest').textContent=found?bOLS.toFixed(2):'?';
+  }
+  $('#betaS').addEventListener('input',e=>{beta=+e.target.value;draw();});
+  $('#fitBtn').addEventListener('click',()=>{found=true;const b0=beta,t0=performance.now();
+    (function an(t){const k=Math.min(1,(t-t0)/700);beta=b0+(bOLS-b0)*(1-(1-k)**3);$('#betaS').value=beta;draw();if(k<1&&!RM)requestAnimationFrame(an);else{beta=bOLS;draw();}})(t0);});
+  draw();
+})();
+
+/* ---------- CH6 TRAINER (real tiny model) ---------- */
+const TM=(function(){
+  const {rng,gauss}=window.__ep5;
+  const V=['the','dog','cat','human','is','sleeping','eating','at','home','.'],Vn=10,d=4;
+  const S=['the dog is sleeping .','the dog is sleeping .','the dog is at home .','the cat is eating .','the cat is sleeping .','the human is at home .','the human is eating .'];
+  const ix=w=>V.indexOf(w);
+  const ex=[]; S.forEach(s=>{const t=s.split(' ').map(ix);for(let i=1;i<t.length;i++)ex.push({c:t.slice(Math.max(0,i-3),i),y:t[i]});});
+  let E,W,b,steps=0,hist=[];
+  function init(seed){const r=rng(seed);E=Array.from({length:Vn},()=>Array.from({length:d},()=>gauss(r)*.6));W=Array.from({length:d},()=>Array.from({length:Vn},()=>gauss(r)*.6));b=new Array(Vn).fill(0);steps=0;hist=[];}
+  function fwd(c){const h=new Array(d).fill(0);c.forEach(t=>{for(let k=0;k<d;k++)h[k]+=E[t][k]/c.length;});
+    const z=b.slice();for(let k=0;k<d;k++)for(let j=0;j<Vn;j++)z[j]+=h[k]*W[k][j];
+    const m=Math.max(...z);const e=z.map(v=>Math.exp(v-m));const s=e.reduce((a,v)=>a+v,0);return {h,p:e.map(v=>v/s)};}
+  function step(lr=.5){
+    const gE=E.map(r=>r.map(()=>0)),gW=W.map(r=>r.map(()=>0)),gb=new Array(Vn).fill(0);let L=0;
+    ex.forEach(({c,y})=>{const {h,p}=fwd(c);L+=-Math.log(p[y]+1e-9);const dz=p.slice();dz[y]-=1;
+      for(let j=0;j<Vn;j++){gb[j]+=dz[j];for(let k=0;k<d;k++)gW[k][j]+=h[k]*dz[j];}
+      const dh=new Array(d).fill(0);for(let k=0;k<d;k++)for(let j=0;j<Vn;j++)dh[k]+=W[k][j]*dz[j];
+      c.forEach(t=>{for(let k=0;k<d;k++)gE[t][k]+=dh[k]/c.length;});});
+    const N=ex.length;
+    for(let i=0;i<Vn;i++)for(let k=0;k<d;k++)E[i][k]-=lr*gE[i][k]/N;
+    for(let k=0;k<d;k++)for(let j=0;j<Vn;j++)W[k][j]-=lr*gW[k][j]/N;
+    for(let j=0;j<Vn;j++)b[j]-=lr*gb[j]/N;
+    steps++;L/=N;hist.push(L);return L;}
+  function loss(){let L=0;ex.forEach(({c,y})=>{L+=-Math.log(fwd(c).p[y]+1e-9);});return L/ex.length;}
+  const ctxs=[...new Set(ex.map(e=>e.c.map(t=>V[t]).join(' ')))];
+  function targets(ctx){return new Set(ex.filter(e=>e.c.map(t=>V[t]).join(' ')===ctx).map(e=>e.y));}
+  init(7);
+  return {V,S,ex,ctxs,targets,fwd,step,loss,init,get steps(){return steps},get hist(){return hist},get E(){return E},get W(){return W},get b(){return b},ix};
+})();
+window.__ep5.TM=TM;
+
+(function trainerUI(){
+  const sel=$('#trCtx');
+  const order=['the dog is','the cat is','the human is','the','the dog','dog is at','is at home'];
+  const opts=order.filter(c=>TM.ctxs.includes(c)).concat(TM.ctxs.filter(c=>!order.includes(c)));
+  sel.innerHTML=opts.map(c=>`<option>${c}</option>`).join('');
+  $('#trCorpus').innerHTML=TM.S.map(s=>s.replace(' .','.')).join('<br>');
+  const hm=(el,M,cols)=>{el.innerHTML=M.flat().map(v=>{const a=Math.min(1,Math.abs(v)/2.5);return `<i style="background:${v>=0?`rgba(167,139,250,${.12+.88*a})`:`rgba(255,122,107,${.12+.88*a})`}"></i>`;}).join('');};
+  function render(){
+    const ctx=sel.value;$('#trCtxL').textContent=ctx;
+    const c=ctx.split(' ').map(TM.ix);const {p}=TM.fwd(c);const tg=TM.targets(ctx);
+    const ord=[...p.keys()].sort((a,b)=>p[b]-p[a]);
+    $('#trBars').innerHTML=ord.map(j=>`<div class="bar ${tg.has(j)?'tgt':''}"><span>${TM.V[j]}</span><span class="tr"><span class="fl" style="display:block;width:${(p[j]*100).toFixed(1)}%"></span></span><span class="pct">${(p[j]*100).toFixed(1)}%</span></div>`).join('');
+    $('#trSteps').textContent=TM.steps;$('#trLoss').textContent=TM.loss().toFixed(3);
+    hm($('#hmE'),TM.E);hm($('#hmW'),TM.W);hm($('#hmB'),[TM.b]);
+    const h=TM.hist;if(h.length>1){const mx=Math.max(...h),n=h.length;
+      const pts=h.map((v,i)=>`${(i/(n-1)*396+2).toFixed(1)},${(86-(v/mx)*80).toFixed(1)}`).join(' ');
+      $('#trCurve').innerHTML=`<polyline points="${pts}" fill="none" stroke="#ff7a6b" stroke-width="2"/><text x="398" y="12" text-anchor="end" font-size="10" fill="#93a3bf">step ${n}</text>`;}
+    else $('#trCurve').innerHTML=`<text x="4" y="50" font-size="11" fill="#64748f">Press Train to start</text>`;
+  }
+  let playing=false,raf;
+  function loop(){if(!playing)return;for(let i=0;i<3;i++)TM.step();render();if(TM.steps>=900){playing=false;$('#trPlay').textContent='▶ Train more';return;}raf=requestAnimationFrame(loop);}
+  function play(){if(playing){playing=false;$('#trPlay').textContent='▶ Train';return;}playing=true;$('#trPlay').textContent='❚❚ Pause';if(TM.steps>=900){/* keep going a bit */}loop();}
+  $('#trPlay').addEventListener('click',()=>{if(TM.steps>=900&&!playing){for(let i=0;i<150;i++)TM.step();render();return;}play();});
+  $('#trStep').addEventListener('click',()=>{TM.step();render();});
+  $('#trReset').addEventListener('click',()=>{playing=false;$('#trPlay').textContent='▶ Train';TM.init(Math.floor(Math.random()*1e6)+1);render();});
+  sel.addEventListener('change',render);
+  render();
+  window.__ep5.trRender=render;
+  // autoplay when scrolled into view (story works by scrolling alone)
+  let auto=false;
+  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!auto&&TM.steps===0){auto=true;if(RM){for(let i=0;i<900;i++)TM.step();render();}else play();}}),{threshold:.45}).observe($('#trainer'));
+})();
+
+/* ---------- CH9 GENERATION (same frozen toy model) ---------- */
+(function gen(){
+  let start='the',busy=false;
+  $$('#c9 [data-start]').forEach(b=>b.addEventListener('click',()=>{$$('#c9 [data-start]').forEach(x=>x.setAttribute('aria-pressed',x===b));start=b.dataset.start;$('#genOut').innerHTML=`<span class="p">${start}</span><span class="cur"></span>`;}));
+  $('#genGo').addEventListener('click',async()=>{
+    if(busy)return;busy=true;
+    if(TM.steps<600){while(TM.steps<900)TM.step();window.__ep5.trRender&&window.__ep5.trRender();}
+    const out=$('#genOut');const toks=start.split(' ');out.innerHTML=`<span class="p">${start}</span>`;
+    for(let n=0;n<8;n++){
+      const c=toks.slice(-3).map(TM.ix);const {p}=TM.fwd(c);
+      const T=.8;const q=p.map(v=>Math.pow(v,1/T));const s=q.reduce((a,v)=>a+v,0);let r=Math.random()*s,j=0;for(;j<q.length;j++){r-=q[j];if(r<=0)break;}
+      j=Math.min(j,q.length-1);const w=TM.V[j];toks.push(w);
+      out.insertAdjacentHTML('beforeend',`<span class="o"> ${w}</span>`);
+      await new Promise(res=>setTimeout(res,RM?0:420));
+      if(w==='.')break;
+    }
+    out.insertAdjacentHTML('beforeend','<span class="cur"></span>');busy=false;
+  });
+})();
+
+/* ---------- CH7 ANALOGY ---------- */
+(function analogy(){
+  const SETS=[
+    {pts:{man:[1.5,3],woman:[6.5,3.3],king:[2.2,7.6],queen:[7.1,7.9],prince:[2.9,6.2],princess:[7.7,6.5],boy:[1,1.4],girl:[6,1.7],throne:[4.4,9.1]},a:'king',b:'man',c:'woman',ans:'queen'},
+    {pts:{France:[2.4,2.2],Japan:[7.4,2.6],Paris:[2,7.2],Tokyo:[7,7.6],Germany:[4.4,0.9],Berlin:[4.3,6.6],Kyoto:[8.2,6.3],Osaka:[8.6,7.4]},a:'Paris',b:'France',c:'Japan',ans:'Tokyo'},
+    {pts:{walking:[1.8,7.4],swimming:[6.9,7.8],walked:[2.4,3],swam:[7.3,3.4],ran:[4.6,2.8],running:[4.4,7.2],swimmer:[8.4,5.4],walk:[1.2,5.2]},a:'walked',b:'walking',c:'swimming',ans:'swam'}
+  ];
+  const X=v=>40+v*52,Y=v=>330-v*32;
+  function draw(i){
+    const S=SETS[i],P=S.pts,a=P[S.a],b=P[S.b],c=P[S.c];
+    const res=[a[0]-b[0]+c[0],a[1]-b[1]+c[1]];
+    let s=`<svg viewBox="0 0 560 350"><rect x="20" y="10" width="520" height="330" rx="12" fill="rgba(0,0,0,.18)" stroke="rgba(140,170,220,.12)"/>`;
+    for(let g=1;g<10;g++){s+=`<line x1="${X(g)}" y1="14" x2="${X(g)}" y2="336" stroke="rgba(140,170,220,.05)"/>`;}
+    Object.entries(P).forEach(([w,p])=>{const key=[S.a,S.b,S.c,S.ans].includes(w);
+      const lft=(w===S.a||w===S.b);s+=`<circle cx="${X(p[0])}" cy="${Y(p[1])}" r="${key?6:4}" fill="${w===S.ans?'#2dd4bf':key?'#a78bfa':'#64748f'}"/><text x="${X(p[0])+(lft?-10:9)}" y="${Y(p[1])+(lft?-8:4)}" text-anchor="${lft?'end':'start'}" font-size="${key?14:12}" font-weight="${key?700:500}" fill="${w===S.ans?'#5eead4':key?'#e9e3ff':'#93a3bf'}">${w}</text>`;});
+    const sh=(p,q)=>{const dx=X(q[0])-X(p[0]),dy=Y(q[1])-Y(p[1]),L=Math.hypot(dx,dy);return [X(p[0])+dx/L*9,Y(p[1])+dy/L*9,X(q[0])-dx/L*12,Y(q[1])-dy/L*12];};
+    const o1=sh(b,c),o2=sh(a,res);const off=`M${o1[0]} ${o1[1]} L${o1[2]} ${o1[3]}`, off2=`M${o2[0]} ${o2[1]} L${o2[2]} ${o2[3]}`;
+    s+=`<path d="${off}" stroke="#38d6f5" stroke-width="2.5" marker-end="url(#mC)" fill="none" stroke-dasharray="400" stroke-dashoffset="${RM?0:400}">${RM?'':'<animate attributeName="stroke-dashoffset" from="400" to="0" dur=".9s" fill="freeze"/>'}</path>`;
+    s+=`<text x="${(X(b[0])+X(c[0]))/2}" y="${Math.max(Y(b[1]),Y(c[1]))+22}" text-anchor="middle" font-size="11.5" fill="#7fe6fb">${S.c} − ${S.b}</text>`;
+    s+=`<path d="${off2}" stroke="#38d6f5" stroke-width="2.5" marker-end="url(#mC)" fill="none" stroke-dasharray="400" stroke-dashoffset="${RM?0:400}">${RM?'':'<animate attributeName="stroke-dashoffset" from="400" to="0" dur=".9s" begin=".9s" fill="freeze"/>'}</path>`;
+    s+=`<text x="${(X(a[0])+X(res[0]))/2}" y="${(Y(a[1])+Y(res[1]))/2-10}" text-anchor="middle" font-size="11.5" fill="#7fe6fb">same arrow, moved</text>`;
+    s+=`<circle cx="${X(res[0])}" cy="${Y(res[1])}" r="16" fill="none" stroke="#2dd4bf" stroke-width="1.5" stroke-dasharray="3 3" opacity="${RM?1:0}">${RM?'':'<animate attributeName="opacity" from="0" to="1" begin="1.8s" dur=".4s" fill="freeze"/>'}</circle></svg>`;
+    $('#anFig').innerHTML=s;
+    $('#anEq').innerHTML=`<span style="color:#d9ceff">${S.a}</span> − <span style="color:#d9ceff">${S.b}</span> + <span style="color:#d9ceff">${S.c}</span> <span class="t">≈ ${S.ans}</span> &nbsp;<span style="color:#64748f">(the nearest word to where we land)</span>`;
+  }
+  $$('#c7 [data-an]').forEach(btn=>btn.addEventListener('click',()=>{$$('#c7 [data-an]').forEach(x=>x.setAttribute('aria-pressed',x===btn));draw(+btn.dataset.an);}));
+  let shown=false;new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!shown){shown=true;draw(0);}}),{threshold:.3}).observe($('#anFig'));
+  draw(0);
+})();
+
+/* ---------- CH8 CHECKPOINT ---------- */
+(function ckpt(){
+  const {rng,cube}=window.__ep5;
+  const F=[['README.md  (model card)','12 KB'],['LICENSE','11 KB'],['config.json  (architecture)','1 KB'],['generation_config.json','1 KB'],['tokenizer.json  (vocabulary)','9 MB'],['model.safetensors.index.json','60 KB'],['model-00001-of-00030.safetensors','4.6 GB'],['model-00002-of-00030.safetensors','4.7 GB'],['  ⋮  28 more shards','≈131 GB'],['TOTAL','≈141 GB']];
+  $('#ckFiles').innerHTML=F.map(f=>`<div class="f"><span${f[0].includes('safetensors')&&!f[0].includes('index')?' class="v"':''}${f[0]==='TOTAL'?' style="font-weight:700;color:#fff"':''}>${f[0]}</span><span>${f[1]}</span></div>`).join('');
+  const rows=[['model.embed_tokens.weight','[128256, 8192]']];
+  ['0','1','…','79'].forEach(L=>{ if(L==='…'){rows.push(['  ⋮  layers 2 – 78 repeat the same pattern','','']);return;}
+    [['input_layernorm.weight','[8192]'],['self_attn.q_proj.weight','[8192, 8192]'],['self_attn.k_proj.weight','[1024, 8192]'],['self_attn.v_proj.weight','[1024, 8192]'],['self_attn.o_proj.weight','[8192, 8192]'],['post_attention_layernorm.weight','[8192]'],['mlp.gate_proj.weight','[28672, 8192]'],['mlp.up_proj.weight','[28672, 8192]'],['mlp.down_proj.weight','[8192, 28672]']].forEach(r=>rows.push([`model.layers.${L}.${r[0]}`,r[1]]));});
+  rows.push(['model.norm.weight','[8192]'],['lm_head.weight','[128256, 8192]']);
+  $('#ckTensors').innerHTML=rows.map(r=>`<div><span>${r[0]}</span><span>${r[1]}</span><span>${r[1]?'bf16':''}</span></div>`).join('')+`<div style="margin-top:6px;color:#fff"><span>Sum of every grid</span><span>≈ 70.6 billion numbers</span><span></span></div>`;
+  const r=rng(5);let nums='';
+  for(let i=0;i<7;i++)for(let j=0;j<4;j++){const v=(r()*2-1)*.09;nums+=`<text x="${296+j*58}" y="${72+i*26}" font-size="14" class="m" fill="${v>=0?'#c4b5fd':'#ffa89c'}">${v>=0?' ':''}${v.toFixed(4)}</text>`;}
+  $('#ckFig').innerHTML=`<svg viewBox="0 0 540 300">${cube(140,40,90,{n:8})}
+    <path d="M232 120 L288 70 M232 190 L288 240" stroke="rgba(167,139,250,.5)" stroke-dasharray="3 4"/>
+    <rect x="288" y="46" width="240" height="200" rx="10" fill="rgba(10,16,30,.7)" stroke="#a78bfa"/>${nums}
+    <text x="288" y="270" font-size="14" fill="#93a3bf" class="m">layers.0.mlp.up_proj · first 28 of 234,881,024</text>
+    <text x="140" y="294" text-anchor="middle" font-size="16" fill="#d9ceff" font-weight="600">checkpoint = frozen weights</text></svg>`;
+})();
+
+/* ---------- CH10 FORK ---------- */
+(function fork(){
+  const {cube}=window.__ep5;
+  const chip=(x,y,t)=>`<rect x="${x}" y="${y}" width="74" height="30" rx="6" fill="rgba(246,177,60,.1)" stroke="#f6b13c"/><text x="${x+37}" y="${y+19}" text-anchor="middle" font-size="11" fill="#fcd38a" font-weight="600">${t}</text>`;
+  const pkt=(id,dur,rev,delay)=>RM?'':`<circle r="6" fill="#38d6f5" style="filter:drop-shadow(0 0 6px #38d6f5)"><animateMotion dur="${dur}s" begin="${delay||0}s" repeatCount="indefinite" ${rev?'keyPoints="1;0" keyTimes="0;1" calcMode="linear"':''}><mpath href="#${id}"/></animateMotion></circle>`;
+  const svg=`<svg viewBox="0 0 1100 660">
+  ${cube(550,22,46,{n:5})}
+  <text x="616" y="60" font-size="13" font-weight="700" fill="#e9e3ff">The trained checkpoint</text>
+  <text x="616" y="77" font-size="11.5" fill="#93a3bf">same file on both paths</text>
+  <path d="M550 150 C550 175 300 170 290 200" stroke="#ff7a6b" stroke-width="2" fill="none" stroke-dasharray="6 6"/>
+  <path d="M550 150 C550 175 800 170 810 200" stroke="#2dd4bf" stroke-width="2.5" fill="none"/>
+  <g id="gClosed">
+    <rect x="30" y="200" width="500" height="350" rx="22" fill="rgba(255,122,107,.045)" stroke="#ff7a6b" stroke-width="1.6" stroke-dasharray="8 7"/>
+    <text x="52" y="228" font-size="12" class="m" fill="#ff9d91" letter-spacing="1.5">CLOSED WEIGHTS · PROVIDER BOUNDARY</text>
+    <text x="52" y="246" font-size="11.5" fill="#93a3bf">the file never leaves</text>
+    ${cube(200,270,40,{n:4})}
+    <text x="260" y="300" font-size="12" fill="#d9ceff" font-weight="600">Claude · GPT · Gemini · Muse</text>
+    <text x="260" y="316" font-size="11" fill="#93a3bf">served by the provider</text>
+    <text x="60" y="420" font-size="10.5" class="m" fill="#fcd38a">PROVIDER PICKS THE CHIPS</text>
+    ${chip(60,430,'GPU')}${chip(144,430,'TPU')}${chip(228,430,'Trainium')}${chip(312,430,'custom')}
+    <rect x="232" y="530" width="96" height="40" rx="9" fill="#0d1628" stroke="#ff7a6b" stroke-width="1.5"/>
+    <text x="280" y="555" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">API · app</text>
+    <rect x="510" y="290" width="40" height="150" rx="8" fill="#0d1628" stroke="#ff7a6b" stroke-width="1.5"/>
+    <text x="534" y="365" text-anchor="middle" font-size="10.5" fill="#ffc2b9" transform="rotate(-90 534 365)">cloud partners</text>
+    <text x="60" y="610" font-size="12" fill="#bff3ff">You: pay per token or subscription</text>
+    <path id="pC" d="M280 640 L280 570 L280 520 C280 470 210 420 200 360" fill="none" stroke="rgba(56,214,245,.3)" stroke-width="1.5" stroke-dasharray="3 5"/>
+    ${pkt('pC',2.8)}${pkt('pC',2.8,true,1.4)}
+  </g>
+  <g id="gOpen">
+    <rect x="570" y="200" width="500" height="440" rx="22" fill="rgba(45,212,191,.04)" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="592" y="228" font-size="12" class="m" fill="#5eead4" letter-spacing="1.5">OPEN WEIGHTS · PUBLISHED</text>
+    <rect x="740" y="245" width="150" height="62" rx="12" fill="rgba(45,212,191,.1)" stroke="#2dd4bf"/>
+    <text x="815" y="270" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">① Hugging Face</text>
+    <text x="815" y="288" text-anchor="middle" font-size="10.5" fill="#93a3bf">3M+ models hosted</text>
+    ${cube(712,248,16,{n:3,glow:false})}
+    <path d="M815 308 L815 340" stroke="#2dd4bf" stroke-width="2" marker-end="url(#mT)"/>
+    <text x="826" y="330" font-size="11" fill="#5eead4">download</text>
+    <path d="M815 345 C815 370 700 365 690 392" stroke="#2dd4bf" stroke-width="2" fill="none" marker-end="url(#mT)"/>
+    <path d="M815 345 C815 370 935 365 945 392" stroke="#2dd4bf" stroke-width="2" fill="none" marker-end="url(#mT)"/>
+    <text x="608" y="388" font-size="10.5" class="m" fill="#fcd38a">② COMPUTE</text>
+    <rect x="600" y="400" width="190" height="130" rx="14" fill="rgba(13,22,40,.8)" stroke="#5b6d8f"/>
+    <text x="695" y="424" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">Your machine</text>
+    ${cube(640,436,20,{n:3,glow:false})}
+    <text x="680" y="462" font-size="10.5" fill="#93a3bf">laptop · workstation</text><text x="680" y="477" font-size="10.5" fill="#93a3bf">on-prem server</text>
+    <rect x="850" y="400" width="190" height="130" rx="14" fill="rgba(246,177,60,.06)" stroke="#f6b13c"/>
+    <text x="945" y="424" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">Rented cloud GPUs</text>
+    ${cube(890,436,20,{n:3,glow:false})}
+    <text x="930" y="462" font-size="10.5" fill="#93a3bf">hyperscaler · neocloud</text><text x="930" y="477" font-size="10.5" fill="#93a3bf">inference provider</text>
+    <rect x="600" y="540" width="440" height="34" rx="9" fill="rgba(167,139,250,.08)" stroke="rgba(167,139,250,.5)"/>
+    <text x="820" y="562" text-anchor="middle" font-size="12" fill="#d9ceff">③ serving software: vLLM · SGLang · llama.cpp · Ollama · TensorRT-LLM</text>
+    <text x="600" y="610" font-size="12" fill="#bff3ff">You: pay for hardware or GPU-hours, not for the weights</text>
+    <path id="pO" d="M860 650 L945 574 L945 520 L910 478" fill="none" stroke="rgba(56,214,245,.3)" stroke-width="1.5" stroke-dasharray="3 5"/>
+    <path id="pO2" d="M660 650 L680 574 L680 520 L660 478" fill="none" stroke="rgba(56,214,245,.3)" stroke-width="1.5" stroke-dasharray="3 5"/>
+    ${pkt('pO',2.6)}${pkt('pO',2.6,true,1.3)}${pkt('pO2',2.2,false,.5)}${pkt('pO2',2.2,true,1.6)}
+  </g></svg>`;
+  $('#forkFig').innerHTML=svg;
+  $$('#c10 [data-path]').forEach(b=>b.addEventListener('click',()=>{$$('#c10 [data-path]').forEach(x=>x.setAttribute('aria-pressed',x===b));const p=b.dataset.path;
+    $('#gClosed').style.opacity=p==='open'?.15:1;$('#gOpen').style.opacity=p==='closed'?.15:1;}));
+  $('#gClosed').style.transition=$('#gOpen').style.transition='opacity .4s';
+})();
+
+/* ---------- CH11 MEMORY ---------- */
+(function memory(){
+  const M=[
+    {n:'GPT-2 small (2019)',p:124e6,o:'open'},
+    {n:'Gemma 4 E4B',p:4e9,o:'open',note:'Edge model (“effective 4B”); total parameter count is somewhat higher.'},
+    {n:'gpt-oss-20b',p:21e9,o:'open',off:[-10,-4,'end'],note:'OpenAI says it runs within 16 GB of memory using its native ~4-bit format.'},
+    {n:'Nemotron 3.5 Lightning',p:30e9,o:'open',off:[10,18,'start'],note:'30B mixture-of-experts, 3B active; Nvidia pitches it for local agents.'},
+    {n:'Gemma 4 31B',p:31e9,o:'open',off:[-12,-20,'end']},
+    {n:'gpt-oss-120b',p:117e9,o:'open',off:[10,18,'start'],note:'~117B total, ~5.1B active. Ships most weights at ~4.25 bits so it fits one 80 GB GPU.'},
+    {n:'Llama 4 Maverick',p:400e9,o:'open',off:[-10,-6,'end']},
+    {n:'Nemotron 3 Ultra',p:550e9,o:'open',abs:[470,110],note:'~550B total, ~55B active (reported).'},
+    {n:'Nemotron 4 (planned)',p:1e12,o:'planned',abs:[470,92],note:'Reported ≥1T parameters; not released as of mid-Nov 2026.'},
+    {n:'DeepSeek V4-Pro',p:1.6e12,o:'open',abs:[470,74],note:'~1.6T (reported).'},
+    {n:'Qwen3.8-Max',p:2.4e12,o:'open',abs:[470,56],note:'2.4T total, ~95B active; weights released Aug 2026 (reported).'},
+    {n:'Kimi K3',p:2.8e12,o:'open',abs:[470,38],note:'2.8T total, ~104B active. About 1.4 TB at 4-bit.'}
+  ];
+  const W=640,H=420,L=64,R=18,T=18,B=48;
+  const xs=v=>L+(Math.log10(v)-6)/7*(W-L-R);
+  const ys=gb=>T+(4.6-Math.log10(gb))/(4.6+1.6)*(H-T-B);
+  let prec=1;const fig=$('#memFig'),tip=$('#memTip');
+  function draw(){
+    let s=`<svg viewBox="0 0 ${W} ${H}"><defs><clipPath id="plotClip"><rect x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}"/></clipPath></defs>`;
+    const y100=ys(100);
+    s+=`<rect x="${L}" y="${y100}" width="${W-L-R}" height="${H-B-y100}" fill="rgba(56,214,245,.06)"/><rect x="${L}" y="${T}" width="${W-L-R}" height="${y100-T}" fill="rgba(246,177,60,.05)"/>`;
+    s+=`<line x1="${L}" y1="${y100}" x2="${W-R}" y2="${y100}" stroke="#f6b13c" stroke-dasharray="6 5" stroke-width="1.3"/>`;
+    s+=`<text x="${L+8}" y="${y100-8}" font-size="11.5" fill="#fcd38a" font-weight="600">≈100 GB · above: typically cloud</text><text x="${L+8}" y="${y100+18}" font-size="11.5" fill="#7fe6fb" font-weight="600">below: often runs locally</text>`;
+    [[1e6,'1M'],[1e7,'10M'],[1e8,'100M'],[1e9,'1B'],[1e10,'10B'],[1e11,'100B'],[1e12,'1T'],[1e13,'10T']].forEach(([v,t])=>{s+=`<line x1="${xs(v)}" y1="${T}" x2="${xs(v)}" y2="${H-B}" stroke="rgba(140,170,220,.07)"/><text x="${xs(v)}" y="${H-B+16}" text-anchor="middle" font-size="11" fill="#93a3bf" class="m">${t}</text>`;});
+    [[1e-1,'100 MB'],[1,'1 GB'],[10,'10 GB'],[1e3,'1 TB'],[1e4,'10 TB']].forEach(([v,t])=>{s+=`<line x1="${L}" y1="${ys(v)}" x2="${W-R}" y2="${ys(v)}" stroke="rgba(140,170,220,.07)"/><text x="${L-6}" y="${ys(v)+4}" text-anchor="end" font-size="10.5" fill="#93a3bf" class="m">${t}</text>`;});
+    s+=`<text x="${(W+L)/2}" y="${H-10}" text-anchor="middle" font-size="11.5" fill="#93a3bf">Parameters (log scale) →</text><text x="14" y="${(H-B)/2}" font-size="11.5" fill="#93a3bf" transform="rotate(-90 14 ${(H-B)/2})" text-anchor="middle">Memory for weights →</text>`;
+    s+='<g clip-path="url(#plotClip)">';[2,1,.5].forEach(bp=>{const on=bp===prec;s+=`<line x1="${xs(1e6)}" y1="${ys(1e6*bp/1e9)}" x2="${xs(1e13)}" y2="${ys(1e13*bp/1e9)}" stroke="${on?'#a78bfa':'rgba(167,139,250,.22)'}" stroke-width="${on?2:1}" ${on?'':'stroke-dasharray="4 5"'}/>`;
+      if(!on) s+=`<text x="${xs(3e8)}" y="${ys(3e8*bp/1e9)+ (bp===2?-6:14)}" font-size="9.5" fill="rgba(196,181,253,.5)" class="m">${bp*8}-bit</text>`;});
+    // closed band
+    const f1=3e12,f2=6e12;s+=`<line x1="${xs(f1)}" y1="${ys(f1*prec/1e9)}" x2="${xs(f2)}" y2="${ys(f2*prec/1e9)}" stroke="#ff7a6b" stroke-width="9" stroke-linecap="round" opacity=".55" class="pt" tabindex="0" data-tip="${window.__ep5.esc('<b>Claude Fable 5</b> · closed weights<br>Size undisclosed by Anthropic. Outside estimates range ~3–6T. You can\'t download it either way.')}"/>`;
+    s+='</g>';{const fx=xs(4.2e12),fy=ys(4.2e12*prec/1e9);s+=`<line x1="${fx}" y1="${fy+6}" x2="${W-R-4}" y2="${fy+62}" stroke="rgba(255,168,156,.5)"/><text x="${W-R-4}" y="${fy+76}" text-anchor="end" font-size="10.5" fill="#ffa89c">Fable 5 (closed, est.)</text>`;}
+    M.forEach((m,i)=>{const x=xs(m.p),y=ys(m.p*prec/1e9);const gb=m.p*prec/1e9;
+      const tipH=`<b>${m.n}</b><br>${fmtP(m.p)} parameters → ${fmtGB(gb)} at ${prec*8}-bit`+(m.note?`<br><span style="color:#93a3bf">${m.note}</span>`:'');
+      s+=`<circle class="pt" tabindex="0" cx="${x}" cy="${y}" r="6" fill="${m.o==='planned'?'none':'#2dd4bf'}" stroke="#2dd4bf" stroke-width="2" data-tip="${window.__ep5.esc(tipH)}"/>`;
+      if(m.abs){s+=`<line x1="${m.abs[0]+4}" y1="${m.abs[1]-4}" x2="${x-5}" y2="${y-3}" stroke="rgba(45,212,191,.35)"/><text x="${m.abs[0]}" y="${m.abs[1]}" text-anchor="end" font-size="10" fill="#9ff0e2">${m.n}</text>`;}
+      else{const o=m.off||(i%2===0?[-8,-10,'end']:[8,16,'start']);s+=`<text x="${x+o[0]}" y="${y+o[1]}" text-anchor="${o[2]}" font-size="10" fill="#9ff0e2">${m.n}</text>`;}});
+    const pv=Math.pow(10,+$('#memP').value);s+=`<path d="M${xs(pv)} ${ys(pv*prec/1e9)-9} l9 9 l-9 9 l-9 -9z" fill="#a78bfa" stroke="#fff" stroke-width="1.2"/>`;
+    s+='</svg>';fig.innerHTML=s;
+    $$('.pt',fig).forEach(el=>{const sh=e=>{tip.innerHTML=el.dataset.tip;tip.style.opacity=1;const r=fig.getBoundingClientRect(),b=el.getBoundingClientRect();tip.style.left=Math.min(r.width-270,Math.max(0,b.left-r.left+14))+'px';tip.style.top=(b.top-r.top+fig.offsetTop+14)+'px';};
+      el.addEventListener('mouseenter',sh);el.addEventListener('focus',sh);el.addEventListener('click',sh);el.addEventListener('mouseleave',()=>tip.style.opacity=0);el.addEventListener('blur',()=>tip.style.opacity=0);});
+  }
+  function fmtP(p){return p>=1e12?(p/1e12).toFixed(p%1e12?1:0)+'T':p>=1e9?(p/1e9).toFixed(p<1e10?1:0)+'B':(p/1e6).toFixed(0)+'M';}
+  function fmtGB(g){return g>=1000?(g/1000).toFixed(2)+' TB':g>=10?g.toFixed(0)+' GB':g>=1?g.toFixed(1)+' GB':(g*1000).toFixed(0)+' MB';}
+  const DEV=[{n:'Phone',c:8,k:'local'},{n:'Laptop / gaming GPU',c:32,k:'local'},{n:'1× H100 data-center GPU',c:80,k:'cloud'},{n:'128 GB workstation / Mac',c:128,k:'local'},{n:'512 GB unified-memory desktop',c:512,k:'local'},{n:'8× H200 server (≈1.1 TB)',c:1128,k:'cloud'},{n:'Multi-server cluster',c:1e9,k:'cloud'}];
+  function side(){
+    const pv=Math.pow(10,+$('#memP').value),w=pv*prec/1e9,run=w*1.2;
+    $('#memPV').textContent=fmtP(pv);$('#memW').textContent=fmtGB(w);$('#memR').textContent=fmtGB(run);
+    $('#devList').innerHTML=DEV.map(d=>{const ok=run<=d.c;return `<div class="dev ${ok?'fit':'nofit'}"><span>${d.n}</span><span class="cap2">${d.c>1e6?'∞':d.c>=1000?(d.c/1000).toFixed(1)+' TB':d.c+' GB'} · ${d.k}</span><span class="verdict">${ok?'✓ FITS':'✕ TOO SMALL'}</span></div>`;}).join('');
+  }
+  $$('#c11 [data-prec]').forEach(b=>b.addEventListener('click',()=>{$$('#c11 [data-prec]').forEach(x=>x.setAttribute('aria-pressed',x===b));prec=+b.dataset.prec;draw();side();}));
+  $('#memP').addEventListener('input',()=>{draw();side();});
+  draw();side();
+})();
+
+/* ---------- CH12 LOCAL / CLOUD figs ---------- */
+(function lc(){
+  const {cube}=window.__ep5;
+  $('#localFig').innerHTML=`<svg viewBox="0 0 420 240">
+    ${box(150,120,150,10,90,'#2a3550','#141c2c','#1d273b','#5b6d8f')}
+    <path d="M156 120 l0 -86 l144 -72 l0 86 z" transform="translate(0,70)" fill="#0b1324" stroke="#6b7c9c"/>
+    ${cube(222,86,26,{n:3,glow:false})}
+    <path d="M150 60 C 100 60 100 150 160 150" stroke="#38d6f5" stroke-width="2" fill="none" marker-end="url(#mC)" class="${RM?'':'flowdash'}"/>
+    <text x="10" y="70" font-size="11.5" fill="#bff3ff">prompt &amp; answer</text><text x="10" y="85" font-size="11.5" fill="#bff3ff">stay on the device</text></svg>`;
+  let racks='';for(let i=0;i<4;i++){const x=150+i*48,y=40+i*24;racks+=box(x,y,40,110,30,'#4b5b79','#1c2537','#2b3750','#6b7c9c')+cube(x-8,y+28,9,{n:2,glow:false})+cube(x-8,y+62,9,{n:2,glow:false});}
+  $('#cloudFig').innerHTML=`<svg viewBox="0 0 420 240">${racks}
+    ${[0,1,2,3].map(i=>`<path d="M${10} ${40+i*36} C 80 ${40+i*36}, 100 ${80+i*10}, 140 ${90+i*12}" stroke="#38d6f5" stroke-width="1.4" fill="none" marker-end="url(#mC)" class="${RM?'':'flowdash'}"/>`).join('')}
+    <text x="10" y="232" font-size="11.5" fill="#fcd38a">many users → shared accelerators</text></svg>`;
+})();
+
+/* ---------- CH13 MONEY ---------- */
+(function money(){
+  const N={user:[70,190,'You / your company','#38d6f5'],maker:[300,62,'Model maker','#a78bfa'],cloud:[300,190,'Cloud provider','#f6b13c'],hw:[300,318,'Your own hardware','#93a3bf'],chip:[560,190,'Chipmaker','#f6b13c'],hf:[560,62,'Hugging Face','#2dd4bf']};
+  const SC=[
+    {f:[['user','maker','$ per token',0,178,112,'end'],['maker','cloud','$ compute (or own DCs)',0,310,140,'start'],['cloud','chip','$ chips']],t:`<h4 class="v" style="margin-bottom:6px">Closed model, direct API</h4><p>You pay the <b>model maker</b> for every token. The maker pays for compute: renting from clouds or running its own data centers, which in turn buy chips.</p><p class="note">Example: calling Claude through Anthropic's API, or GPT through OpenAI's.</p><div class="note"><b style="color:#fff">Who earns:</b> model maker (margin on tokens) → cloud → chipmaker.</div>`},
+    {f:[['user','cloud','$ per token'],['cloud','maker','revenue share / license',0,310,140,'start'],['cloud','chip','$ chips']],t:`<h4 class="a" style="margin-bottom:6px">Closed model through a cloud partner</h4><p>You pay your existing <b>cloud</b> bill; the cloud shares revenue with the model maker. Still closed: you never hold the file.</p><p class="note">Example: Claude via Amazon Bedrock, Google Vertex AI or Microsoft Foundry; GPT via Azure.</p><div class="note"><b style="color:#fff">Who earns:</b> cloud + model maker, then chipmaker.</div>`},
+    {f:[['hf','user','free weights (license terms apply)',1,330,110,'middle'],['maker','hf','publishes',1],['user','cloud','$ GPU-hours'],['cloud','chip','$ chips']],t:`<h4 class="t" style="margin-bottom:6px">Open model, rented cloud</h4><p>The weights cost nothing. The <b>compute</b> doesn't. You pay a cloud or inference provider to run the model, and they buy chips.</p><p class="note">This is the recording's point: Google and Alibaba can give models away because they also sell the compute to run them.</p><div class="note"><b style="color:#fff">Who earns:</b> cloud → chipmaker. The model maker earns indirectly (if it's also the cloud).</div>`},
+    {f:[['hf','user','free weights',1,330,110,'middle'],['maker','hf','publishes',1],['user','hw','$ upfront',0,172,270,'end'],['hw','chip','$ chips',0,442,272,'start']],t:`<h4 style="margin-bottom:6px;color:#c9d4e6">Open model, your own hardware</h4><p>You buy the <b>hardware</b> once. After that, each answer costs mostly electricity. No one earns per request.</p><p class="note">Example: running gpt-oss-20b or Gemma 4 on a laptop, or a 120B model on a single in-house GPU server.</p><div class="note"><b style="color:#fff">Who earns:</b> the hardware and chip makers, once.</div>`}
+  ];
+  function draw(i){
+    const S=SC[i];let s=`<svg viewBox="0 0 640 380">`;
+    S.f.forEach(([a,b,l,free,lx,ly,la])=>{const A=N[a],B=N[b];let mx=(A[0]+B[0])/2,my=(A[1]+B[1])/2-12,anc='middle';if(lx!==undefined){mx=lx;my=ly;anc=la;}
+      s+=`<path d="M${A[0]+(B[0]>A[0]?62:B[0]<A[0]?-62:0)} ${A[1]+(B[1]>A[1]?22:B[1]<A[1]?-22:0)} L${B[0]+(A[0]>B[0]?62:A[0]<B[0]?-66:0)} ${B[1]+(A[1]>B[1]?24:A[1]<B[1]?-26:0)}" stroke="${free?'#2dd4bf':'#f6b13c'}" stroke-width="${free?2:3}" fill="none" marker-end="url(#${free?'mT':'mA'})" class="${RM?'':'flowdash'}"/>`;
+      s+=`<text x="${mx}" y="${my}" text-anchor="${anc}" font-size="11" fill="${free?'#5eead4':'#fcd38a'}" font-weight="600">${l}</text>`;});
+    Object.entries(N).forEach(([k,[x,y,t,c]])=>{const act=S.f.some(f=>f[0]===k||f[1]===k);
+      s+=`<g opacity="${act?1:.25}"><rect x="${x-62}" y="${y-22}" width="124" height="44" rx="11" fill="rgba(13,22,40,.9)" stroke="${c}" stroke-width="1.4"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">${t}</text></g>`;});
+    s+='</svg>';$('#moneyFig').innerHTML=s;$('#moneyTxt').innerHTML=S.t;
+  }
+  let user=false,cur=0,timer=null;
+  const pick=i=>{cur=i;$$('#c13 [data-sc]').forEach(x=>x.setAttribute('aria-pressed',+x.dataset.sc===i));draw(i);};
+  $$('#c13 [data-sc]').forEach(b=>b.addEventListener('click',()=>{user=true;clearInterval(timer);pick(+b.dataset.sc);}));
+  pick(0);
+  new IntersectionObserver(es=>es.forEach(e=>{clearInterval(timer);if(e.isIntersecting&&!user&&!RM)timer=setInterval(()=>pick((cur+1)%4),5500);}),{threshold:.5}).observe($('#moneyFig'));
+})();
+
+/* ---------- CH14 NVIDIA ---------- */
+(function nv(){
+  const {cube}=window.__ep5;
+  const pr=(y,t)=>`<rect x="452" y="${y}" width="160" height="30" rx="7" fill="rgba(255,122,107,.07)" stroke="#ff7a6b"/><text x="532" y="${y+19}" text-anchor="middle" font-size="11" fill="#ffc2b9">${t}</text><path d="M452 ${y+15} L 436 352" stroke="#ff7a6b" stroke-width="1" stroke-dasharray="3 4" marker-end="url(#mK)"/>`;
+  $('#nvFig').innerHTML=`<svg viewBox="0 0 620 440">
+    <text x="12" y="30" font-size="11" class="m" fill="#c4b5fd">LAYER 4 · MODELS</text>
+    <rect x="10" y="40" width="420" height="80" rx="12" fill="rgba(167,139,250,.07)" stroke="rgba(167,139,250,.4)"/>
+    ${cube(52,52,20,{n:3,glow:false})}
+    <text x="86" y="72" font-size="13" font-weight="700" fill="#fff">Nemotron open models</text>
+    <text x="86" y="90" font-size="11" fill="#93a3bf">Nemotron 3 Ultra, 3.5 Lightning; Nemotron 4 (≥1T, reported)</text>
+    <text x="12" y="150" font-size="11" class="m" fill="#5eead4">DISTRIBUTION</text>
+    <rect x="10" y="160" width="420" height="96" rx="12" fill="rgba(45,212,191,.06)" stroke="#2dd4bf" stroke-dasharray="6 5"/>
+    <text x="26" y="186" font-size="13" font-weight="700" fill="#fff">Hugging Face <tspan fill="#fcd38a" font-size="11" font-weight="600">· acquisition pending</tspan></text>
+    <text x="26" y="205" font-size="11" fill="#93a3bf">where Qwen, Kimi, Gemma, gpt-oss, Llama, DeepSeek… get downloaded</text>
+    <text x="26" y="223" font-size="11" fill="#93a3bf">Nvidia pledge: stays open to all models, clouds and chips</text>
+    <text x="26" y="241" font-size="11" fill="#93a3bf">Nvidia compute "will not be required"</text>
+    <path d="M220 120 L220 158" stroke="#2dd4bf" stroke-width="2" marker-end="url(#mT)"/>
+    <path d="M220 258 L220 296" stroke="#38d6f5" stroke-width="2" marker-end="url(#mC)"/><text x="230" y="282" font-size="11" fill="#bff3ff">developers run models… on what?</text>
+    <text x="12" y="296" font-size="11" class="m" fill="#fcd38a">LAYER 2 · CHIPS + SOFTWARE</text>
+    <rect x="10" y="306" width="420" height="96" rx="12" fill="rgba(246,177,60,.07)" stroke="#f6b13c"/>
+    <text x="26" y="332" font-size="13" font-weight="700" fill="#fff">GPUs + CUDA software stack</text>
+    <text x="26" y="351" font-size="11" fill="#93a3bf">TensorRT-LLM, NIM, Dynamo: serving software that makes</text>
+    <text x="26" y="367" font-size="11" fill="#93a3bf">Nvidia hardware the path of least resistance</text>
+    <text x="26" y="389" font-size="11" fill="#fcd38a">the business Nvidia most needs to protect</text>
+    <text x="452" y="30" font-size="11" class="m" fill="#ff9d91">PRESSURE: OWN CHIPS</text>
+    ${pr(44,'Google TPU')}${pr(84,'AWS Trainium / Inferentia')}${pr(124,'Microsoft Maia')}${pr(164,'Meta MTIA')}${pr(204,'OpenAI × Broadcom')}
+    <text x="458" y="262" font-size="11" fill="#93a3bf">Mostly aimed at serving</text><text x="458" y="277" font-size="11" fill="#93a3bf">each company's own</text><text x="458" y="292" font-size="11" fill="#93a3bf">models and clouds.</text>
+    <text x="10" y="430" font-size="11" fill="#64748f">Schematic. Hugging Face remains independent until the deal closes.</text></svg>`;
+})();
+
+/* ---------- EPILOGUE ---------- */
+(function epi(){
+  const {cube}=window.__ep5;
+  $('#epiFig').innerHTML=`<svg viewBox="0 0 480 360">
+    <path d="M150 70 A150 150 0 0 0 150 330" stroke="#ff7a6b" stroke-width="2" fill="none" stroke-dasharray="7 7"/>
+    ${[...Array(7)].map((_,i)=>{const a=-60+i*20,r1=110,r2=200;const c=Math.cos(a*Math.PI/180),s=Math.sin(a*Math.PI/180);return `<line x1="${240+r1*c}" y1="${200+r1*s}" x2="${240+r2*c}" y2="${200+r2*s}" stroke="#2dd4bf" stroke-width="1.6" class="${RM?'':'flowdash'}"/>`;}).join('')}
+    ${cube(240,110,70,{n:7})}
+    <text x="70" y="352" font-size="11" fill="#ff9d91" class="m">KEEP IT</text><text x="400" y="352" font-size="11" fill="#5eead4" class="m">SHARE IT</text></svg>`;
+})();
+
+/* ---------- SOURCE MAP ---------- */
+(function smap(){
+  const SRC=[
+    'The Wall Street Skinny, "Open vs. Closed Models" reel, whiteboard frame 04_open_vs_closed_Rec2-2m39.jpg and transcript Rec2_0917AM (0:00–2:41, 10:16–12:55). Screen recording, Nov 14, 2026.',
+    'Jensen Huang, "AI Is a 5-Layer Cake," NVIDIA Blog, Mar 10, 2026. https://blogs.nvidia.com/blog/ai-5-layer-cake',
+    'NVIDIA Blog, "NVIDIA to Acquire Hugging Face," Sep 3, 2026. https://blogs.nvidia.com/blog/nvidia-to-acquire-hugging-face/',
+    'NVIDIA Corp. Form 8-K (definitive agreement Sep 2, 2026). https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000078/nvda-20260902.htm',
+    'CNBC, "Nvidia agrees to buy Hugging Face for $12.9 billion, report says," Aug 27, 2026. https://www.cnbc.com/2026/08/27/nvidia-hugging-face-acquisition.html',
+    'CNBC, "Hugging Face approached Nvidia\'s Huang weeks ahead of $12.9B acquisition," Sep 3, 2026. https://www.cnbc.com/2026/09/03/nvidia-agrees-to-buy-hugging-face-for-almost-13-billion-ai-expansion.html',
+    'Implicator.ai, "Nvidia Confirms $12.9B Hugging Face Deal, Sets 2027 Close." https://www.implicator.ai/nvidia-confirms-12-9-billion-hugging-face-deal-says-its-chips-wont-be-required/',
+    'Tech Insider, "DOJ Scrutinizes Nvidia\'s $12.9B Hugging Face Deal," Nov 2026. https://tech-insider.org/doj-scrutinizes-nvidia-hugging-face-12-9b-deal-2026/',
+    'BNN Bloomberg (Reuters), "Nvidia building 1-trillion-parameter Nemotron 4 to rival open AI models," Aug 11, 2026. https://www.bnnbloomberg.ca/business/company-news/2026/08/11/nvidia-building-1-trillion-parameter-nemotron-4-to-rival-open-ai-models/',
+    'Techzine, "Nvidia is building Nemotron 4 with at least 1 trillion parameters." https://www.techzine.eu/news/analytics/143552/nvidia-is-building-nemotron-4-with-at-least-1-trillion-parameters/',
+    'VKTR, "NVIDIA Developing 1-Trillion-Parameter Open Model…" (Nemotron 3.5 Lightning). https://www.vktr.com/ai-news/nvidia-developing-1-trillion-parameter-open-model-to-rival-top-ai-systems/',
+    'NYU Shanghai RITS, "Kimi K3 Open Weights Ship: 2.8T Parameters, 1.4 TB to Run." https://rits.shanghai.nyu.edu/ai/kimi-k3-open-weights-ship-2-8t-parameters-1-4-tb-to-run/',
+    'P. Pillitteri, "Kimi K3 Open Weights: 104B Active of 2.8T." https://pasqualepillitteri.it/en/news/9007/kimi-k3-open-weights-technical-report',
+    'Pure AI, "China\'s Moonshot AI Releases Kimi K3…" Jul 17, 2026 (DeepSeek V4-Pro 1.6T comparison). https://pureai.com/articles/2026/07/17/china-moonshot-ai-releases-kimi-k3.aspx',
+    'NYU Shanghai RITS, "Qwen3.8-2.4T-A95B: Alibaba Open-Weights Its Max-Tier Flagship." https://rits.shanghai.nyu.edu/ai/qwen3-8-2-4t-a95b-alibaba-open-weights-its-max-tier-flagship/',
+    'Noze, "Qwen3.8-Max: a 2.4-trillion MoE and the benchmarks it claims" (closed Max-line history). https://www.noze.it/en/insights/qwen-3-8-max/',
+    'P. Pillitteri, "Qwen3.8: Alibaba Returns to Open Weights with 2.4 Trillion" ("second only to Fable 5"). https://pasqualepillitteri.it/en/news/8433/qwen3-8-open-weights-2-4-trillion-parameters',
+    'DeepLearning.AI The Batch, "Life After Llama: With Muse Spark, Meta pivots away from its open-weights Llama strategy." https://www.deeplearning.ai/the-batch/with-muse-spark-meta-pivots-away-from-its-open-weights-llama-strategy',
+    'GetDeploying, "Muse Spark 1.1." https://getdeploying.com/llms/muse-spark-1.1',
+    'AI Business, "Meta Reverses Course with Open-Weight Muse Glimmer." https://aibusiness.com/agentic-ai/meta-reverses-course-with-open-weight-muse-glimmer',
+    'The Register, "Google battles Chinese open-weights models with Gemma 4," Apr 2, 2026. https://www.theregister.com/2026/04/02/googles_gemma_4_open_weights/',
+    'InfoQ, "Google Opens Gemma 4 Under Apache 2.0…" https://infoq.com/news/2026/04/google-gemm4',
+    'SemiAnalysis InferenceX, "gpt-oss-120b" (OpenAI model card details). https://inferencex.semianalysis.com/model/gptoss-120b',
+    'Penchan, "Grok: from open to closed" (Grok-1 Apache 2.0; Grok 2 custom license). https://penchan.co/en/market/ai/spacex/grok-open-to-closed/',
+    'TechBriefly, "Elon Musk confirms xAI will open source Grok 3 model," Feb 10, 2026. https://techbriefly.com/2026/02/10/elon-musk-confirms-xai-will-open-source-grok-3-model/',
+    'Anthropic, position statement on open-weight models, Jul 2026. https://www.anthropic.com/news/position-open-weights-models',
+    'The New Stack, "Anthropic wants tests, not bans, as OpenAI and Google back open weights." https://thenewstack.io/anthropic-wants-tests-not-bans-as-openai-and-google-back-open-weights',
+    'TechBytes, "Estimating Fable and Sol model sizes" (outside estimates). https://techbytes.app/posts/estimating-fable-and-sol-model-sizes/',
+    'Oxen.ai model reference, Claude Fable 5 ("Parameter Count: Unknown"). https://docs.oxen.ai/inference-api/reference/models/claude-fable-5.md',
+    'Mikolov, Yih & Zweig, "Linguistic Regularities in Continuous Space Word Representations," NAACL-HLT 2013. https://aclanthology.org/N13-1090/',
+    'Mikolov et al., "Efficient Estimation of Word Representations in Vector Space," 2013. https://arxiv.org/abs/1301.3781',
+    'Enterprise DNA, "Claude Now Generally Available in Microsoft Foundry on Azure," Jun 29, 2026. https://enterprisedna.co/resources/news/anthropic-claude-microsoft-foundry-azure-generally-available-2026',
+    'HPCwire, "AMD and OpenAI Unveil Massive Chip Deal for AI Inference," Oct 2025. https://www.hpcwire.com/aiwire/2025/10/08/amd-and-openai-unveil-massive-chip-deal-for-ai-inference/',
+    'Maginative, "OpenAI and Broadcom to co-design custom AI chips, deploy 10 GW by 2029." https://www.maginative.com/openai-and-broadcom-to-co-design-custom-ai-chips-deploy-10-gw-by-2029'
+  ];
+  const link=s=>window.__ep5.esc(s).replace(/(https?:\/\/\S+)/,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+  $('#srcList').innerHTML=SRC.map(s=>`<li>${link(s)}</li>`).join('');
+  const TAG={src:['Source statement','src'],ver:['Verified','ver'],cor:['Corrected','cor'],sim:['Simplified demo','sim'],ctx:['Added context','ctx'],unv:['Unverified / disputed','unv']};
+  const R=[
+    ['AI is a "five-layer cake": energy, chips, infrastructure, models, applications (Jensen Huang).','ver','Huang\'s own essay uses exactly these five layers. [1][2]'],
+    ['Nvidia is the poster child for layer 2; Anthropic and OpenAI for layer 4.','src','Framing from the recording; reasonable as an illustration. [1]'],
+    ['Frontier model companies mostly rely on closed-weight models.','ver','True of flagships; OpenAI (gpt-oss) and xAI (older Grok) also publish open weights. [23][24][25]'],
+    ['Anthropic has never released an open-weight model.','ver','No open-weight Claude as of Nov 2026; its July 2026 position statement announced none. [26][27]'],
+    ['Hyperscalers have both open and closed models.','ver','Google: Gemini closed / Gemma 4 open. Meta: Muse closed / Llama open. Alibaba: Qwen-Max closed historically / most Qwen open. [18][19][21][16]'],
+    ['Chinese companies mostly have open-weight models.','ver','Kimi K3, DeepSeek V4, most Qwen. Nuance: Alibaba\'s Max line stayed closed until Qwen3.8. [12][14][15][16]'],
+    ['Meta\'s model is closed (whiteboard: "Meta (Muse)").','ver','Muse Spark launched closed in Apr 2026; Llama remains open, and an open "Muse Glimmer" was reported later. [18][19][20]'],
+    ['Nvidia "has never released a closed-weight model."','unv','Recording claim; we did not find a counterexample but did not exhaustively verify. Shown as unverified.'],
+    ['Nvidia was developing its own 1-trillion-parameter open-weight model (Aug 2026).','ver','Reported by The Information Aug 11, 2026 (Nemotron 4, ≥1T). Nvidia confirmed Nemotron 4 work but not size or date. Not released as of our check. [9][10]'],
+    ['Nvidia "bought" Hugging Face in August 2026.','cor','Reported Aug 27; definitive agreement Sep 2; announced Sep 3, 2026. Pending regulatory approval, expected close H1 2027; DOJ inquiry reported Nov 2026. [3][4][5][6][7][8]'],
+    ['Nvidia is paying "$13 billion" for Hugging Face.','ver','$12.93B total: ≈$11.9B to stockholders + up to ≈$1.0B equity retention. [3][4]'],
+    ['Each token gets "a string of numbers called a vector."','sim','Two steps conflated: a token gets an integer ID, which indexes a learned embedding vector. The site separates them (Ch. 4).'],
+    ['Parameters are like a regression coefficient / a stock\'s beta.','sim','Good intuition for "a learned number"; limits explained in Ch. 5 (nonlinear, not individually interpretable).'],
+    ['Weights start as random noise and get nudged toward something meaningful.','ver','Standard description of random initialization and gradient descent; demonstrated live with a real 90-parameter model (Ch. 6).'],
+    ['2013 study: king − man + woman lands near queen.','ver','Mikolov, Yih & Zweig (NAACL 2013) and word2vec. Caveats: works for some relations; input words excluded from the nearest-neighbor search. [30][31]'],
+    ['After training, the output is a file of frozen parameters.','ver','Checkpoint = weights + config + tokenizer files (Ch. 8).'],
+    ['Closed weights: access only by paying the maker "or their licensed partners."','ver','e.g., Claude via Anthropic API, Amazon Bedrock, Google Vertex AI, Microsoft Foundry. [32]'],
+    ['Inference chips "don\'t have to be nearly as sophisticated" as training chips.','cor','Partly true (no backward pass, lower precision tolerated), but large-model inference is a demanding memory-bandwidth problem and often runs on top-end GPUs. "Different," not simply "less sophisticated." (Ch. 9)'],
+    ['Frontier companies and hyperscalers are designing their own inference chips.','ver','Google TPU, AWS Inferentia/Trainium, Microsoft Maia, Meta MTIA; OpenAI–Broadcom custom accelerator (announced Oct 2025). [33][34]'],
+    ['~100 GB of memory supports ~100B parameters; below that, run locally.','cor','True at 8-bit (1 byte/weight). At 16-bit it\'s ~200 GB; at 4-bit ~50 GB. Plus 10–30%+ runtime overhead. The ~100 GB line is a soft rule of thumb. (Ch. 11)'],
+    ['More parameters → more capable, but slower and needs more compute.','sim','A tendency, not a law. Data, training method and architecture (e.g., mixture-of-experts) matter a lot. (Ch. 11)'],
+    ['Whiteboard: Kimi K3 = 2.8T parameters.','ver','2.8T total, ~104B active; weights released Jul 27, 2026. [12][13]'],
+    ['Whiteboard: gpt-oss-120b, Gemma 4, Nemotron Nano on the memory chart.','ver','gpt-oss-120b ≈117B (fits one 80 GB GPU at ~4-bit); Gemma 4 up to 31B. [22][23]'],
+    ['Whiteboard: Claude Fable ≈ several trillion parameters (estimated).','unv','Anthropic has not disclosed it. Outside estimates range ~3–6T. Shown only as a labeled estimate range. [28][29]'],
+    ['Google and Alibaba give away models because they make money on compute.','ctx','A widely made strategic argument; plausible but an interpretation, not a disclosed company rationale. (Ch. 13)'],
+    ['Owning Hugging Face lets Nvidia diversify customers and make its serving software the path of least resistance.','ctx','Analyst-style interpretation from the recording. Nvidia publicly pledges Nvidia compute won\'t be required. [3][7]'],
+    ['As open models improve, the biggest threat to Anthropic becomes customer switching.','ctx','An argument; presented with counterarguments in Ch. 15. No verdict given.'],
+    ['Toy tokenizer, token IDs, vector values, regression data, word-map coordinates.','sim','Invented for teaching and labeled on the page. The 90-parameter network\'s math is real; its scale is not.'],
+    ['Representative checkpoint folder and tensor shapes (Ch. 8).','sim','Shapes in the style of a 70B dense transformer; file sizes approximate.']
+  ];
+  const tb=$('#smapT tbody');
+  tb.innerHTML=R.map(r=>`<tr data-k="${r[1]}"><td>${window.__ep5.esc(r[0])}</td><td><span class="tag ${TAG[r[1]][1]}">${TAG[r[1]][0]}</span></td><td>${window.__ep5.esc(r[2])}</td></tr>`).join('');
+  $$('#smap [data-sm]').forEach(b=>b.addEventListener('click',()=>{$$('#smap [data-sm]').forEach(x=>x.setAttribute('aria-pressed',x===b));const k=b.dataset.sm;$$('tr[data-k]',tb).forEach(tr=>tr.classList.toggle('hide',k!=='all'&&tr.dataset.k!==k));}));
+})();
+
+})();
+</script>
+</body>
+</html>

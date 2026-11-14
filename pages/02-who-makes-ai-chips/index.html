@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Who Actually Makes AI Chips? — Inside the Global Supply Chain Behind AI Computing</title>
+<meta name="description" content="An interactive visual documentary that follows one AI processor from a customer's order, through design software, wafers, fabs, lithography, testing, packaging and assembly, to a finished AI rack.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#ch1">Skip to the story</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<nav class="chapnav" aria-label="Chapters" id="chapnav">
+  <a href="#ch1"><span class="lbl">01 · The ecosystem</span><i></i></a>
+  <a href="#ch2"><span class="lbl">02 · The order</span><i></i></a>
+  <a href="#ch3"><span class="lbl">03 · Designing the chip</span><i></i></a>
+  <a href="#ch4"><span class="lbl">04 · The wafer</span><i></i></a>
+  <a href="#ch5"><span class="lbl">05 · Inside the fab</span><i></i></a>
+  <a href="#ch6"><span class="lbl">06 · Lithography</span><i></i></a>
+  <a href="#ch7"><span class="lbl">07 · Wafer to die</span><i></i></a>
+  <a href="#ch8"><span class="lbl">08 · Packaging + HBM</span><i></i></a>
+  <a href="#ch9"><span class="lbl">09 · Compute tray</span><i></i></a>
+  <a href="#ch10"><span class="lbl">10 · The AI rack</span><i></i></a>
+</nav>
+<nav class="mobnav" aria-label="Chapters (mobile)" id="mobnav">
+  <a href="#ch1">01 Ecosystem</a><a href="#ch2">02 Order</a><a href="#ch3">03 Design</a><a href="#ch4">04 Wafer</a><a href="#ch5">05 Fab</a><a href="#ch6">06 Litho</a><a href="#ch7">07 Die</a><a href="#ch8">08 Package</a><a href="#ch9">09 Tray</a><a href="#ch10">10 Rack</a>
+</nav>
+<button class="motiontoggle" id="motiontoggle" aria-pressed="false">Motion: on</button>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <svg class="world" id="heroWorld" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+  <div class="copy">
+    <div class="kicker">AI Stack Visual Documentary · Part 02</div>
+    <h1>Who actually makes AI&nbsp;chips?</h1>
+    <div class="sub">Inside the global supply chain behind AI computing</div>
+    <p class="lede">Nvidia doesn't make its chips any more than Apple makes the iPhone. Follow one AI processor from a customer's order to a finished rack, and meet the dozens of specialists who each build one piece of it.</p>
+  </div>
+  <div class="scrollcue">SCROLL<b></b></div>
+</header>
+
+<main>
+<!-- ================= CH1 ================= -->
+<section class="chapter" id="ch1" aria-labelledby="h1t">
+<div class="wrap">
+  <div class="chead rv"><div class="cnum">01</div><div><h2 id="h1t">The AI chip ecosystem</h2><div class="q">What companies actually make up the AI semiconductor industry?</div></div></div>
+  <div class="split">
+    <div class="prose rv">
+      <p>Nvidia's CEO likes to describe AI as a <strong>five-layer cake</strong>: energy at the bottom, then chips, then the infrastructure that houses them, then the models, and finally the applications we actually touch.</p>
+      <p>This story lives in <strong>layer two: chips.</strong> And the first thing to know is that "chips" means two different families.</p>
+      <p><strong style="color:var(--cyan)">Logic chips</strong> do the thinking. They run the math. Nvidia is the poster child, with AMD and Broadcom as the other big AI logic designers.</p>
+      <p><strong style="color:var(--violet)">Memory chips</strong> hold the data the logic is chewing on. They're a separate industry, and unlike Nvidia, the big memory makers mostly build their chips in their own factories. As we'll see in Chapter 8, an AI processor is useless without a very special kind of memory sitting right next to it.</p>
+      <div class="ctl" role="group" aria-label="Explore the chip layer">
+        <span class="lab">Explore the chip layer</span>
+        <button class="btn" data-ch1="logic" aria-pressed="false">Logic chips</button>
+        <button class="btn v" data-ch1="memory" aria-pressed="false">Memory chips</button>
+        <button class="btn ghost" data-ch1="all" aria-pressed="true">Whole stack</button>
+      </div>
+      <div class="readout" id="ch1read" aria-live="polite">
+        <h4>Five layers, one dependency chain</h4>
+        <p>Every layer rests on the one below it. Models can't train without infrastructure, infrastructure is empty without chips, and chips draw on enormous amounts of energy. Pick a chip family to look closer.</p>
+      </div>
+    </div>
+    <div class="sticky rv">
+      <div class="stage"><span class="tag"><b>Fig 1.1</b> · the AI stack</span>
+        <svg id="stackSvg" viewBox="0 0 640 680" role="img" aria-label="Isometric stack of five layers: energy, chips, infrastructure, models, applications. The chip layer is split into logic and memory."></svg>
+      </div>
+    </div>
+  </div>
+  <p class="insight rv">The companies whose names you know design the chips. Almost none of them physically make them.</p>
+</div>
+</section>
+
+<!-- ================= CH2 ================= -->
+<section class="chapter" id="ch2" aria-labelledby="h2t">
+<div class="wrap">
+  <div class="chead rv"><div class="cnum">02</div><div><h2 id="h2t">The chip order</h2><div class="q">What happens when an AI infrastructure customer orders a chip?</div></div></div>
+  <div class="stage rv"><span class="tag"><b>Fig 2.1</b> · an order becomes a specification</span>
+    <svg id="orderSvg" viewBox="0 0 1200 520" role="img" aria-label="A data center operator sends an order to a chip design company. The order turns into a design specification; the design company does not own a factory."></svg>
+  </div>
+  <div class="split" style="margin-top:34px">
+    <div class="prose rv">
+      <p>Picture a company like <strong>CoreWeave</strong> (a data-center operator) building capacity for a customer like OpenAI. It needs processors, so it orders from a chip company like <strong>Nvidia or AMD</strong>. The biggest cloud and AI companies also commission custom chips, often co-designed with <strong>Broadcom</strong>.</p>
+      <p>Here's the twist. None of those three owns the factories that will build the chip. They're <strong>"fabless"</strong>: their product is the <em>design</em>. Manufacturing goes out to specialists.</p>
+    </div>
+    <div class="prose rv">
+      <div class="cols3" style="grid-template-columns:1fr">
+        <div class="card"><h5>Nvidia</h5><p>Designs GPUs and the boards, networking and software around them, then sells complete systems.</p></div>
+        <div class="card"><h5>AMD</h5><p>Designs GPUs and CPUs for data centers; also fabless since spinning off its factories in 2009.</p></div>
+        <div class="card"><h5>Broadcom</h5><p>Co-designs custom AI accelerators (ASICs) with large cloud companies, alongside its networking chips.</p></div>
+      </div>
+    </div>
+  </div>
+  <p class="insight rv">Business models differ, but all three share one move: they hand a finished <em>design</em> to somebody else's factory.</p>
+</div>
+</section>
+
+<!-- ================= CH3 ================= -->
+<section class="chapter" id="ch3" aria-labelledby="h3t">
+<div class="wrap">
+  <div class="chead rv"><div class="cnum">03</div><div><h2 id="h3t">Designing the chip</h2><div class="q">How does an engineer design a modern processor?</div></div></div>
+  <div class="split rev">
+    <div class="sticky rv">
+      <div class="stage"><span class="tag"><b>Fig 3.1</b> · <span id="ch3tag">functional block diagram</span></span>
+        <svg id="designSvg" viewBox="0 0 640 520" role="img" aria-label="Chip design view" aria-describedby="ch3read"></svg>
+      </div>
+      <div class="ctl" role="tablist" aria-label="Explore the chip design">
+        <span class="lab">Explore the chip design</span>
+        <button class="btn" role="tab" data-ch3="0" aria-selected="true"><span class="k">1</span>Block diagram</button>
+        <button class="btn" role="tab" data-ch3="1" aria-selected="false"><span class="k">2</span>Logic</button>
+        <button class="btn" role="tab" data-ch3="2" aria-selected="false"><span class="k">3</span>Physical layout</button>
+        <button class="btn" role="tab" data-ch3="3" aria-selected="false"><span class="k">4</span>Manufacturing data</button>
+      </div>
+      <div class="readout" id="ch3read" aria-live="polite"></div>
+    </div>
+    <div class="prose rv">
+      <p>The order lands on an engineering team, and the first thing they reach for is software. Modern AI processors hold <strong>tens of billions of transistors</strong>. Nobody places those by hand.</p>
+      <p>The tools are called <strong>EDA, for electronic design automation.</strong> If you've ever used CAD to design a part, it's the same idea scaled up to absurdity. Two American companies dominate the market: <span class="co role-design"><i>US</i>Cadence</span> and <span class="co role-design"><i>US</i>Synopsys</span> (Siemens EDA is a smaller third). Chip designers typically license tools from both.</p>
+      <p>EDA carries a design through several translations. Engineers describe <em>what</em> the chip should do (big functional blocks), then <em>how</em> it behaves (logic), then <em>where</em> every piece physically sits (layout). Software checks timing, power and manufacturing rules at every stage, because a single error can cost months.</p>
+      <p>The output is a set of geometric files, one pattern per manufacturing layer, built against the factory's own rulebook (its <strong>process design kit</strong>). That file set is what travels to the factory. This hand-off is often called <strong>tape-out</strong>.</p>
+      <p class="insight">The first thing that leaves the designer isn't a chip. It's information.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ================= CH4 ================= -->
+<section class="chapter" id="ch4" aria-labelledby="h4t">
+<div class="wrap">
+  <div class="chead rv"><div class="cnum">04</div><div><h2 id="h4t">The silicon wafer</h2><div class="q">Where does the physical chip begin?</div></div></div>
+  <div class="split">
+    <div class="prose rv">
+      <p>The design goes to a <strong>foundry</strong>, a contract chip factory. But the foundry needs something to print on: a <strong>polished silicon wafer</strong>, a disc about 300 mm across (roughly a dinner plate) sliced from a single crystal of ultra-pure silicon.</p>
+      <p>Two Japanese companies, <span class="co role-mat"><i>JP</i>Shin-Etsu</span> and <span class="co role-mat"><i>JP</i>SUMCO</span>, supply about <strong>half the world's silicon wafers</strong>. Both trade in Tokyo, which is why you won't find them in US semiconductor funds.</p>
+      <p>One wafer will eventually hold dozens of large AI processors, repeated in a grid. Use the slider to zoom from the whole wafer down to a single transistor.</p>
+      <div class="ctl"><span class="lab" id="zoomlab">Zoom into the wafer</span></div>
+      <input type="range" class="range" id="zoom" min="0" max="3" step="1" value="0" aria-labelledby="zoomlab" aria-valuetext="Entire wafer">
+      <div class="steprow" style="justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--muted)"><span>wafer</span><span>die grid</span><span>one die</span><span>devices</span></div>
+      <div class="readout" id="ch4read" aria-live="polite"></div>
+    </div>
+    <div class="sticky rv">
+      <div class="stage"><span class="tag"><b>Fig 4.1</b> · <span id="ch4tag">ingot → wafer</span></span>
+        <svg id="waferSvg" viewBox="0 0 640 600" role="img" aria-label="Zoomable silicon wafer"></svg>
+      </div>
+      <div class="caption" id="ch4scale">Scale bar applies to the main view.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ================= CH5 ================= -->
+<section class="chapter" id="ch5" aria-labelledby="h5t">
+<div class="wrap">
+  <div class="chead rv"><div class="cnum">05</div><div><h2 id="h5t">Inside the fab</h2><div class="q">How does a foundry transform a wafer into integrated circuits?</div></div></div>
+  <div class="split">
+    <div class="prose rv">
+      <p>The factory is called a <strong>fab</strong>. For the most advanced logic chips, that mostly means <span class="co role-fab"><i>TW</i>TSMC</span> (Taiwan Semiconductor Manufacturing Company), which makes roughly <strong>90% of the world's leading-edge chips</strong>. That concentration is a big reason Taiwan has become so important geopolitically.</p>
+      <p>Inside, wafers ride sealed pods along overhead rails between machines made by <em>other</em> companies. TSMC runs the process; it buys the tools.</p>
+    </div>
+    <div class="rv"><div class="stage"><span class="tag"><b>Fig 5.1</b> · a cleanroom bay (cutaway)</span>
+      <svg id="fabSvg" viewBox="0 0 760 590" role="img" aria-label="Isometric fab bay with deposition, coating, lithography, etch and inspection tools linked by an overhead wafer transport rail."></svg></div>
+      <div class="caption">Tool types and placements are representative. Real fabs hold hundreds of tools per process area.</div>
+    </div>
+  </div>
+
+  <div class="rv" style="margin-top:50px">
+    <div class="ctl"><span class="lab">Explore the fabrication process</span></div>
+    <div class="rail" role="tablist" aria-label="Fabrication stages" id="fabRail"></div>
+    <div class="split rev" style="margin-top:16px">
+      <div>
+        <div class="stage"><span class="tag"><b>Fig 5.2</b> · wafer cross-section <span class="ns">not to scale</span></span>
+          <svg id="xsSvg" viewBox="0 0 640 400" role="img" aria-label="Magnified wafer cross-section" aria-describedby="fabRead"></svg>
+        </div>
+        <div class="steprow"><button class="btn" id="fabPrev" aria-label="Previous stage">← Prev</button><span class="count" id="fabCount">1 / 8</span><button class="btn" id="fabNext" aria-label="Next stage">Next →</button><button class="btn ghost" id="fabPlay" aria-pressed="false">▶ Play cycle</button></div>
+      </div>
+      <div class="readout" id="fabRead" aria-live="polite"></div>
+    </div>
+  </div>
+  <p class="insight violet rv">It isn't one machine. It's a loop: lay down, coat, print, develop, transfer, repeat. Many dozens of times, with different recipes per layer.</p>
+</div>
+</section>
+
+<!-- ================= CH6 ================= -->
+<section class="chapter" id="ch6" aria-labelledby="h6t">
+<div class="wrap">
+  <div class="chead rv"><div class="cnum">06</div><div><h2 id="h6t">Lithography up close</h2><div class="q">How can microscopic patterns be transferred onto a silicon wafer?</div></div></div>
+  <div class="split rev">
+    <div class="sticky rv">
+      <div class="stage"><span class="tag"><b>Fig 6.1</b> · EUV scanner cutaway <span class="ns">schematic</span></span>
+        <svg id="lithoSvg" viewBox="0 0 680 520" role="img" aria-label="Extreme ultraviolet lithography system cutaway" aria-describedby="lithoRead"></svg>
+      </div>
+      <div class="ctl" role="tablist" aria-label="Follow the pattern" id="lithoTabs"><span class="lab">Follow the pattern</span></div>
+      <div class="readout" id="lithoRead" aria-live="polite"></div>
+    </div>
+    <div class="prose rv">
+      <p>Lithography is the printing step, and it's the hardest. The wafer, now coated with light-sensitive resist, goes into a machine where light bounces off a series of mirrors and projects the circuit pattern onto the coating.</p>
+      <p>For the smallest features, that light is <strong>extreme ultraviolet (EUV)</strong>, at 13.5 nm wavelength. EUV is absorbed by almost everything, including air and glass, so the whole path runs in vacuum and uses <em>mirrors</em> instead of lenses, and even the pattern master (the <strong>reticle</strong>, or mask) is a mirror.</p>
+      <p>Only one company makes leading-edge EUV machines: <span class="co role-tool"><i>NL</i>ASML</span>, based in the Netherlands. Older, less advanced lithography using deep-ultraviolet light is made by several companies.</p>
+      <p>Each machine prints one small field at a time, stepping across the wafer, die by die. The light only marks which parts of the resist will survive development, and that decides where the circuit ends up.</p>
+      <div class="card" style="margin-top:18px"><h5>Scale, honestly</h5>
+        <svg id="scaleSvg" viewBox="0 0 600 170" role="img" aria-label="Logarithmic scale from a 300 millimeter wafer down to features tens of nanometers wide" style="width:100%;height:auto"></svg>
+        <p style="font-size:13px;margin-top:6px">Each labelled mark is 1,000× smaller than the one before; each tick is 10×. A die is millimeters across; the finest patterned features are measured in tens of nanometers, thousands of times thinner than a human hair.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ================= CH7 ================= -->
+<section class="chapter" id="ch7" aria-labelledby="h7t">
+<div class="wrap">
+  <div class="chead rv"><div class="cnum">07</div><div><h2 id="h7t">From wafer to finished die</h2><div class="q">How are individual integrated circuits separated and checked?</div></div></div>
+  <div class="prose rv" style="max-width:860px">
+    <p>Testing is often described as "the last step." In reality it's been happening all along. <span class="co role-test"><i>US</i>KLA</span> makes inspection and measurement tools that check wafers as layers are built. When every layer is finished, the wafer gets electrically probed, cut apart, and the survivors are tested again.</p>
+  </div>
+  <div class="timeline rv" aria-label="Where checking happens">
+    <div><b>During fab</b>Optical/e-beam inspection and metrology between process steps · KLA</div>
+    <div><b>Wafer sort</b>Electrical probe test of each die before cutting · Advantest, Teradyne testers</div>
+    <div><b>Dicing</b>Wafer cut into individual dies · DISCO saws and lasers</div>
+    <div><b>Final test</b>Packaged parts tested again before shipping · Advantest, Teradyne</div>
+  </div>
+  <div class="split" style="margin-top:30px">
+    <div class="rv">
+      <div class="stage"><span class="tag"><b>Fig 7.1</b> · wafer inspection map <span class="illus">illustrative data</span></span>
+        <svg id="mapSvg" viewBox="0 0 560 600" role="img" aria-label="Wafer map with die grid and example defects" aria-describedby="mapRead"></svg>
+      </div>
+    </div>
+    <div class="prose rv">
+      <div class="ctl" role="group" aria-label="Inspect the wafer" id="defectBtns"><span class="lab">Inspect the wafer · select a finding</span></div>
+      <div class="readout" id="mapRead" aria-live="polite"></div>
+      <div class="ctl" role="group" aria-label="Wafer actions">
+        <button class="btn t" id="sortBtn" aria-pressed="false">Run electrical sort</button>
+        <button class="btn" id="diceBtn" aria-pressed="false">Dice the wafer</button>
+      </div>
+      <p class="note">Defects, die count and pass/fail pattern here are invented for teaching. Real yields are closely guarded and vary by product, process maturity and die size. Big dies are hit harder: one particle can ruin a large die that would only have taken out a small one.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ================= CH8 ================= -->
+<section class="chapter" id="ch8" aria-labelledby="h8t">
+<div class="wrap">
+  <div class="chead rv"><div class="cnum">08</div><div><h2 id="h8t">Advanced packaging and HBM</h2><div class="q">How does a processor become a high-performance AI computing package?</div></div></div>
+  <div class="split">
+    <div class="prose rv">
+      <p>A bare GPU is fast but starved. It needs data delivered at enormous rates, which is why it gets mounted <strong>side by side with high-bandwidth memory (HBM)</strong>: towers of DRAM chips stacked vertically and wired through their own silicon.</p>
+      <p><span class="co role-mem"><i>US</i>Micron</span> and <span class="co role-mem"><i>KR</i>SK Hynix</span> are two of the major HBM makers (Samsung is the third). Unlike Nvidia, they're not fabless: they design <em>and</em> manufacture the memory in their own fabs, stack it, and ship finished HBM to TSMC for packaging. The memory stacks and the logic dies sit on an <strong>interposer</strong> (a full slice of silicon on older GPUs) laced with dense wiring, so data travels millimeters instead of centimeters. For Nvidia's chips, TSMC does this step too, with a packaging process called CoWoS. Its current Blackwell GPUs use the CoWoS-L variant: two GPU dies and eight HBM stacks joined through small silicon bridges embedded in the interposer.</p>
+      <p>Under that sits the <strong>package substrate</strong>, which fans thousands of tiny connections out to something a circuit board can handle. Its insulating build-up layers are made from <span class="co role-mat"><i>JP</i>Ajinomoto</span>'s <strong>ABF</strong> film, from the company best known for MSG. ABF is one material inside the substrate, not the whole substrate.</p>
+      <div class="ctl" role="group" aria-label="Explode the AI processor package" id="pkgBtns"><span class="lab">Explode the AI processor package</span></div>
+      <div class="ctl" style="margin-top:0"><button class="btn ghost" id="explodeBtn" aria-pressed="true">Collapse package</button><button class="btn v" id="pathBtn" aria-pressed="false">Show memory ↔ logic path</button></div>
+      <div class="readout" id="pkgRead" aria-live="polite"></div>
+    </div>
+    <div class="sticky rv">
+      <div class="stage"><span class="tag"><b>Fig 8.1</b> · 2.5D package, exploded <span class="ns">thicknesses exaggerated · layout simplified</span></span>
+        <svg id="pkgSvg" viewBox="0 0 640 600" role="img" aria-label="Exploded AI processor package" aria-describedby="pkgRead"></svg>
+      </div>
+      <div class="caption">Modeled on a Blackwell-class GPU (2 logic dies, 8 HBM stacks, CoWoS-L). Earlier GPUs used one die on a full silicon interposer; layouts vary by product.</div>
+    </div>
+  </div>
+  <p class="insight violet rv">The "chip" you buy is a small city: one or two logic dies, a ring of memory towers, an interposer, a substrate and thousands of solder joints, from at least four different companies.</p>
+</div>
+</section>
+
+<!-- ================= CH9 ================= -->
+<section class="chapter" id="ch9" aria-labelledby="h9t">
+<div class="wrap">
+  <div class="chead rv"><div class="cnum">09</div><div><h2 id="h9t">From chip to compute tray</h2><div class="q">What turns a packaged processor into a usable computing subsystem?</div></div></div>
+  <div class="prose rv" style="max-width:860px">
+    <p>Here's what most people miss: <strong>what Nvidia sells is less a chip than a whole system design.</strong> TSMC ships the finished packages onward, and a Taiwanese manufacturer like <span class="co role-int"><i>TW</i>Foxconn</span> or <span class="co role-int"><i>TW</i>Wistron</span> mounts them onto Nvidia's board designs and builds them into a <strong>compute tray</strong>, then a rack. (Quanta, Dell and Supermicro build racks too.) Keep scrolling to assemble one.</p>
+  </div>
+  <div id="trayScroll" style="position:relative;height:300vh">
+    <div style="position:sticky;top:60px">
+      <div class="split rev">
+        <div class="stage"><span class="tag"><b>Fig 9.1</b> · compute tray assembly · step <span id="trayStepN">0</span>/6</span>
+          <svg id="traySvg" viewBox="0 0 720 500" role="img" aria-label="Compute tray assembly" aria-describedby="trayRead"></svg>
+        </div>
+        <div>
+          <div class="ctl" role="group" aria-label="Assemble the compute tray" id="trayBtns"><span class="lab">Assemble the compute tray · scroll or tap</span></div>
+          <div class="readout" id="trayRead" aria-live="polite"></div>
+          <p class="note">Modeled loosely on a current rack-scale GPU tray (two CPUs and four GPUs per 1U tray in Nvidia's GB200 NVL72 design). Other products differ.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ================= CH10 ================= -->
+<section class="chapter" id="ch10" aria-labelledby="h10t">
+<div class="wrap">
+  <div class="chead rv"><div class="cnum">10</div><div><h2 id="h10t">The complete AI rack</h2><div class="q">Why is the finished commercial AI system much more than a processor?</div></div></div>
+  <div class="split rev">
+    <div class="sticky rv">
+      <div class="stage"><span class="tag"><b>Fig 10.1</b> · rack-scale AI system</span>
+        <svg id="rackSvg" viewBox="0 0 640 700" role="img" aria-label="AI rack with compute trays, switch trays, power shelves and liquid cooling" aria-describedby="rackRead"></svg>
+      </div>
+    </div>
+    <div class="prose rv">
+      <p>Stack the trays into a cabinet, add <strong>switch trays</strong> that let every GPU talk to every other GPU, <strong>power shelves</strong> and a busbar to feed them, and <strong>liquid cooling</strong> to carry the heat away. The result is a single rack that behaves like one giant computer.</p>
+      <p>The original explainer puts the price of one such rack at around <strong>$6 million</strong>. Treat that as a ballpark: Nvidia publishes no list price. Analyst estimates put a GB200 NVL72 rack near <strong>$3 million</strong> and the newer GB300 version around <strong>$6 million</strong>.</p>
+      <div class="ctl" role="group" aria-label="Explore the AI rack" id="rackBtns"><span class="lab">Explore the AI rack</span>
+        <button class="btn" data-rack="compute" aria-pressed="false">Compute</button>
+        <button class="btn v" data-rack="network" aria-pressed="false">Networking</button>
+        <button class="btn a" data-rack="power" aria-pressed="false">Power</button>
+        <button class="btn t" data-rack="cooling" aria-pressed="false">Cooling</button>
+      </div>
+      <div class="readout" id="rackRead" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="rv" style="margin-top:80px">
+    <div class="kicker">Delivery · and everything behind it</div>
+    <h3 style="font-size:clamp(26px,3.4vw,40px);margin:.3em 0 .2em;letter-spacing:-.02em">One rack. The whole map.</h3>
+    <p class="prose" style="max-width:760px;color:#c3cde3">The rack ships to the customer who ordered it back in Chapter 2. Every company we've met is in it. Note that different things move along different paths: <em>information</em>, <em>wafers</em>, <em>tools</em>, <em>materials</em>, <em>packages</em> and finally <em>finished systems</em>. Use the flow buttons to show or hide each kind of path, or select a company to trace its connections.</p>
+    <div class="legend" id="flowLegend" role="group" aria-label="Flow types"></div>
+    <div class="stage"><span class="tag"><b>Fig 10.2</b> · the supply-chain landscape</span>
+      <svg id="mapWorld" viewBox="0 0 1240 720" role="img" aria-label="Supply-chain map connecting designers, EDA vendors, wafer suppliers, equipment makers, material suppliers, TSMC, memory makers, testers, integrators and the customer" aria-describedby="worldRead"></svg>
+    </div>
+    <p style="margin:14px 0 4px"><a class="btn t" style="text-decoration:none" href="/sector-pulse/" target="_top">Watch this map move with the market → Sector Pulse</a></p>
+    <p class="caption">Only representative links are drawn. Memory fabs buy wafers, tools and materials from the same kinds of suppliers as TSMC; a few of those links are shown.</p>
+    <div class="readout" id="worldRead" aria-live="polite" style="margin-top:12px"><h4>Select a company</h4><p>Tap any node to highlight what flows in and out of it.</p></div>
+  </div>
+  <p class="insight teal rv" style="margin-top:60px">An advanced AI rack isn't one company's product. It's the output of an interconnected global industrial system: American designs and tools, Dutch lithography machines, Japanese materials and equipment, Korean memory, Taiwanese manufacturing, all converging on one box.</p>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="wrap">
+  <div>
+    <h6>About this piece</h6>
+    <p>Part 02 of the AI Stack Visual Documentary Series. Content reconstructed from a short hand-drawn explainer reel by The Wall Street Skinny ("Who actually makes AI chips", recording Rec1, 0:00–2:46). Time-sensitive figures were checked against public sources in November 2026 and may change. Company names are shown as text, not logos. Illustrations are schematic; anything marked <span class="ns">not to scale</span> or <span class="illus">illustrative data</span> is a teaching aid, not a measurement.</p>
+    <p><a href="progress.html">Build progress &amp; audits →</a></p>
+  </div>
+  <div>
+    <h6>Selected sources</h6>
+    <ul>
+      <li><a href="https://docs.nvidia.com/dgx/dgxgb200-user-guide/hardware.html">NVIDIA DGX GB200 user guide: rack hardware</a></li>
+      <li><a href="https://www.trendforce.com/news/?p=19238">TrendForce: SUMCO and Shin-Etsu share of silicon wafers</a></li>
+      <li><a href="https://www.trendforce.com/news/2025/04/01/news-japanese-firm-ajinomoto-to-invest-jpy-25-billion-by-2030-to-expand-abf-production-for-advanced-packaging/">TrendForce: Ajinomoto ABF share</a></li>
+      <li><a href="https://www.thestar.com.my/tech/tech-news/2025/05/21/japan039s-jic-says-jsr039s-weak-financials-do-not-affect-chipmaking-consolidation-goal">Reuters via The Star: JIC took JSR private</a></li>
+      <li><a href="https://in.marketscreener.com/news/why-do-almost-all-chips-come-from-taiwan-ce7f5dd9dc8cf32d">MarketScreener: TSMC ~90% of most advanced nodes</a></li>
+      <li><a href="https://www.longtermwiki.com/wiki/asml">ASML as sole EUV supplier</a></li>
+      <li><a href="https://www.techinsights.com/blog/nvidia-blackwell-b200-high-performance-interconnect-and-packaging-analysis">TechInsights: Blackwell B200 uses CoWoS-L, 2 dies, 8 HBM3E</a></li>
+      <li><a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/price-of-nvidias-vera-rubin-nvl72-racks-skyrockets-to-as-much-as-usd8-8-million-apiece-but-server-makers-margins-will-be-tight-nvidia-is-moving-closer-to-shipping-entire-full-scale-systems">Tom's Hardware: NVL72 rack price estimates</a></li>
+    </ul>
+  </div>
+</div>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

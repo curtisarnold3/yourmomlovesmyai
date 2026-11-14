@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neocloud Contagion Monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060b16;--panel:rgba(16,26,46,.66);--panel2:rgba(22,34,60,.8);--line:rgba(140,170,220,.15);--line2:rgba(140,170,220,.3);--text:#e9eef8;--muted:#98a7c2;--dim:#62728f;
+--up:#2dd4bf;--dn:#ff6b6b;--cyan:#38d6f5;--amber:#f6b13c;--violet:#a78bfa;--silver:#c9d4e6;--mono:'JetBrains Mono',ui-monospace,monospace;--head:'Space Grotesk',Inter,sans-serif}
+*{box-sizing:border-box}html,body{overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--text);font:15.5px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(1000px 600px at 85% -10%,rgba(255,107,107,.08),transparent 60%),radial-gradient(900px 600px at -10% 30%,rgba(56,214,245,.07),transparent 60%)}
+a{color:var(--cyan)}h1,h2,h3,h4{font-family:var(--head);margin:0;letter-spacing:-.01em}
+.wrap{max-width:1240px;margin:0 auto;padding:0 22px}.mono{font-family:var(--mono)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(8px)}.pad{padding:18px}
+.kick{font:600 11.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)}
+.note{font-size:12.5px;color:var(--muted);line-height:1.5}
+.tag{display:inline-block;font:600 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:99px;border:1px solid var(--line2);color:var(--muted)}
+.tag.hyp{color:var(--amber);border-color:rgba(246,177,60,.45)}.tag.live{color:var(--up);border-color:rgba(45,212,191,.5)}.tag.warn{color:var(--dn);border-color:rgba(255,107,107,.5)}
+section{padding:46px 0 10px}
+h2{font-size:clamp(24px,3vw,34px);margin:4px 0 6px}.lede{color:#cfd8ea;max-width:820px;margin:0 0 14px}
+.seg{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 12px;align-items:center}
+.seg button,.btn{font:600 12.5px Inter;color:#cdd8ea;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:99px;padding:7px 13px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:rgba(56,214,245,.14);border-color:var(--cyan);color:#fff}
+.seg .lbl{font:600 10.5px var(--mono);color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-right:2px}
+header{padding:28px 0 6px}
+header h1{font-size:clamp(34px,5vw,58px);line-height:1}
+.strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px;margin-top:16px}
+.tick{padding:9px 11px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.tick .n{font:600 10.5px var(--mono);color:var(--muted);letter-spacing:.06em}.tick .p{font:700 17px var(--head)}.tick .c{font:600 12px var(--mono)}
+.up{color:var(--up)}.dn{color:var(--dn)}
+.alerts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.alert{font-size:12.5px;padding:4px 10px;border-radius:99px;border:1px solid rgba(255,107,107,.4);background:rgba(255,107,107,.08);color:#ffd9d9}
+.alert.credit{border-color:rgba(246,177,60,.45);background:rgba(246,177,60,.08);color:#ffe6bb}
+.status{font:500 12px var(--mono);color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--up);display:inline-block;box-shadow:0 0 8px var(--up)}
+.g-map{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px}
+@media(max-width:980px){.g-map{grid-template-columns:1fr}}
+#map svg{width:100%;height:auto;display:block}
+.scroll-x{overflow-x:auto}
+@media(max-width:700px){.scroll-x>svg{min-width:760px}}
+.card h3{font-size:20px}.kv{display:grid;grid-template-columns:1fr auto;gap:3px 10px;font-size:13px;margin-top:8px}.kv span:nth-child(odd){color:var(--muted)}.kv span:nth-child(even){font-family:var(--mono);text-align:right}
+.edgelist{font-size:12.5px;margin-top:10px;display:grid;gap:5px}.edgelist div{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.03);border-left:3px solid var(--line2)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font:600 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);text-align:right;padding:8px 7px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap}
+td{padding:7px;border-bottom:1px solid var(--line);text-align:right;font-family:var(--mono);white-space:nowrap}
+th:first-child,td:first-child{text-align:left;font-family:Inter}
+.bar{display:inline-block;height:8px;border-radius:3px;vertical-align:middle;margin-right:5px}
+.lab{display:grid;grid-template-columns:330px 1fr;gap:16px}
+@media(max-width:980px){.lab{grid-template-columns:1fr}}
+.ctrl{display:grid;gap:11px;align-content:start}
+.ctrl label{display:grid;grid-template-columns:1fr auto;gap:2px 8px;font-size:13px;color:#cfd9ec}
+.ctrl label output{font:600 12.5px var(--mono);color:#fff}
+.ctrl input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--dn)}
+.ctrl select{grid-column:1/-1;background:#0e1729;color:#fff;border:1px solid var(--line2);border-radius:8px;padding:6px}
+.ctrl .h{font:600 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+details.adv summary{cursor:pointer;font:600 12px var(--mono);color:var(--muted);margin:4px 0}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media(max-width:700px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.kpi .l{font:600 10px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}.kpi .v{font:700 21px var(--head)}
+.callout{border:1px solid rgba(255,107,107,.4);background:rgba(255,107,107,.07);border-radius:12px;padding:12px 14px;font-size:14px;color:#ffe1e1}
+.callout.ok{border-color:rgba(45,212,191,.4);background:rgba(45,212,191,.06);color:#d6fbf5}
+.callout.amb{border-color:rgba(246,177,60,.45);background:rgba(246,177,60,.07);color:#ffeccc}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:900px){.g2{grid-template-columns:1fr}}
+.g2>*,.lab>*,.g-map>*{min-width:0}
+.fig svg{width:100%;height:auto;display:block}
+.news{display:grid;gap:6px;max-height:360px;overflow:auto;font-size:13px}
+.news a{color:#dbe6f7;text-decoration:none}.news a:hover{color:var(--cyan)}.news .s{color:var(--dim);font:500 11px var(--mono)}
+ol.src{font-size:12.5px;color:var(--muted);columns:2 380px;column-gap:32px}ol.src li{margin-bottom:5px;break-inside:avoid}
+footer{padding:40px 0 70px;color:var(--dim);font-size:12.5px}
+svg text{font-family:Inter,sans-serif}
+.edge{transition:opacity .25s}.nodeg{cursor:pointer}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="kick">AI Stack Explainer · Neocloud companion · Live</div>
+  <h1>Neocloud Contagion Monitor</h1>
+  <p class="lede" style="margin-top:10px">Neoclouds borrow heavily against chips and contracts, and their landlords borrow against the neoclouds. This page tracks that web live, then lets you push on it: what happens to each company if Nvidia, or the whole Nasdaq, falls hard? How much forced selling would follow, and at what point does the selling start feeding on itself?</p>
+  <div class="status"><span><span class="dot" id="dot"></span> <span id="asof">loading…</span></span><span id="stale"></span><span>Prices: Yahoo Finance (unofficial, may be delayed) · refreshed hourly on weekdays; page re-checks every 5 min</span></div>
+  <div class="strip" id="strip"></div>
+  <div class="alerts" id="alerts"></div>
+</div></header>
+
+<main class="wrap">
+
+<!-- 1 MAP -->
+<section id="web">
+  <div class="kick">1 · The web</div>
+  <h2>Who is tied to whom, and how they're moving</h2>
+  <p class="lede">Node color shows each stock's move over the window you pick. Lines show the real ties: who supplies chips, who leases buildings to whom, who signed the compute contracts, who lent the money, and who stands behind whom as a backstop. Hollow nodes are private companies with no live price. Tap a node for its numbers and links.</p>
+  <div class="g-map">
+    <div class="panel pad">
+      <div class="seg" id="winBtns"><span class="lbl">Color by</span></div>
+      <div class="seg" id="edgeBtns"><span class="lbl">Show ties</span></div>
+      <div id="map" class="scroll-x" role="img" aria-label="Network map of neocloud companies, their suppliers, landlords, customers and lenders, colored by recent stock move."></div>
+      <div class="note" id="mapLegend"></div>
+    </div>
+    <div class="panel pad card" id="nodeCard" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- 2 LEVERAGE -->
+<section id="leverage">
+  <div class="kick">2 · Leverage board</div>
+  <h2>How much debt is holding up each stock</h2>
+  <p class="lede">For a heavily borrowed company, the stock is the thin slice of value left after the lenders. When the stock falls, that slice shrinks faster than the debt does. The last two columns turn that into a number: a simplified default-risk estimate (a Merton model), and how far the stock could fall before that estimate passes 50%. <span class="tag hyp">model, not a rating</span></p>
+  <div class="panel pad scroll-x"><table id="levTable"></table></div>
+  <p class="note">Debt is Yahoo's "total debt", which includes lease obligations, so it runs higher than bond-only totals. Market-implied anchors: CoreWeave's 5-year default swaps traded around 1,155 bp on Nov 6, and its 2031 notes yielded about 16.3%. <span id="levNote"></span></p>
+</section>
+
+<!-- 3 SCENARIO LAB -->
+<section id="lab">
+  <div class="kick">3 · Scenario lab</div>
+  <h2>Push on the web and watch it ripple</h2>
+  <p class="lede">Pick a shock. The engine spreads it through each stock's sensitivity to the Nasdaq and to Nvidia, passes credit damage along lease and contract ties, then adds the forced selling that leverage creates: margin calls, leveraged-ETF rebalancing, and the price impact of all that selling. The gap between the "shock only" bar and the full bar is the cascade. <span class="tag hyp">toy model, hypothetical</span></p>
+  <div class="lab">
+    <div class="panel pad ctrl" id="ctrls">
+      <div class="h">Preset</div>
+      <label>Scenario<select id="preset"></select></label>
+      <div class="h">Shock</div>
+      <label>Nasdaq-100 drawdown <output id="o_q"></output><input type="range" id="q" min="-60" max="0" step="1"></label>
+      <label>Extra Nvidia-specific drop <output id="o_n"></output><input type="range" id="n" min="-70" max="0" step="1"></label>
+      <label>CoreWeave-specific (credit) shock <output id="o_c"></output><input type="range" id="c" min="-90" max="0" step="1"></label>
+      <label>Hyperscaler pull-back hit to neocloud demand <output id="o_h"></output><input type="range" id="h" min="-60" max="0" step="1"></label>
+      <label>Spread over (trading days) <output id="o_d"></output><input type="range" id="d" min="1" max="60" step="1"></label>
+      <div class="h">Safety valves</div>
+      <label>Circuit breakers (S&amp;P 7/13/20%)<select id="cb"><option value="1">On: a day's drop is capped at 20%; the rest spills into the next day</option><option value="0">Off</option></select></label>
+      <label>Liquidity backstop kicks in at market drawdown <output id="o_bs"></output><input type="range" id="bs" min="0" max="50" step="5"></label>
+      <details class="adv"><summary>Leverage &amp; liquidity assumptions ▾</summary>
+        <div class="ctrl" style="margin-top:8px">
+        <label>Market-wide margin debt ($T) <output id="o_md"></output><input type="range" id="md" min="0.5" max="2.5" step="0.05"></label>
+        <label>Margin-financed share of each neocloud's value (base) <output id="o_mb"></output><input type="range" id="mb" min="0" max="8" step="0.5"></label>
+        <label>Most-levered margin account, loan/value <output id="o_lmax"></output><input type="range" id="lmax" min="30" max="80" step="5"></label>
+        <label>Broker maintenance, volatile single names <output id="o_hs"></output><input type="range" id="hs" min="25" max="75" step="5"></label>
+        <label>Broker maintenance, broad market <output id="o_hm"></output><input type="range" id="hm" min="25" max="50" step="5"></label>
+        <label>Single-stock impact coefficient Y <output id="o_y"></output><input type="range" id="y" min="0.3" max="2" step="0.1"></label>
+        <label>Market flow multiplier M ($ value per $ sold) <output id="o_M"></output><input type="range" id="M" min="1" max="25" step="1"></label>
+        <label>Credit pass-through along ties <output id="o_pt"></output><input type="range" id="pt" min="0" max="100" step="5"></label>
+        <button class="btn" id="resetAdv" type="button">Reset assumptions</button>
+        </div>
+      </details>
+    </div>
+    <div>
+      <div class="kpis" id="labKpis"></div>
+      <div class="panel pad" style="margin-top:12px"><div id="labBars" class="fig scroll-x" role="img" aria-label="Bar chart of each company's scenario drawdown split into shock-only and cascade amplification."></div></div>
+      <div id="labMsg" style="margin-top:10px"></div>
+      <div class="panel pad" style="margin-top:12px"><div class="note" style="margin-bottom:6px">Scenario result on the web (end of scenario)</div><div id="labMap" class="scroll-x"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 TIPPING -->
+<section id="tipping">
+  <div class="kick">4 · Where it tips</div>
+  <h2>How big a drop starts the self-feeding spiral?</h2>
+  <p class="lede">These charts rerun the engine for every Nasdaq drawdown from 0% to 50%, using your current assumptions. If forced selling only nudged prices, the lines would track the dashed "shock only" line. Where they bend away, the cascade has taken over. The table answers your question directly for each company: how big a Nasdaq fall pushes its model default risk past 50%, and how big an Nvidia-only fall does.</p>
+  <div class="g2">
+    <div class="panel pad"><h4 style="font-size:15px">Credit cliff: debt sitting in companies past 50% model default risk</h4><div id="sweepA" class="fig"></div></div>
+    <div class="panel pad"><h4 style="font-size:15px">Equity cascade: forced selling and the extra drop it causes</h4><div id="sweepB" class="fig"></div></div>
+  </div>
+  <div id="tipMsg" style="margin-top:12px"></div>
+  <div class="panel pad scroll-x" style="margin-top:12px"><table id="tipTable"></table></div>
+  <div class="panel pad scroll-x" style="margin-top:12px"><h4 style="font-size:15px;margin-bottom:4px">When does margin selling start moving the whole market?</h4><p class="note" style="margin:0 0 8px">Each cell is the Nasdaq-100 fall at which market-wide margin selling adds at least <b>2 points</b> of extra decline, for different price-impact multipliers M (rows) and the leverage of the most aggressive margin accounts (columns). Other settings follow your sliders.</p><table id="gridTable"></table></div>
+</section>
+
+<!-- 5 NEWS -->
+<section id="newsS">
+  <div class="kick">5 · Live headlines</div>
+  <h2>What the market is reading</h2>
+  <div class="panel pad"><div class="news" id="news"></div><p class="note" style="margin-top:8px">Google News search results for neocloud-related queries, refreshed with the prices. Headlines are third-party content.</p></div>
+</section>
+
+<!-- 6 METHOD -->
+<section id="method">
+  <div class="kick">6 · How the engine works</div>
+  <h2>Assumptions, in plain sight</h2>
+  <div class="panel pad" style="font-size:14px;color:#d3dced">
+    <p><b>1 · Spreading the shock.</b> Each stock's daily move is <span class="mono">β<sub>Nasdaq</sub>·(Nasdaq move) + β<sub>Nvidia</sub>·(Nvidia-specific move) + its own shocks</span>. The betas come from a two-factor regression on the last year of daily returns, recomputed every refresh. A drawdown spread over N days is applied as N equal compounding steps.</p>
+    <p><b>2 · Credit ties.</b> Company-specific shocks (a CoreWeave credit event, hyperscalers pulling back) pass along the exposure weights in the table below, times the pass-through slider. When a company's model default risk tops 50% mid-scenario, half its shock passes on again (a second round).</p>
+    <p><b>3 · Margin calls.</b> Margin debt in each name is the base share × a retail tilt of (1 − institutional ownership)/0.25, capped between 0.5× and 3×. Surviving margin accounts have loan/value ratios spread from 5% up to the "most-levered" setting, with more accounts at lower leverage. An account is called once its loan/value passes 1 − maintenance, and it sells down to 75% of its maintenance limit. A fully underwater account sells everything.</p>
+    <p><b>4 · Leveraged ETFs.</b> Each 2x or 3x fund must trade <span class="mono">L(L−1)·AUM·r</span> every day it rebalances. AUM is live from Yahoo and shrinks as the fund loses money.</p>
+    <p><b>5 · Price impact.</b> For a single stock, forced selling Q moves the price by <span class="mono">Y·σ<sub>daily</sub>·√(Q/ADV)</span>, the square-root law used in market-impact research. In stress, average daily volume is taken as doubled. For the whole market, $1 of forced selling removes $M of value, following Gabaix &amp; Koijen's "inelastic markets" estimate of roughly 5 (range 3–8). Short-run effects can be larger. The engine solves each day as a fixed point, because forced selling lowers prices, which forces more selling.</p>
+    <p><b>6 · Safety valves.</b> Circuit breakers cap any single day's market drop at 20% and push the remainder into the next day. A backstop, meaning a central-bank or other lender-of-last-resort liquidity injection, absorbs 80% of forced selling once the market drawdown reaches its trigger.</p>
+    <p><b>7 · Default risk.</b> This is a simplified Merton model with a one-year horizon: equity is treated as an option on the company's assets, using its market value, total debt, and 3-month volatility. In stress, volatility is scaled up by (1 + |drawdown|). It's a ranking tool, not a rating, and Yahoo's total-debt figure includes leases.</p>
+    <div class="scroll-x" style="margin-top:8px"><table id="expTable"></table></div>
+    <p class="note" style="margin-top:8px">What the engine leaves out: options-dealer hedging, hedge-fund deleveraging, debt covenant triggers, refinancing needs, and how GPU resale prices tie to Nvidia's stock. Each of these could make a real cascade bigger or smaller than shown. Not investment advice.</p>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="kick">Sources</div>
+  <ol class="src" id="srcList"></ol>
+</section>
+</main>
+<footer><div class="wrap">Companion to "Neoclouds: How AI Companies Finance Their GPU Empires". Data: Yahoo Finance via yfinance (unofficial), Google News RSS. Educational only, not investment advice.</div></footer>
+
+<script id="seed" type="application/json">{"asof":"2026-11-14T20:58:39Z","nodes":{"CRWV":{"label":"CoreWeave","group":"neocloud","price":53.11,"close":53.13,"prevClose":56.6,"chg1d":-0.0617,"chg5d":0.1446,"chg1m":-0.2379,"fromHigh":-0.6151,"betaQ":2.584,"betaN":0.629,"idioVol":0.832,"vol3m":1.167,"vol1y":1.006,"adv":3854303439.0,"mcap":29546958848,"debt":66220998656,"cash":4228000000,"ebitda":5202999808,"inst":0.773,"shortFloat":0.233,"dd":0.438,"pd1y":0.3306,"lastBar":"2026-11-13T15:30:00-05:00","spark":[87.85,86.25,88.04,88.01,86.8,84.23,84.89,81.85,80.93,84.56,89.36,99.83,94.94,89.12,88.99,82.98,80.92,83.35,79.88,81.36,85.43,86.76,86.9,90.13,87.59,85.07,85.93,87.12,88.57,89.62,87.39,91.72,88.45,81.58,82.08,80.26,77.81,65.78,69.69,61.39,61.12,62.13,61.82,55.6,54.24,55.19,59.57,63.93,60.74,54.87,50.15,53.74,48.42,43.66,46.4,48.98,48.73,60.77,56.6,53.13]},"NBIS":{"label":"Nebius","group":"neocloud","price":115.81,"close":115.88,"prevClose":128.64,"chg1d":-0.0997,"chg5d":-0.1056,"chg1m":-0.3853,"fromHigh":-0.596,"betaQ":2.98,"betaN":0.711,"idioVol":0.948,"vol3m":1.161,"vol1y":1.245,"adv":4212620493.0,"mcap":33941528576,"debt":15959600128,"cash":7425600000,"ebitda":517500000,"inst":0.671,"shortFloat":0.198,"dd":0.937,"pd1y":0.1743,"lastBar":"2026-11-13T15:30:00-05:00","spark":[219.13,210.91,221.97,213.93,218.48,209.18,206.32,199.54,204.09,210.63,226.39,243.88,240.35,228.11,224.55,212.19,207.37,209.37,217.99,223.54,232.8,236.12,226.61,243.48,237.33,231.88,237.35,235.88,232.28,242.81,232.57,249.87,237.15,219.71,221.07,210.06,206.86,186.01,188.41,165.47,170.24,171.45,171.57,159.17,158.74,153.27,170.47,182.34,171.99,154.14,141.39,151.64,141.52,120.37,129.49,141.45,134.0,154.69,128.64,115.88]},"IREN":{"label":"IREN","group":"neocloud","price":18.16,"close":18.17,"prevClose":19.48,"chg1d":-0.0678,"chg5d":-0.1608,"chg1m":-0.4024,"fromHigh":-0.7323,"betaQ":3.041,"betaN":0.463,"idioVol":0.844,"vol3m":1.161,"vol1y":1.094,"adv":1579351755.0,"mcap":7710573568,"debt":10215000064,"cash":3521999872,"ebitda":-30653000,"inst":0.593,"shortFloat":0.232,"dd":0.576,"pd1y":0.2824,"lastBar":"2026-11-13T15:30:00-05:00","spark":[41.88,39.81,42.21,39.58,40.53,35.45,37.12,36.82,39.6,41.65,44.68,46.93,45.37,43.64,43.83,43.17,41.58,42.62,43.48,46.68,47.23,48.55,47.05,46.15,44.12,41.72,41.38,40.88,40.65,41.76,40.48,41.28,38.69,35.71,35.19,34.8,34.8,30.56,30.39,26.99,27.73,26.62,27.84,25.51,24.91,25.43,27.44,28.84,26.25,23.95,22.02,24.46,21.71,18.03,21.64,21.41,19.73,20.84,19.48,18.17]},"WYFI":{"label":"WhiteFiber","group":"neocloud","price":9.44,"close":9.43,"prevClose":10.335,"chg1d":-0.0866,"chg5d":0.0631,"chg1m":-0.2744,"fromHigh":-0.7891,"betaQ":3.083,"betaN":0.655,"idioVol":1.02,"vol3m":1.201,"vol1y":1.272,"adv":21703725.0,"mcap":427063520,"debt":471884992,"cash":138544000,"ebitda":-7612466,"inst":0.261,"shortFloat":0.389,"dd":0.558,"pd1y":0.2884,"lastBar":"2026-11-13T15:30:00-05:00","spark":[20.72,20.78,20.4,20.0,19.38,17.75,18.92,17.5,17.31,18.78,19.54,20.57,19.31,18.53,19.14,17.59,16.82,17.26,17.86,18.97,19.86,20.23,19.05,20.26,19.62,18.83,18.53,18.01,17.48,17.93,17.46,17.33,16.83,15.75,15.69,14.8,14.54,12.73,13.01,11.76,11.76,11.38,11.66,10.55,9.98,9.52,10.99,11.87,11.23,10.36,9.26,10.49,9.15,7.8,8.88,9.57,9.21,10.43,10.34,9.43]},"GLXY":{"label":"Galaxy (Helios)","group":"landlord","price":14.35,"close":14.38,"prevClose":15.18,"chg1d":-0.0547,"chg5d":0.0505,"chg1m":-0.2137,"fromHigh":-0.5818,"betaQ":2.679,"betaN":0.37,"idioVol":0.792,"vol3m":1.155,"vol1y":0.957,"adv":152436347.0,"mcap":8400008192,"debt":9321735168,"cash":4512292864,"ebitda":36415488000,"inst":0.853,"shortFloat":0.198,"dd":0.639,"pd1y":0.2614,"lastBar":"2026-11-13T15:30:00-05:00","spark":[23.64,22.84,24.79,24.64,25.29,23.21,24.6,23.43,24.06,26.5,26.33,27.05,25.15,24.13,24.4,24.13,22.29,22.27,22.28,24.69,26.07,27.17,25.79,25.19,24.24,23.21,23.07,22.74,23.02,23.06,22.65,22.15,21.4,20.08,20.33,19.87,19.71,17.93,18.25,16.14,15.72,15.76,16.93,15.29,14.68,15.68,17.18,19.09,18.13,16.0,14.59,16.83,13.97,12.98,13.66,14.51,14.11,15.97,15.18,14.38]},"APLD":{"label":"Applied Digital","group":"landlord","price":15.98,"close":15.97,"prevClose":16.95,"chg1d":-0.0572,"chg5d":0.0277,"chg1m":-0.2163,"fromHigh":-0.6781,"betaQ":3.026,"betaN":0.42,"idioVol":0.806,"vol3m":1.017,"vol1y":0.998,"adv":467116175.0,"mcap":4829122560,"debt":6483407872,"cash":2949908992,"ebitda":-124127000,"inst":0.768,"shortFloat":0.224,"dd":0.847,"pd1y":0.1984,"lastBar":"2026-11-13T15:30:00-05:00","spark":[27.21,26.89,28.85,26.87,27.44,25.34,25.41,24.29,24.91,25.91,26.37,28.31,27.14,25.78,26.42,24.58,23.42,24.39,26.38,28.12,28.19,28.54,27.23,27.06,26.25,24.53,25.41,24.37,24.16,25.38,24.7,25.34,23.81,23.85,23.68,23.25,22.44,20.33,20.39,18.05,19.25,19.33,20.98,19.09,18.25,17.83,19.51,20.39,19.41,17.82,16.22,17.81,16.61,14.17,15.55,16.72,16.68,17.91,16.95,15.97]},"CORZ":{"label":"Core Scientific","group":"landlord","price":14.53,"close":14.52,"prevClose":14.38,"chg1d":0.0104,"chg5d":0.2355,"chg1m":0.0052,"fromHigh":-0.5017,"betaQ":2.118,"betaN":0.315,"idioVol":0.596,"vol3m":0.924,"vol1y":0.795,"adv":250889327.0,"mcap":4678869504,"debt":4406800896,"cash":803940992,"ebitda":52064000,"inst":1.183,"shortFloat":0.256,"dd":1.164,"pd1y":0.1221,"lastBar":"2026-11-13T15:30:00-05:00","spark":[17.81,17.27,18.03,17.42,17.62,16.51,16.3,16.07,16.81,17.9,17.89,18.73,18.09,17.37,17.94,16.96,16.04,16.88,17.14,17.99,18.36,18.79,18.1,18.12,17.34,16.52,16.31,15.98,16.35,16.45,16.6,16.68,15.94,15.36,15.41,15.02,15.43,13.51,14.45,13.48,13.73,13.79,14.25,13.2,13.1,13.51,14.27,15.0,14.43,13.25,12.51,14.24,12.76,11.38,11.76,12.72,13.13,14.57,14.38,14.52]},"CIFR":{"label":"Cipher","group":"landlord","price":6.855,"close":6.86,"prevClose":7.15,"chg1d":-0.0413,"chg5d":0.0474,"chg1m":-0.3172,"fromHigh":-0.7651,"betaQ":2.788,"betaN":0.319,"idioVol":0.966,"vol3m":1.333,"vol1y":1.213,"adv":406787831.0,"mcap":3130664704,"debt":5619225088,"cash":656009024,"ebitda":22543000,"inst":0.954,"shortFloat":0.22,"dd":0.217,"pd1y":0.4142,"lastBar":"2026-11-13T15:30:00-05:00","spark":[15.77,15.36,16.31,16.02,16.77,15.17,15.5,14.61,15.18,17.37,17.74,18.51,16.9,15.94,16.85,15.64,15.09,16.72,16.94,18.34,18.9,19.09,18.35,18.1,17.73,16.74,16.51,15.82,15.46,15.71,15.48,15.5,14.56,13.5,13.52,13.0,11.34,9.94,10.04,8.98,8.94,8.88,9.13,8.32,7.94,7.71,8.48,8.87,8.1,7.29,6.86,8.12,6.5,5.55,6.55,6.81,6.53,7.11,7.15,6.86]},"WULF":{"label":"TeraWulf","group":"landlord","price":12.62,"close":12.62,"prevClose":13.04,"chg1d":-0.0322,"chg5d":0.1099,"chg1m":0.0,"fromHigh":-0.5645,"betaQ":2.451,"betaN":0.313,"idioVol":0.761,"vol3m":1.052,"vol1y":0.913,"adv":662554708.0,"mcap":6329202688,"debt":5258395136,"cash":1602126976,"ebitda":-327800000,"inst":0.904,"shortFloat":0.286,"dd":0.929,"pd1y":0.1765,"lastBar":"2026-11-13T15:30:00-05:00","spark":[15.64,15.48,16.32,15.97,16.49,15.35,15.13,14.65,14.82,16.23,16.51,17.86,17.13,16.14,16.74,15.47,14.49,15.39,16.47,17.01,17.45,17.33,16.35,16.29,15.74,15.12,15.09,14.8,14.91,15.49,14.79,14.97,14.4,13.65,13.77,13.37,13.21,11.54,12.62,11.68,12.06,12.01,12.76,11.32,11.32,11.98,12.66,13.42,12.75,11.73,10.94,12.53,11.7,10.08,11.37,12.38,12.56,13.36,13.04,12.62]},"NVDA":{"label":"Nvidia","group":"supplier","price":162.82,"close":162.85,"prevClose":166.19,"chg1d":-0.0203,"chg5d":-0.1276,"chg1m":-0.2505,"fromHigh":-0.3194,"betaQ":1.295,"betaN":1.0,"idioVol":0.0,"vol3m":0.414,"vol1y":0.407,"adv":44596131054.0,"mcap":3932339044352,"debt":38860001280,"cash":62469001216,"ebitda":201266003968,"inst":0.712,"shortFloat":0.012,"dd":11.187,"pd1y":0.0,"lastBar":"2026-11-13T15:30:00-05:00","spark":[214.48,208.25,212.81,209.43,227.73,217.31,220.53,217.2,224.16,228.19,230.1,225.48,223.42,218.36,218.29,210.96,212.17,213.9,219.34,222.27,227.38,228.87,225.51,224.58,225.07,228.86,227.21,228.38,230.86,233.95,238.9,239.24,237.47,230.48,229.28,226.32,228.52,221.3,217.23,214.13,217.09,216.47,221.97,212.21,210.96,216.0,217.94,215.38,213.66,204.64,202.06,206.69,200.13,181.6,186.64,178.67,168.89,173.73,166.19,162.85]},"DELL":{"label":"Dell","group":"supplier","price":344.38,"close":344.53,"prevClose":371.17,"chg1d":-0.0722,"chg5d":0.0482,"chg1m":-0.2715,"fromHigh":-0.4139,"betaQ":1.904,"betaN":0.005,"idioVol":0.756,"vol3m":0.889,"vol1y":0.937,"adv":2935270991.0,"mcap":219056553984,"debt":35284000768,"cash":11569999872,"ebitda":17725999104,"inst":0.78,"shortFloat":0.036,"dd":2.22,"pd1y":0.0132,"lastBar":"2026-11-13T15:30:00-05:00","spark":[441.47,432.59,450.88,463.18,471.61,455.61,455.38,424.41,491.52,515.68,523.41,533.14,534.51,505.92,566.51,533.54,542.76,562.51,587.59,567.27,574.51,548.16,549.07,535.28,562.11,542.68,538.84,537.21,540.99,561.74,551.53,573.21,578.16,573.76,585.25,575.96,571.68,507.23,472.74,451.09,454.81,461.56,485.88,452.95,456.44,467.09,501.96,493.79,475.51,424.3,392.78,408.4,372.36,316.91,328.53,346.31,334.38,373.68,371.17,344.53]},"SMCI":{"label":"Supermicro","group":"supplier","price":26.87,"close":26.87,"prevClose":26.99,"chg1d":-0.0044,"chg5d":-0.0657,"chg1m":-0.2343,"fromHigh":-0.4644,"betaQ":2.719,"betaN":0.7,"idioVol":0.779,"vol3m":0.836,"vol1y":1.105,"adv":1456163780.0,"mcap":17710143488,"debt":9178550272,"cash":6912595968,"ebitda":4551495168,"inst":0.641,"shortFloat":0.127,"dd":1.651,"pd1y":0.0494,"lastBar":"2026-11-13T15:30:00-05:00","spark":[37.24,35.17,38.46,37.39,38.46,37.08,37.28,36.71,37.0,37.87,39.59,40.26,38.93,37.38,40.1,36.74,35.64,36.85,40.35,39.09,41.2,41.54,41.44,41.51,43.26,41.78,41.02,41.07,41.92,43.69,43.19,43.46,44.94,42.77,41.86,39.98,39.07,35.78,35.09,31.63,32.1,32.47,35.57,33.72,32.94,32.69,35.09,35.81,34.43,32.95,30.44,31.39,29.6,27.08,28.76,28.6,27.79,30.43,26.99,26.87]},"AMD":{"label":"AMD","group":"supplier","price":534.09,"close":534.06,"prevClose":585.3,"chg1d":-0.0875,"chg5d":0.1894,"chg1m":-0.0501,"fromHigh":-0.1776,"betaQ":2.702,"betaN":0.022,"idioVol":0.475,"vol3m":0.857,"vol1y":0.797,"adv":20114974922.0,"mcap":875905024000,"debt":9210999808,"cash":15776000000,"ebitda":11143000064,"inst":0.767,"shortFloat":0.024,"dd":5.004,"pd1y":0.0,"lastBar":"2026-11-13T15:30:00-05:00","spark":[473.25,456.75,479.18,480.93,476.67,465.58,470.72,459.61,457.06,456.16,477.57,505.74,521.1,503.6,516.13,493.41,504.2,512.5,545.09,559.82,615.52,623.77,614.61,629.26,630.63,607.87,607.57,611.76,615.73,633.91,631.75,649.42,645.86,620.68,608.1,594.24,605.53,570.82,562.23,528.75,538.05,534.74,552.72,507.93,516.79,531.28,560.26,578.44,566.42,504.8,466.84,483.9,488.78,404.4,449.04,508.58,515.21,552.9,585.3,534.06]},"MSFT":{"label":"Microsoft","group":"customer","price":524.31,"close":523.88,"prevClose":523.0,"chg1d":0.0025,"chg5d":-0.0119,"chg1m":-0.028,"fromHigh":-0.0567,"betaQ":0.556,"betaN":-0.005,"idioVol":0.335,"vol3m":0.299,"vol1y":0.369,"adv":15686856043.0,"mcap":3890434801664,"debt":133930999808,"cash":64509001728,"ebitda":205690994688,"inst":0.764,"shortFloat":0.008,"dd":11.76,"pd1y":0.0,"lastBar":"2026-11-13T15:30:00-05:00","spark":[483.24,487.31,491.71,496.37,505.06,513.53,507.29,501.02,496.82,510.12,499.7,493.95,491.65,492.44,495.63,505.41,497.12,490.3,497.75,493.78,501.61,498.0,500.59,497.93,516.17,509.22,508.96,512.9,512.8,517.53,525.18,529.3,529.76,522.61,535.07,541.15,543.45,533.69,539.44,529.05,533.52,531.87,532.95,521.08,524.51,532.6,531.33,531.01,530.14,521.91,507.12,520.99,555.8,535.93,530.61,545.18,533.16,521.13,523.0,523.88]},"META":{"label":"Meta","group":"customer","price":641.99,"close":641.69,"prevClose":623.61,"chg1d":0.0295,"chg5d":0.0522,"chg1m":-0.1286,"fromHigh":-0.1744,"betaQ":0.635,"betaN":0.203,"idioVol":0.383,"vol3m":0.366,"vol1y":0.436,"adv":14820963095.0,"mcap":1640314437632,"debt":114842001408,"cash":82448998400,"ebitda":116190003200,"inst":0.78,"shortFloat":0.034,"dd":7.888,"pd1y":0.0,"lastBar":"2026-11-13T15:30:00-05:00","spark":[549.47,558.58,569.6,575.69,570.65,577.56,571.89,578.08,592.38,610.2,616.28,613.0,653.17,643.87,647.52,665.08,669.71,672.78,681.77,665.23,741.25,736.6,744.1,777.59,751.66,715.62,738.79,725.18,725.93,728.08,741.9,738.88,721.31,720.89,718.67,742.96,762.5,737.54,736.72,709.33,705.44,694.25,697.52,648.85,642.62,630.56,620.19,612.49,624.52,614.99,606.73,621.03,630.0,605.08,610.15,641.37,641.39,628.77,623.61,641.69]},"GOOGL":{"label":"Alphabet","group":"customer","price":295.79,"close":295.77,"prevClose":298.7,"chg1d":-0.0097,"chg5d":0.0387,"chg1m":-0.153,"fromHigh":-0.2644,"betaQ":0.694,"betaN":-0.144,"idioVol":0.3,"vol3m":0.411,"vol1y":0.374,"adv":13668892646.0,"mcap":3636196016128,"debt":150330998784,"cash":265098002432,"ebitda":185515999232,"inst":0.805,"shortFloat":0.015,"dd":8.059,"pd1y":0.0,"lastBar":"2026-11-13T15:30:00-05:00","spark":[344.6,347.84,346.74,341.78,340.43,346.37,339.13,334.8,336.9,342.26,338.46,338.36,330.65,332.6,338.5,349.39,344.98,342.87,347.33,349.54,354.97,351.16,337.83,342.36,343.92,342.75,340.92,344.08,338.24,343.5,346.47,347.68,350.5,348.29,351.66,352.72,353.78,347.64,349.22,340.59,344.18,340.28,334.76,324.22,320.21,316.8,320.58,324.89,283.82,279.84,278.99,280.03,288.93,282.57,284.78,288.15,287.38,293.45,298.7,295.77]},"AMZN":{"label":"Amazon","group":"customer","price":266.61,"close":266.66,"prevClose":267.44,"chg1d":-0.0031,"chg5d":0.0282,"chg1m":0.0465,"fromHigh":-0.0613,"betaQ":0.713,"betaN":-0.138,"idioVol":0.308,"vol3m":0.323,"vol1y":0.368,"adv":13709472610.0,"mcap":2883431432192,"debt":304840998912,"cash":114226003968,"ebitda":183719002112,"inst":0.689,"shortFloat":0.01,"dd":7.973,"pd1y":0.0,"lastBar":"2026-11-13T15:30:00-05:00","spark":[258.63,262.07,261.06,260.28,256.26,266.43,259.77,254.92,254.98,258.9,258.51,256.97,252.4,251.89,256.78,253.54,248.42,245.96,251.19,253.71,258.45,254.98,249.27,249.38,249.67,246.15,246.67,249.15,248.23,251.52,251.4,256.29,259.92,254.06,262.43,259.53,258.58,254.08,254.76,250.0,262.45,262.63,262.37,250.38,248.0,249.09,253.1,254.6,243.79,240.35,245.63,250.69,266.03,260.21,259.3,266.93,270.87,266.17,267.44,266.66]},"ORCL":{"label":"Oracle","group":"customer","price":125.395,"close":125.35,"prevClose":127.11,"chg1d":-0.0135,"chg5d":0.0801,"chg1m":-0.0675,"fromHigh":-0.491,"betaQ":1.476,"betaN":0.157,"idioVol":0.483,"vol3m":0.677,"vol1y":0.607,"adv":5954224628.0,"mcap":390804701184,"debt":169142992896,"cash":37077000192,"ebitda":34432999424,"inst":0.438,"shortFloat":0.025,"dd":2.313,"pd1y":0.0104,"lastBar":"2026-11-13T15:30:00-05:00","spark":[145.93,141.93,144.23,148.32,151.38,150.29,148.57,140.8,145.21,153.47,158.19,161.92,161.03,152.38,149.73,144.26,139.83,142.63,150.04,147.07,148.01,148.65,144.03,139.03,136.59,132.11,137.28,136.79,137.56,141.78,141.95,144.24,143.03,135.19,141.4,137.39,143.2,130.55,134.47,128.23,129.59,131.14,129.13,125.54,126.16,126.06,130.53,144.54,139.56,130.67,119.22,126.19,123.73,115.16,116.1,119.79,117.98,128.38,127.11,125.35]},"BX":{"label":"Blackstone","group":"lender","price":120.19,"close":120.19,"prevClose":118.54,"chg1d":0.0139,"chg5d":0.0058,"chg1m":0.1111,"fromHigh":-0.2346,"betaQ":0.532,"betaN":-0.063,"idioVol":0.374,"vol3m":0.428,"vol1y":0.403,"adv":601873788.0,"mcap":148359348224,"debt":15491808256,"cash":3203692032,"ebitda":null,"inst":0.733,"shortFloat":0.026,"dd":5.968,"pd1y":0.0,"lastBar":"2026-11-13T15:30:00-05:00","spark":[142.02,142.28,142.05,141.85,142.28,141.04,141.89,135.37,135.53,136.38,134.86,132.7,127.85,124.22,127.3,127.08,125.5,122.28,124.22,123.78,125.22,122.84,118.14,116.1,117.3,113.48,112.92,111.03,111.18,110.69,110.59,112.29,110.77,111.62,113.21,113.7,108.94,105.21,108.17,105.6,106.08,109.3,108.53,117.63,116.86,117.93,115.6,115.95,119.46,117.39,120.14,118.19,125.57,119.82,119.5,124.05,122.53,122.01,118.54,120.19]},"OWL":{"label":"Blue Owl","group":"lender","price":9.745,"close":9.75,"prevClose":9.75,"chg1d":-0.0005,"chg5d":0.0149,"chg1m":0.111,"fromHigh":-0.364,"betaQ":0.798,"betaN":-0.077,"idioVol":0.446,"vol3m":0.467,"vol1y":0.478,"adv":205345215.0,"mcap":15366263808,"debt":4161686016,"cash":213607008,"ebitda":1298077056,"inst":0.898,"shortFloat":0.162,"dd":4.071,"pd1y":0.0,"lastBar":"2026-11-13T15:30:00-05:00","spark":[11.41,11.42,11.53,11.54,11.75,11.75,11.97,11.42,11.34,11.58,11.49,10.97,10.62,10.2,10.33,10.2,10.01,9.9,9.74,9.62,9.8,9.66,9.39,9.04,9.11,8.95,9.07,8.89,8.75,8.88,8.77,8.87,8.91,9.06,9.28,9.13,9.08,8.6,8.77,8.65,8.76,9.0,8.97,9.49,9.15,9.13,9.1,9.46,10.18,10.1,10.38,10.1,10.41,9.67,9.6,10.14,10.21,10.19,9.75,9.75]},"APO":{"label":"Apollo","group":"lender","price":123.48,"close":123.47,"prevClose":121.35,"chg1d":0.0176,"chg5d":0.0576,"chg1m":0.1038,"fromHigh":-0.1812,"betaQ":0.542,"betaN":-0.071,"idioVol":0.358,"vol3m":0.384,"vol1y":0.37,"adv":476070559.0,"mcap":72900714496,"debt":44892000256,"cash":40616001536,"ebitda":null,"inst":0.645,"shortFloat":0.039,"dd":3.984,"pd1y":0.0,"lastBar":"2026-11-13T15:30:00-05:00","spark":[132.69,132.79,133.18,133.67,133.44,135.04,136.58,131.69,132.29,134.49,133.67,131.81,130.98,127.91,128.98,128.31,127.0,124.53,126.0,125.91,127.91,124.15,124.36,120.69,121.69,119.0,119.0,116.06,114.34,114.02,115.35,115.95,115.55,115.3,118.65,119.22,116.28,113.39,111.87,110.78,110.95,111.22,111.69,114.83,112.83,114.37,114.26,113.45,118.56,115.84,119.46,113.55,122.76,117.27,116.75,122.2,122.74,122.95,121.35,123.47]}},"market":{"QQQ":{"price":679.89,"chg1d":-0.012,"chg1m":-0.0661,"fromHigh":-0.105,"vol3m":0.261,"adv":35991230253.0},"SMH":{"price":486.75,"chg1d":-0.0299,"chg1m":-0.129,"fromHigh":-0.2723,"vol3m":0.498,"adv":6281448263.0},"HYG":{"price":76.94,"chg1d":-0.0005,"chg1m":0.0027,"fromHigh":-0.0226,"vol3m":0.046,"adv":3628518273.0},"^VIX":{"price":19.3,"chg1d":0.0321,"chg1m":0.1725,"fromHigh":-0.3784,"vol3m":2.216,"adv":0.0},"BTC-USD":{"price":64858.781,"chg1d":-0.0497,"chg1m":-0.1972,"fromHigh":-0.2511,"vol3m":0.338,"adv":2121234338891965.0},"^W5000":{"price":75404.922,"chg1d":-0.004,"chg1m":-0.0199,"fromHigh":-0.0338,"vol3m":0.161,"adv":0.0}},"levEtfs":{"CWVX":{"underlying":"CRWV","lev":2,"aum":66797096,"price":4.53},"CRWG":{"underlying":"CRWV","lev":2,"aum":96617264,"price":5.37},"CRWX":{"underlying":"CRWV","lev":2,"aum":4074548,"price":5.89},"NEBX":{"underlying":"NBIS","lev":2,"aum":120261224,"price":5.05},"NBIL":{"underlying":"NBIS","lev":2,"aum":162137600,"price":4.95},"IREX":{"underlying":"IREN","lev":2,"aum":35184264,"price":2.07},"WULX":{"underlying":"WULF","lev":2,"aum":21643354,"price":7.65},"APLX":{"underlying":"APLD","lev":2,"aum":52507420,"price":2.435},"NVDL":{"underlying":"NVDA","lev":2,"aum":2931027200,"price":17.83},"NVDU":{"underlying":"NVDA","lev":2,"aum":410770144,"price":70.95},"NVDX":{"underlying":"NVDA","lev":2,"aum":318145248,"price":10.01},"TQQQ":{"underlying":"QQQ","lev":3,"aum":32062332928,"price":57.68},"QLD":{"underlying":"QQQ","lev":2,"aum":13255691264,"price":79.3},"SOXL":{"underlying":"SMH","lev":3,"aum":18286372864,"price":58.32}},"corr":{"tickers":["NVDA","CRWV","NBIS","IREN","WYFI","GLXY","APLD","CORZ","CIFR","WULF","ORCL","MSFT","META","OWL","QQQ"],"m":[[1.0,0.526,0.556,0.672,0.482,0.542,0.65,0.527,0.521,0.547,0.511,0.21,0.199,0.246,0.737],[0.526,1.0,0.866,0.786,0.828,0.748,0.779,0.808,0.698,0.746,0.724,0.217,-0.035,0.208,0.676],[0.556,0.866,1.0,0.764,0.814,0.657,0.782,0.735,0.664,0.718,0.657,0.225,-0.04,0.174,0.639],[0.672,0.786,0.764,1.0,0.801,0.817,0.885,0.825,0.802,0.819,0.645,0.38,0.008,0.238,0.721],[0.482,0.828,0.814,0.801,1.0,0.689,0.812,0.805,0.761,0.8,0.625,0.281,-0.078,0.121,0.609],[0.542,0.748,0.657,0.817,0.689,1.0,0.828,0.847,0.815,0.812,0.658,0.254,0.025,0.191,0.639],[0.65,0.779,0.782,0.885,0.812,0.828,1.0,0.875,0.821,0.891,0.658,0.352,0.081,0.271,0.77],[0.527,0.808,0.735,0.825,0.805,0.847,0.875,1.0,0.835,0.9,0.695,0.331,0.035,0.198,0.635],[0.521,0.698,0.664,0.802,0.761,0.815,0.821,0.835,1.0,0.878,0.521,0.262,-0.04,0.073,0.521],[0.547,0.746,0.718,0.819,0.8,0.812,0.891,0.9,0.878,1.0,0.656,0.352,0.115,0.151,0.665],[0.511,0.724,0.657,0.645,0.625,0.658,0.658,0.695,0.521,0.656,1.0,0.353,0.158,0.331,0.693],[0.21,0.217,0.225,0.38,0.281,0.254,0.352,0.331,0.262,0.352,0.353,1.0,-0.05,0.365,0.468],[0.199,-0.035,-0.04,0.008,-0.078,0.025,0.081,0.035,-0.04,0.115,0.158,-0.05,1.0,-0.026,0.23],[0.246,0.208,0.174,0.238,0.121,0.191,0.271,0.198,0.073,0.151,0.331,0.365,-0.026,1.0,0.376],[0.737,0.676,0.639,0.721,0.609,0.639,0.77,0.635,0.521,0.665,0.693,0.468,0.23,0.376,1.0]]},"news":[{"q":"CoreWeave","title":"Is CoreWeave Stock a Buy After Its Latest Earnings? - The Motley Fool","link":"https://news.google.com/rss/articles/CBMimAFBVV95cUxOZ1dYWW9iT2Y3amZ6S0VnVFdzcGFzcFB3QzJLN2pKdkpsT1duZDJwa3UzVWxyUnVNaFZxcEt5S3pUeFJRamJDeFNScDVOdG5iejhScS1sUnQ5N2NhclIzbG9FbC1yQ1hvbVEyVGd3OGQ3RFlsQ2ZmLXYyUmFtRDRpTmxzclYtVmh5YlBEZTFZUUpyQm9GdlBNRw?oc=5","date":"Sat, 14 Nov 2026 20:47:00 GMT","src":"The Motley Fool"},{"q":"Nvidia stock","title":"A petition to reinstate Jensen Huang as Nvidia CEO has over 100,000 signatures, including some big names - Business Insider","link":"https://news.google.com/rss/articles/CBMikgFBVV95cUxOYkRibzV3RlFkczI4cG44NEVaVDZJSkFDVTdRd2RncVRjdDRpT0plb1VnNlhnV1hCMkFaOWNLak90Xzk0ZjVnMll3cUZROTRPd211b0tVbEJrano4WTRHN2x4dU9nWFpoc1VGUnJaaFJ6LU9zdFBndWNJeWUyT0dKMUZJVXhJY0V2Sl9lX1BVcUNGQQ?oc=5","date":"Sat, 14 Nov 2026 20:35:00 GMT","src":"Business Insider"},{"q":"Nvidia stock","title":"The Chinese spy allegation that toppled Nvidia's CEO is starting to look shaky - Business Insider","link":"https://news.google.com/rss/articles/CBMipAFBVV95cUxOWTNUMDdhTjZBOXhTMUpjTVZsdm9oM1hDRkdhblZHTTlEbzFlbVgxN0VtUVdXMlVNSDNaSldFTS1VdkhpUzBvZ0x4SUxRbWV5SHVMc0RUNmt3dUxUTHJEVGF3RHdxbER1V1dxVU9hY0g1dEpZdE1WVGVQNlFCRlY4S1VqaVN2aG9zazBGUDJwZWt1WHcwai14X0ZhNkhoeXNUcG83Zw?oc=5","date":"Sat, 14 Nov 2026 20:00:00 GMT","src":"Business Insider"},{"q":"Nvidia stock","title":"New Rally Shaky, But Many Stocks Set Up. Nvidia, Anthropic Ahead. - Investor's Business Daily","link":"https://news.google.com/rss/articles/CBMi3gFBVV95cUxPQmoxeERFTVM2VG9DVVBnRERlZG4tcU0tOGFveC1mYlhEZEJydUZNM2ptaExRYU1LYXg3XzlUUHhtZ29JSF9OYlZtd0FSaF9mME9TYzhTWUVJT0lSSGVPSTMxZlhkTWhQMVp4MkRFVUdUZHRTNVd1bTdTckF2Q3VYdUxKY3kyaFpDaTZkQ1BVMHdrTUNQLUhnVVhPZzJIM3h6Tlg2THNnZU5NRDRvV3NFZUlta28wVXloNGhfNUFFTWdKR3Q3Vk05RnBhQXdWQkl3UTlGRC1RRGo2QU9rTmc?oc=5","date":"Sat, 14 Nov 2026 19:30:00 GMT","src":"Investor's Business Daily"},{"q":"Nvidia stock","title":"NVIDIA (NVDA): Can AI Demand Sustain Growth Through Leadership Uncertainty? - Yahoo Finance","link":"https://news.google.com/rss/articles/CBMimAFBVV95cUxPZ0pZeVVHdkYxcndfVGlLN0VvdnRfZkFzZ2xpMTRUTXVNd1NTYUdyVFFPLU1xMGZXazlUSEREZk9iUDRub0o2OGlNZmVuYTJWRnk2U2ZwREpMN0t0YS03S2ExenhEMmRLZm5PeGVVeVBYLV9tNEhLLVJ2bDdqWWZtX0tSLW5lRUg0R1Iyb3NwQ3hWNEt6bTQ1NA?oc=5","date":"Sat, 14 Nov 2026 19:24:30 GMT","src":"Yahoo Finance"},{"q":"CoreWeave","title":"Anthropic, Nvidia, CoreWeave, Take-Two, D-Wave, Securitize, and More That Explain Today\u2019s Market - Barron's","link":"https://news.google.com/rss/articles/CBMiZEFVX3lxTFBadmZWU2FuV3dHLWppWGY3d25ISDFGQXpneE9HcDRqX21TSjNzbWVIbk1OWUZiaWJhVktkSDlQMk1sQmg0aDJYdzMwTDI1eGJaQVdfRGdDel9ndHhNaXhROGZPckI?oc=5","date":"Sat, 14 Nov 2026 18:55:17 GMT","src":"Barron's"},{"q":"Nvidia stock","title":"The Week Jensen Huang Fell: How a Spy Scandal Toppled Nvidia\u2019s CEO - Yahoo Finance","link":"https://news.google.com/rss/articles/CBMilAFBVV95cUxQcFVqMHQ5b2xua2w2NElyX2pUb1htSkRSTFJLZWpkaUswcHJwMEtMTWVON1FTMmlPV3FEWGc4TmtxbUhGODdFYmVFVFJ5Z1ZWTVdyaTdmM3VrdDRzallvbzh4VUpMNWdqaEVMRHFxazF4NEdjSmJUOUR0bk9WT0p6MWI2eVB6emQtWVBzMTQxdWRxSnVk?oc=5","date":"Sat, 14 Nov 2026 18:01:02 GMT","src":"Yahoo Finance"},{"q":"Nvidia stock","title":"Nvidia board urged to consider 'potential return of Jensen Huang' by two major investors - CNBC","link":"https://news.google.com/rss/articles/CBMijwFBVV95cUxOa01uZk9qV2Rxd1NnaGlxbGpwNlRMMUJUMzZDXzJDcDhDQ1hidlFqOHo5Qm5ZTXBSUXdFQzJDd21LVmwzOTJOT20zUG9kVmRZS09LbkZ6RkxyUW9DVUJ1VE1aaWpZc1ZqdmVNUk1ORUI5dmVMZjhWS0dJaDAxN2NCQlp0Mmh3UHBueWRuOGc1UdIBlAFBVV95cUxOcHpRUE1XYktjaFk5RmZuVXpfeThGVVE2Y1N3cnZOenVXQkVYejdldFVubGtCMk5JZkU5SVhTcUt6Q0pBVnVrNExoY2p5Qk9kWUJ0eks4Wk4xMlNsb0RleEF1Qmo3VDlXSE8wTkg3Vk1CR3M5LWYtNTVsRmRzWFVPUVg1OVdhSVpaRXRpTXBBZXB6Ujhr?oc=5","date":"Sat, 14 Nov 2026 17:35:51 GMT","src":"CNBC"},{"q":"Nvidia stock","title":"Elon Musk joins 100,000+ signers on a petition to reinstate Jensen Huang \u2014 including 5,000+ who say they work at Nvidia - Yahoo Finance","link":"https://news.google.com/rss/articles/CBMikgFBVV95cUxOcUFtUUhkeXFFYjNLV2w2bV9PcEJUbzRueVdpYkNTMUdaWWFqOVlSam1Qal9ValJPVUxrd0lpb3BrY0o1aUtzMTJnamRhWFUydHVKN3A0WERvRnJfV0VQb1JyTTFiNkRaY2VoUXZScnNpeHk2RDVxNk5OUXphdUtSS0cweW4wSzQ1NmstUUV6ZTYxUQ?oc=5","date":"Sat, 14 Nov 2026 17:25:00 GMT","src":"Yahoo Finance"},{"q":"Nebius stock","title":"Innodata vs. Nebius: Which Technology Stock Is a Better Buy for 2027? - The Globe and Mail","link":"https://news.google.com/rss/articles/CBMi5gFBVV95cUxPQ2tlMng1NUFubWxvMEI1ZGloT09wTkg0aG9KYjRMbHFsZEJxOERFUjhZbnh4R3Ytakx3V2pmT1dMSjM4azlVbXBqNDJWdGNYUWdIVFhOV1dBT3FfVDllbUUwNG5qZmR2akhkb2Y0UWpyZUVFMWNWLXpLYXZTSDRNRTRuWnNkV2lwOW9uc2Y5YjlNVXRoU1lhbWZPM3JwNDFZMzV1NnlmQjJqWjZ4bHBHaV80TWpzYllha1VSREFEbjRXaS1lT0N2Vy1QRGd1bkZHbWoxVHFkRVdtdm5LWEJVdnpBYmwydw?oc=5","date":"Sat, 14 Nov 2026 16:50:20 GMT","src":"The Globe and Mail"},{"q":"IREN stock","title":"IREN's Contracted Growth Is Signed, Sealed \u2014 and Running Late - ad-hoc-news.de","link":"https://news.google.com/rss/articles/CBMiygFBVV95cUxPQ00tcFB0eWRlTTdHMm12S0dCUl94U3UzekszZTE4WGZuZ2lGWnpXVEdhc3Vxd084ZnZDaUdfbm1ZZWNRaHRUUjJ2WFNWMDM1clFCM0gzazkxdVpsU2xBSnZJRUk1czhJTndOUlJSOVdrZ3JjOGRuN3VLNWFSR05SbWZOLUVMWHBBenkwbXJkNWhjYkZTVlJxcWJOMHlnR3FReVVfQldwMG8xWTEzajdJdG5zVkJRbHlXNVowZU84dk5ySXpQM0xOdlNn?oc=5","date":"Sat, 14 Nov 2026 16:41:01 GMT","src":"ad-hoc-news.de"},{"q":"Nvidia stock","title":"After Jensen Huang\u2019s Departure, Nvidia Just Did Something It Hasn\u2019t Done Since 2019 - Yahoo Finance","link":"https://news.google.com/rss/articles/CBMioAFBVV95cUxQLVU2bVFMMUs0RmxpaXFOMExhMVQweGtDeDgzMXZsRU1sbElhSlVhS0V4ZlFVeEk3YnVuUEVCbTN0WnNJMDJySFNSNmw0aE5ramZzQUFzNlk2VWtHWlRzUGRrZ0RzMUo3VVlBLWd4NE85VzZ5WDk0MVR1T25KR2gwaFd0SDNQRm96c3drdURCUWJYck5BRjJEN011eDM0Q3lF?oc=5","date":"Sat, 14 Nov 2026 16:30:02 GMT","src":"Yahoo Finance"},{"q":"Nebius stock","title":"Innodata vs. Nebius: Which Technology Stock Is a Better Buy for 2027? - The Motley Fool","link":"https://news.google.com/rss/articles/CBMiuwFBVV95cUxNLTZ2WUdYbk1IZjdIRngtakJEaTNEdTFEQ2FvZVItQXhBN01sY21FRElaaWFCOVZGZXlQVHVXUU5WdHRRSXNLMEZmNlpaMDNiMHNvQ0hoWkh0cUZac0dVbHA0M1pBbU5uRDFURHNsZTVKeVdHWmhHVXptUzRHME9SNVMtSG54eDlyd2RCeWNlQ29FVm1ES2RrbUYtQnduU2Rxc2JpMjB0QTVJUmlpdGhuSVpLSFA2emtWSEhJ?oc=5","date":"Sat, 14 Nov 2026 16:30:00 GMT","src":"The Motley Fool"},{"q":"Nvidia stock","title":"After Jensen Huang\u2019s Departure, Nvidia Just Did Something It Hasn\u2019t Done Since 2019 - The Motley Fool","link":"https://news.google.com/rss/articles/CBMiwwFBVV95cUxPSk1RNm5Ub2pUQU9TdUhBUFd2MmxxU0pWVkZDZEw4UlUySkhJVTBKRnc1ZEhuOGM3dXhOTGpMR2xKVnBnMjZWTkNvRnRad29fS2g2QWZoVUc1WUM4UW0xa2ZpWU1hWDY0WU1HaS1uX0R4MW5tcUd5N0ZnUzBUaXlvdWxDT25MUDVxX2FlNlRPZHJQZFhqZVQ2eExGVjF1dkxhaHJ6N19jSmtMcEtEZ01aT0lsUHZFdm9mNTZ4RHFkZWpfeVk?oc=5","date":"Sat, 14 Nov 2026 16:10:00 GMT","src":"The Motley Fool"},{"q":"Nvidia stock","title":"Why the biggest risk for investors in 2027 isn't Nvidia \u2014 it's inflation - Yahoo Finance","link":"https://news.google.com/rss/articles/CBMixAFBVV95cUxPUU1XbGRvSFRiYXFKSm1KSWdMSDhyRWVnRGYycnhNTW93aVdWeWNjYWFSSmU5YzBCRmltT3M2WGJsdjN5ODRLdG5hTnk3VkZrekxpYnpOWkRqcnk2YnQybXhES2dGc0YxSEhCX1Z4Mm1WUUZRUTE1ZlRNV05KR2Y3SGxxVDRQQmlhWjFUaXFhdTdGb1dQdUFCb1Fyay0xVFNpV3lsVVg5Q20zYUVPWWtMYnRxTVlxcUY0YWx6N2RFOHpkY2ZI?oc=5","date":"Sat, 14 Nov 2026 16:02:41 GMT","src":"Yahoo Finance"},{"q":"neocloud","title":"How Nvidia turmoil and a Democratic Congress could reshape the AI trade, according to ETF experts - CNBC","link":"https://news.google.com/rss/articles/CBMihAFBVV95cUxNVmUtc1QxWXRCRzgzZkpYYXA2cHpTTkZITDkteVdCU0o3YzAxSDVvLU9venJ3cmhYdHNCRzFEUmY4bjlHOXNxU3JscnRDdXJkS192Vy00N1lIalhTY2VpSkhQUWt2QTZqSkt0V0FGSml4UFZiTWpPSDJ3cHIteFpWZ3JINjLSAYQBQVVfeXFMTVZlLXNUMVl0Qkc4M2ZKWGFwNnB6U05GSEw5LXlXQlNKN2MwMUg1by1Pb3pyd3JoWHRzQkcxRFJmOG45RzlzcVNybHJ0Q3VyZEtfdlctNDdZSGpYU2NlaUpIUFFrdkE2akpLdFdBRkppeFBWYk1qT0gyd3ByLXhaVmdySDYy?oc=5","date":"Sat, 14 Nov 2026 15:50:43 GMT","src":"CNBC"},{"q":"Nvidia stock","title":"Big Shareholders and 3,000 Nvidia Employees Want Jensen Huang Back - Yahoo Finance","link":"https://news.google.com/rss/articles/CBMimgFBVV95cUxNVXZVSDVsclVqUDBxOUVFajlYZ0tJa2tkdndnV2psOHJ5VmN2LTlfejVzaGlYWUo1MUFrOGtEcDBBcHdxbUpaTXhteVAxdlFPQUNkZXc4SkNFMElMci1McmlGekRsSGJLc2ZzM0R5TG9XTnVQRGJ1NDUzXzRwTWNMcG13UDl1U2RGbzgxdlhpb21JbUFwRG1adENn?oc=5","date":"Sat, 14 Nov 2026 15:49:58 GMT","src":"Yahoo Finance"},{"q":"CoreWeave","title":"CoreWeave Stock Surges as Revenue Soars. Is It Too Late to Buy the Stock? - The Globe and Mail","link":"https://news.google.com/rss/articles/CBMi7AFBVV95cUxQb0Y1YUM0cXZrSk1qX1lkclBjVHo3THZzV1FsNlc1blFTdnFYY3EzbUstQ2EzMlB1d01EWHh4WWNwMnJBTTJLSzMydjhFVFdwR2IwQjBrNndGZ2NLZ1BaNTdVRlBxTTZOVDNNbkREWXdnd0R2c1hGZTFVWE9mNVg1dUxfZEhzRHFzRjdTa25jeFVVcFBlcVVIdnBrclhsdjlrUjBoMm5IUHlxaXMtLWs1d212eDBHSGViMXJHVnowTUFqckpRZ3dsZVNfd0NjeUxjU212WEc2YlBJT2NQdS1WV0Zad0hJNG93M3I1UA?oc=5","date":"Sat, 14 Nov 2026 15:42:47 GMT","src":"The Globe and Mail"},{"q":"Nvidia stock","title":"AMD Just Crushed Nvidia by 32 Points After Scandal. Here\u2019s How NVDA Can Come Back - Yahoo Finance","link":"https://news.google.com/rss/articles/CBMilgFBVV95cUxOSjMwR3Z2UENUSFFhWktnMFdqSkNoTTFCVmYzd2xNdXFjbUlEVzh5QXRSU1NsVVQ5ZzVzU3VwOGFYOXByOHpaU3hzdTE4NE9UaE9MRG9GbTY1cGZydUMzbXVKcWtySDVKN1I0VkJPazVVcFNDOWQzeXRNTW5rSjNTc29jNVd4UHNPeWxqVTlFTTNRbFNIdVE?oc=5","date":"Sat, 14 Nov 2026 15:41:51 GMT","src":"Yahoo Finance"},{"q":"AI data center debt","title":"CoreWeave Plans Customer-Linked Loans as Debt Reaches $46.9 Billion - www.tokenpost.com","link":"https://news.google.com/rss/articles/CBMiWEFVX3lxTE5UcG5EMHVkWVpnNk8zWHNTRDNvNHdFYzJrZHZTcVRoMXFoU29VUm1nZmREcG9iR3ZkbENjZmZNX0RwT2JMaHBCY3ZMZy1kUDdSRUJTeG1oeWk?oc=5","date":"Sat, 14 Nov 2026 15:27:41 GMT","src":"www.tokenpost.com"},{"q":"CoreWeave","title":"CoreWeave revenue jumps 168% to $4B in Q3 2026 despite $709M net loss - Crypto Briefing","link":"https://news.google.com/rss/articles/CBMimgFBVV95cUxQT3JrcnpFR3RhSXN0TVdqN2dMSnZGUWNxZ2NmNEtIUk0yS1F1ODFCOEFVMXJDQnlyUnhUUFRZdUFFcVNseGpKZXJNODRYakRPZDVRcW1FZ0k3ZEFBZ3NpNV9mYXotZmdfUUg1TU80WktfcGx6WmZudHI5bnlUblVxcWo3Z3A2T25lWWtJeXdoT1c1Z1djR1doclF3?oc=5","date":"Sat, 14 Nov 2026 15:19:08 GMT","src":"Crypto Briefing"},{"q":"Nebius stock","title":"Which Big AI Company Goes Bankrupt First? - Nanalyze","link":"https://news.google.com/rss/articles/CBMifkFVX3lxTE5wc21sYVE2ZnZVdjhUeERFUnRLLThwRzlrS044R3loVnZSSmlOWHZ3dXZIT2tlRE9maE1MYk9KeVNHdi05TVNhZElIZzJlVDVxc0liQTRUSTYyZGh2ZnBuQm5DLWJlYlNQX3hfVmVqc1FfcS02alpLZGprQ0M0QQ?oc=5","date":"Sat, 14 Nov 2026 14:58:09 GMT","src":"Nanalyze"},{"q":"CoreWeave","title":"Prediction: This Will Be CoreWeave\u2019s Stock Price After 1 Year Following Its Stunning Results (Hint: It Implies a Big Move) - The Globe and Mail","link":"https://news.google.com/rss/articles/CBMiqgJBVV95cUxObkJ1M09sdld6YjhMRWFyVE1kbEh4enZMNzRtVnlHRU4zT2lkd3dSc0hLQ0g2MEJIT2k2RUpRVXNaMVk0WDFVMVhsS0NLRG5UcnJXRmZBQWdCUHJ3dDUyaDVuYllyOFhRSlhiSWlHMXVQaklrZkxCT2pVUUVUZHBkek5wSndRN3Z2cVYzR1c5Z1BYbFJlV2xvelJhZGIwREJxR1F4QlFTQllScTB0a3EtTV80YVlIb2F3TDI1TjhzSGhhcWp3SG80UHpnQkxZYlVyOHU4WkM2Y1BnM0t2UkhDaWRfcHN6Y1ZGWkhqaUM4d05HUHViUVlsSDgwcUgtNWZxbndaNG1mRzZ3cXkyYVRLMEhRODAwNDBEUWdDd2R4Nk9id2taOElQNXdB?oc=5","date":"Sat, 14 Nov 2026 14:51:33 GMT","src":"The Globe and Mail"},{"q":"Nvidia stock","title":"A 63-Year-Old Trying To Harvest A $40,000 Loss In Nvidia Stock Before Year-End Faces A Potential IRA Trap. A 2008 IRS Ruling Means One Easy Mistake Could Wipe Out The Write-Off Permanently - 24/7 Wall St.","link":"https://news.google.com/rss/articles/CBMi1wJBVV95cUxQY0E5RDg0YXVCX1FkZFVzeTVUWGFhSzhuUW5tb1BFV0gtYXhuM1BXNXViX0lYUjUtZm8zcUFhNFk5Vkk5NGFfSi15NlFnV2Zqa3ZXd1RkZFJRQ2Q1S2JDaTZtR1pCR3VjQmZoSkwtOWs2aVNQTHdfTVhKRzdRWUxVYWdDNjU4eEFSLWVMQWVwU0FMb21NTTJKbldNb1FWRExUQlJLdGZMU3VUSWNJVGRvbEJ1LVF2NmZZOXJvMm9MVzY1eF91cFNVa3NwZk01bmV3UVVNLVFpUVUwUjZvUFlGemVDUjFkZUxjc1lWbnUtVUc1UkpjZmkyTS0ySXROVnZTRllJQlBmWnF5b0Z0NGJhWVFoaWxwenZpNFp1TVYxS25DS0RYUF8tTXVTN0hZbnlid0g4aTRjbG4xM0NkeEhLWFJvdzRFaFlzZmEtd0JxNmZmdFVWaHdv?oc=5","date":"Sat, 14 Nov 2026 14:43:00 GMT","src":"24/7 Wall St."},{"q":"CoreWeave","title":"CoreWeave Jumped 20% and Pulled Oracle Higher. Is It Time to Sell, or Load Up? - TIKR.com","link":"https://news.google.com/rss/articles/CBMiogFBVV95cUxPZzV6SkpXd3RNMk9XQm85TzlhcExMQ0hDWDFjODJZbk9EcGlBMkQycXRkVmI1eDZ4LTY3QjY5S2pub2g2Wk0weXdCNlhUVndqemdabm04c2REVGl2RDhSV053WWpuTU1EcldKRTV0SVFzX0ZkUmNBaTdoTGZOdU9sMGtIVWFqemtCLW5rbUx4UDlHYW1sLUdSdFU1VWhUQndhZ2c?oc=5","date":"Sat, 14 Nov 2026 14:37:30 GMT","src":"TIKR.com"},{"q":"CoreWeave","title":"Korea Circuit Jumps 51% on Broadcom Tailwind; AI Substrate Growth Seen Doubling Up - BigGo Finance","link":"https://news.google.com/rss/articles/CBMidkFVX3lxTE1PVVdGZG0zVzVONGdlV1FFbTZmcy0wNUs5dDBBZVAzc3VKZGluVkV3eWFyZkpQYTFOOFVYTENVelBVZGdmNERvYllPMFdJX2RrelJ6UmZ4ZjZZTW5YNGZYYUdsUkFvTHlmcjhNcnJ1MzdMSlBDM2c?oc=5","date":"Sat, 14 Nov 2026 14:35:00 GMT","src":"BigGo Finance"},{"q":"Nebius stock","title":"Nvidia's lost week in numbers: $1.7 trillion gone, the longest losing streak since 2012, and why AMD and Broadcom rallied - MLQ.ai","link":"https://news.google.com/rss/articles/CBMi0gFBVV95cUxPcGtkdENUQnFuc08tbWFncG1zbU1KbHlKekVSZm9Da1pKdkpPNGtKb0k1N2RPUmktY2c5SnZfZU9mbHhCVmtQUzZSQzNlMW5lRXBOVVRGTEFPYkFZdC1tdWdMeWZyYmlraHFNbktRV3NCTnF3SUFaQXNiYTFCanU4VUhTbmtGU0NCVENFZVNCcnN5ME9yTW96d0ttYzBDcHpXbXBBNEwzdmgwU0JGaTlEbG9oS2h5MlZ1QUpmQmlRdlRwZURXSUtkMmM0ZUVlcjJfUXc?oc=5","date":"Sat, 14 Nov 2026 14:09:35 GMT","src":"MLQ.ai"},{"q":"Nvidia stock","title":"Think Nvidia Stock Is a Bargain? 6 Reasons the Face of the AI Build-Out Can Plunge Another 50% Following Jensen Huang's Resignation. - The Motley Fool","link":"https://news.google.com/rss/articles/CBMi2gFBVV95cUxNMC1mNjM1NGl0eGFyd2tUM0gzclZmbndNSVZKX1F6WDJ3VDRxbURIWnpJbnBmV2xtUnczLTNleGZXOW5VNHhob0x4cmhqTlZOVFd0bXd1MUwzblJxSHRLZ3FWWUxpWjVpY0ItT0VtNzl1LUNjLXZVaU1ZSm82cDlCbklNcWZ6M3BuUi02RWRsYTV3YlVWTE5obUpJUTU3Rk91Y2ExY2g0Rlpib0pfaTNraEtCTmY5UlBYRWFRcml6c2V0QUptQkFCQS1ROERUMjFwU2ktZVhzYURjQQ?oc=5","date":"Sat, 14 Nov 2026 14:06:00 GMT","src":"The Motley Fool"},{"q":"Nvidia stock","title":"Nvidia Stock Falls Below $165 After Its CEO Resigns: Is It a Bargain Buy? - Yahoo Finance","link":"https://news.google.com/rss/articles/CBMimAFBVV95cUxNenJRUDJwOENPWU80dGxWN2JyOVhSZkVyVmVIT0tETGUxamdnUENsRGJMWFRFSWdxelZoY3FIS2oyWUtUTDh0SU9hbjN2ZzJSNWdfRTl3X1JoMWJZQS1KM2RvcGRDLWxRV2Nnak96SnpTSmtZb0pxSE5ib3JJU2pTNFkzMlFlQW9TQ1VzN2FWS3IxZUs4OVJSbA?oc=5","date":"Sat, 14 Nov 2026 14:01:02 GMT","src":"Yahoo Finance"},{"q":"Nvidia stock","title":"Jensen Huang Is Out. What Happens to Nvidia Stock Now? - TradingView","link":"https://news.google.com/rss/articles/CBMitwFBVV95cUxOc09SUWp5ZEg4UmgzV214T3JCaFRNa0ZGemtTU2ZYelRRUml0NG1vQ1J5cVNIdGZ6MjVfMjhMTkltN0pTMGhZblBHbnZyeVJXQnpNblgwdVowQWxJRmFGb0pKWU0yaUtqdUNWOXdNQTVkUXgyakMzWWlYUVZVNzRRbk53dWRuNHRTR09abkc4MzFvbEYtc0FzdHJIdVl5bHA2VFJHdjlFSGFCSzgtMkN4dTNOd3lvc1k?oc=5","date":"Sat, 14 Nov 2026 13:55:00 GMT","src":"TradingView"}],"alerts":[{"key":"basket-2026-11-14-dn","kind":"systemic","text":"Neocloud basket -5.5% last session"},{"key":"CRWV-pd15-2026-11-14","kind":"credit","text":"CoreWeave model 1-yr default probability 33% (Merton toy)"},{"key":"NBIS-2026-11-14-dn","kind":"move","text":"Nebius -10.0% last session"},{"key":"NBIS-pd15-2026-11-14","kind":"credit","text":"Nebius model 1-yr default probability 17% (Merton toy)"},{"key":"IREN-pd15-2026-11-14","kind":"credit","text":"IREN model 1-yr default probability 28% (Merton toy)"},{"key":"WYFI-2026-11-14-dn","kind":"move","text":"WhiteFiber -8.7% last session"},{"key":"WYFI-pd15-2026-11-14","kind":"credit","text":"WhiteFiber model 1-yr default probability 29% (Merton toy)"},{"key":"GLXY-pd15-2026-11-14","kind":"credit","text":"Galaxy (Helios) model 1-yr default probability 26% (Merton toy)"},{"key":"APLD-pd15-2026-11-14","kind":"credit","text":"Applied Digital model 1-yr default probability 20% (Merton toy)"},{"key":"CIFR-pd15-2026-11-14","kind":"credit","text":"Cipher model 1-yr default probability 41% (Merton toy)"},{"key":"WULF-pd15-2026-11-14","kind":"credit","text":"TeraWulf model 1-yr default probability 18% (Merton toy)"},{"key":"AMD-2026-11-14-dn","kind":"move","text":"AMD -8.8% last session"}],"beta_nvda_qqq":1.2948,"newAlerts":[],"alertKeys":["AMD-2026-11-14-dn","APLD-pd15-2026-11-14","CIFR-pd15-2026-11-14","CRWV-pd15-2026-11-14","GLXY-pd15-2026-11-14","IREN-pd15-2026-11-14","NBIS-2026-11-14-dn","NBIS-pd15-2026-11-14","WULF-pd15-2026-11-14","WYFI-2026-11-14-dn","WYFI-pd15-2026-11-14","basket-2026-11-14-dn"],"basket1d":-0.0545}</script>
+<script>
+(()=>{"use strict";
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const pct=(v,d=1)=>v==null?'—':(v>0?'+':'')+(v*100).toFixed(d)+'%';
+const usd=v=>{if(v==null)return '—';const a=Math.abs(v),s=v<0?'−':'';return a>=1e12?s+'$'+(a/1e12).toFixed(2)+'T':a>=1e9?s+'$'+(a/1e9).toFixed(1)+'B':a>=1e6?s+'$'+(a/1e6).toFixed(0)+'M':s+'$'+a.toFixed(0)};
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+let D=JSON.parse($('#seed').textContent);
+
+/* ---------- static web definition (verified ties, see sources) ---------- */
+const POS={NVDA:[140,150],AMD:[140,240],DELL:[140,330],SMCI:[140,420],
+ BX:[140,560],OWL:[140,645],APO:[140,730],
+ CRWV:[440,150],NBIS:[440,245],IREN:[440,340],WYFI:[440,435],LAMBDA:[650,150],CRUSOE:[650,245],
+ CORZ:[420,590],APLD:[600,590],GLXY:[780,590],WULF:[500,700],CIFR:[680,700],FLUID:[860,700],
+ OPENAI:[870,150],ANTH:[870,250],MSFT:[1100,150],META:[1100,245],GOOGL:[1100,340],AMZN:[1100,435],ORCL:[1100,530]};
+const ZONES=[[['NVDA','AMD','DELL','SMCI'],'CHIPS & HARDWARE','#c9d4e6'],[['BX','OWL','APO'],'LENDERS · PRIVATE CREDIT','#f6b13c'],[['CRWV','NBIS','IREN','WYFI','LAMBDA','CRUSOE'],'NEOCLOUDS · COMPUTE PROVIDERS','#38d6f5'],[['CORZ','APLD','GLXY','WULF','CIFR','FLUID'],'LANDLORDS · POWERED-SHELL HOSTS','#2dd4bf'],[['OPENAI','ANTH','MSFT','META','GOOGL','AMZN','ORCL'],'CUSTOMERS · HYPERSCALERS & LABS','#a78bfa']];
+const PRIV={LAMBDA:'Lambda',CRUSOE:'Crusoe',FLUID:'Fluidstack',OPENAI:'OpenAI',ANTH:'Anthropic'};
+const ET={supplier:['#c9d4e6','Chip / hardware supply'],equity:['#a78bfa','Equity stake'],lease:['#2dd4bf','Lease / hosting (landlord ← tenant)'],contract:['#38d6f5','Compute contract (customer → provider)'],lender:['#f6b13c','Lender'],backstop:['#f6b13c','Backstop / guarantee (contingent)']};
+const EDGES=[
+ ['NVDA','CRWV','supplier','Primary GPU supplier',13],['NVDA','NBIS','supplier','GPU supplier',0],['NVDA','IREN','supplier','GB300 GPUs (bought via Dell)',10],['NVDA','WYFI','supplier','GPU supplier',0],['NVDA','LAMBDA','supplier','GPU supplier',16],['NVDA','CRUSOE','supplier','GPU supplier',0],
+ ['DELL','IREN','supplier','~$5.8B GPU & equipment purchase',10],
+ ['NVDA','CRWV','equity','~11% stake after $2B Jan 2026 buy',14],
+ ['NVDA','CRWV','backstop','$6.3B order: buys unsold capacity through Apr 13 2032',15],
+ ['NVDA','LAMBDA','contract','Leases back ~18k of its own GPUs, ~$1.5B',16],
+ ['CRWV','APLD','lease','Polaris Forge 1: ~400 MW, ~15-yr leases, ~$11B',17],
+ ['CRWV','CORZ','lease','Sole customer; >$10B over 12 yrs',18],
+ ['CRWV','GLXY','lease','Helios: 15-yr leases, >$1B/yr avg at full build',19],
+ ['FLUID','WULF','lease','10-yr leases at Lake Mariner',20],['FLUID','CIFR','lease','10-yr colocation lease',21],
+ ['GOOGL','WULF','backstop','Backstops ~$3.2B of Fluidstack rent; ~14% warrants',20],
+ ['GOOGL','CIFR','backstop','Backstops $1.4B of Fluidstack rent; ~5.4% warrants',21],
+ ['MSFT','NBIS','contract','~$17.4B (up to $19.4B) through 2031',22],
+ ['MSFT','IREN','contract','~$9.7B, 5 yrs, 20% prepayment',10],
+ ['MSFT','CRWV','contract','Largest customer historically',23],
+ ['MSFT','LAMBDA','contract','Multibillion GPU deal',24],
+ ['META','CRWV','contract','~$14.2B contract (backs DDTL 4.0)',4],
+ ['META','NBIS','contract','~$3B, 5 yrs',22],
+ ['OPENAI','CRWV','contract','Contracts reported up to ~$15.9B',25],
+ ['ORCL','OPENAI','contract','Reported ~$300B cloud deal',24],
+ ['CRUSOE','OPENAI','lease','Builds Abilene Stargate campus (Oracle/OpenAI)',26],
+ ['BX','CRWV','lender','Anchored $8.5B DDTL 4.0 (A3 rated)',3],
+ ['OWL','META','lender','Hyperion SPV: owns 80%, ~$27.3B bonds',9],
+];
+/* credit-exposure weights: share of target's value at risk if source has a credit event (judgment) */
+const EXPO=[
+ ['CORZ','CRWV',0.9,'CoreWeave is its sole AI tenant'],['APLD','CRWV',0.7,'Polaris Forge 1 fully leased to CoreWeave'],['GLXY','CRWV',0.35,'Helios data-center segment; crypto business separate'],
+ ['NVDA','CRWV',0.01,'Backstop capped at $6.3B vs ~$4T market cap'],['BX','CRWV',0.02,'Lender; diversified'],
+ ['NBIS','HYP',0.55,'Microsoft + Meta are most of the backlog'],['IREN','HYP',0.8,'Microsoft contract dominates growth'],['CRWV','HYP',0.45,'Microsoft, Meta, OpenAI concentration'],
+ ['WYFI','HYP',0.4,'Small, concentrated customer base'],['APLD','HYP',0.2,'Indirect via CoreWeave + hyperscaler lease'],['GLXY','HYP',0.15,'Indirect via CoreWeave'],['CORZ','HYP',0.3,'Indirect via CoreWeave'],
+ ['WULF','HYP',0.15,'Fluidstack rent backstopped by Google'],['CIFR','HYP',0.15,'Fluidstack rent backstopped by Google'],
+];
+const SRC=[
+ 'Yahoo Finance via yfinance: prices, market cap, total debt, cash, institutional ownership, ETF assets (live, unofficial).',
+ 'FINRA margin statistics via ycharts/thetrading.tools: margin debt record $1.502T (Jun 2026); $1.417T (Jul 2026). https://www.thetrading.tools/chart-of-the-day/2026-09-10-margin-debt-record-drop',
+ 'Wing VC, "How the GPU Became Collateral." https://www.wing.vc/content/how-the-gpu-became-collateral',
+ 'Quartz, GPU-collateralized debt (Meta $14.2B contract behind DDTL 4.0). https://qz.com/gpu-collateralized-debt-ai-neocloud-coreweave-financing-risks-050526',
+ 'FourWeekMBA, CoreWeave CDS ~1,155bp vs Nvidia ~139bp (Nov 6, 2026). https://fourweekmba.com/ai-coreweave-cds-is-8x-nvidias-139bp-as-credit-prices-ai-risk/',
+ 'FourWeekMBA, neocloud stocks fell 20.9% in four days; CoreWeave 2031 notes 16.33% yield. https://fourweekmba.com/ai-neocloud-stocks-fell-20-9-in-four-days-s-p-500-fell-3/',
+ 'SiliconANGLE, CoreWeave Q3 2026: capex $37–39B, debt near $47B. https://siliconangle.com/2026/11/10/coreweave-arrests-stock-slide-after-posting-a-strong-earnings-beat-and-raising-its-full-year-guidance/',
+ 'Crypto Briefing, CoreWeave debt maturities ($4.4B 2026, $6.2B 2027). https://cryptobriefing.com/coreweave-debt-stress-private-credit-ai/',
+ 'Global Data Center Hub, Hyperion SPV structure. https://www.globaldatacenterhub.com/p/the-hyperion-financing-is-the-signal',
+ 'IREN, $9.7bn Microsoft contract; $5.8B Dell purchase. https://iren.gcs-web.com/news-releases/news-release-details/iren-secures-97bn-ai-cloud-contract-microsoft',
+ 'Gabaix & Koijen, "The Inelastic Markets Hypothesis," NBER w28967. https://www.nber.org/system/files/working_papers/w28967/w28967.pdf',
+ 'Nasdaq Trader, market-wide circuit breakers 7/13/20%. https://www.nasdaqtrader.com/trader.aspx?id=CircuitBreaker',
+ 'Motley Fool via Longport: CoreWeave has bought hundreds of thousands of Nvidia GPUs. https://longportapp.cn/news/258172937',
+ 'Futuriom, Nvidia stake in CoreWeave ~11.5%. https://www.futuriom.com/articles/news/nvidia-tops-coreweave-stake-with-2-billion/2026/01',
+ 'Converge Digest, Nvidia $6.3B residual-capacity order. https://convergedigest.com/nvidia-to-buy-coreweaves-unused-capacity/?amp=1',
+ 'The Next Web, Lambda customers incl. Nvidia leaseback. https://thenextweb.com/news/lambda-hudson-river-trading-cloud-deal-nvidia-chips',
+ 'Cryptobriefing, Applied Digital Polaris Forge 1 leased to CoreWeave (~400 MW, ~$11B). https://cryptobriefing.com/applied-digital-ai-infrastructure-milestone/',
+ 'Quartr, Core Scientific investor update (CoreWeave sole customer). https://quartr.com/events/core-scientific-inc-corz-investor-update_oqh0wpCL',
+ 'Converge Digest, CoreWeave 800 MW at Galaxy Helios. https://convergedigest.com/coreweave-locks-in-800-mw-at-galaxys-helios-campus-in-texas/',
+ 'Barchart/GlobeNewswire, TeraWulf CB-5 lease; Google backstop ~$3.2B, ~14%. https://www.barchart.com/story/news/34218778/terawulf-announces-fluidstack-expansion-with-160-mw-cb-5-lease-at-lake-mariner',
+ 'Decrypt, Cipher–Fluidstack 10-yr lease; Google $1.4B backstop, 5.4%. https://decrypt.co/341339/google-dives-deeper-bitcoin-mining-backstopping-ai-hosting?amp=1',
+ 'Capital Brief, Nebius ~$3B Meta deal; $17.4B Microsoft deal. https://www.capitalbrief.com/briefing/neocloud-nebius-inks-usd3b-deal-with-meta-posts-soaring-q3-sales-4f8a4b80-b989-4ef2-bc91-eea8e4a7e4bb/',
+ 'FourWeekMBA (CNBC): Microsoft trimming neocloud partners; CoreWeave IPO filing on Microsoft concentration. https://fourweekmba.com/ai-neocloud-stocks-fell-20-9-in-four-days-s-p-500-fell-3/',
+ 'TechCrunch, Lambda–Microsoft; OpenAI–Oracle reported $300B. https://www.techcrunch.com/2025/11/03/lambda-inks-multi-billion-dollar-ai-infrastructure-deal-with-microsoft/',
+ 'AllMind (Reuters summary), CoreWeave–OpenAI contracts up to $15.9B. https://allmind.ai/news/f1ad226f558a17014536f26dc479e2ad1a9493b6756b3babfa827e1cb0bdbfe0',
+ 'Contrary Research, Crusoe as lead developer of Stargate Abilene. https://research.contrary.com/report/crusoe',
+ 'Leveraged ETF details (CWVX, CRWG): ETF.com, MarketChameleon. https://www.etf.com/sections/etf-watch/cwvx-tradr-debuts-5-new-leveraged-etfs',
+];
+const SRC_OFFSET=0; // edge source numbers index SRC (1-based) where given
+
+/* ---------- live data ---------- */
+function stale(){const t=Date.parse(D.asof);const h=(Date.now()-t)/36e5;return h}
+function renderHeader(){
+  $('#asof').textContent='Data as of '+new Date(D.asof).toLocaleString([], {dateStyle:'medium',timeStyle:'short'});
+  const h=stale();$('#stale').innerHTML=h>26?'<span class="tag warn">stale: '+Math.round(h)+'h old (markets closed or refresh paused)</span>':'';
+  $('#dot').style.background=h>26?'var(--amber)':'var(--up)';
+  const M=D.market,N=D.nodes;
+  const items=[['NASDAQ-100 (QQQ)',M.QQQ],['SEMIS (SMH)',M.SMH],['NVIDIA',N.NVDA],['COREWEAVE',N.CRWV],['NEBIUS',N.NBIS],['VIX',M['^VIX']],['HIGH YIELD (HYG)',M.HYG],['BITCOIN',M['BTC-USD']]];
+  $('#strip').innerHTML=items.filter(x=>x[1]).map(([n,v])=>`<div class="tick"><div class="n">${n}</div><div class="p">${v.price>=1000?Math.round(v.price).toLocaleString():(+v.price).toFixed(2)}</div><div class="c ${v.chg1d<0?'dn':'up'}">${pct(v.chg1d)} 1d · <span class="${v.fromHigh<0?'dn':''}">${pct(v.fromHigh,0)} vs 52w high</span></div></div>`).join('')+
+   `<div class="tick"><div class="n">NEOCLOUD BASKET</div><div class="p ${D.basket1d<0?'dn':'up'}">${pct(D.basket1d)}</div><div class="c" style="color:var(--muted)">last session, equal-wt</div></div>`;
+  $('#alerts').innerHTML=(D.alerts||[]).map(a=>`<span class="alert ${a.kind==='credit'?'credit':''}">${a.text}</span>`).join('');
+}
+
+/* ---------- map ---------- */
+let win='chg1d', showE=new Set(Object.keys(ET)), sel=null;
+function heat(v,scale){if(v==null)return '#2a3550';const t=clamp(v/scale,-1,1);
+  if(t<0){const a=-t;return `rgb(${Math.round(60+195*a)},${Math.round(70+37*(1-a))},${Math.round(95+12*(1-a))})`;}
+  const a=t;return `rgb(${Math.round(45+15*(1-a))},${Math.round(90+122*a)},${Math.round(110+81*a)})`;}
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function mixc(a,b,u){const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));const A=p(a),B=p(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*u).toString(16).padStart(2,'0')).join('');}
+function heat2(v,scale){if(v==null)return '#101b38';const u=clamp(v/scale,-1,1);return u<0?mixc('#1a2442','#ff6b6b',Math.pow(-u,.7)):mixc('#1a2442','#2fe0b4',Math.pow(u,.7));}
+function corrOf(a,b){const C=D.corr;if(!C||!C.tickers)return null;const i=C.tickers.indexOf(a),j=C.tickers.indexOf(b);return i<0||j<0?null:C.m[i][j];}
+function epath(a,b,k){const [x1,y1]=POS[a],[x2,y2]=POS[b];const off=k*10;
+  if(Math.abs(x2-x1)>=Math.abs(y2-y1)){const mx=(x1+x2)/2;return `M${x1},${y1+off} C${mx},${y1+off} ${mx},${y2+off} ${x2},${y2+off}`;}
+  if(Math.abs(x2-x1)<40){const bx=Math.max(x1,x2)+90+off*3;return `M${x1},${y1} C${bx},${y1} ${bx},${y2} ${x2},${y2}`;}
+  const my=(y1+y2)/2;return `M${x1+off},${y1} C${x1+off},${my} ${x2+off},${my} ${x2+off},${y2}`;}
+function drawMap(target,vals,scale,opts={}){
+  const N=D.nodes;const live=!opts.scenario;let s='<defs><filter id="glw" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+  const nm=id=>(N[id]&&N[id].label)||PRIV[id];
+  const W=id=>Math.max(120,nm(id).length*7.4+30);
+  // zones
+  ZONES.forEach(([ids,lab,c])=>{const xs=ids.map(k=>POS[k][0]),ys=ids.map(k=>POS[k][1]);const ws=ids.map(W);const x0=Math.min(...ids.map((k,i)=>POS[k][0]-ws[i]/2))-16,x1=Math.max(...ids.map((k,i)=>POS[k][0]+ws[i]/2))+16,y0=Math.min(...ys)-48,y1=Math.max(...ys)+34;
+    s+=`<rect x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" rx="14" fill="#0b1430" opacity=".55" stroke="${c}" stroke-opacity=".25" stroke-dasharray="3 5"/><text x="${x0+12}" y="${y0+16}" fill="${c}" font-size="10.5" class="mono" letter-spacing=".08em">${lab}</text>`;});
+  // edges (base)
+  const pairCount={};const eds=EDGES.filter(e=>showE.has(e[2])).map(e=>{const key=[e[0],e[1]].sort().join('-');const k=pairCount[key]=(pairCount[key]??-1)+1;return [...e,k];});
+  let base='',glow='';
+  eds.forEach(([a,b,ty,lab,src,k])=>{const d=epath(a,b,k===0?0:(k%2?1:-1)*Math.ceil(k/2));const c=corrOf(a,b);const act=!sel||a===sel||b===sel;
+    const col=ET[ty][0];const w=1.2+Math.max(0,c??0.2)*4;
+    base+=`<path d="${d}" fill="none" stroke="${mixc('#3a4a72',col,.55)}" stroke-width="${w.toFixed(1)}" stroke-opacity="${act?(sel?.85:.5):.1}" ${ty==='backstop'?'stroke-dasharray="7 5"':''}><title>${nm(a)} → ${nm(b)}: ${lab}${c!=null?` · 6-mo correlation ${c.toFixed(2)}`:''}</title></path>`;
+    // pulse when both ends moved the same way meaningfully
+    const va=vals?vals[a]:null,vb=vals?vals[b]:null;const th=scale*0.25;
+    const bothPub=va!=null&&vb!=null;const priv=(va==null)!==(vb==null);
+    let on=false,dn=false;
+    if(bothPub&&Math.abs(va)>th&&Math.abs(vb)>th&&Math.sign(va)===Math.sign(vb)){on=true;dn=va<0;}
+    else if(priv&&Math.abs(va??vb)>th*1.6){on=true;dn=(va??vb)<0;}
+    if(on&&act){const pc=dn?'#ff6b6b':'#2fe0b4';const mag=Math.min(1,(Math.abs(va??0)+Math.abs(vb??0))/(2*scale));
+      glow+=`<path d="${d}" fill="none" stroke="${pc}" stroke-width="${(2+mag*2.5).toFixed(1)}" opacity="${(.45+mag*.4).toFixed(2)}" filter="url(#glw)"/>`;
+      if(!reduced){const dur=(2.4-mag*1.2).toFixed(2);const rev=dn&&Math.abs(va??0)<Math.abs(vb??0);
+        glow+=`<circle r="${(3+mag*2).toFixed(1)}" fill="${pc}"><animateMotion dur="${dur}s" repeatCount="indefinite" path="${d}" ${rev?'keyPoints="1;0" keyTimes="0;1" calcMode="linear"':''}/></circle>`;
+        glow+=`<circle r="${(2+mag).toFixed(1)}" fill="#fff" opacity=".8"><animateMotion dur="${dur}s" begin="${(dur/2).toFixed(2)}s" repeatCount="indefinite" path="${d}" ${rev?'keyPoints="1;0" keyTimes="0;1" calcMode="linear"':''}/></circle>`;}}});
+  s+=base+glow;
+  // nodes
+  Object.keys(POS).forEach(id=>{const [x,y]=POS[id];const n=N[id];const priv=!n;const v=vals?vals[id]:null;const w=W(id),h=46;const isSel=id===sel;
+    const linked=!sel||isSel||EDGES.some(e=>(e[0]===sel&&e[1]===id)||(e[1]===sel&&e[0]===id));
+    const dark=v!=null&&Math.abs(v)>=scale*0.55;const tc=dark?'#06101e':'#f4f7ff';
+    let ring='';const big=v!=null&&Math.abs(v)>=scale*0.6;
+    const dist=opts.scenario&&opts.distress&&opts.distress[id];
+    if((big||dist)&&!reduced){const rc=dist?'#f6b13c':(v<0?'#ff6b6b':'#2fe0b4');const g=18;
+      ring=`<rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="9" fill="none" stroke="${rc}" stroke-width="2"><animate attributeName="x" values="${x-w/2};${x-w/2-g}" dur="1.5s" repeatCount="indefinite"/><animate attributeName="y" values="${y-h/2};${y-h/2-g}" dur="1.5s" repeatCount="indefinite"/><animate attributeName="width" values="${w};${w+2*g}" dur="1.5s" repeatCount="indefinite"/><animate attributeName="height" values="${h};${h+2*g}" dur="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="1.5s" repeatCount="indefinite"/></rect>`;}
+    s+=`<g class="nodeg" data-id="${id}" tabindex="0" role="button" aria-label="${nm(id)}" opacity="${linked?1:.3}">${ring}`+
+      `<rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="9" fill="${priv?'#0d1630':heat2(v,scale)}" stroke="${isSel?'#ffffff':dist?'#f6b13c':priv?'#5a6a8c':'#3a4a72'}" stroke-width="${isSel||dist?2.4:1.2}" ${priv?'stroke-dasharray="4 3"':''}/>`+
+      `<text x="${x}" y="${y-4}" text-anchor="middle" fill="${priv?'#c9d4e6':tc}" font-size="12.5" font-weight="700" font-family="Space Grotesk">${nm(id)}</text>`+
+      `<text x="${x}" y="${y+13}" text-anchor="middle" fill="${priv?'#8b97ad':tc}" font-size="11" class="mono" font-weight="${dark?700:400}">${priv?'private':id+'  '+(v==null?'—':pct(v,opts.dec??1))}${dist?' ⚠':''}</text></g>`;});
+  target.innerHTML=`<svg viewBox="64 92 1120 680">${s}</svg>`;
+  target.querySelectorAll('.nodeg').forEach(g=>{const go=()=>{sel=sel===g.dataset.id?null:g.dataset.id;renderMap();renderCard();if(window._labLast)drawLabMap(window._labLast);};g.onclick=go;g.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};});
+}
+function renderMap(){
+  const vals={};Object.entries(D.nodes).forEach(([k,n])=>vals[k]=n[win]);
+  const sc={chg1d:0.08,chg5d:0.2,chg1m:0.35,fromHigh:0.7}[win];
+  drawMap($('#map'),vals,sc);
+  $('#mapLegend').innerHTML=Object.entries(ET).map(([k,[c,l]])=>`<span style="margin-right:12px;white-space:nowrap"><span class="bar" style="width:18px;background:${k==='backstop'?'repeating-linear-gradient(90deg,'+c+' 0 5px,transparent 5px 9px)':c}"></span>${l}</span>`).join('')+` · node color scale ±${Math.round(sc*100)}% · line thickness = 6-month correlation · <span style="color:#ff6b6b">●</span>/<span style="color:#2fe0b4">●</span> pulses travel along a tie when both ends moved hard the same way; flashing outlines mark big movers`;
+}
+function renderCard(){
+  if(!sel){renderSummary();return;}
+  const n=D.nodes[sel];const name=n?n.label:PRIV[sel];
+  const ties=EDGES.filter(e=>e[0]===sel||e[1]===sel).map(([a,b,t,l,src])=>{const o=a===sel?b:a;const on=(D.nodes[o]||{}).label||PRIV[o];return `<div style="border-left-color:${ET[t][0]}"><b>${a===sel?'→':'←'} ${on}</b> · ${ET[t][1].split(' (')[0]}<br><span class="note">${l}${src?` [${src}]`:''}</span></div>`;}).join('');
+  if(!n){$('#nodeCard').innerHTML=`<h3>${name}</h3><p class="note">Private company: no live price. Shown because its contracts and leases tie public companies together.</p><div class="edgelist">${ties}</div>`;return;}
+  const nd=(n.debt||0)-(n.cash||0);
+  $('#nodeCard').innerHTML=`<div class="kick" style="color:var(--muted)">${n.group}</div><h3>${n.label} <span class="mono" style="font-size:14px;color:var(--muted)">${sel}</span></h3>
+   <div style="font:700 26px var(--head)">$${(+n.price).toFixed(2)} <span class="${n.chg1d<0?'dn':'up'}" style="font-size:15px">${pct(n.chg1d)}</span></div>
+   ${spark(n.spark)}
+   <div class="kv"><span>5 days / 1 month</span><span>${pct(n.chg5d)} / ${pct(n.chg1m)}</span><span>vs 52-week high</span><span>${pct(n.fromHigh,0)}</span>
+   <span>Market cap</span><span>${usd(n.mcap)}</span><span>Total debt (incl. leases)</span><span>${usd(n.debt)}</span><span>Net debt / market cap</span><span>${n.mcap?(nd/n.mcap).toFixed(2)+'×':'—'}</span>
+   <span>β Nasdaq / β Nvidia-specific</span><span>${n.betaQ} / ${n.betaN}</span><span>3-mo volatility</span><span>${Math.round(n.vol3m*100)}%</span>
+   <span>Avg daily $ volume</span><span>${usd(n.adv)}</span><span>Model 1-yr default risk</span><span class="${n.pd1y>0.15?'dn':''}">${n.pd1y==null?'—':(n.pd1y*100).toFixed(n.pd1y<0.01?2:0)+'%'}</span></div>
+   <div class="edgelist">${ties||'<span class="note">No mapped ties.</span>'}</div>`;
+}
+function renderSummary(){const N=D.nodes;const arr=Object.entries(N).filter(([k,n])=>n[win]!=null).sort((a,b)=>a[1][win]-b[1][win]);
+  const neo=['CRWV','NBIS','IREN','WYFI','CORZ','APLD','GLXY','WULF','CIFR'].filter(t=>N[t]);const nv=N.NVDA,q=D.market.QQQ;
+  const pulses=EDGES.filter(([a,b])=>N[a]&&N[b]&&Math.abs(N[a][win])>0.02&&Math.sign(N[a][win])===Math.sign(N[b][win])).length;
+  const wl={chg1d:'last session',chg5d:'5 days',chg1m:'1 month',fromHigh:'vs 52-week high'}[win];
+  $('#nodeCard').innerHTML=`<div class="kick" style="color:var(--muted)">Right now on the map · ${wl}</div><h3>The web at a glance</h3>
+   <div class="kv"><span>Nasdaq-100 (QQQ)</span><span>${pct(win==='chg1d'?q.chg1d:win==='chg1m'?q.chg1m:win==='fromHigh'?q.fromHigh:null)}</span><span>Nvidia</span><span>${pct(nv[win])}</span><span>Neocloud & host avg</span><span>${pct(neo.reduce((a,t)=>a+N[t][win],0)/neo.length)}</span><span>Ties pulsing together</span><span>${pulses} of ${EDGES.length}</span></div>
+   <p class="note" style="margin-top:10px"><b style="color:#ff9a9a">Weakest:</b> ${arr.slice(0,3).map(([k,n])=>`${n.label} ${pct(n[win])}`).join(', ')}<br><b style="color:#7ff0dd">Strongest:</b> ${arr.slice(-3).reverse().map(([k,n])=>`${n.label} ${pct(n[win])}`).join(', ')}</p>
+   ${nv[win]!=null&&q&&win==='chg1d'&&Math.abs(nv.chg1d-(nv.betaQ||1)*q.chg1d)>0.03?`<p class="note" style="color:#f6b13c">Nvidia moved ${(Math.abs(nv.chg1d-(nv.betaQ||1)*q.chg1d)*100).toFixed(1)} pts ${nv.chg1d-(nv.betaQ||1)*q.chg1d<0?'worse':'better'} than its Nasdaq beta implies, which points to a company-specific move.</p>`:''}
+   <p class="note" style="margin-top:8px">Tap any company to trace its ties. Tap it again to come back here.</p>`;}
+function spark(a){if(!a||!a.length)return '';const v=a.filter(x=>x!=null);const mn=Math.min(...v),mx=Math.max(...v);const W=280,H=46;
+  const p=a.map((x,i)=>`${(i/(a.length-1)*W).toFixed(1)},${(H-((x-mn)/(mx-mn||1))*H).toFixed(1)}`).join(' ');
+  return `<svg viewBox="0 -2 ${W} ${H+4}" style="width:100%;height:50px;margin-top:4px"><polyline points="${p}" fill="none" stroke="${v[v.length-1]<v[0]?'#ff6b6b':'#2dd4bf'}" stroke-width="2"/></svg><div class="note">last 60 sessions</div>`;}
+
+/* ---------- Merton (JS mirror) ---------- */
+const Ncdf=x=>{const t=1/(1+0.2316419*Math.abs(x));const d=0.3989423*Math.exp(-x*x/2);const p=d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));return x>0?1-p:p;};
+function merton(E,Dt,sE,r=0.04,T=1){if(!E||!Dt||Dt<=0||!sE)return {dd:null,pd:null};if(E/Dt<0.002)return {dd:-3,pd:0.999};
+  sE=Math.min(sE,3);const sq=Math.sqrt(T),disc=Dt*Math.exp(-r*T);
+  const call=(V,s)=>{const d1=(Math.log(V/Dt)+(r+0.5*s*s)*T)/(s*sq);return [V*Ncdf(d1)-disc*Ncdf(d1-s*sq),Ncdf(d1)];};
+  let sV=sE*E/(E+Dt),V=E+Dt;
+  for(let k=0;k<40;k++){let lo=E,hi=E+Dt*1.5;for(let b=0;b<60;b++){const mid=(lo+hi)/2;if(call(mid,sV)[0]>E)hi=mid;else lo=mid;}V=(lo+hi)/2;
+    const nd1=Math.max(call(V,sV)[1],1e-4);const sN=clamp(sE*E/(nd1*V),0.01,3);if(Math.abs(sN-sV)<1e-7){sV=sN;break;}sV=0.5*sV+0.5*sN;}
+  const dd=(Math.log(V/Dt)+(r-0.5*sV*sV)*T)/(sV*sq);if(!isFinite(dd))return {dd:-3,pd:0.999};return {dd,pd:Ncdf(-dd)};}
+function dropToPD(n,target=0.5){ // equity drop (fraction) at which model PD crosses target, vol scaled by stress
+  if(!n.mcap||!n.debt)return null;if((n.pd1y||0)>=target)return 0;
+  for(let x=0.01;x<=0.995;x+=0.005){const m=merton(n.mcap*(1-x),n.debt,n.vol3m*(1+x));if(m.pd!=null&&m.pd>=target)return x;}return null;}
+
+/* ---------- leverage table ---------- */
+let sortKey='pd1y',sortDir=-1;
+function renderLev(){
+  const rows=Object.entries(D.nodes).map(([t,n])=>{const nd=(n.debt||0)-(n.cash||0);const lev=Object.values(D.levEtfs).filter(e=>e.underlying===t).reduce((a,e)=>a+(e.aum||0),0);
+    return {t,label:n.label,group:n.group,mcap:n.mcap,debt:n.debt,ndm:n.mcap?nd/n.mcap:null,cush:n.mcap?n.mcap/(n.mcap+Math.max(nd,0)):null,vol:n.vol3m,betaQ:n.betaQ,betaN:n.betaN,levpct:n.mcap?lev/n.mcap:null,adv:n.adv,fromHigh:n.fromHigh,pd1y:n.pd1y,drop50:dropToPD(n,0.5)};});
+  rows.sort((a,b)=>((a[sortKey]??-1e18)>(b[sortKey]??-1e18)?1:-1)*sortDir);
+  const cols=[['label','Company'],['mcap','Mkt cap'],['debt','Total debt'],['ndm','Net debt / mkt cap'],['cush','Equity cushion'],['vol','3-mo vol'],['betaQ','β Nasdaq'],['betaN','β NVDA-spec.'],['levpct','Lev-ETF AUM / cap'],['adv','Avg $ vol / day'],['fromHigh','vs 52w high'],['pd1y','Model 1-yr PD'],['drop50','Further drop → PD 50%']];
+  const f={mcap:usd,debt:usd,adv:usd,ndm:v=>v==null?'—':v.toFixed(2)+'×',cush:v=>v==null?'—':Math.round(v*100)+'%',vol:v=>Math.round(v*100)+'%',betaQ:v=>v,betaN:v=>v,levpct:v=>v==null?'—':(v*100).toFixed(2)+'%',fromHigh:v=>pct(v,0),pd1y:v=>v==null?'—':(v*100).toFixed(v<0.01?2:0)+'%',drop50:v=>v==null?'n/a':v===0?'<b class="dn">already</b>':'−'+Math.round(v*100)+'%'};
+  $('#levTable').innerHTML=`<thead><tr>${cols.map(([k,l])=>`<th data-k="${k}">${l}${sortKey===k?(sortDir<0?' ▾':' ▴'):''}</th>`).join('')}</tr></thead><tbody>`+
+   rows.map(r=>`<tr>${cols.map(([k])=>{if(k==='label')return `<td><b>${r.label}</b> <span class="note mono">${r.t}</span></td>`;const v=r[k];let st='';
+     if(k==='ndm'&&v>1)st='color:var(--dn)';if(k==='cush'&&v<0.5)st='color:var(--dn)';if(k==='pd1y'&&v>0.15)st='color:var(--dn);font-weight:700';if(k==='drop50'&&v!=null&&v<0.4)st='color:var(--dn);font-weight:700';
+     const bar=k==='pd1y'&&v!=null?`<span class="bar" style="width:${Math.round(clamp(v,0,1)*60)}px;background:#ff6b6b"></span>`:'';return `<td style="${st}">${bar}${f[k]?f[k](v):v}</td>`;}).join('')}</tr>`).join('')+'</tbody>';
+  $$('#levTable th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=-1;}renderLev();});
+  const lev=Object.values(D.levEtfs);const tot=lev.reduce((a,e)=>a+(e.aum||0),0);
+  $('#levNote').innerHTML=` Leveraged ETFs tracked: ${lev.length} funds, ${usd(tot)} AUM, including ${usd(lev.filter(e=>e.underlying==='QQQ').reduce((a,e)=>a+(e.aum||0),0))} on the Nasdaq-100 and ${usd(lev.filter(e=>e.underlying==='NVDA').reduce((a,e)=>a+(e.aum||0),0))} on Nvidia.`;
+}
+
+/* ---------- ENGINE ---------- */
+const PUB=()=>Object.keys(D.nodes);
+const DEF={q:-20,n:0,c:0,h:0,d:5,cb:1,bs:0,md:1.42,mb:2,lmax:55,hs:50,hm:30,y:1,M:5,pt:50};
+const PRESETS=[
+ ['Broad tech drawdown (Nasdaq −20% over a week)',{q:-20,n:0,c:0,h:0,d:5}],
+ ['Nvidia-specific crash (−35% on its own, Nasdaq −6%)',{q:-6,n:-35,c:0,h:0,d:3}],
+ ['Hyperscalers pull back on neocloud spend',{q:-8,n:-10,c:0,h:-30,d:10}],
+ ['CoreWeave credit event (equity −80%)',{q:-5,n:-5,c:-80,h:-10,d:5}],
+ ['2022-style bear market (Nasdaq −35% over 3 months)',{q:-35,n:-10,c:0,h:-10,d:60}],
+ ['1987-style one-day crash (Nasdaq −25% in a day)',{q:-25,n:0,c:0,h:0,d:1}],
+ ['Custom',null]];
+const P={...DEF};
+const retailTilt=n=>clamp((1-clamp(n.inst??0.7,0,1))/0.25,0.5,3);
+function lvBuckets(lmax){const K=24,out=[];let wsum=0;for(let k=0;k<K;k++){const l=0.05+(lmax-0.05)*(k+0.5)/K;const w=(lmax-l)+0.02;out.push([l,w]);wsum+=w;}return out.map(([l,w])=>[l,w/wsum]);}
+function engine(p,opts={}){
+  const ids=PUB(),N=D.nodes,ff=!opts.noForced;
+  const Dd=Math.max(1,Math.round(p.d));
+  const mkt0=(D.market['^W5000']?.price||75000)*1e9; // Wilshire 5000 level ~ $bn (proxy)
+  const rd=(tot)=>Math.pow(1+tot,1/Dd)-1;
+  // exposures
+  const ex={};EXPO.forEach(([t,s,w])=>{(ex[t]=ex[t]||[]).push([s,w]);});
+  // state
+  const S={};ids.forEach(t=>{const n=N[t];const lev=Object.values(D.levEtfs).filter(e=>e.underlying===t);
+    const mshare=(['neocloud','landlord'].includes(n.group)?p.mb/100*retailTilt(n):0.019);
+    const B0=mshare*(n.mcap||0), lmax=['neocloud','landlord'].includes(n.group)?Math.min(p.lmax/100,(1-p.hs/100)*0.97):Math.min(p.lmax/100,(1-p.hm/100)*0.97);
+    const h=['neocloud','landlord'].includes(n.group)?p.hs/100:p.hm/100;
+    S[t]={p:1,lev:lev.map(e=>({L:e.lev,aum:e.aum||0})),bk:lvBuckets(lmax).map(([l,w])=>({b:B0*w,a:B0*w/l})),h,forced:0,levFlow:0,distress:false,pd0:n.pd1y};});
+  const mk={p:1,lev:Object.values(D.levEtfs).filter(e=>e.underlying==='QQQ'||e.underlying==='SMH').map(e=>({L:e.lev,aum:e.aum||0})),bk:lvBuckets(Math.min(p.lmax/100,(1-p.hm/100)*0.97)).map(([l,w])=>({b:p.md*1e12*w,a:p.md*1e12*w/l})),h:p.hm/100,forced:0};
+  const qd=rd(p.q/100),nd=rd(p.n/100),cd=rd(p.c/100),hd=rd(p.h/100);
+  const idio=t=>{let x=0;if(t==='CRWV')x+=cd;(ex[t]||[]).forEach(([s,w])=>{if(s==='HYP')x+=w*hd;if(s==='CRWV'&&t!=='CRWV')x+=w*cd*p.pt/100;});return x;};
+  let spill=0, backOn=false; const path=[];const mktDropAt=()=>1-mk.p;
+  const marginSale=(st,price,commit)=>{let Q=0;st.bk.forEach(k=>{const A=k.a*price;if(A<=0||k.b<=0)return;const l=k.b/A;if(l>=1-st.h){const lt=0.75*(1-st.h);let S=l>=1?A:(k.b-lt*A)/(1-lt);S=clamp(S,0,A);Q+=S;if(commit){k.b=Math.max(k.b-S,0);k.a=(A-S)/price;}}});return Q;};
+  const second={};
+  for(let day=0;day<Dd;day++){
+    const qx=qd+spill;spill=0;
+    let ampm=0,amps={},R={},rm=qx;ids.forEach(t=>amps[t]=0);
+    for(let it=0;it<60;it++){
+      let rq=qx+ampm,sp=0;
+      if(p.cb&&rq<-0.24){sp=rq+0.24;rq=-0.24;}
+      const r={};ids.forEach(t=>{const n=N[t];const x=(n.betaQ??1)*rq+(n.betaN??0)*nd+idio(t)+(second[t]||0)+amps[t];r[t]=clamp(x,-0.95,2);});
+      R=r;rm=rq;spill=sp;
+      if(!ff)break;
+      const backF=backOn?0.2:1;
+      const newAmp={};ids.forEach(t=>{const st=S[t],n=N[t];const pr=st.p*(1+r[t]);let levQ=0;st.lev.forEach(e=>{levQ+=-e.L*(e.L-1)*e.aum*r[t];});
+        const mQ=marginSale(st,pr,false);const Q=Math.max(levQ,0)+mQ;const adv=(n.adv||1)*2;const sd=(n.vol3m||0.5)/Math.sqrt(252);
+        newAmp[t]=-p.y*sd*Math.sqrt(Q/adv)*backF;});
+      const pm=mk.p*(1+rq*0.85);let mlev=0;mk.lev.forEach(e=>{mlev+=-e.L*(e.L-1)*e.aum*rq;});const mQ=marginSale(mk,pm,false);
+      const newAm=-p.M*(Math.max(mlev,0)+mQ)/(mkt0*mk.p)*backF/0.85;
+      let diff=Math.abs(newAm-ampm);ids.forEach(t=>diff+=Math.abs(newAmp[t]-amps[t]));
+      ampm=0.5*ampm+0.5*newAm;ids.forEach(t=>amps[t]=0.5*amps[t]+0.5*newAmp[t]);
+      if(diff<1e-7)break;}
+    // commit
+    ids.forEach(t=>{const st=S[t];const pr=Math.max(st.p*(1+R[t]),0.0001);if(ff){st.lev.forEach(e=>{const f=-e.L*(e.L-1)*e.aum*R[t];if(f>0)st.levFlow+=f;e.aum=Math.max(e.aum*(1+e.L*R[t]),0);});st.forced+=marginSale(st,pr,true);}st.p=pr;});
+    if(ff){mk.lev.forEach(e=>{const f=-e.L*(e.L-1)*e.aum*rm;if(f>0)mk.forced+=f;e.aum=Math.max(e.aum*(1+e.L*rm),0);});mk.forced+=marginSale(mk,mk.p*(1+rm*0.85),true);}
+    mk.p*=(1+rm*0.85);
+    if(p.bs>0&&mktDropAt()>=p.bs/100)backOn=true;
+    // distress → second round
+    ids.forEach(t=>{const st=S[t],n=N[t];if(st.distress||!n.mcap||!n.debt)return;const m=merton(n.mcap*st.p,n.debt,(n.vol3m||0.5)*(1+(1-st.p)));if(m.pd>0.5){st.distress=true;
+      EXPO.filter(e=>e[1]===t).forEach(([tg,s,w])=>{second[tg]=(second[tg]||0)-0.5*w*(p.pt/100)*Math.min(1-st.p,0.9)/Math.max(Dd-day,1);});}});
+    path.push({day,m:1-mk.p});
+  }
+  // continue spill days for circuit breaker carryover
+  const res={};ids.forEach(t=>{const st=S[t],n=N[t];const m=n.mcap&&n.debt?merton(n.mcap*st.p,n.debt,(n.vol3m||0.5)*(1+(1-st.p))):{pd:null};res[t]={ret:st.p-1,forced:st.forced,levFlow:st.levFlow,pd:m.pd,distress:st.distress||((m.pd||0)>0.5)};});
+  return {res,mkt:mk.p-1,mktForced:mk.forced,backOn,spill};
+}
+
+/* ---------- lab UI ---------- */
+const ctl=['q','n','c','h','d','bs','md','mb','lmax','hs','hm','y','M','pt'];
+const fmtC={q:v=>v+'%',n:v=>v+'%',c:v=>v+'%',h:v=>v+'%',d:v=>v+(v==1?' day':' days'),bs:v=>v==0?'off':v+'%',md:v=>'$'+(+v).toFixed(2)+'T',mb:v=>v+'% of value',lmax:v=>v+'%',hs:v=>v+'%',hm:v=>v+'%',y:v=>(+v).toFixed(1),M:v=>v+'×',pt:v=>v+'%'};
+function syncCtl(){ctl.forEach(k=>{$('#'+k).value=P[k];$('#o_'+k).textContent=fmtC[k](P[k]);});$('#cb').value=P.cb;}
+function groupOrder(){return ['NVDA','CRWV','NBIS','IREN','WYFI','CORZ','APLD','GLXY','WULF','CIFR','ORCL','SMCI','DELL','AMD','MSFT','META','GOOGL','AMZN','BX','OWL','APO'].filter(t=>D.nodes[t]);}
+function runLab(){
+  const full=engine(P),base=engine(P,{noForced:true});window._labLast=full;
+  const ids=groupOrder();
+  const neo=['CRWV','NBIS','IREN','WYFI','CORZ','APLD','GLXY','WULF','CIFR'].filter(t=>D.nodes[t]);
+  const avg=a=>a.reduce((x,y)=>x+y,0)/a.length;
+  const bF=avg(neo.map(t=>full.res[t].ret)),bB=avg(neo.map(t=>base.res[t].ret));
+  const forcedN=neo.reduce((a,t)=>a+full.res[t].forced+full.res[t].levFlow,0);
+  const distressed=ids.filter(t=>full.res[t].distress&&!(D.nodes[t].pd1y>0.5));
+  $('#labKpis').innerHTML=[
+   ['Neocloud basket',pct(bF,0),'dn'],['…of which cascade',pct(bF-bB,1),'dn'],['Broad market',pct(full.mkt,1),'dn'],['Market forced selling',usd(full.mktForced),'']
+  ].map(([l,v,c])=>`<div class="kpi"><div class="l">${l}</div><div class="v mono ${c}">${v}</div></div>`).join('');
+  // bars
+  const W=900,rowH=26,H=ids.length*rowH+40,x0=170,xs=v=>x0+(-v)*(W-x0-80);
+  let s=`<text x="${x0}" y="14" fill="#98a7c2" font-size="11" class="mono">0%</text><text x="${xs(-0.5)}" y="14" fill="#98a7c2" font-size="11" class="mono" text-anchor="middle">−50%</text><text x="${xs(-1)}" y="14" fill="#98a7c2" font-size="11" class="mono" text-anchor="end">−100%</text>`;
+  s+=`<line x1="${xs(-0.5)}" x2="${xs(-0.5)}" y1="20" y2="${H-14}" stroke="rgba(140,170,220,.15)"/>`;
+  ids.forEach((t,i)=>{const y=24+i*rowH,f=full.res[t].ret,b=base.res[t].ret;const n=D.nodes[t];
+    s+=`<text x="${x0-8}" y="${y+13}" text-anchor="end" fill="${t===sel?'#fff':'#cfd9ec'}" font-size="12.5" font-weight="${t===sel?700:500}">${n.label}</text>`;
+    const bb=Math.min(b,0),ff=Math.min(f,0);
+    s+=`<rect x="${x0}" y="${y+3}" width="${Math.max(xs(bb)-x0,0)}" height="14" rx="3" fill="rgba(201,212,230,.45)"/>`;
+    if(ff<bb)s+=`<rect x="${xs(bb)}" y="${y+3}" width="${xs(ff)-xs(bb)}" height="14" rx="3" fill="#ff6b6b"/>`;
+    s+=`<text x="${Math.max(xs(ff),xs(bb))+6}" y="${y+14}" fill="#e9eef8" font-size="11.5" class="mono">${pct(f,0)}${full.res[t].distress?' ⚠':''}</text>`;
+    if(f>0)s+=`<text x="${x0+6}" y="${y+14}" fill="#7ff0dd" font-size="11.5" class="mono">${pct(f,0)}</text>`;});
+  s+=`<g font-size="11.5"><rect x="${x0}" y="${H-12}" width="12" height="9" fill="rgba(201,212,230,.45)"/><text x="${x0+16}" y="${H-4}" fill="#cfd9ec">shock only</text><rect x="${x0+110}" y="${H-12}" width="12" height="9" fill="#ff6b6b"/><text x="${x0+126}" y="${H-4}" fill="#cfd9ec">added by cascade (forced selling + credit second round)</text><text x="${x0+470}" y="${H-4}" fill="#cfd9ec">⚠ model default risk &gt; 50%</text></g>`;
+  $('#labBars').innerHTML=`<svg viewBox="0 0 ${W} ${H}">${s}</svg>`;
+  let msg='';
+  const amp=bB<0?(bF/bB):1;
+  msg+=`<div class="${amp>1.25?'callout':amp>1.08?'callout amb':'callout ok'}"><b>Cascade multiplier ${amp.toFixed(2)}×.</b> Forced selling and credit knock-ons turn a ${pct(bB,0)} shock-only hit to the neocloud basket into ${pct(bF,0)}. Forced selling across the nine neocloud and host stocks totals ${usd(forcedN)}.`;
+  if(distressed.length)msg+=` Newly past 50% model default risk: <b>${distressed.map(t=>D.nodes[t].label).join(', ')}</b>.`;
+  if(full.backOn)msg+=` The liquidity backstop triggered.`;
+  if(full.spill<-0.001)msg+=` Circuit breakers held part of the drop over to the next session.`;
+  msg+=`</div>`;
+  $('#labMsg').innerHTML=msg;
+  drawLabMap(full);
+}
+function drawLabMap(full){const vals={},dist={};Object.keys(full.res).forEach(t=>{vals[t]=full.res[t].ret;dist[t]=full.res[t].distress;});drawMap($('#labMap'),vals,0.7,{dec:0,scenario:true,distress:dist});}
+
+/* ---------- tipping sweeps ---------- */
+const NEO=()=>['CRWV','NBIS','IREN','WYFI','CORZ','APLD','GLXY','WULF','CIFR'].filter(t=>D.nodes[t]);
+const COMPLEX=()=>['CRWV','NBIS','IREN','WYFI','CORZ','APLD','GLXY','WULF','CIFR','ORCL','SMCI'].filter(t=>D.nodes[t]);
+function sweep(){
+  const dS=Math.min(P.d,10);const avg=a=>a.reduce((x,y)=>x+y,0)/a.length;const pts=[];
+  for(let q=0;q>=-50;q-=2.5){const p={...P,q,n:0,c:0,h:0,d:dS};const f=engine(p),b=engine(p,{noForced:true});
+    const dist=COMPLEX().filter(t=>(f.res[t].pd||0)>=0.5);
+    pts.push({q:q/100,bf:avg(NEO().map(t=>f.res[t].ret)),bb:avg(NEO().map(t=>b.res[t].ret)),mf:f.mkt,mb:b.mkt,forced:f.mktForced,neoForced:NEO().reduce((a,t)=>a+f.res[t].forced+f.res[t].levFlow,0),debt:dist.reduce((a,t)=>a+(D.nodes[t].debt||0),0),dist});}
+  const W=520,H=300,m={l:54,r:14,t:30,b:34};const x=v=>m.l+(-v)/0.5*(W-m.l-m.r);
+  const axX=()=>{let s='';for(let v=0;v<=0.5;v+=0.1)s+=`<text x="${x(-v)}" y="${H-14}" text-anchor="middle" fill="#62728f" font-size="10.5" class="mono">−${Math.round(v*100)}%</text>`;return s+`<text x="${W-m.r}" y="${H-1}" text-anchor="end" fill="#98a7c2" font-size="10.5">Nasdaq-100 shock →</text>`;};
+  // A: debt in distress (step area) + count
+  const dmax=Math.max(...pts.map(p=>p.debt),1);const ya=v=>H-m.b-(v/dmax)*(H-m.t-m.b);
+  let s=axX();
+  for(let k=0;k<=4;k++){const v=dmax*k/4;s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${ya(v)}" y2="${ya(v)}" stroke="rgba(140,170,220,.1)"/><text x="${m.l-6}" y="${ya(v)+4}" text-anchor="end" fill="#62728f" font-size="10" class="mono">${usd(v)}</text>`;}
+  [7,13,20].forEach(l=>{const qv=-l*1.2/100;s+=`<line x1="${x(qv)}" x2="${x(qv)}" y1="${m.t}" y2="${H-m.b}" stroke="rgba(246,177,60,.35)" stroke-dasharray="3 4"/><text x="${x(qv)+3}" y="${m.t-4}" fill="#f6b13c" font-size="9.5">S&amp;P CB ${l}%</text>`;});
+  let path=`M${x(0)} ${ya(0)}`;pts.forEach(p=>{path+=` L${x(p.q)} ${ya(p.debt)}`;});path+=` L${x(pts[pts.length-1].q)} ${ya(0)} Z`;
+  s+=`<path d="${path}" fill="rgba(255,107,107,.25)" stroke="#ff6b6b" stroke-width="2"/>`;
+  pts.forEach((p,i)=>{if(i%2===0&&p.dist.length)s+=`<text x="${x(p.q)}" y="${ya(p.debt)-6}" text-anchor="middle" fill="#ffb3b3" font-size="10" class="mono">${p.dist.length}</text>`;});
+  s+=`<text x="${m.l+6}" y="${m.t+12}" fill="#ffb3b3" font-size="11">numbers = companies past 50% (of ${COMPLEX().length} tracked)</text>`;
+  $('#sweepA').innerHTML=`<svg viewBox="0 0 ${W} ${H}">${s}</svg>`;
+  // B: forced selling bars (left axis) + extra basket drop & extra market drop lines (right axis, pts)
+  const fmax=Math.max(...pts.map(p=>p.forced+p.neoForced),1);const yb=v=>H-m.b-(v/fmax)*(H-m.t-m.b);
+  const ex=pts.map(p=>({m:p.mf-p.mb,b:p.bf-p.bb}));const emax=Math.max(0.01,...ex.map(e=>Math.max(-e.m,-e.b)));const ye=v=>H-m.b-(-v/emax)*(H-m.t-m.b);
+  let s2=axX();
+  for(let k=0;k<=4;k++){const v=fmax*k/4;s2+=`<line x1="${m.l}" x2="${W-m.r}" y1="${yb(v)}" y2="${yb(v)}" stroke="rgba(140,170,220,.1)"/><text x="${m.l-6}" y="${yb(v)+4}" text-anchor="end" fill="#62728f" font-size="10" class="mono">${usd(v)}</text><text x="${W-m.r+2}" y="${yb(v)+4}" fill="#62728f" font-size="9.5" class="mono" text-anchor="end">${(emax*k/4*100).toFixed(1)}pt</text>`;}
+  pts.forEach(p=>{s2+=`<rect x="${x(p.q)-6}" y="${yb(p.forced+p.neoForced)}" width="12" height="${H-m.b-yb(p.forced+p.neoForced)}" fill="rgba(246,177,60,.5)"/>`;});
+  s2+=`<polyline points="${pts.map((p,i)=>`${x(p.q)},${ye(Math.min(ex[i].b,0))}`).join(' ')}" fill="none" stroke="#ff6b6b" stroke-width="2.4"/>`;
+  s2+=`<polyline points="${pts.map((p,i)=>`${x(p.q)},${ye(Math.min(ex[i].m,0))}`).join(' ')}" fill="none" stroke="#38d6f5" stroke-width="2.4" stroke-dasharray="6 4"/>`;
+  s2+=`<g font-size="11"><rect x="${m.l+4}" y="${m.t-20}" width="10" height="10" fill="rgba(246,177,60,.6)"/><text x="${m.l+18}" y="${m.t-11}" fill="#f6b13c">forced selling $ (left)</text><line x1="${m.l+150}" x2="${m.l+170}" y1="${m.t-15}" y2="${m.t-15}" stroke="#ff6b6b" stroke-width="2.4"/><text x="${m.l+174}" y="${m.t-11}" fill="#ff9a9a">extra neocloud drop</text><line x1="${m.l+300}" x2="${m.l+320}" y1="${m.t-15}" y2="${m.t-15}" stroke="#38d6f5" stroke-width="2.4" stroke-dasharray="6 4"/><text x="${m.l+324}" y="${m.t-11}" fill="#9be9fa">extra market drop (pts, right)</text></g>`;
+  $('#sweepB').innerHTML=`<svg viewBox="0 0 ${W+10} ${H}">${s2}</svg>`;
+  // messages
+  const first=pts.find(p=>p.dist.some(t=>NEO().includes(t)&&!((D.nodes[t].pd1y||0)>=0.5)));
+  const at=q=>pts.find(p=>Math.abs(p.q-q)<1e-6);
+  const p10=at(-0.1),p20=at(-0.2),p30=at(-0.3);
+  const tipM2=pts.find(p=>p.mf-p.mb<=-0.02);const tipB5=pts.find(p=>p.bf-p.bb<=-0.05);
+  const already=COMPLEX().filter(t=>(D.nodes[t].pd1y||0)>=0.5);
+  $('#tipMsg').innerHTML=`<div class="callout"><b>The cliff is credit, not margin calls.</b> ${already.length?`Already past 50% model default risk today: ${already.map(t=>D.nodes[t].label).join(', ')}. `:''}The first neocloud crosses 50% at about a <b>${first?Math.round(-first.q*100)+'%':'>50%'}</b> Nasdaq-100 fall. At −10%, ${usd(p10.debt)} of debt sits in ${p10.dist.length} companies past that line. At −20% it's ${usd(p20.debt)} in ${p20.dist.length}, and at −30% it's ${usd(p30.debt)} in ${p30.dist.length}. That debt is owed largely to private-credit funds, insurers and banks, and that's the channel through which a neocloud bust would reach the wider financial system.</div>
+  <div class="callout amb" style="margin-top:8px"><b>Forced equity selling is an amplifier, not the trigger.</b> Margin calls and leveraged-ETF rebalancing add 5 points or more to the neocloud basket's drop from about a <b>${tipB5?Math.round(-tipB5.q*100)+'%':'>50%'}</b> Nasdaq fall. Market-wide margin selling adds 2 points of extra decline from about <b>${tipM2?Math.round(-tipM2.q*100)+'%':'beyond 50%'}</b>, under your current M = ${P.M} and most-levered account at ${P.lmax}%. The grid below shows how sensitive that is. Sweeps use at most 10 trading days to keep them fast.</div>`;
+  // per-company table
+  const ids=['CRWV','NBIS','IREN','WYFI','CORZ','APLD','GLXY','WULF','CIFR','ORCL','SMCI','NVDA'].filter(t=>D.nodes[t]);
+  const bis=(fn)=>{let lo=0,hi=60;if(!fn(hi))return null;for(let k=0;k<7;k++){const mid=(lo+hi)/2;if(fn(mid))hi=mid;else lo=mid;}return Math.round(hi);};
+  const rows=ids.map(t=>{const n=D.nodes[t];const now=n.pd1y||0;
+    const qT=now>=0.5?0:bis(v=>(engine({...P,q:-v,n:0,c:0,h:0,d:dS}).res[t].pd||0)>=0.5);
+    const nT=now>=0.5?0:bis(v=>(engine({...P,q:0,n:-v,c:0,h:0,d:dS}).res[t].pd||0)>=0.5);
+    const e20=engine({...P,q:-20,n:0,c:0,h:0,d:dS});
+    return `<tr><td><b>${n.label}</b> <span class="note mono">${t}</span></td><td>${(now*100).toFixed(now<0.01?2:0)}%</td><td style="${qT!=null&&qT<=20?'color:var(--dn);font-weight:700':''}">${qT===0?'already':qT==null?'> 60%':'≈ −'+qT+'%'}</td><td style="${nT!=null&&nT<=30?'color:var(--dn);font-weight:700':''}">${nT===0?'already':nT==null?'> 60%':'≈ −'+nT+'%'}</td><td>${pct(e20.res[t].ret,0)}</td><td>${e20.res[t].pd==null?'—':Math.round(e20.res[t].pd*100)+'%'}</td><td>${usd(n.debt)}</td></tr>`;});
+  $('#tipTable').innerHTML=`<thead><tr><th>Company</th><th>Model PD now</th><th>Nasdaq fall → PD past 50%</th><th>Nvidia-only fall → PD past 50%</th><th>Stock if Nasdaq −20%</th><th>PD if Nasdaq −20%</th><th>Debt at stake</th></tr></thead><tbody>${rows.join('')}</tbody>`;
+  // sensitivity grid (market-wide)
+  const Ms=[5,10,15,25],Ls=[50,60,70];
+  const cell=(M,l)=>{for(let q=5;q<=60;q+=5){const p={...P,q:-q,n:0,c:0,h:0,d:dS,M,lmax:l};const f=engine(p),b=engine(p,{noForced:true});if(f.mkt-b.mkt<=-0.02)return q;}return null;};
+  $('#gridTable').innerHTML=`<thead><tr><th>M ↓ · most-levered account →</th>${Ls.map(l=>`<th>${l}% loan/value</th>`).join('')}</tr></thead><tbody>${Ms.map(M=>`<tr><td>M = ${M}${M===5?' (Gabaix–Koijen)':M===25?' (short-run, thin liquidity)':''}</td>${Ls.map(l=>{const v=cell(M,l);return `<td style="${v!=null&&v<=20?'color:var(--dn);font-weight:700':''}">${v==null?'> 60%':'−'+v+'%'}</td>`;}).join('')}</tr>`).join('')}</tbody>`;
+}
+/* ---------- other renders ---------- */
+function renderNews(){$('#news').innerHTML=(D.news||[]).map(n=>`<div><a href="${n.link}" target="_blank" rel="noopener">${n.title}</a><div class="s">${n.src||''} · ${n.date?new Date(n.date).toLocaleString([], {dateStyle:'medium',timeStyle:'short'}):''}</div></div>`).join('')||'<span class="note">No headlines in this refresh.</span>';}
+function renderExp(){$('#expTable').innerHTML=`<thead><tr><th>Exposed company</th><th>Exposed to</th><th>Weight</th><th style="text-align:left">Why</th></tr></thead><tbody>${EXPO.map(([t,s,w,why])=>`<tr><td>${(D.nodes[t]||{}).label||t}</td><td>${s==='HYP'?'Hyperscaler demand':(D.nodes[s]||{}).label}</td><td>${w}</td><td style="text-align:left;font-family:Inter;white-space:normal">${why}</td></tr>`).join('')}</tbody>`;
+  $('#srcList').innerHTML=SRC.map(s=>`<li>${s.replace(/(https?:\/\/\S+)/,'<a href="$1" target="_blank" rel="noopener">$1</a>')}</li>`).join('');}
+
+/* ---------- wire up ---------- */
+[['chg1d','1 day'],['chg5d','5 days'],['chg1m','1 month'],['fromHigh','vs 52w high']].forEach(([k,l])=>{const b=document.createElement('button');b.textContent=l;b.setAttribute('aria-pressed',k===win);b.onclick=()=>{win=k;$$('#winBtns button').forEach(x=>x.setAttribute('aria-pressed',x===b));renderMap();};$('#winBtns').appendChild(b);});
+Object.entries(ET).forEach(([k,[c,l]])=>{const b=document.createElement('button');b.textContent=l.split(' (')[0];b.setAttribute('aria-pressed','true');b.style.borderColor=c;b.onclick=()=>{showE.has(k)?showE.delete(k):showE.add(k);b.setAttribute('aria-pressed',showE.has(k));renderMap();};$('#edgeBtns').appendChild(b);});
+PRESETS.forEach(([l],i)=>{const o=document.createElement('option');o.value=i;o.textContent=l;$('#preset').appendChild(o);});
+$('#preset').onchange=e=>{const pr=PRESETS[+e.target.value][1];if(pr){Object.assign(P,pr);syncCtl();runAll();}};
+let tmr;const runAll=()=>{runLab();clearTimeout(tmr);tmr=setTimeout(sweep,150);};
+ctl.forEach(k=>$('#'+k).addEventListener('input',e=>{P[k]=+e.target.value;$('#o_'+k).textContent=fmtC[k](P[k]);if(['q','n','c','h','d'].includes(k))$('#preset').value=PRESETS.length-1;runAll();}));
+$('#cb').onchange=e=>{P.cb=+e.target.value;runAll();};
+$('#resetAdv').onclick=()=>{['md','mb','lmax','hs','hm','y','M','pt'].forEach(k=>P[k]=DEF[k]);syncCtl();runAll();};
+function renderAll(){renderHeader();renderMap();renderCard();renderLev();renderNews();renderExp();runAll();}
+syncCtl();renderAll();
+/* live refresh from published JSON */
+async function pull(){try{const r=await fetch('assets/live.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)return;const j=await r.json();if(j&&j.asof&&j.asof!==D.asof){D=j;renderAll();}}catch(e){}}
+pull();setInterval(pull,5*60*1000);
+})();
+</script>
+</body>
+</html>

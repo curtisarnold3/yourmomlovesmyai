@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neoclouds: How AI Companies Finance Their GPU Empires</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060b16; --bg2:#0a1324; --panel:rgba(16,26,46,.62); --panel2:rgba(22,34,60,.75);
+  --line:rgba(140,170,220,.16); --line2:rgba(140,170,220,.3);
+  --text:#e9eef8; --muted:#93a3bf; --dim:#5f6f8c;
+  --cyan:#38d6f5; --amber:#f6b13c; --violet:#a78bfa; --teal:#2dd4bf; --coral:#ff6b6b; --silver:#c9d4e6;
+  --glow-c:0 0 18px rgba(56,214,245,.45);
+  --r:18px;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --head:'Space Grotesk',Inter,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(1200px 700px at 80% -10%,rgba(56,214,245,.10),transparent 60%),
+             radial-gradient(900px 600px at -10% 40%,rgba(167,139,250,.08),transparent 60%),
+             linear-gradient(180deg,#060b16 0%,#08101f 50%,#060b16 100%);}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.35;
+  background-image:linear-gradient(rgba(120,150,200,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(120,150,200,.05) 1px,transparent 1px);
+  background-size:48px 48px;mask-image:radial-gradient(circle at 50% 30%,#000 30%,transparent 80%)}
+a{color:var(--cyan)}
+h1,h2,h3,h4{font-family:var(--head);letter-spacing:-.01em;margin:0}
+p{margin:0 0 1em}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+
+/* progress + rail */
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--amber));width:0;z-index:50}
+#rail{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:10px}
+#rail a{display:flex;align-items:center;justify-content:flex-end;gap:8px;text-decoration:none;color:var(--muted);font:600 11px var(--mono)}
+#rail a span{opacity:0;transform:translateX(6px);transition:.2s;white-space:nowrap;background:var(--panel2);padding:2px 8px;border-radius:99px;border:1px solid var(--line)}
+#rail a:hover span,#rail a:focus-visible span{opacity:1;transform:none}
+#rail a i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--dim);display:block;transition:.2s}
+#rail a.on i{background:var(--cyan);border-color:var(--cyan);box-shadow:var(--glow-c)}
+@media(max-width:1100px){#rail{display:none}}
+
+/* hero */
+.hero{min-height:100vh;display:grid;align-items:center;padding:80px 0 40px;position:relative}
+.kicker{font:600 12px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--cyan)}
+.hero h1{font-size:clamp(56px,10vw,132px);line-height:.9;margin:.2em 0 .1em;font-weight:700;
+  background:linear-gradient(180deg,#fff 30%,#9fb6dc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h2{font-size:clamp(22px,3vw,34px);font-weight:500;color:#cfd9ec;max-width:720px}
+.hero .lede{max-width:640px;color:var(--muted);font-size:18px;margin-top:22px}
+.hero-grid{display:grid;grid-template-columns:.95fr 1.25fr;gap:10px;align-items:center}
+#heroScene{margin-right:-90px}
+@media(max-width:900px){#heroScene{margin-right:0}}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:28px;font:500 12.5px Inter}
+.legend span{display:inline-flex;align-items:center;gap:7px;color:#c8d3e6}
+.sw{width:26px;height:4px;border-radius:3px;display:inline-block}
+.sw.dash{height:0;border-top:3px dashed var(--amber);background:none}
+.scrollcue{margin-top:34px;color:var(--dim);font:500 12px var(--mono);letter-spacing:.14em}
+
+/* chapters */
+.chapter{padding:110px 0 60px;position:relative}
+.ch-head{display:grid;grid-template-columns:auto 1fr;gap:6px 22px;align-items:end;margin-bottom:28px}
+.ch-num{font:700 88px/0.8 var(--head);color:transparent;-webkit-text-stroke:1.2px rgba(150,180,230,.35)}
+.ch-head .kicker{grid-column:2}
+.ch-head h2{grid-column:2;font-size:clamp(30px,4.2vw,50px);line-height:1.05}
+.ch-head .q{grid-column:2;color:var(--muted);font-size:18px;margin-top:6px}
+.prose{max-width:720px;color:#d3dced;font-size:17.5px}
+.prose b{color:#fff}
+.tweet{font:600 clamp(20px,2.4vw,27px)/1.3 var(--head);color:#fff;border-left:3px solid var(--cyan);padding:4px 0 4px 18px;margin:30px 0;max-width:760px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 30px 80px -40px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.04)}
+.pad{padding:22px}
+.note{font-size:12.5px;color:var(--muted);line-height:1.5}
+.tag{display:inline-block;font:600 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;border:1px solid var(--line2);color:var(--muted)}
+.tag.hyp{color:var(--amber);border-color:rgba(246,177,60,.45);background:rgba(246,177,60,.07)}
+.tag.src{color:var(--violet);border-color:rgba(167,139,250,.45);background:rgba(167,139,250,.07)}
+.tag.ver{color:var(--teal);border-color:rgba(45,212,191,.45);background:rgba(45,212,191,.07)}
+.tag.ill{color:var(--silver)}
+.figure svg{width:100%;height:auto;display:block}
+.cap{font-size:13px;color:var(--muted);margin-top:10px}
+
+/* controls */
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.seg button,.btn{font:600 13px Inter;color:#cdd8ea;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:99px;padding:8px 14px;cursor:pointer;transition:.18s}
+.seg button:hover,.btn:hover{border-color:var(--cyan);color:#fff}
+.seg button[aria-pressed="true"],.seg button[aria-selected="true"]{background:rgba(56,214,245,.14);border-color:var(--cyan);color:#fff;box-shadow:var(--glow-c)}
+.seg .lbl{font:600 11px var(--mono);color:var(--dim);letter-spacing:.12em;text-transform:uppercase;align-self:center;margin-right:4px}
+
+/* scrolly */
+.scrolly{display:grid;grid-template-columns:1.25fr .75fr;gap:34px;position:relative}
+.scrolly .stick{position:sticky;top:8vh;height:min(84vh,760px);display:flex;flex-direction:column;justify-content:center}
+.scrolly .steps{padding:12vh 0 20vh}
+.step{min-height:62vh;display:flex;align-items:center}
+.step .card{padding:20px 22px;border-radius:16px;background:var(--panel2);border:1px solid var(--line);opacity:.35;transition:.35s;transform:translateY(10px)}
+.step.active .card{opacity:1;transform:none;border-color:var(--line2)}
+.step h4{font-size:19px;margin-bottom:6px}
+.scrolly.full{grid-template-columns:1fr}
+.scrolly.full .stick{top:1vh;height:98vh;z-index:3;justify-content:flex-start;padding-top:2vh}
+.scrolly.full .steps{padding:0 0 45vh;margin-top:-50vh;position:relative;z-index:1;pointer-events:none}
+.scrolly.full .step{min-height:75vh}
+.scrolly.full .step .card{opacity:0!important}
+.scrolly.full .figure svg{max-height:56vh;margin:0 auto}
+.stepcap{margin-top:12px;padding:14px 18px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid var(--line2);min-height:92px;font-size:15.5px;color:#dbe3f1}
+.stepcap h4{font-size:18px;margin-bottom:4px}
+.stepcap p{margin:0}
+.g2>*,.g3>*,.g-side>*,.calc>*,.kpis>*,.blocks>*{min-width:0}
+.scrolly>*,.stick>*,.hero-grid>*{min-width:0}
+html,body{overflow-x:clip}
+@media(max-width:900px){
+  .scrolly{grid-template-columns:1fr}
+  .scrolly .stick{top:0;height:auto;z-index:2;background:linear-gradient(var(--bg) 85%,transparent);padding:8px 0}
+  .step{min-height:46vh}
+  .scrolly.full .stick{height:auto;padding-top:0;top:0}
+  .scrolly.full .stick .panel{padding:10px}
+  .scrolly.full .stick .seg{flex-wrap:nowrap;overflow-x:auto;margin-bottom:6px;padding-bottom:4px}
+  .scrolly.full .stick .seg button{white-space:nowrap;padding:6px 11px;font-size:12px}
+  .scrolly.full .stick .seg .lbl{display:none}
+  .scrolly.full .stick .stepcap,.scrolly.full .stick .cap{display:none}
+  .scrolly.full .figure svg{max-height:44vh}
+  .scrolly.full .steps{margin-top:0;padding:4vh 0 10vh;pointer-events:auto}
+  .scrolly.full .step{min-height:60vh;align-items:flex-end}
+  .scrolly.full .step .card{opacity:.96!important;transform:none;background:rgba(14,22,40,.97)}
+  .scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .scroll-x>svg{min-width:720px}
+  .scroll-x::after{content:"← swipe →";display:block;text-align:center;font:600 10px var(--mono);color:var(--dim);letter-spacing:.14em;margin-top:4px}
+  .blocks{gap:5px}.blk{padding:8px 2px}.blk .v{font-size:14px}.blk .y{font-size:9px}
+  .kpi .v{font-size:19px}
+  .hero h1{font-size:50px}
+}
+
+/* isometric scene styling */
+.scene .grp{transition:opacity .6s,filter .6s,transform .8s cubic-bezier(.2,.8,.2,1)}
+.scene.dimmable .grp{opacity:.18}
+.scene.dimmable .grp.lit{opacity:1;filter:drop-shadow(0 0 10px rgba(56,214,245,.35))}
+.scene .assemble{transform:translateY(-40px);opacity:0}
+.scene .assemble.in{transform:none;opacity:1}
+.flow-power{stroke:#ffffff;stroke-width:4;fill:none;stroke-linecap:round;stroke-dasharray:1 15;animation:dash 1.2s linear infinite}
+.flow-power-base{stroke:#c9d4e6;stroke-width:2.2;fill:none;opacity:.75;filter:drop-shadow(0 0 4px #c9d4e6)}
+.flow-compute{stroke:#bff3ff;stroke-width:4.5;fill:none;stroke-linecap:round;stroke-dasharray:1 15;animation:dash 1s linear infinite}
+.flow-compute-base{stroke:var(--cyan);stroke-width:3;fill:none;filter:drop-shadow(0 0 6px var(--cyan))}
+.flow-cash{stroke:#ffe2a8;stroke-width:4.5;fill:none;stroke-linecap:round;stroke-dasharray:1 15;animation:dash 1.4s linear infinite}
+.flow-cash-base{stroke:var(--amber);stroke-width:3;fill:none}
+@keyframes dash{to{stroke-dashoffset:-32}}
+@media (prefers-reduced-motion:reduce){.flow-power,.flow-compute,.flow-cash{display:none}}
+.led{animation:blink 2.4s ease-in-out infinite}
+@keyframes blink{50%{opacity:.25}}
+svg text{font-family:Inter,sans-serif}
+svg .t-mono{font-family:var(--mono)}
+
+/* grids */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.g-side{display:grid;grid-template-columns:1.35fr .65fr;gap:20px;align-items:start}
+@media(max-width:900px){.g2,.g3,.g-side{grid-template-columns:1fr}}
+
+/* company cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.co{padding:16px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--line);animation:pop .35s ease both}
+.co h4{font-size:16px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.co .role{font:600 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
+.co p{font-size:13.5px;color:#c3cee2;margin:.4em 0 0}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}}
+
+/* model compare */
+.mtable{width:100%;border-collapse:collapse;font-size:14px}
+.mtable th{text-align:left;font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:8px 10px;border-bottom:1px solid var(--line)}
+.mtable td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;color:#cbd5e8}
+.mtable td:first-child{color:var(--muted);width:150px;font-weight:600}
+.mcol{transition:.3s}
+.mcol.off{opacity:.28}
+.mcard{cursor:pointer;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.02);padding:10px 10px 4px;transition:.25s;text-align:left;color:inherit;font:inherit}
+.mcard[aria-pressed="true"]{border-color:var(--cyan);box-shadow:var(--glow-c);background:rgba(56,214,245,.06)}
+.mcard h4{font-size:15px;margin:6px 6px 0}
+.mcard .who{font-size:12px;color:var(--muted);margin:2px 6px 6px}
+.key{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);margin-top:8px}
+.key i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+
+/* contract blocks */
+.blocks{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
+.blk{border-radius:12px;padding:12px 8px;text-align:center;border:1.5px dashed rgba(167,139,250,.6);background:rgba(167,139,250,.06);transition:.5s}
+.blk .y{font:600 11px var(--mono);color:var(--muted)}
+.blk .v{font:700 20px var(--head);color:#e6dcff}
+.blk.paid{border-style:solid;border-color:var(--amber);background:rgba(246,177,60,.12)}
+.blk.paid .v{color:#ffd896}
+.hot{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.hot button{all:unset;cursor:pointer;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:13.5px;color:#cfd9ec}
+.hot button[aria-expanded="true"]{border-color:var(--violet);background:rgba(167,139,250,.09)}
+.hot button b{display:block;font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--violet);margin-bottom:3px}
+.hot button span{display:block;margin-top:4px;color:#e3e9f5}
+.hot button em{display:none;font-style:normal;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line2);color:#f6d79b;font-size:13px}
+.hot button[aria-expanded="true"] em{display:block}
+.hot button i{font-style:normal;font-size:11px;color:var(--dim);display:block;margin-top:6px}
+
+/* calculator */
+.calc{display:grid;grid-template-columns:340px 1fr;gap:20px}
+@media(max-width:980px){.calc{grid-template-columns:1fr}}
+.ctrl{display:grid;gap:14px}
+.ctrl label{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:13.5px;color:#cfd9ec}
+.ctrl label output{font:600 13px var(--mono);color:#fff}
+.ctrl input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--cyan)}
+.ctrl .grp-h{font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-top:4px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:700px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.kpi .l{font:600 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font:700 24px var(--head)}
+.eq{font:500 14px var(--mono);color:#dfe7f5;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:10px;padding:10px 12px;line-height:1.8;overflow-x:auto}
+.eq em{font-style:normal;color:var(--cyan)}
+table.sched{width:100%;border-collapse:collapse;font:13px var(--mono)}
+table.sched th,table.sched td{padding:7px 8px;text-align:right;border-bottom:1px solid var(--line)}
+table.sched th{color:var(--dim);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+table.sched td:first-child,table.sched th:first-child{text-align:left}
+.warnbox{border:1px solid rgba(255,107,107,.4);background:rgba(255,107,107,.07);border-radius:12px;padding:12px 14px;font-size:13.5px;color:#ffd6d6}
+.okbox{border:1px solid rgba(45,212,191,.35);background:rgba(45,212,191,.06);border-radius:12px;padding:12px 14px;font-size:13.5px;color:#cff7f1}
+
+/* sources */
+.sources ol{font-size:13px;color:var(--muted);columns:2;column-gap:40px;padding-left:20px}
+.sources li{margin-bottom:6px;break-inside:avoid}
+@media(max-width:800px){.sources ol{columns:1}}
+footer{padding:60px 0 80px;color:var(--dim);font-size:13px}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s,transform .8s}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+  .scene .assemble{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+<nav id="rail" aria-label="Chapters"></nav>
+
+<!-- shared SVG defs -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="gMetalTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5d6f8c"/><stop offset="1" stop-color="#34425a"/></linearGradient>
+  <linearGradient id="gMetalL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a364b"/><stop offset="1" stop-color="#161e2d"/></linearGradient>
+  <linearGradient id="gMetalR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4862"/><stop offset="1" stop-color="#202a3d"/></linearGradient>
+  <linearGradient id="gRackL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121a28"/><stop offset="1" stop-color="#0a0f19"/></linearGradient>
+  <linearGradient id="gGround" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a2438"/><stop offset="1" stop-color="#0f1626"/></linearGradient>
+  <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="rgba(160,200,255,.16)"/><stop offset="1" stop-color="rgba(160,200,255,.04)"/></linearGradient>
+  <linearGradient id="gViolet" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="rgba(167,139,250,.55)"/><stop offset="1" stop-color="rgba(120,90,220,.18)"/></linearGradient>
+  <linearGradient id="gAmber" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="rgba(246,177,60,.6)"/><stop offset="1" stop-color="rgba(200,120,30,.2)"/></linearGradient>
+  <linearGradient id="gCyan" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="rgba(56,214,245,.55)"/><stop offset="1" stop-color="rgba(20,120,170,.18)"/></linearGradient>
+  <linearGradient id="gTeal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="rgba(45,212,191,.55)"/><stop offset="1" stop-color="rgba(20,120,110,.18)"/></linearGradient>
+  <pattern id="hatchDep" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="rgba(201,212,230,.18)"/><line x1="0" y1="0" x2="0" y2="7" stroke="rgba(201,212,230,.75)" stroke-width="2.2"/></pattern>
+  <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><rect width="8" height="8" fill="rgba(160,180,210,.06)"/><line x1="0" y1="0" x2="0" y2="8" stroke="rgba(200,215,240,.45)" stroke-width="2"/></pattern>
+  <marker id="mC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#38d6f5"/></marker>
+  <marker id="mA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#f6b13c"/></marker>
+  <marker id="mV" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#a78bfa"/></marker>
+  <marker id="mT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2dd4bf"/></marker>
+  <marker id="mS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c9d4e6"/></marker>
+  <marker id="mR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ff6b6b"/></marker>
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>
+</svg>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="kicker">AI Stack Visual Documentary · Part 4 · Layer 3: Infrastructure</div>
+      <h1>NEOCLOUDS</h1>
+      <h2>How AI companies finance their GPU empires</h2>
+      <p class="lede">Picture a company that has signed a customer worth half a billion dollars, but doesn't yet own a single chip to serve it. This is the story of how that contract gets turned into a warehouse of humming GPUs, who lends the money, and what can go wrong.</p>
+      <div class="legend" aria-label="Color key">
+        <span><i class="sw" style="background:var(--silver)"></i>Physical power &amp; hardware</span>
+        <span><i class="sw" style="background:var(--cyan)"></i>Compute services</span>
+        <span><i class="sw" style="background:var(--amber)"></i>Capital &amp; payments</span>
+        <span><i class="sw" style="background:var(--violet)"></i>Contracts &amp; equity</span>
+        <span><i class="sw" style="background:var(--teal)"></i>Operating cash generated</span>
+        <span><i class="sw" style="background:var(--coral)"></i>Risk &amp; stress</span>
+        <span><i class="sw dash"></i>Contingent commitment</span>
+      </div>
+      <div class="scrollcue">SCROLL TO BEGIN ↓ &nbsp;·&nbsp; 10 CHAPTERS + EPILOGUE</div>
+    </div>
+    <div class="figure scene" id="heroScene" role="img" aria-label="Isometric illustration of an AI data center campus with a substation, a glass-walled building full of GPU racks, cooling units, and a cyan beam of compute leaving the site."></div>
+  </div>
+</header>
+
+<main>
+<!-- ================= CH1 ================= -->
+<section class="chapter" id="ch1" data-title="Where neoclouds fit">
+  <div class="wrap">
+    <div class="ch-head reveal"><div class="ch-num">01</div><div class="kicker">Chapter 1</div><h2>Where neoclouds fit</h2><div class="q">Where do neoclouds sit within the AI economy?</div></div>
+    <div class="g-side">
+      <div class="panel pad figure reveal">
+        <div id="stackScene" class="scene" role="img" aria-label="Five isometric layers stacked: energy at the bottom, then chips, infrastructure (highlighted), models and applications. Silver flows carry power and hardware up into the infrastructure layer, and cyan flows carry compute up to models and applications."></div>
+        <div class="cap">Energy and chips flow <b style="color:var(--silver)">up</b> into infrastructure. Infrastructure turns them into <b style="color:var(--cyan)">compute</b>, which model builders rent to train and run AI.</div>
+      </div>
+      <div class="prose reveal">
+        <p>Think of the AI economy as a five-story building. The bottom floors make raw ingredients: <b>electricity</b> and <b>chips</b>. The top floors make what you actually use: <b>models</b> and <b>apps</b>.</p>
+        <p>Floor three is where this story lives. These companies buy the chips, plug them into power, and rent out the result. That result is <b>compute</b>, the raw processing power to train and run models.</p>
+        <p>Wall Street splits the floor-three tenants into two camps. <b>Hyperscalers</b> are household names with other businesses behind them. <b>Neoclouds</b> are newer, GPU-focused specialists, and the source reel names CoreWeave and Nebius as the poster children.</p>
+      </div>
+    </div>
+
+    <div class="panel pad reveal" style="margin-top:22px">
+      <div class="seg" role="tablist" aria-label="Explore the AI infrastructure layer" id="ch1tabs"><span class="lbl">Explore the infrastructure layer</span></div>
+      <div id="ch1cards" class="cards" role="tabpanel" aria-live="polite"></div>
+      <p class="note" style="margin-top:12px">Roles are simplified and change fast. Deals marked <span class="tag ver">verified</span> were checked against public reporting as of Nov 14, 2026. Lines marked <span class="tag src">source claim</span> come from the original reel and weren't independently confirmed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH2 ================= -->
+<section class="chapter" id="ch2" data-title="The AI factory">
+  <div class="wrap">
+    <div class="ch-head reveal"><div class="ch-num">02</div><div class="kicker">Chapter 2</div><h2>The AI factory</h2><div class="q">What does it physically take to produce AI compute?</div></div>
+    <p class="prose reveal">Nvidia CEO Jensen Huang likes to call these buildings <b>AI factories</b>. The analogy holds up: raw materials go in, a product comes out. The reel boils the recipe down to three inputs. Scroll, and we'll build one together.</p>
+    <div class="scrolly full" id="factoryScrolly">
+      <div class="stick">
+        <div class="panel pad">
+          <div class="seg" id="factoryBtns" aria-label="Build an AI factory">
+            <span class="lbl">Build an AI factory</span>
+            <button data-step="1" aria-pressed="false">⚡ Energy</button>
+            <button data-step="2" aria-pressed="false">▣ Powered shell</button>
+            <button data-step="3" aria-pressed="false">◆ GPUs</button>
+            <button data-step="4" aria-pressed="false">Combined system</button>
+          </div>
+          <div id="factoryScene" class="scene dimmable figure" role="img" aria-label="Isometric AI data center being assembled: substation and power lines, a powered building shell, rows of GPU racks with cooling units, and compute output."></div>
+          <div class="cap" id="factoryCap">Scroll to assemble the factory, or use the buttons.</div><div class="stepcap" aria-live="polite"><h4>Scroll to build the factory</h4><p>Each step adds one physical input. The buttons above let you jump around.</p></div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step" data-step="1"><div class="card"><h4>⚡ Input 1 · Electrical energy</h4><p>Power arrives from the grid at high voltage. A substation's transformers step it down, and switchgear routes it to the building. A single modern GPU rack can draw on the order of 100+ kilowatts, more than dozens of homes, so a campus is often limited by how much grid power it can secure.</p></div></div>
+        <div class="step" data-step="2"><div class="card"><h4>▣ Input 2 · The powered shell</h4><p>A "powered shell" is a building with the electrical and mechanical backbone already in place: power distribution, cooling, fiber, security. It's a warehouse wired to feed machines. Many neoclouds started as <b>crypto miners</b> and already had exactly this: cheap power and big sheds.</p></div></div>
+        <div class="step" data-step="3"><div class="card"><h4>◆ Input 3 · GPU hardware</h4><p>Racks of GPU servers are the engine. They're also the most expensive part and the fastest to age. Each rack is tied together with high-speed networking and usually liquid cooling, because packing this much power into one cabinet makes serious heat.</p></div></div>
+        <div class="step" data-step="4"><div class="card"><h4>= Output · Compute</h4><p>Combine all three and the factory produces <b style="color:var(--cyan)">compute capacity</b>, delivered over fiber to customers who train and run models. In reality there's more on the list (networking gear, storage, staff, permits, water, software), so treat the three-input recipe as the skeleton, not the whole body.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH3 ================= -->
+<section class="chapter" id="ch3" data-title="Three business models">
+  <div class="wrap">
+    <div class="ch-head reveal"><div class="ch-num">03</div><div class="kicker">Chapter 3</div><h2>Three different business models</h2><div class="q">Who owns the buildings, the power infrastructure and the GPUs?</div></div>
+    <p class="prose reveal">Same factory, three different owners' manuals. Here's the identical campus drawn three times. The only thing that changes is <b>who owns which piece</b>, and that one change rewrites where the money comes from and who's holding the risk.</p>
+    <div class="g3 reveal" id="modelCards"></div>
+    <div class="key reveal"><span><i style="background:#5d6f8c"></i>Owned / controlled</span><span><i style="background:url(#hatch);background-image:repeating-linear-gradient(35deg,rgba(200,215,240,.5) 0 2px,transparent 2px 7px)"></i>Leased from someone else</span><span><i style="border:1.5px dashed #6c7a95"></i>Someone else's asset</span><span><i style="background:var(--cyan)"></i>Compute sold</span><span><i style="background:var(--amber)"></i>Rent / payments received</span></div>
+    <div class="panel pad reveal" style="margin-top:18px;overflow-x:auto">
+      <div class="seg" id="modelBtns" aria-label="Compare business models"><span class="lbl">Compare business models</span></div>
+      <table class="mtable" id="modelTable"></table>
+      <p class="note" style="margin-top:10px">Real companies mix models. Crusoe, for instance, both develops campuses for other companies and runs its own GPU cloud. CoreWeave has historically leased shells from landlords while also building some of its own. Treat the three columns as archetypes, not boxes every company fits in neatly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH4 ================= -->
+<section class="chapter" id="ch4" data-title="Hyperscalers vs neoclouds">
+  <div class="wrap">
+    <div class="ch-head reveal"><div class="ch-num">04</div><div class="kicker">Chapter 4</div><h2>Hyperscalers vs. neoclouds</h2><div class="q">Why does financing look so different for established tech giants and neoclouds?</div></div>
+    <div class="g2">
+      <p class="prose reveal">Microsoft sells Office. Amazon is the everything store. Google and Meta sell ads. Those businesses throw off enormous cash, and at first that cash paid for most of the AI build-out. As spending climbed, hyperscalers started borrowing too, but when a bank lends to Microsoft, it looks at debt against huge, steady earnings, and the borrowing looks modest.</p>
+      <p class="prose reveal">A neocloud needs the same chips but has no cash cow to sell. It earns money from compute, yet it must spend billions <i>before</i> that revenue arrives. And its existing business often can't support the debt it needs on its own. So it leans much harder on <b>equity</b> and on <b>borrowing secured by specific contracts and hardware</b>.</p>
+    </div>
+    <div class="panel pad reveal" style="margin-top:16px">
+      <div class="seg" id="fundBtns" aria-label="Compare funding models"><span class="lbl">Highlight a funding source</span></div>
+      <div id="fundScene" class="figure scroll-x" role="img" aria-label="Two flow diagrams. Left: a hyperscaler's AI capital spending fed mostly by operating cash from mature businesses, plus cloud revenue, corporate bonds and some project-level vehicles. Right: a neocloud's spending fed mostly by asset-backed borrowing and equity, with smaller customer revenue and corporate debt."></div>
+      <p class="note"><span class="tag hyp">Hypothetical mix</span> Stream widths come from a teaching dataset, not any company's reported figures. They show the <i>shape</i> of the difference. The neocloud's thin teal sliver stands for legacy businesses some still run, such as bitcoin mining or hosting. Real-world anchors: hyperscalers issued roughly $250 billion of debt in 2026 by one October estimate [8], and Meta's Hyperion campus was financed through an off-balance-sheet vehicle that issued about $27.3 billion of bonds [9]. On the neocloud side, Nebius told shareholders it would fund growth with corporate debt, asset-backed financing and equity [12].</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH5 ================= -->
+<section class="chapter" id="ch5" data-title="The customer contract">
+  <div class="wrap">
+    <div class="ch-head reveal"><div class="ch-num">05</div><div class="kicker">Chapter 5</div><h2>The customer contract</h2><div class="q">Why is a multiyear compute contract valuable to lenders?</div></div>
+    <p class="prose reveal">What neoclouds <i>do</i> have is paper: multiyear contracts with some of the most creditworthy companies on earth. The reel's example is a <b>five-year deal paying $100 million a year</b>. That's $500 million of promised revenue, and the neocloud can't spend a cent of it yet.</p>
+    <div class="panel pad reveal">
+      <div class="g2" style="align-items:center">
+        <div id="contractScene" class="figure" role="img" aria-label="A large AI customer and a neocloud joined by a glowing violet contract slab, with five dashed violet payment blocks along a five-year timeline."></div>
+        <div>
+          <span class="tag hyp">Hypothetical example from the source</span>
+          <div class="blocks" id="blocks"></div>
+          <div class="kpis" style="margin-top:14px;grid-template-columns:repeat(3,1fr)">
+            <div class="kpi"><div class="l">Annual payment</div><div class="v mono" style="color:#e6dcff">$100M</div></div>
+            <div class="kpi"><div class="l">Nominal total</div><div class="v mono" style="color:#e6dcff">$500M</div></div>
+            <div class="kpi"><div class="l" id="cashLbl">Cash at signing</div><div class="v mono" id="cashVal" style="color:var(--coral)">$0</div></div>
+          </div>
+          <label class="ctrl" style="display:block;margin-top:12px"><span style="font-size:13.5px">Move through the contract <output id="o_yr" class="mono"></output></span><input type="range" id="yr" min="0" max="5" step="1" value="0" style="width:100%;accent-color:var(--amber)" aria-label="Contract year"></label><p class="note" style="margin-top:6px">Dashed violet = promised. Solid amber = cash received. Scrolling fills the blocks one year at a time, only as service is delivered. Drag the slider to step through by hand.</p>
+        </div>
+      </div>
+    </div>
+    <div class="panel pad reveal" style="margin-top:16px">
+      <div class="seg"><span class="lbl">Explore the contract · tap a card for why lenders care</span></div>
+      <div class="hot" id="hot"></div>
+    </div>
+    <div class="tweet reveal">A contract isn't money. It's a promise of money, and lenders get paid for judging how good the promise is.</div>
+  </div>
+</section>
+
+<!-- ================= CH6 ================= -->
+<section class="chapter" id="ch6" data-title="The SPV structure">
+  <div class="wrap">
+    <div class="ch-head reveal"><div class="ch-num">06</div><div class="kicker">Chapter 6</div><h2>The SPV financing structure</h2><div class="q">How can contracted revenue and GPU collateral support borrowing?</div></div>
+    <p class="prose reveal">Enter <b>chip-backed financing</b>. The idea: put the contract and the chips it pays for into a separate legal box, a <b>special-purpose vehicle</b>, and let lenders lend against that box alone. If the parent company stumbles, the box is walled off. Lenders are mainly underwriting the <i>customer's</i> ability to pay, not the neocloud's. As the reel puts it, the neocloud gets to borrow on Meta's credit instead of its own.</p>
+    <div class="scrolly full" id="spvScrolly">
+      <div class="stick">
+        <div class="panel pad">
+          <div class="seg" id="xrayBtns" aria-label="Financing X-ray layers">
+            <span class="lbl">Financing X-ray</span>
+            <button data-layer="all" aria-pressed="true">Everything</button>
+            <button data-layer="phys" aria-pressed="false">1 · Physical assets</button>
+            <button data-layer="contract" aria-pressed="false">2 · Contracts</button>
+            <button data-layer="debt" aria-pressed="false">3 · Debt &amp; collateral</button>
+            <button data-layer="cash" aria-pressed="false">4 · Cash movement</button>
+          </div>
+          <div class="seg" id="variantBtns" aria-label="Illustrative legal structure">
+            <span class="lbl">Structure</span>
+            <button data-v="A" aria-pressed="true">A · SPV owns GPUs + gets contract</button>
+            <button data-v="B" aria-pressed="false">B · Pledge only</button>
+            <button data-v="C" aria-pressed="false">C · Asset-owner SPV leases GPUs</button>
+          </div>
+          <div id="spvScene" class="figure scroll-x" role="img" aria-label="Diagram of an SPV financing: customer, operating neocloud, a glass SPV boundary holding GPUs and contract rights, and lenders, connected by physical, contract, debt and cash links."></div>
+          <div class="cap" id="spvCap"></div><div class="stepcap" aria-live="polite"><h4>Scroll to X-ray the structure</h4><p>Each step lights up one layer of the deal. The buttons let you switch layers or compare legal structures.</p></div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step" data-layer="phys"><div class="card"><h4><span style="color:var(--silver)">1 ·</span> Physical assets</h4><p>The GPUs sit in a data center the neocloud operates, often in a leased powered shell. In structure A the SPV legally <b>owns</b> those servers even though the parent runs them day to day. CoreWeave's recent facilities use a bankruptcy-remote SPV set up to own the GPUs and act as borrower [4].</p></div></div>
+        <div class="step" data-layer="contract"><div class="card"><h4><span style="color:var(--violet)">2 ·</span> Commercial contracts</h4><p>The customer signs a services agreement. Depending on the deal, the contract (or the right to its payments) is <b>assigned</b> to the SPV, or simply <b>pledged</b> to lenders. The parent usually signs a management agreement to keep operating the hardware for the SPV.</p></div></div>
+        <div class="step" data-layer="debt"><div class="card"><h4><span style="color:var(--amber)">3 ·</span> Debt &amp; collateral</h4><p>Lenders advance money to the SPV and take a <b>security interest</b> in what's inside: the GPUs and the contract rights. The debt is often <b>non-recourse</b> to the parent (CoreWeave describes its March 2026 facility that way [7]), so lenders' claim is on the box, not the whole company. Some facilities add parent guarantees. The parent contributes equity to cover what the loan doesn't.</p></div></div>
+        <div class="step" data-layer="cash"><div class="card"><h4><span style="color:var(--teal)">4 ·</span> Cash movement</h4><p>Customer payments land in a controlled collection account. A <b>waterfall</b> pays operating costs first, then interest and principal, and only what's left trickles up to the parent. That ordering is what makes lenders comfortable.</p></div></div>
+      </div>
+    </div>
+    <p class="note reveal"><span class="tag ill">Illustrative structures</span> Real facilities differ in who owns what, how contracts are assigned, reserve accounts and guarantees. Structure C reflects reporting on xAI's Colossus 2 financing, where a standalone vehicle buys GPUs and leases them to the operator [5].</p>
+  </div>
+</section>
+
+<!-- ================= CH7 ================= -->
+<section class="chapter" id="ch7" data-title="Sizing the debt">
+  <div class="wrap">
+    <div class="ch-head reveal"><div class="ch-num">07</div><div class="kicker">Chapter 7</div><h2>How lenders size the debt</h2><div class="q">How much can lenders advance against an expected stream of cash flows?</div></div>
+    <p class="prose reveal">Here's the part people get wrong: a $500 million contract does <b>not</b> mean $500 million of loans. Lenders strip out costs, demand a safety cushion, and then ask what a stream of future payments is worth <i>today</i>. On the original whiteboard, that chain of logic turns $100 million a year into roughly <b>$250 million</b> of borrowing. Try it yourself.</p>
+    <div class="panel pad reveal">
+      <div class="calc">
+        <div class="ctrl" id="calcCtrl" aria-label="Debt capacity calculator inputs">
+          <div class="grp-h">Contract</div>
+          <label>Annual contracted revenue <output id="o_rev"></output><input type="range" id="rev" min="20" max="300" step="5" value="100"></label>
+          <label>Contract duration (years) <output id="o_years"></output><input type="range" id="years" min="1" max="10" step="1" value="5"></label>
+          <div class="grp-h">Operating costs per year</div>
+          <label>Rent (powered shell) <output id="o_rent"></output><input type="range" id="rent" min="0" max="60" step="1" value="10"></label>
+          <label>Energy <output id="o_energy"></output><input type="range" id="energy" min="0" max="60" step="1" value="10"></label>
+          <label>Other operating costs <output id="o_other"></output><input type="range" id="other" min="0" max="60" step="1" value="0"></label>
+          <div class="grp-h">Lender terms</div>
+          <label>Required DSCR <output id="o_dscr"></output><input type="range" id="dscr" min="1" max="2" step="0.05" value="1.2"></label>
+          <label>Discount / financing rate <output id="o_rate"></output><input type="range" id="rate" min="2" max="18" step="0.5" value="10"></label>
+          <button class="btn" id="resetCalc" type="button">Reset to whiteboard example</button>
+        </div>
+        <div>
+          <div class="kpis" id="kpis"></div>
+          <div id="waterfall" class="figure" style="margin-top:14px" role="img" aria-label="Six-stage chart: revenue, minus operating costs, equals cash available for debt service, divided by the coverage ratio, gives annual debt service capacity, discounted to a present value."></div>
+          <div class="eq" id="eqs"></div>
+        </div>
+      </div>
+      <div class="g2" style="margin-top:20px">
+        <div>
+          <h4 style="font-size:16px;margin-bottom:8px">Annual debt-service schedule</h4>
+          <div id="schedChart" class="figure" role="img" aria-label="Stacked bars of interest and principal each year with the loan balance line falling to zero."></div>
+        </div>
+        <div style="overflow-x:auto"><table class="sched" id="schedTable"></table></div>
+      </div>
+      <p class="note" style="margin-top:14px"><span class="tag hyp">Simplified illustration</span> This isn't how an actual loan gets underwritten. Real facilities add reserve accounts, fees, taxes, maintenance capex, amortization tied to hardware life, advance rates against collateral value, contract-termination clauses and default probabilities. The whiteboard rounds 66.7 to "67" and the present value to "$250". The exact math gives $252.7M.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH8 ================= -->
+<section class="chapter" id="ch8" data-title="Buying GPUs, selling compute">
+  <div class="wrap">
+    <div class="ch-head reveal"><div class="ch-num">08</div><div class="kicker">Chapter 8</div><h2>Buying the GPUs and selling compute</h2><div class="q">What happens after the financing closes?</div></div>
+    <p class="prose reveal">The loan closes. "Voila, they sell compute," says the reel. In practice there's a production line between the signature and the first invoice. Follow the money, then the machines, then the money again.</p>
+    <div class="scrolly full" id="buildScrolly">
+      <div class="stick">
+        <div class="panel pad">
+          <div id="lineScene" class="figure scroll-x" role="img" aria-label="Six-stage isometric production line: lenders fund, GPUs are purchased, equipment is installed, capacity is commissioned, compute is delivered, and the customer pays back through a cash waterfall."></div>
+          <div class="cap" id="lineCap"></div><div class="stepcap" aria-live="polite"><h4>Scroll to follow the money and the machines</h4><p>Six stages, from loan closing to the first payment.</p></div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step" data-i="0"><div class="card"><h4><span style="color:var(--amber)">①</span> Lenders fund, in installments</h4><p>Most GPU facilities are <b>delayed-draw term loans</b>: money is released in tranches as hardware actually arrives, so nobody pays interest on idle cash. CoreWeave's March 2026 facility, for example, allowed about $7.5B to be drawn at first, growing to $8.5B as assets stabilized [3].</p></div></div>
+        <div class="step" data-i="1"><div class="card"><h4><span style="color:var(--silver)">②</span> GPUs are purchased</h4><p>The cash goes straight to hardware vendors. For a sense of scale: to serve a ~$9.7B, five-year Microsoft contract, IREN agreed to buy about $5.8B of GPUs and related gear from Dell [10].</p></div></div>
+        <div class="step" data-i="2"><div class="card"><h4><span style="color:var(--silver)">③</span> Equipment is installed</h4><p>Servers are racked, cabled to high-speed networks and plumbed into liquid cooling, inside a powered shell that's either owned or leased.</p></div></div>
+        <div class="step" data-i="3"><div class="card"><h4><span style="color:var(--cyan)">④</span> Capacity goes live</h4><p>After burn-in and acceptance testing, the cluster is handed to the customer. Contracts often tie payment start dates to these delivery milestones, which makes construction delays a financial risk.</p></div></div>
+        <div class="step" data-i="4"><div class="card"><h4><span style="color:var(--cyan)">⑤</span> Compute is delivered</h4><p>The customer trains and runs models on reserved capacity, month after month, under service-level commitments.</p></div></div>
+        <div class="step" data-i="5"><div class="card"><h4><span style="color:var(--teal)">⑥</span> The customer pays, and the waterfall runs</h4><p>Payments land in the SPV's collection account, then flow down in strict order: rent and energy, then lenders, then whatever's left up to the parent.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH9 ================= -->
+<section class="chapter" id="ch9" data-title="The profit squeeze">
+  <div class="wrap">
+    <div class="ch-head reveal"><div class="ch-num">09</div><div class="kicker">Chapter 9</div><h2>The profit squeeze</h2><div class="q">How do depreciation, interest and other costs affect profitability?</div></div>
+    <p class="prose reveal">"While this might seem great," the reel warns, "the depreciation and interest eat away at much of the profit." Here's why. Those GPUs cost real money up front. Accounting spreads that cost over their useful life as <b>depreciation</b>, and the loan charges <b>interest</b> on top. Together they can swallow almost everything the contract earns.</p>
+    <div class="panel pad reveal">
+      <div class="calc">
+        <div class="ctrl">
+          <div><span class="tag hyp">Hypothetical cluster</span></div>
+          <label>Hardware cost (GPUs + gear) <output id="o_capex"></output><input type="range" id="capex" min="150" max="600" step="10" value="300"></label>
+          <label>Depreciation life (years) <output id="o_life"></output><input type="range" id="life" min="2" max="8" step="1" value="6"></label>
+          <p class="note">Revenue, rent, energy, interest and the contract term all come from the Chapter 7 calculator, so change them there and this chart follows. Depreciation is straight-line with zero salvage value.</p>
+          <div id="lifeRef" class="note"></div>
+        </div>
+        <div>
+          <div class="kpis" id="pnlKpis"></div>
+          <div id="pnlChart" class="figure" style="margin-top:12px" role="img" aria-label="Stacked bars per contract year showing revenue consumed by rent, energy, other costs, depreciation and interest, with pre-tax profit on top or loss below zero."></div>
+          <div id="pnlNote"></div>
+        </div>
+      </div>
+    </div>
+    <div class="tweet reveal">Cash and profit aren't the same thing. A deal can pay its lenders every month and still report thin, or negative, earnings.</div>
+  </div>
+</section>
+
+<!-- ================= CH10 ================= -->
+<section class="chapter" id="ch10" data-title="The web & the risks">
+  <div class="wrap">
+    <div class="ch-head reveal"><div class="ch-num">10</div><div class="kicker">Chapter 10</div><h2>The web, and where it can tear</h2><div class="q">What happens when one contract becomes dozens, and what introduces risk?</div></div>
+    <p class="prose reveal">"But that's just one contract and one SPV. In reality, there are many." Zoom out and a neocloud looks less like one factory and more like a constellation: a parent company orbited by financing vehicles, each tied to its own customer, its own chips and its own lenders.</p>
+    <div class="panel pad reveal">
+      <div id="webScene" class="figure scroll-x" role="img" aria-label="A parent neocloud connected by violet equity links to three SPVs, each holding GPUs and tied to a customer: Meta, Anthropic and OpenAI, with lenders below each SPV."></div>
+      <p class="note"><span class="tag src">Whiteboard illustration</span> The original board draws one SPV each for Meta, Anthropic and OpenAI. That's a teaching map. Public filings don't name every customer behind every facility: CoreWeave's investment-grade facility was reportedly backed by its Meta contract [4], while a later facility cited two undisclosed non-investment-grade customers [6].</p>
+    </div>
+
+    <h3 class="reveal" style="font-size:26px;margin:44px 0 6px">Three fault lines</h3>
+    <p class="prose reveal">The reel names three risks. Each has a visual shape.</p>
+
+    <div class="g2" style="margin-top:12px">
+      <div class="panel pad reveal">
+        <h4 style="font-size:17px"><span style="color:var(--coral)">①</span> Short contracts, short-lived collateral</h4>
+        <p class="note">How long each commitment lasts, in years. Power deals run long. AI contracts and the chips backing them run short.</p>
+        <div id="durChart" class="figure" role="img" aria-label="Horizontal bar chart comparing durations in years of power agreements, data center leases, AI compute contracts, and GPU useful-life estimates."></div>
+      </div>
+      <div class="panel pad reveal">
+        <h4 style="font-size:17px"><span style="color:var(--coral)">②</span> Collateral that melts</h4>
+        <p class="note">Hypothetical GPU market value vs. the outstanding loan from Chapter 7. When the coral line drops below the amber one, the chips alone no longer cover the debt.</p>
+        <label class="ctrl" style="display:block;margin:6px 0"><span style="font-size:13.5px">Annual decline in GPU resale value <output id="o_decl" class="mono"></output></span><input type="range" id="decl" min="5" max="60" step="5" value="30" style="width:100%;accent-color:var(--coral)"></label>
+        <div id="ltvChart" class="figure" role="img" aria-label="Line chart of GPU collateral value falling over time compared with the loan balance amortizing toward zero."></div>
+      </div>
+    </div>
+    <div class="panel pad reveal" style="margin-top:20px">
+      <h4 style="font-size:17px"><span style="color:var(--coral)">③</span> Customers who must keep growing</h4>
+      <p class="note">The reel's point: customers like OpenAI and Anthropic need their own businesses to keep growing to make these payments. Stress-test the Chapter 7 deal. What if the customer pays only part of what it owes?</p>
+      <div class="g-side" style="align-items:center">
+        <div id="stressChart" class="figure" role="img" aria-label="Bar showing cash available versus required debt service under the chosen payment level, with coverage ratio."></div>
+        <div class="ctrl">
+          <label>Share of contract the customer actually pays <output id="o_pay"></output><input type="range" id="pay" min="0" max="100" step="5" value="100" style="accent-color:var(--coral)"></label>
+          <div id="stressMsg"></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel pad reveal" style="margin-top:20px;overflow-x:auto">
+      <h4 style="font-size:17px;margin-bottom:8px">Risk heatmap by business model</h4>
+      <div id="heat"></div>
+      <p class="note" style="margin-top:8px"><span class="tag ill">Editorial judgment</span> Ratings are qualitative and relative, for teaching. They aren't credit ratings or statements about any named company.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EPILOGUE ================= -->
+<section class="chapter" id="ch11" data-title="Nvidia's safety net">
+  <div class="wrap">
+    <div class="ch-head reveal"><div class="ch-num">∞</div><div class="kicker">Epilogue</div><h2>The central bank of AI?</h2><div class="q">How do Nvidia's commercial and financial ties support the neocloud ecosystem?</div></div>
+    <div>
+      <div class="panel pad figure reveal" style="margin-bottom:22px">
+        <div id="nvScene" class="scroll-x" role="img" aria-label="Nvidia linked to CoreWeave in three ways: silver hardware supply, a violet equity stake of about 11 percent, and a dashed amber backstop to buy unsold capacity. CoreWeave pays Nvidia for chips in amber."></div>
+      </div>
+      <div class="prose reveal" style="max-width:none;columns:2 340px;column-gap:40px">
+        <p>Every dollar a neocloud borrows ends up buying, mostly, Nvidia hardware. So Nvidia has a strong reason to keep its best customers alive, and it's tied to CoreWeave three ways at once.</p>
+        <p><b style="color:var(--silver)">Supplier.</b> CoreWeave has bought hundreds of thousands of Nvidia GPUs [13].</p>
+        <p><b style="color:var(--violet)">Shareholder.</b> Nvidia invested $2B in January 2026, bringing its stake to roughly 11% [14].</p>
+        <p><b style="color:var(--amber)">Backstop.</b> A $6.3B order obliges Nvidia to buy CoreWeave's residual unsold capacity through April 13, 2032 [15]. That's a <i>contingent</i> commitment, which is why it's drawn dashed, and it's capped. CoreWeave stays on the hook for its own debt.</p>
+        <p>The reel says those ties help lower CoreWeave's borrowing costs and cites <i>The Economist</i> calling Nvidia "the central bank of AI" <span class="tag src">source claim</span>. Nvidia is also a customer of Lambda: it agreed to lease back about 18,000 of its own GPUs for about $1.5B [16].</p>
+      </div>
+    </div>
+    <div class="tweet reveal">When the chip seller is also the investor and the buyer of last resort, the loop is strong in good times. It's worth asking what it looks like if demand ever turns.</div>
+  </div>
+</section>
+
+<!-- ================= SOURCES ================= -->
+<section class="chapter sources" id="sources" data-title="Sources">
+  <div class="wrap">
+    <div class="ch-head"><div class="ch-num">§</div><div class="kicker">Method &amp; sources</div><h2>How this was made</h2></div>
+    <p class="prose">Built from The Wall Street Skinny's "Neoclouds &amp; chip-backed financing" whiteboard reel (Rec2, ~02:43–05:23 and 07:24–10:15). Transcription errors corrected: "Nebbius" → Nebius, "Iran" → IREN, "Creuso" → Crusoe. All calculations run live in your browser from the equations shown. Every dollar figure in Chapters 5, 7, 9 and 10 is a <b>hypothetical teaching example</b>. Company facts were checked against public reporting as of <b>November 14, 2026</b> and can change quickly.</p>
+    <ol>
+      <li>The Wall Street Skinny, neocloud reel transcript and whiteboard (source claims, incl. "Anthropic committed ~half a trillion to compute" and the Economist quote).</li>
+      <li>Wing VC, "How the GPU Became Collateral." https://www.wing.vc/content/how-the-gpu-became-collateral</li>
+      <li>Converge Digest, "CoreWeave secures $8.5B for AI cloud expansion." https://convergedigest.com/coreweave-secures-8-5b-for-ai-cloud-expansion/</li>
+      <li>Quartz, GPU-collateralized debt and neocloud financing risks. https://qz.com/gpu-collateralized-debt-ai-neocloud-coreweave-financing-risks-050526</li>
+      <li>Wing VC (asset-owner SPV, xAI Colossus 2). https://www.wing.vc/content/how-the-gpu-became-collateral</li>
+      <li>Business Wire, "CoreWeave Closes $3.1 Billion Loan Facility." https://www.businesswire.com/news/home/20260518337916/en/</li>
+      <li>Business Wire, "CoreWeave Closes Landmark $8.5 Billion Financing Facility." https://www.businesswire.com/news/home/20260330529766/en/</li>
+      <li>The Edge Malaysia (Reuters), hyperscaler debt issuance, Oct 2026. https://theedgemalaysia.com/node/819893</li>
+      <li>Global Data Center Hub, Hyperion SPV structure. https://www.globaldatacenterhub.com/p/the-hyperion-financing-is-the-signal</li>
+      <li>IREN, "IREN Secures $9.7bn AI Cloud Contract with Microsoft." https://iren.gcs-web.com/news-releases/news-release-details/iren-secures-97bn-ai-cloud-contract-microsoft</li>
+      <li>IREN blog (vertically integrated ownership). https://iren.com/resources/blog/iren-signs97-billion-agreement-with-microsoft-to-deploy-ai-cloud-infrastructure</li>
+      <li>Capital Brief, "Nebius inks USD3b deal with Meta." https://www.capitalbrief.com/briefing/neocloud-nebius-inks-usd3b-deal-with-meta-posts-soaring-q3-sales-4f8a4b80-b989-4ef2-bc91-eea8e4a7e4bb/</li>
+      <li>Motley Fool via Longport, CoreWeave–Nvidia agreement. https://longportapp.cn/news/258172937</li>
+      <li>Futuriom, "NVIDIA Tops CoreWeave Stake with $2 Billion." https://www.futuriom.com/articles/news/nvidia-tops-coreweave-stake-with-2-billion/2026/01</li>
+      <li>Converge Digest, "Nvidia to buy CoreWeave's unused capacity." https://convergedigest.com/nvidia-to-buy-coreweaves-unused-capacity/</li>
+      <li>The Next Web, Lambda–HRT deal (Nvidia leaseback context). https://thenextweb.com/news/lambda-hudson-river-trading-cloud-deal-nvidia-chips</li>
+      <li>GlobeNewswire via Seeking Alpha, Applied Digital 150MW CoreWeave lease. https://seekingalpha.com/pr/20215809-applied-digital-finalizes-additional-150mw-lease-with-coreweave-in-north-dakota</li>
+      <li>Quartr, Core Scientific investor update (Dec 2025). https://quartr.com/events/core-scientific-inc-corz-investor-update_oqh0wpCL</li>
+      <li>SiliconANGLE, Core Scientific shareholders reject CoreWeave deal. https://siliconangle.com/?p=718957</li>
+      <li>Contrary Research, Crusoe. https://research.contrary.com/report/crusoe</li>
+      <li>Futuriom, Nebius–Microsoft deal. https://www.futuriom.com/articles/news/nebius-monster-microsoft-deal-fuels-further-expansion/2025/09</li>
+      <li>TechCrunch, Lambda–Microsoft deal. https://www.techcrunch.com/2025/11/03/lambda-inks-multi-billion-dollar-ai-infrastructure-deal-with-microsoft/</li>
+      <li>CNBC (via mirror), GPU depreciation debate. https://www.cnbc.com/2025/11/14/ai-gpu-depreciation-coreweave-nvidia-michael-burry.html</li>
+      <li>Beancount.io, GPU cloud depreciation schedules (Lambda 5 yrs, Nebius 4 yrs). https://beancount.io/blog/2026/07/10/gpu-cloud-depreciation-schedules-guide</li>
+      <li>AllMind (Reuters summary), CoreWeave–OpenAI contract value. https://allmind.ai/news/f1ad226f558a17014536f26dc479e2ad1a9493b6756b3babfa827e1cb0bdbfe0</li>
+    </ol>
+  </div>
+</section>
+</main>
+<footer><div class="wrap">Educational explainer, not investment advice. Hypothetical figures are labeled. Gauntlet Loop 04 · AI Stack Visual Documentary Series.</div></footer>
+
+<script>
+(()=>{
+"use strict";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt=(v,d=1)=>(Math.abs(v)<1e-9?0:v).toFixed(d);
+const money=(v,d=1)=>(v<0?'−$':'$')+Math.abs(v).toFixed(d)+'M';
+
+/* ---------- isometric engine ---------- */
+const C30=Math.cos(Math.PI/6);
+function mkIso(s,ox,oy){
+  const P=(x,y,z)=>[ox+(x-y)*C30*s, oy+(x+y)*0.5*s - z*s];
+  const pts=a=>a.map(p=>P(...p).map(n=>n.toFixed(1)).join(',')).join(' ');
+  function box(x,y,z,w,d,h,o={}){
+    const t=o.top||'url(#gMetalTop)', l=o.left||'url(#gMetalL)', r=o.right||'url(#gMetalR)';
+    const st=o.stroke||'rgba(190,210,240,.18)', op=o.op!=null?` opacity="${o.op}"`:'';
+    const sw=o.sw||0.8, dash=o.dash?` stroke-dasharray="${o.dash}"`:'';
+    return `<g${op}>`+
+      `<polygon points="${pts([[x,y+d,z],[x+w,y+d,z],[x+w,y+d,z+h],[x,y+d,z+h]])}" fill="${l}" stroke="${st}" stroke-width="${sw}"${dash}/>`+
+      `<polygon points="${pts([[x+w,y,z],[x+w,y+d,z],[x+w,y+d,z+h],[x+w,y,z+h]])}" fill="${r}" stroke="${st}" stroke-width="${sw}"${dash}/>`+
+      `<polygon points="${pts([[x,y,z+h],[x+w,y,z+h],[x+w,y+d,z+h],[x,y+d,z+h]])}" fill="${t}" stroke="${st}" stroke-width="${sw}"${dash}/>`+
+      `</g>`;
+  }
+  function line(a,b,cls,extra=''){const A=P(...a),B=P(...b);return `<line x1="${A[0].toFixed(1)}" y1="${A[1].toFixed(1)}" x2="${B[0].toFixed(1)}" y2="${B[1].toFixed(1)}" class="${cls||''}" ${extra}/>`}
+  function path(arr,cls,extra=''){if(cls&&cls.startsWith('flow-'))return `<polyline points="${pts(arr)}" class="${cls}-base" ${extra}/><polyline points="${pts(arr)}" class="${cls}"/>`;return `<polyline points="${pts(arr)}" class="${cls||''}" ${extra}/>`}
+  function rack(x,y,z,o={}){
+    const w=o.w||0.9,d=o.d||0.6,h=o.h||2.1;
+    let s=box(x,y,z,w,d,h,{top:'#3b4964',left:'url(#gRackL)',right:'url(#gMetalR)'});
+    for(let k=1;k<9;k++){const zz=z+h*k/9.5;
+      s+=line([x+.08,y+d,zz],[x+w-.08,y+d,zz],'',`stroke="rgba(120,140,170,.35)" stroke-width="0.8"`);
+      s+=line([x+.12,y+d,zz+.05],[x+.3,y+d,zz+.05],'led',`stroke="${o.led||'#38d6f5'}" stroke-width="1.6" style="animation-delay:${(k*0.37+x).toFixed(2)}s"`);}
+    return s;
+  }
+  function fanUnit(x,y,z,w,d,h){
+    let o=box(x,y,z,w,d,h,{top:'#4a5a77'});
+    const n=Math.max(1,Math.round(w/0.9));
+    for(let i=0;i<n;i++){const c=P(x+(i+.5)*w/n,y+d/2,z+h);const r=Math.min(w/n,d)*0.36*s;
+      o+=`<ellipse cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" rx="${(r*1.22).toFixed(1)}" ry="${(r*.7).toFixed(1)}" fill="#1a2335" stroke="rgba(170,190,220,.4)"/>`;
+      o+=`<ellipse cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" rx="${(r*.35).toFixed(1)}" ry="${(r*.2).toFixed(1)}" fill="#6f80a0"/>`;}
+    return o;
+  }
+  function pylon(x,y,h){return box(x-.08,y-.08,0,.16,.16,h,{top:'#8794ad'})+line([x-.55,y,h-.3],[x+.55,y,h-.3],'',`stroke="#8b98b2" stroke-width="2"`)+line([x-.4,y,h-.8],[x+.4,y,h-.8],'',`stroke="#8b98b2" stroke-width="2"`)}
+  function text(x,y,z,str,o={}){const p=P(x,y,z);return `<text x="${p[0].toFixed(1)}" y="${p[1].toFixed(1)}" fill="${o.fill||'#dfe7f5'}" font-size="${o.size||13}" font-weight="${o.weight||600}" text-anchor="${o.anchor||'middle'}" ${o.cls?`class="${o.cls}"`:''}>${str}</text>`}
+  return {P,pts,box,line,path,rack,fanUnit,pylon,text};
+}
+
+/* ---------- factory scene (hero + ch2) ---------- */
+function factorySVG(id,opts={}){
+  const I=mkIso(26,330,120);
+  const g=(name,inner)=>`<g class="grp ${opts.assemble?'assemble':''}" data-g="${name}">${inner}</g>`;
+  let ground=I.box(-1,-1,-0.35,25,16,0.35,{top:'url(#gGround)',left:'#0b1220',right:'#0e1628'});
+  // grid lines on pad
+  for(let i=0;i<=24;i+=2) ground+=I.line([i-1,-1,0],[i-1,15,0],'',`stroke="rgba(120,150,200,.07)"`);
+  for(let j=0;j<=16;j+=2) ground+=I.line([-1,j-1,0],[24,j-1,0],'',`stroke="rgba(120,150,200,.07)"`);
+  // energy: substation
+  let en='';
+  en+=I.pylon(-0.2,2,4)+I.pylon(-0.2,7,4);
+  en+=I.path([[-0.2,-1,3.7],[-0.2,2,3.7],[-0.2,7,3.7]],'',`fill="none" stroke="#9fb0c8" stroke-width="1.2"`);
+  en+=I.box(1,1,0,4.6,5,0.12,{top:'#26324a'});
+  en+=I.box(1.5,1.5,0.12,1.6,1.3,1.5,{top:'#5b6b87'})+I.box(1.5,3.6,0.12,1.6,1.3,1.5,{top:'#5b6b87'});
+  for(let k=0;k<3;k++){en+=I.box(1.7+k*.5,1.6,1.62,.12,.12,.6,{top:'#b9c4d8'});en+=I.box(1.7+k*.5,3.7,1.62,.12,.12,.6,{top:'#b9c4d8'});}
+  en+=I.box(3.6,1.4,0.12,1.6,3.6,1.1,{top:'#4d5d7a'});
+  en+=I.path([[-0.2,2,3.7],[2.3,2.1,2.2]],'flow-power')+I.path([[-0.2,7,3.7],[2.3,4.2,2.2]],'flow-power');
+  en+=I.path([[5.2,3.2,0.5],[7.2,3.2,0.5],[7.2,6,0.5]],'flow-power');
+  en+=I.text(3,0.2,2.6,'SUBSTATION',{size:16.5,fill:'#c9d4e6'});
+  // shell
+  let sh='';
+  sh+=I.box(7,2,0,14,10,0.3,{top:'#202b40'});
+  sh+=I.box(7,2,0.3,14,0.18,4.4,{top:'#33415c',left:'url(#gGlass)',right:'#26324a'});
+  sh+=I.box(7,2,0.3,0.18,10,4.4,{top:'#33415c',left:'#1e293d',right:'url(#gGlass)'});
+  // glass front walls (outline only)
+  sh+=`<polygon points="${I.pts([[7,12,0.3],[21,12,0.3],[21,12,4.7],[7,12,4.7]])}" fill="url(#gGlass)" stroke="rgba(170,200,240,.35)" stroke-width="1"/>`;
+  sh+=`<polygon points="${I.pts([[21,2,0.3],[21,12,0.3],[21,12,4.7],[21,2,4.7]])}" fill="url(#gGlass)" stroke="rgba(170,200,240,.35)" stroke-width="1"/>`;
+  sh+=`<polygon points="${I.pts([[7,2,4.7],[21,2,4.7],[21,12,4.7],[7,12,4.7]])}" fill="rgba(140,180,240,.05)" stroke="rgba(170,200,240,.3)" stroke-dasharray="4 4"/>`;
+  // cable trays in shell
+  for(let j=0;j<3;j++) sh+=I.line([7.5,4+j*3,4.2],[20.5,4+j*3,4.2],'',`stroke="rgba(200,215,240,.35)" stroke-width="2"`);
+  sh+=I.text(14,2,5.6,'POWERED SHELL',{size:16.5,fill:'#c9d4e6'});
+  // chips: racks
+  let ch='';
+  for(let j=0;j<3;j++) for(let i=0;i<7;i++) ch+=I.rack(8.4+i*1.75,3.2+j*3,0.3);
+  ch+=I.text(14,13.6,0,'GPU RACKS',{size:16.5,fill:'#c9d4e6'});
+  // cooling
+  let co='';
+  for(let i=0;i<4;i++) co+=I.fanUnit(8+i*3.3,13,0,2.6,1.3,0.9);
+  for(let i=0;i<4;i++) co+=I.path([[9.3+i*3.3,13,0.6],[9.3+i*3.3,12,0.6]],'',`fill="none" stroke="#5aa7ff" stroke-width="2.5" opacity=".7"`);
+  // output
+  let out='';
+  out+=I.path([[21,7,1.2],[24,7,1.2],[26.5,7,3]],'flow-compute',`marker-end="url(#mC)"`);
+  out+=I.path([[21,9.5,1.2],[24,9.5,1.2],[26.5,10.5,3]],'flow-compute',`marker-end="url(#mC)"`);
+  out+=I.text(28.5,7.2,5.6,'COMPUTE',{size:19.5,fill:'#38d6f5',weight:700});
+  out+=`<g opacity=".55">${I.box(21.05,2.2,0.32,.05,9.6,4.36,{left:'rgba(56,214,245,.05)',right:'rgba(56,214,245,.08)',top:'transparent',stroke:'rgba(56,214,245,.6)'})}</g>`;
+  const order=opts.assemble?[ground,g('energy',en),g('shell',sh),g('cooling',co),g('chips',ch),g('out',out)]
+                           :[ground,g('energy',en),g('shell',sh),g('cooling',co),g('chips',ch),g('out',out)];
+  $(id).innerHTML=`<svg viewBox="-40 20 1020 630" xmlns="http://www.w3.org/2000/svg">${order.join('')}</svg>`;
+}
+factorySVG('#heroScene');
+$$('#heroScene .grp').forEach(e=>e.classList.add('lit'));
+factorySVG('#factoryScene',{assemble:true});
+
+const factoryText={
+ 0:'Scroll to assemble the factory, or use the buttons.',
+ 1:'<b style="color:#e6eeff">Energy:</b> grid power → transformers → switchgear → building.',
+ 2:'<b style="color:#e6eeff">Powered shell:</b> the building, its electrical backbone, cable trays and cooling plant.',
+ 3:'<b style="color:#e6eeff">GPUs:</b> 21 racks of servers, the most expensive and fastest-aging input.',
+ 4:'<b style="color:var(--cyan)">Combined:</b> power + shell + chips = compute capacity delivered to customers.'};
+function setFactory(n){
+  const map={1:['energy'],2:['energy','shell','cooling'],3:['energy','shell','cooling','chips'],4:['energy','shell','cooling','chips','out']};
+  const focus={1:['energy'],2:['shell','cooling'],3:['chips'],4:['energy','shell','cooling','chips','out']};
+  $$('#factoryScene .grp').forEach(e=>{const nm=e.dataset.g;
+    e.classList.toggle('in',(map[n]||[]).includes(nm));
+    e.classList.toggle('lit',(focus[n]||[]).includes(nm));});
+  $('#factoryScene').classList.toggle('dimmable',n>0 && n<4);
+  $$('#factoryBtns button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.step===n)));
+  $('#factoryCap').innerHTML=factoryText[n];
+}
+$$('#factoryBtns button').forEach(b=>b.addEventListener('click',()=>{setFactory(+b.dataset.step);const st=$(`#factoryScrolly .step[data-step="${b.dataset.step}"] .card`);if(st)$('#factoryScrolly .stepcap').innerHTML=st.innerHTML;}));
+setFactory(0);
+
+/* ---------- ch1 stack ---------- */
+(function(){
+  const I=mkIso(22,300,40);
+  const L=[['5','Applications','Chatbots, copilots, agents','#3b4a66'],['4','Models','OpenAI · Anthropic · Meta','#3b4a66'],['3','Infrastructure','Hyperscalers & neoclouds sell compute','cyan'],['2','Chips','Nvidia GPUs & other accelerators','#3b4a66'],['1','Energy','Grid power, generation','#3b4a66']];
+  let s='';
+  const base=[0,0];
+  for(let i=4;i>=0;i--){
+    const z=(4-i)*2.6, hl=L[i][3]==='cyan';
+    s+=I.box(0,0,z,12,12,0.9,hl?{top:'url(#gCyan)',left:'rgba(56,214,245,.25)',right:'rgba(56,214,245,.35)',stroke:'rgba(56,214,245,.9)',sw:1.4}:{top:'rgba(70,90,125,.55)',left:'rgba(30,40,60,.85)',right:'rgba(45,58,85,.85)'});
+    if(hl){ // mini racks on infra layer
+      for(let a=0;a<4;a++) for(let b=0;b<2;b++) s+=I.rack(2+a*2.2,3+b*4,z+0.9,{h:1.1,w:.8,d:.5});
+    }
+    if(i===4){ // energy: small pylons
+      s+=I.pylon(3,6,z+0.9+1.6).replace(/<g/,'<g');
+    }
+    const p=I.P(12,0,z+0.45);
+    s+=`<line x1="${p[0]}" y1="${p[1]}" x2="${p[0]+60}" y2="${p[1]}" stroke="${hl?'#38d6f5':'rgba(160,180,210,.4)'}"/>`;
+    s+=`<text x="${p[0]+66}" y="${p[1]-4}" fill="${hl?'#38d6f5':'#e1e8f4'}" font-size="15" font-weight="700" font-family="Space Grotesk">${L[i][0]} · ${L[i][1]}</text>`;
+    s+=`<text x="${p[0]+66}" y="${p[1]+13}" fill="#93a3bf" font-size="11.5">${L[i][2]}</text>`;
+  }
+  // flows
+  const up=(z1,z2,x,y,cls,m)=>I.path([[x,y,z1],[x,y,z2]],cls,`marker-end="url(#${m})"`);
+  s+=up(0.9,5.2,-0.6,6,'flow-power','mS')+up(3.5,5.2,-0.6,9,'flow-power','mS');
+  s+=up(6.1,7.8,12.6,12.6,'flow-compute','mC')+up(6.1,10.4,11.2,12.9,'flow-compute','mC');
+  $('#stackScene').innerHTML=`<svg viewBox="20 -70 820 440">${s}</svg>`;
+})();
+
+/* ---------- ch1 tabs ---------- */
+const CO={
+ 'Hyperscalers':[
+  ['Microsoft Azure','Hyperscaler','Cloud arm of a company with huge Office and enterprise cash flows. Also one of the biggest <i>buyers</i> of neocloud capacity: reported deals with Nebius (~$17.4B) [21], IREN (~$9.7B) [10] and Lambda (multibillion) [22].','ver'],
+  ['Amazon AWS','Hyperscaler','Largest cloud provider. AI spending is backed by Amazon\'s retail, ads and cloud cash flows, supplemented by bond issuance.',''],
+  ['Google Cloud','Hyperscaler','Funded largely by Google\'s advertising cash machine. Designs its own AI chips (TPUs) alongside buying Nvidia GPUs.',''],
+  ['Meta','Operator & customer','Doesn\'t rent cloud to the public, but runs giant AI data centers and <i>buys</i> neocloud capacity, including a reported $14.2B CoreWeave deal [4] and ~$3B with Nebius [12]. Financed its Hyperion campus through an off-balance-sheet SPV [9].','ver']],
+ 'Neocloud compute providers':[
+  ['CoreWeave','Compute provider','Buys GPUs and sells compute. Historically leased powered shells from landlords. Pioneered GPU-backed SPV loans. Started as a crypto miner [4][2].','ver'],
+  ['Nebius','Compute provider','AI cloud spun out of Yandex, so not a former miner. Contracts with Microsoft and Meta. Plans to fund growth with corporate debt, asset-backed debt and equity [12][21].','ver'],
+  ['Lambda','Compute provider','GPU cloud with a multibillion-dollar Microsoft deal. Nvidia leased back ~18,000 of its own GPUs from Lambda for ~$1.5B [16][22].','ver']],
+ 'Vertically integrated':[
+  ['IREN','Integrated provider','Former bitcoin miner. Says it owns its land, grid connections, data centers and GPUs. Five-year Microsoft contract worth ~$9.7B, including a 20% prepayment [10][11].','ver'],
+  ['Crusoe','Energy-first builder','Started by turning flare gas into power for bitcoin mining, then sold that unit. Came at compute "from the power side." Lead developer of the Stargate campus in Abilene and runs its own GPU cloud [20].','ver']],
+ 'Powered-shell landlords':[
+  ['Applied Digital','Landlord','Owns the Polaris Forge 1 campus in North Dakota, leased to CoreWeave: ~400 MW under ~15-year leases worth about $11B in expected revenue [17].','ver'],
+  ['Core Scientific','Landlord / colocation','Former bitcoin miner converting sites to high-density hosting. CoreWeave is its anchor tenant (contracts of $10B+ over 12 years). Shareholders voted down CoreWeave\'s $9B takeover in Oct 2025 [18][19].','ver']],
+ 'AI customers':[
+  ['Meta','Customer','Investment-grade buyer. Lenders like lending against its payments, which is why the reel says the neocloud borrows "on Meta\'s credit."','src'],
+  ['OpenAI','Customer','Major CoreWeave customer, with contracts reported at up to $15.9B [25]. Its ability to pay depends on its own continued growth.','ver'],
+  ['Anthropic','Customer','The reel says it committed about half a trillion dollars to compute. That figure is the source\'s, not independently verified here.','src']],
+ 'Hardware & finance':[
+  ['Nvidia','Supplier · investor · backstop','Sells the GPUs, owns ~11% of CoreWeave, and agreed to buy CoreWeave\'s unsold capacity through 2032 (see Epilogue) [14][15].','ver'],
+  ['Lenders','Credit providers','Private credit, insurers and banks, e.g. Blackstone, Magnetar, MUFG and Morgan Stanley on CoreWeave\'s facilities [2].','ver'],
+  ['SPVs','Legal ring-fence','Separate entities that hold GPUs and contract rights so debt can be sized to one deal.',''],
+  ['GPU collateral','Security','Servers pledged to lenders: a recovery floor if the customer stops paying, but a fast-depreciating one.','']]
+};
+(function(){
+  const tabs=$('#ch1tabs'), box=$('#ch1cards');
+  Object.keys(CO).forEach((k,i)=>{const b=document.createElement('button');b.textContent=k;b.setAttribute('role','tab');b.setAttribute('aria-selected',i===0);b.onclick=()=>show(k);tabs.appendChild(b);});
+  function show(k){
+    $$('#ch1tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.textContent===k)));
+    box.innerHTML=CO[k].map(([n,r,t,v])=>`<div class="co"><h4>${n}${v==='ver'?'<span class="tag ver">verified</span>':v==='src'?'<span class="tag src">source claim</span>':''}</h4><div class="role">${r}</div><p>${t}</p></div>`).join('');
+  }
+  show('Hyperscalers');
+})();
+
+/* ---------- ch3 models ---------- */
+const MODELS=[
+ {k:'A',name:'Model A · Powered-shell landlord',who:'Applied Digital, Core Scientific',
+  own:{land:'own',power:'own',gpu:'other'},flow:'rent',
+  rows:{'Assets controlled':'Land, building, grid connection, power & cooling','Revenue source':'Long-term lease or colocation fees from tenants','Major capital needs':'Construction, substations, electrical & cooling systems','Operating obligations':'Deliver power and space on schedule, keep facility running','Important risks':'Tenant concentration, construction delays. <b>No</b> GPU-obsolescence risk on its own books'}},
+ {k:'B',name:'Model B · Compute provider',who:'CoreWeave, Nebius, Lambda',
+  own:{land:'lease',power:'lease',gpu:'own'},flow:'compute',
+  rows:{'Assets controlled':'GPUs, networking, software. Leases or rents the shell and power','Revenue source':'Selling compute under multiyear contracts and on demand','Major capital needs':'GPU and server purchases (largest and fastest-aging cost)','Operating obligations':'Rent to landlords, energy bills, service-level commitments to customers','Important risks':'Hardware depreciation, short contracts, customer concentration, heavy leverage'}},
+ {k:'C',name:'Model C · Vertically integrated',who:'IREN, Crusoe',
+  own:{land:'own',power:'own',gpu:'own'},flow:'compute',
+  rows:{'Assets controlled':'Land, power access, buildings <i>and</i> GPUs','Revenue source':'Selling compute (sometimes also hosting or developing for others)','Major capital needs':'Everything: power, buildings and chips','Operating obligations':'Running the whole stack, from substation to software','Important risks':'Largest capital burden, but no landlord in the middle and more control over power'}}
+];
+function miniFacility(m){
+  const I=mkIso(13,170,40);
+  const sty=st=>st==='own'?{}:st==='lease'?{top:'url(#hatch)',left:'url(#hatch)',right:'url(#hatch)',stroke:'rgba(200,215,240,.5)'}:{top:'rgba(255,255,255,.02)',left:'rgba(255,255,255,.01)',right:'rgba(255,255,255,.02)',stroke:'rgba(140,160,190,.6)',dash:'3 3'};
+  let s=I.box(-1,-1,-.3,20,13,.3,{top:'url(#gGround)',left:'#0b1220',right:'#0e1628'});
+  // power
+  s+=I.box(0,1,0,3.4,3.6,1.3,sty(m.own.power))+I.pylon(0.3,6,3.2);
+  // shell
+  s+=I.box(5,0,0,12,10,0.25,sty(m.own.land));
+  s+=I.box(5,0,0.25,12,.15,3.5,sty(m.own.land));
+  s+=I.box(5,0,0.25,.15,10,3.5,sty(m.own.land));
+  // gpus
+  for(let j=0;j<2;j++) for(let i=0;i<5;i++){
+    if(m.own.gpu==='own') s+=I.rack(6.5+i*2,2+j*4,0.25,{w:1,d:.7,h:2});
+    else s+=I.box(6.5+i*2,2+j*4,0.25,1,.7,2,sty('other'));
+  }
+  if(m.flow==='compute') s+=I.path([[17,5,1.3],[21,5,2.5]],'flow-compute',`marker-end="url(#mC)"`)+I.text(21,5,4.6,'compute sold',{fill:'#38d6f5',size:13.8});
+  else s+=I.path([[22,5,2.5],[17.3,5,1.3]],'flow-cash',`marker-end="url(#mA)"`)+I.text(22.6,5,3.3,'rent in',{fill:'#f6b13c',size:13.8});
+  if(m.own.gpu==='other') s+=I.text(11,5,3.1,"tenant's GPUs",{fill:'#93a3bf',size:12.5});
+  return `<svg viewBox="0 -10 400 260">${s}</svg>`;
+}
+(function(){
+  const wrap=$('#modelCards'), btns=$('#modelBtns');
+  MODELS.forEach((m,i)=>{
+    const c=document.createElement('button');c.className='mcard';c.type='button';c.setAttribute('aria-pressed','false');
+    c.innerHTML=`<h4>${m.name}</h4><div class="who">${m.who}</div>${miniFacility(m)}`;c.onclick=()=>sel(i);wrap.appendChild(c);
+    const b=document.createElement('button');b.textContent=m.name.split('·')[1].trim();b.setAttribute('aria-pressed','false');b.onclick=()=>sel(i);btns.appendChild(b);
+  });
+  const all=document.createElement('button');all.textContent='Show all';all.setAttribute('aria-pressed','true');all.onclick=()=>sel(-1);btns.appendChild(all);
+  const keys=Object.keys(MODELS[0].rows);
+  $('#modelTable').innerHTML=`<thead><tr><th></th>${MODELS.map((m,i)=>`<th class="mcol" data-c="${i}">${m.name.split('·')[1]}</th>`).join('')}</tr></thead><tbody>`+
+    keys.map(k=>`<tr><td>${k}</td>${MODELS.map((m,i)=>`<td class="mcol" data-c="${i}">${m.rows[k]}</td>`).join('')}</tr>`).join('')+'</tbody>';
+  function sel(i){
+    $$('#modelCards .mcard').forEach((c,j)=>c.setAttribute('aria-pressed',String(i===j)));
+    $$('#modelBtns button').forEach((b,j)=>b.setAttribute('aria-pressed',String(j===i || (i===-1 && j===3))));
+    $$('#modelTable .mcol').forEach(td=>td.classList.toggle('off',i!==-1 && +td.dataset.c!==i));
+  }
+})();
+
+/* ---------- ch4 funding sankey ---------- */
+const FUND=[
+ {k:'ops',short:'Cash from other businesses',label:'Operating cash from other businesses',color:'#2dd4bf',hyp:60,neo:5},
+ {k:'rev',short:'Compute customer revenue',label:'Compute / cloud customer revenue',color:'#38d6f5',hyp:15,neo:15},
+ {k:'eq',short:'Equity financing',label:'Equity financing',color:'#a78bfa',hyp:0,neo:25},
+ {k:'corp',short:'Corporate borrowing',label:'Corporate borrowing',color:'#f6b13c',hyp:15,neo:15},
+ {k:'abs',short:'Asset-backed / project debt',label:'Asset-backed / project-level borrowing',color:'#ffcf7a',hyp:10,neo:40}
+];
+let fundSel=null;
+function drawFund(){
+  const W=1140,H=400,scale=2.6,gap=12;
+  function side(x0,key,title,sub){
+    let s=`<text x="${x0}" y="24" fill="#fff" font-family="Space Grotesk" font-size="20" font-weight="700">${title}</text><text x="${x0}" y="44" fill="#a9b6cc" font-size="13">${sub}</text>`;
+    const hs=FUND.map(f=>Math.max(f[key]*scale,3));
+    const totSrc=hs.reduce((a,b)=>a+b,0)+gap*(FUND.length-1);
+    const th=FUND.reduce((a,f)=>a+f[key],0)*scale;
+    const top0=70, srcTop=top0+(Math.max(totSrc,th)-totSrc)/2, tgtTop=top0+(Math.max(totSrc,th)-th)/2;
+    const bx=x0+200, tx=x0+390;
+    let y=srcTop, ty=tgtTop;
+    FUND.forEach((f,k)=>{
+      const v=f[key], h=hs[k], on=!fundSel||fundSel===f.k, op=v===0?0.3:(on?1:0.2);
+      s+=`<g opacity="${op}" style="transition:opacity .3s">`;
+      s+=`<text x="${bx-10}" y="${y+h/2-1}" text-anchor="end" fill="#e1e8f4" font-size="13" font-weight="600">${f.short}</text>`;
+      s+=`<text x="${bx-10}" y="${y+h/2+15}" text-anchor="end" fill="${f.color}" font-size="12.5" class="t-mono">${v}%</text>`;
+      s+=`<rect x="${bx}" y="${y}" width="12" height="${h}" rx="3" fill="${f.color}"/>`;
+      if(v>0){const hh=v*scale;
+        s+=`<path d="M${bx+12} ${y} C ${bx+120} ${y}, ${tx-100} ${ty}, ${tx} ${ty} L ${tx} ${ty+hh} C ${tx-100} ${ty+hh}, ${bx+120} ${y+hh}, ${bx+12} ${y+hh} Z" fill="${f.color}" fill-opacity=".36" stroke="${f.color}" stroke-opacity=".6"/>`;
+        ty+=hh;}
+      s+=`</g>`;
+      y+=h+gap;
+    });
+    s+=`<rect x="${tx}" y="${tgtTop}" width="30" height="${th}" rx="4" fill="url(#gAmber)" stroke="#f6b13c"/>`;
+    s+=`<text x="${tx+40}" y="${tgtTop+th/2-4}" fill="#fff" font-size="15" font-weight="700">AI capex</text><text x="${tx+40}" y="${tgtTop+th/2+14}" fill="#a9b6cc" font-size="12">chips · sites · power</text>`;
+    return s;
+  }
+  $('#fundScene').innerHTML=`<svg viewBox="0 0 ${W} ${H}">${side(10,'hyp','Hyperscaler','Mature cash machines fund most of it')}${side(565,'neo','Neocloud','Must raise most of it from outside')}</svg>`;
+}
+(function(){
+  const b=$('#fundBtns');
+  FUND.forEach(f=>{const x=document.createElement('button');x.textContent=f.label;x.setAttribute('aria-pressed','false');x.onclick=()=>{fundSel=fundSel===f.k?null:f.k;$$('#fundBtns button').forEach(y=>y.setAttribute('aria-pressed',String(y===x&&fundSel===f.k)));drawFund();};b.appendChild(x);});
+  drawFund();
+})();
+
+/* ---------- ch5 contract ---------- */
+(function(){
+  const I=mkIso(16,250,70);
+  let s='';
+  s+=I.box(0,0,0,6,6,3.5,{top:'#4b5c7c'})+I.text(3,3,5.2,'AI CUSTOMER',{size:12,fill:'#e6dcff'});
+  for(let i=0;i<3;i++) s+=I.box(0.5+i*1.8,6,0.6,1.2,.05,2,{left:'rgba(167,139,250,.25)'});
+  s+=I.box(14,0,0,6,6,2.5,{top:'#3d4d6a'});
+  for(let i=0;i<3;i++) s+=I.rack(14.6+i*1.8,1.5,2.5,{h:1.2,w:.9,d:.6});
+  s+=I.text(17,3,5.3,'NEOCLOUD',{size:12,fill:'#cfe9f2'});
+  // contract slab floating
+  s+=I.box(7.5,1.5,3.4,5,3,0.25,{top:'url(#gViolet)',left:'rgba(167,139,250,.35)',right:'rgba(167,139,250,.45)',stroke:'#a78bfa',sw:1.4});
+  s+=I.text(10,3,4.4,'5-YEAR CONTRACT',{size:11,fill:'#e6dcff',weight:700});
+  s+=I.path([[6,3,3],[7.5,3,3.5]],'',`stroke="#a78bfa" stroke-width="2" fill="none"`)+I.path([[12.5,3,3.5],[14,3,2.5]],'',`stroke="#a78bfa" stroke-width="2" fill="none"`);
+  s+=I.path([[14,5,1],[6,5,1]],'flow-compute',`marker-end="url(#mC)"`)+I.text(10,6.3,0.2,'compute delivered',{size:10.5,fill:'#38d6f5'});
+  for(let t=0;t<5;t++) s+=I.box(2+t*3.5,9.5,0,2.4,1.6,0.6+0,{top:'rgba(167,139,250,.15)',left:'rgba(167,139,250,.08)',right:'rgba(167,139,250,.12)',stroke:'#a78bfa',dash:'4 3'})+I.text(3.2+t*3.5,10.3,0.9,'Y'+(t+1),{size:10,fill:'#c8b9fb'});
+  $('#contractScene').innerHTML=`<svg viewBox="0 0 560 360">${s}</svg>`;
+  $('#blocks').innerHTML=[1,2,3,4,5].map(y=>`<div class="blk" data-y="${y}"><div class="y">YEAR ${y}</div><div class="v">$100M</div></div>`).join('');
+  const H=[
+   ['Customer','A large AI company (the reel uses Meta).','Its credit rating largely sets the loan\'s risk and interest rate.'],
+   ['Service provider','The neocloud, or its SPV, which must deliver and operate the capacity.','Lenders check that the operator can actually build and run it.'],
+   ['Contract duration','5 years in the example. The reel notes some AI contracts run just 3.','Debt usually has to be repaid within the contract term.'],
+   ['Annual payment','$100M a year, assumed level.','Real contracts may ramp as capacity comes online, which changes the debt schedule.'],
+   ['Total nominal payments','$100M × 5 = $500M, undiscounted.','A dollar in year 5 is worth less today, so lenders discount it (Chapter 7).'],
+   ['Services delivered','Reserved GPU capacity, networking, storage, uptime.','Failing service levels can reduce what the customer owes.'],
+   ['Payment dependencies','Payments start when capacity is delivered and accepted. The whiteboard calls it "take or pay".','Missed milestones, service failures or termination rights can cut the cash. Lenders read these clauses closely.'],
+   ['Prepayments (real example)','Some customers pay part up front.','IREN\'s Microsoft deal includes a 20% prepayment that helps fund equipment [10].']
+  ];
+  $('#hot').innerHTML=H.map(([a,b,c])=>`<button type="button" aria-expanded="false"><b>${a}</b><span>${b}</span><i>Why lenders care ▾</i><em>${c}</em></button>`).join('');
+  $$('#hot button').forEach(b=>b.onclick=()=>b.setAttribute('aria-expanded',String(b.getAttribute('aria-expanded')!=='true')));
+})();
+
+/* ---------- ch6 SPV ---------- */
+let spvLayer='all', spvVar='A';
+function drawSPV(){
+  const V=spvVar;
+  const L=(layer,inner)=>`<g class="lay" data-l="${layer}">${inner}</g>`;
+  const halo='paint-order="stroke" stroke="#0e1729" stroke-width="5" stroke-linejoin="round"';
+  const node=(x,y,w,h,title,sub,col)=>`<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="rgba(20,30,52,.92)" stroke="${col}" stroke-width="1.8"/><text x="${x+w/2}" y="${y+28}" text-anchor="middle" fill="#fff" font-family="Space Grotesk" font-weight="700" font-size="19">${title}</text><text x="${x+w/2}" y="${y+48}" text-anchor="middle" fill="#a9b6cc" font-size="13">${sub}</text></g>`;
+  const arr=(d,col,m,dash,w=2.6)=>`<path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" marker-end="url(#${m})" ${dash?'stroke-dasharray="8 6"':''}/>`;
+  const lab=(x,y,txt,col,anchor='middle',size=14.5)=>`<text x="${x}" y="${y}" fill="${col}" font-size="${size}" font-weight="600" text-anchor="${anchor}" ${halo}>${txt}</text>`;
+  let s='';
+  // nodes
+  s+=node(30,30,250,70,'AI Customer','e.g. Meta · investment grade','#a78bfa');
+  s+=node(800,190,190,220,'','', '#38d6f5');
+  s+=`<text x="895" y="225" text-anchor="middle" fill="#fff" font-family="Space Grotesk" font-weight="700" font-size="19">Neocloud</text><text x="895" y="245" text-anchor="middle" fill="#a9b6cc" font-size="13">OpCo · parent / operator</text>`;
+  {const Q=mkIso(8,862,330);s+=Q.box(0,0,0,6,4,0.25,{top:'#26324a'});for(let k=0;k<3;k++)s+=Q.rack(0.6+k*1.8,1,0.25,{w:1,d:.7,h:2});s+=`<text x="895" y="398" text-anchor="middle" fill="#a9b6cc" font-size="11.5">runs the data center</text>`;}
+  s+=node(40,470,210,60,'Landlord & utility','powered shell · power','#c9d4e6');
+  s+=node(330,480,290,64,'Lenders','private credit · insurers · banks','#f6b13c');
+  // SPV glass boundary
+  s+=`<rect x="300" y="170" width="340" height="250" rx="22" fill="rgba(140,180,240,.07)" stroke="#c9d4e6" stroke-width="1.8" stroke-dasharray="10 7"/>`;
+  s+=`<text x="470" y="198" text-anchor="middle" fill="#fff" font-family="Space Grotesk" font-weight="700" font-size="18">${V==='C'?'Asset-owner SPV':'SPV · bankruptcy-remote'}</text>`;
+  s+=`<text x="470" y="217" text-anchor="middle" fill="#a9b6cc" font-size="12.5">${V==='A'?'owns GPUs · holds assigned contract':V==='B'?'borrower · GPUs & contract pledged':'owns GPUs · leases them out'}</text>`;
+  // GPUs
+  const R=mkIso(9,330,305); let gp='';
+  for(let k=0;k<4;k++) gp+=R.rack(k*1.5,0,0,{w:1,d:.7,h:2.6});
+  s+=L('phys',gp+lab(372,330,'GPU servers','#c9d4e6','middle',13));
+  // contract token
+  s+=L('contract',`<g><rect x="520" y="226" width="104" height="56" rx="9" fill="url(#gViolet)" stroke="#a78bfa" stroke-width="1.6" ${V==='A'?'':'stroke-dasharray="5 4"'}/><text x="572" y="250" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">${V==='C'?'GPU lease':'Contract'}</text><text x="572" y="268" text-anchor="middle" fill="#efe9ff" font-size="12">${V==='A'?'assigned to SPV':V==='B'?'pledged only':'lease payments'}</text></g>`);
+  // collection account
+  s+=L('cash',`<g><rect x="410" y="338" width="130" height="46" rx="9" fill="rgba(45,212,191,.14)" stroke="#2dd4bf" stroke-width="1.5"/><text x="475" y="358" text-anchor="middle" fill="#dffaf5" font-size="13" font-weight="700">Collection account</text><text x="475" y="375" text-anchor="middle" fill="#a9b6cc" font-size="11.5">runs the waterfall</text></g>`);
+  // ---- physical
+  s+=L('phys',arr('M 300 292 L 120 292 L 120 104','#38d6f5','mC',false,3)+lab(112,200,'compute','#38d6f5','end',13.5)+lab(112,217,'service','#38d6f5','end',13.5)+
+     arr('M 800 340 L 644 340','#c9d4e6','mS')+lab(722,332,V==='C'?'runs leased GPUs':'operates & maintains','#c9d4e6','middle',13.5));
+  // ---- contracts
+  s+=L('contract',arr('M 284 58 L 895 58 L 895 186','#a78bfa','mV')+lab(590,48,'Master services agreement (customer ↔ neocloud)','#c8b9fb')+
+     (V==='A'?arr('M 800 254 L 628 254','#a78bfa','mV')+lab(714,245,'assigns contract','#c8b9fb','middle',13.5):'')+
+     (V==='B'?arr('M 800 254 L 628 254','#a78bfa','mV',true)+lab(714,245,'pledges contract rights','#c8b9fb','middle',13):'')+
+     (V==='C'?arr('M 628 254 L 800 254','#a78bfa','mV')+lab(714,245,'leases GPUs to operator','#c8b9fb','middle',12.5):'')+
+     arr('M 800 298 L 644 298','#a78bfa','mV',false,2)+lab(722,290,V==='C'?'investor equity':'equity in SPV','#c8b9fb','middle',13.5));
+  // ---- debt & collateral
+  s+=L('debt',arr('M 360 480 L 360 424','#f6b13c','mA',false,3.2)+lab(352,458,'loan proceeds','#f6b13c','end',13.5)+
+     arr('M 600 424 L 600 476','#f6b13c','mA',true,2.4)+`<g transform="translate(600,446)"><rect x="-9" y="-3" width="18" height="13" rx="2" fill="#f6b13c"/><path d="M-5.5 -3 v-5 a5.5 5.5 0 0 1 11 0 v5" fill="none" stroke="#f6b13c" stroke-width="2.2"/></g>`+
+     lab(612,445,'security interest:','#f6b13c','start',13)+lab(612,462,'GPUs + contract rights','#f6b13c','start',13)+
+     lab(475,565,'If non-recourse, lenders’ claim is only on what’s inside the box','#a9b6cc','middle',13));
+  // ---- cash
+  s+=L('cash',arr('M 220 104 L 220 361 L 406 361','#f6b13c','mA',false,3)+lab(212,236,'monthly','#f6b13c','end',13.5)+lab(212,253,'payments','#f6b13c','end',13.5)+
+     arr('M 425 386 C 400 440, 300 470, 254 488','#f6b13c','mA',false,2.2)+lab(300,436,'rent + energy','#f6b13c','end',13)+
+     arr('M 500 386 L 500 476','#f6b13c','mA',false,2.4)+lab(492,452,'interest +','#f6b13c','end',13)+lab(492,468,'principal','#f6b13c','end',13)+
+     arr('M 540 376 L 796 376','#2dd4bf','mT',false,2.6)+lab(722,368,'residual cash','#2dd4bf','middle',13.5));
+  $('#spvScene').innerHTML=`<svg viewBox="0 0 1010 580">${s}</svg>`;
+  $$('#spvScene .lay').forEach(g=>{g.style.transition='opacity .4s';g.style.opacity=(spvLayer==='all'||g.dataset.l===spvLayer)?1:0.2;});
+  const cap={A:'<b>Structure A</b>: the SPV legally owns the GPUs and the customer contract is assigned to it, close to how CoreWeave describes its DDTL facilities.',
+             B:'<b>Structure B</b>: the operator keeps the contract and hardware title. Lenders hold a <i>security interest</i> (a claim if things go wrong) instead of outright ownership.',
+             C:'<b>Structure C</b>: an investor-owned vehicle buys GPUs and leases them to the AI operator, which pays lease rent. Reported for xAI’s Colossus 2 financing.'};
+  $('#spvCap').innerHTML=cap[V]+' <span class="tag ill">illustrative</span>';
+}
+$$('#xrayBtns button').forEach(b=>b.onclick=()=>{spvLayer=b.dataset.layer;$$('#xrayBtns button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawSPV();const st=$(`#spvScrolly .step[data-layer="${spvLayer}"] .card`);$('#spvScrolly .stepcap').innerHTML=st?st.innerHTML:'<h4>All four layers</h4><p>Physical assets (silver), contracts (violet), debt and collateral (amber) and cash movement (amber and teal), shown together.</p>';});
+$$('#variantBtns button').forEach(b=>b.onclick=()=>{spvVar=b.dataset.v;$$('#variantBtns button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawSPV();});
+drawSPV();
+
+/* ---------- ch7 calculator ---------- */
+const DEF={rev:100,years:5,rent:10,energy:10,other:0,dscr:1.2,rate:10,capex:300,life:6,decl:30,pay:100};
+const S={...DEF};
+function model(){
+  const r=S.rate/100,n=S.years;
+  const cfads=S.rev-S.rent-S.energy-S.other;
+  const ds=Math.max(cfads,0)/S.dscr;
+  const ann=r>0?(1-Math.pow(1+r,-n))/r:n;
+  const pv=ds*ann;
+  let bal=pv; const sch=[];
+  for(let t=1;t<=n;t++){const it=bal*r,pr=ds-it;const b0=bal;bal=Math.max(bal-pr,0);sch.push({t,open:b0,int:it,prin:pr,ds,close:bal,disc:ds/Math.pow(1+r,t)});}
+  return {r,n,cfads,ds,pv,ann,sch,nominal:S.rev*n};
+}
+function chartAxes(W,H,m,ymax,ymin=0,ticks=5,yfmt=v=>v){
+  let s='';
+  for(let i=0;i<=ticks;i++){const v=ymin+(ymax-ymin)*i/ticks;const y=H-m.b-(v-ymin)/(ymax-ymin)*(H-m.t-m.b);
+    s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y}" y2="${y}" stroke="rgba(140,170,220,.1)"/><text x="${m.l-6}" y="${y+4}" text-anchor="end" fill="#5f6f8c" font-size="10.5" class="t-mono">${yfmt(v)}</text>`;}
+  return s;
+}
+function niceMax(v){if(v<=0)return 1;const p=Math.pow(10,Math.floor(Math.log10(v)));const n=v/p;const st=[1,1.2,1.5,2,2.5,3,4,5,6,8,10];return st.find(s=>n<=s+1e-9)*p;}
+function drawCalc(){
+  const M=model();
+  ['rev','rent','energy','other'].forEach(k=>$('#o_'+k).textContent='$'+S[k]+'M');
+  $('#o_years').textContent=S.years+' yrs';$('#o_dscr').textContent=S.dscr.toFixed(2)+'×';$('#o_rate').textContent=S.rate.toFixed(1)+'%';
+  $('#kpis').innerHTML=[
+   ['Nominal contract',money(M.nominal,0),'#e6dcff'],['CFADS / yr',money(M.cfads),'#2dd4bf'],['Debt service / yr',money(M.ds),'#f6b13c'],['Debt capacity (PV)',money(M.pv),'#38d6f5']
+  ].map(([l,v,c])=>`<div class="kpi"><div class="l">${l}</div><div class="v mono" style="color:${c}">${v}</div></div>`).join('');
+  // waterfall
+  const W=760,H=300,m={l:46,r:10,t:16,b:60};
+  const costs=S.rent+S.energy+S.other;
+  const ymax=niceMax(Math.max(S.rev,M.pv,1)), ymin=M.cfads<0?-niceMax(-M.cfads):0;
+  const y=v=>H-m.b-(v-ymin)/(ymax-ymin)*(H-m.t-m.b);
+  const cols=6,cw=(W-m.l-m.r)/cols,bw=cw*0.56;
+  let s=chartAxes(W,H,m,ymax,ymin,5,v=>'$'+Math.round(v))+`<line x1="${m.l}" x2="${W-m.r}" y1="${y(0)}" y2="${y(0)}" stroke="rgba(220,230,250,.45)"/>`;
+  const X=i=>m.l+cw*i+(cw-bw)/2;
+  const bar=(i,v0,v1,fill,stroke,dash)=>{const a=y(Math.max(v0,v1)),b=y(Math.min(v0,v1));return `<rect x="${X(i)}" y="${a}" width="${bw}" height="${Math.max(b-a,0.5)}" rx="4" fill="${fill}" stroke="${stroke}" ${dash?'stroke-dasharray="5 4"':''}/>`};
+  s+=bar(0,0,S.rev,'url(#gViolet)','#a78bfa');
+  // costs stacked
+  let base=S.rev;
+  [['rent',S.rent,'rgba(201,212,230,.25)'],['energy',S.energy,'rgba(201,212,230,.45)'],['other',S.other,'rgba(201,212,230,.65)']].forEach(([n,v,f])=>{if(v>0){s+=bar(1,base,base-v,f,'#c9d4e6');base-=v;}});
+  const cf=Math.max(M.cfads,0);
+  s+=M.cfads<0?bar(2,0,M.cfads,'rgba(255,107,107,.35)','#ff6b6b'):bar(2,0,cf,'url(#gTeal)','#2dd4bf');
+  s+=bar(3,M.ds,cf,'rgba(45,212,191,.12)','#2dd4bf',true)+bar(3,0,M.ds,'url(#gAmber)','#f6b13c');
+  s+=bar(4,0,M.ds,'url(#gAmber)','#f6b13c');
+  // PV stacked by discounted years
+  let acc=0;M.sch.forEach((r,i)=>{s+=bar(5,acc,acc+r.disc,`rgba(56,214,245,${0.25+0.5*(i/Math.max(M.n-1,1))})`,'#38d6f5');acc+=r.disc;});
+  // connectors
+  const con=(i,v)=>`<line x1="${X(i)+bw}" x2="${X(i+1)}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(200,215,240,.35)" stroke-dasharray="3 3"/>`;
+  s+=con(0,S.rev)+con(1,M.cfads)+con(2,cf)+con(3,M.ds)+con(4,M.ds);
+  if(M.cfads<=0) s+=`<text x="${(X(3)+X(5)+bw)/2}" y="${y(ymax*0.6)}" text-anchor="middle" fill="#ff6b6b" font-size="15" font-weight="700">No borrowing capacity: costs ≥ revenue</text>`;
+  const labs=[['Revenue',money(S.rev,0)],['− Op. costs','−'+money(costs,0).replace('$','$')],['= CFADS',money(M.cfads)],['÷ DSCR '+S.dscr.toFixed(2)+'×','cushion '+money(cf-M.ds)],['Debt service',money(M.ds)+'/yr'],['Present value',money(M.pv)]];
+  labs.forEach(([a,b],i)=>{s+=`<text x="${X(i)+bw/2}" y="${H-m.b+18}" text-anchor="middle" fill="#dfe7f5" font-size="12" font-weight="600">${a}</text><text x="${X(i)+bw/2}" y="${H-m.b+34}" text-anchor="middle" fill="#93a3bf" font-size="11" class="t-mono">${b}</text>`;});
+  s+=`<text x="${X(5)+bw/2}" y="${y(M.pv)-6}" text-anchor="middle" fill="#38d6f5" font-size="12" font-weight="700" class="t-mono">${money(M.pv)}</text>`;
+  $('#waterfall').innerHTML=`<svg viewBox="0 0 ${W} ${H}">${s}</svg>`;
+  $('#eqs').innerHTML=
+   `CFADS = Revenue − Eligible opex = ${fmt(S.rev,0)} − ${fmt(costs,0)} = <em>${money(M.cfads)}</em><br>`+
+   `Debt service = CFADS ÷ DSCR = ${fmt(Math.max(M.cfads,0))} ÷ ${S.dscr.toFixed(2)} = <em>${money(M.ds,2)}</em><br>`+
+   `PV = DS × [1 − (1 + r)<sup>−n</sup>] ÷ r = ${fmt(M.ds,2)} × [1 − (1 + ${M.r.toFixed(3)})<sup>−${S.years}</sup>] ÷ ${M.r.toFixed(3)} = ${fmt(M.ds,2)} × ${M.ann.toFixed(4)} = <em>${money(M.pv,1)}</em><br>`+
+   `Borrowing as share of nominal contract: <em>${(M.nominal>0?M.pv/M.nominal*100:0).toFixed(0)}%</em>`+(M.pv>S.capex?`<br><span style="color:var(--coral)">⚠ ${money(M.pv)} exceeds the ${money(S.capex,0)} hardware cost used in Chapter 9. Real lenders cap loans at a share of collateral value, so the loan would be sized down.</span>`:'');
+  // schedule
+  const W2=560,H2=250,m2={l:44,r:10,t:14,b:30};
+  const ym=niceMax(Math.max(M.pv,M.ds,1));
+  const yy=v=>H2-m2.b-v/ym*(H2-m2.t-m2.b);
+  const bw2=(W2-m2.l-m2.r)/(M.n+1);
+  let c=chartAxes(W2,H2,m2,ym,0,4,v=>'$'+Math.round(v));
+  let pts=[`${m2.l+bw2*0.5},${yy(M.pv)}`];
+  M.sch.forEach((r,i)=>{const x=m2.l+bw2*(i+1)-bw2*0.3;
+    c+=`<rect x="${x}" y="${yy(r.int)}" width="${bw2*.6}" height="${yy(0)-yy(r.int)}" fill="rgba(255,216,150,.78)" stroke="#ffd896"/>`;
+    c+=`<rect x="${x}" y="${yy(r.int+r.prin)}" width="${bw2*.6}" height="${yy(r.int)-yy(r.int+r.prin)}" fill="url(#gAmber)" stroke="#f6b13c"/>`;
+    c+=`<text x="${x+bw2*.3}" y="${H2-12}" text-anchor="middle" fill="#93a3bf" font-size="11" class="t-mono">Y${r.t}</text>`;
+    pts.push(`${x+bw2*.3},${yy(r.close)}`);});
+  c+=`<polyline points="${pts.join(' ')}" fill="none" stroke="#38d6f5" stroke-width="2.5"/>`;
+  c+=`<text x="${m2.l+6}" y="${yy(M.pv)-6}" fill="#38d6f5" font-size="11" font-weight="600">loan balance</text>`;
+  c+=`<g font-size="11"><rect x="${W2-200}" y="6" width="10" height="10" fill="#f6b13c"/><text x="${W2-185}" y="15" fill="#c9d4e6">principal</text><rect x="${W2-120}" y="6" width="10" height="10" fill="#ffd896"/><text x="${W2-105}" y="15" fill="#c9d4e6">interest</text></g>`;
+  $('#schedChart').innerHTML=M.pv>0.05?`<svg viewBox="0 0 ${W2} ${H2}">${c}</svg>`:`<div class="warnbox">No debt can be supported: cash available for debt service is zero or negative.</div>`;
+  $('#schedTable').innerHTML=`<thead><tr><th>Year</th><th>Opening</th><th>Interest</th><th>Principal</th><th>Debt service</th><th>Closing</th></tr></thead><tbody>`+
+    M.sch.map(r=>`<tr><td>${r.t}</td><td>${fmt(r.open)}</td><td>${fmt(r.int)}</td><td>${fmt(r.prin)}</td><td>${fmt(r.ds)}</td><td>${fmt(r.close)}</td></tr>`).join('')+
+    `</tbody><tfoot><tr><td colspan="6" style="text-align:left;color:#5f6f8c;font-size:11px">$ millions · level annual payments at the selected rate</td></tr></tfoot>`;
+  drawPnl(M);drawLtv(M);drawStress(M);
+}
+['rev','years','rent','energy','other','dscr','rate'].forEach(k=>{const e=$('#'+k);e.addEventListener('input',()=>{S[k]=+e.value;drawCalc();});});
+$('#resetCalc').onclick=()=>{['rev','years','rent','energy','other','dscr','rate','capex','life','decl','pay'].forEach(k=>{S[k]=DEF[k];$('#'+k).value=DEF[k];});drawCalc();};
+
+/* ---------- ch9 P&L ---------- */
+function drawPnl(M){
+  $('#o_capex').textContent='$'+S.capex+'M';$('#o_life').textContent=S.life+' yrs';
+  const dep=S.capex/S.life;
+  const rows=M.sch.map(r=>{const d=r.t<=S.life?dep:0;const cost=S.rent+S.energy+S.other+d+r.int;return {t:r.t,rev:S.rev,rent:S.rent,energy:S.energy,other:S.other,dep:d,int:r.int,cost,profit:S.rev-cost};});
+  const tot=rows.reduce((a,r)=>a+r.profit,0), equity=S.capex-M.pv, eqShown=Math.max(equity,0);
+  const remaining=Math.max(S.capex-dep*Math.min(S.life,M.n),0);
+  $('#pnlKpis').innerHTML=[
+   ['Depreciation / yr',money(dep),'#c9d4e6'],['Year-1 pre-tax profit',money(rows[0]?rows[0].profit:0),rows[0]&&rows[0].profit<0?'#ff6b6b':'#2dd4bf'],['Profit over contract',money(tot),tot<0?'#ff6b6b':'#2dd4bf'],['Equity needed',equity>=0?money(equity):'$0 *','#a78bfa']
+  ].map(([l,v,c])=>`<div class="kpi"><div class="l">${l}</div><div class="v mono" style="color:${c}">${v}</div></div>`).join('');
+  const W=760,H=320,m={l:52,r:10,t:36,b:30};
+  const ymax=niceMax(Math.max(S.rev,...rows.map(r=>r.cost))*1.04);
+  const y=v=>H-m.b-v/ymax*(H-m.t-m.b);
+  let s=chartAxes(W,H,m,ymax,0,4,v=>'$'+Math.round(v));
+  const slot=(W-m.l-m.r)/Math.max(rows.length,1), bw=Math.min(slot*0.55,90);
+  const seg=[['rent','rgba(201,212,230,.22)','#c9d4e6'],['energy','rgba(201,212,230,.4)','#c9d4e6'],['other','rgba(201,212,230,.58)','#c9d4e6'],['dep','url(#hatchDep)','#c9d4e6'],['int','rgba(255,216,150,.78)','#ffd896']];
+  rows.forEach((r,i)=>{
+    const x=m.l+slot*(i+.5)-bw/2; let acc=0;
+    seg.forEach(([k,f,st])=>{const v=r[k];if(v<=0)return;s+=`<rect x="${x}" y="${y(acc+v)}" width="${bw}" height="${Math.max(y(acc)-y(acc+v),0)}" fill="${f}" stroke="${st}" stroke-width=".8"/>`;acc+=v;});
+    if(r.profit>=0) s+=`<rect x="${x}" y="${y(r.rev)}" width="${bw}" height="${y(acc)-y(r.rev)}" fill="url(#gTeal)" stroke="#2dd4bf"/>`;
+    else s+=`<rect x="${x}" y="${y(r.cost)}" width="${bw}" height="${y(r.rev)-y(r.cost)}" fill="rgba(255,107,107,.3)" stroke="#ff6b6b" stroke-dasharray="4 3"/>`;
+    s+=`<line x1="${x-6}" x2="${x+bw+6}" y1="${y(r.rev)}" y2="${y(r.rev)}" stroke="#a78bfa" stroke-width="2.4"/>`;
+    const top=Math.max(r.rev,r.cost);
+    s+=`<text x="${x+bw/2}" y="${y(top)-7}" text-anchor="middle" fill="${r.profit>=0?'#2dd4bf':'#ff6b6b'}" font-size="13" font-weight="700" class="t-mono">${r.profit>=0?'+':''}${money(r.profit)}</text>`;
+    s+=`<text x="${x+bw/2}" y="${H-10}" text-anchor="middle" fill="#93a3bf" font-size="12" class="t-mono">Y${r.t}</text>`;
+  });
+  const legend=[['Rent · energy · other','#c9d4e6'],['Depreciation (hatched)','#c9d4e6'],['Interest','#ffd896'],['Profit','#2dd4bf'],['Loss','#ff6b6b'],['Revenue line','#a78bfa']];
+  let lx=m.l; s+=`<g font-size="11.5">`+legend.map(([tx,c])=>{const o=`<rect x="${lx}" y="4" width="11" height="11" fill="${tx.startsWith('Dep')?'url(#hatchDep)':c}" stroke="${c}"/><text x="${lx+16}" y="14" fill="#c9d4e6">${tx}</text>`;lx+=tx.length*6.4+34;return o;}).join('')+`</g>`;
+  $('#pnlChart').innerHTML=`<svg viewBox="0 0 ${W} ${H}">${s}</svg>`;
+  const cashEq=M.cfads-M.ds;
+  let html=`<div class="okbox" style="margin-top:10px">Meanwhile, the <b>cash</b> left for the parent after paying lenders is ${money(cashEq)} a year (CFADS − debt service), ${money(cashEq*M.n,0)} over the contract, against ${money(eqShown,0)} of equity put in. Cash and accounting profit tell different stories because depreciation isn't a cash payment.</div>`;
+  if(S.life>M.n) html+=`<div class="warnbox" style="margin-top:8px">With a ${S.life}-year life and a ${M.n}-year contract, about <b>${money(remaining,0)}</b> of hardware value is still on the books when the contract ends. Recovering it depends on <b>re-contracting</b> the chips at decent prices.</div>`;
+  if(equity<0) html+=`<div class="warnbox" style="margin-top:8px">* At these settings, the debt the contract could support (${money(M.pv)}) is more than the hardware costs (${money(S.capex,0)}). Real lenders cap loans at a share of collateral value, so the loan would be sized down and equity would still be needed.</div>`;
+  $('#pnlNote').innerHTML=html;
+  $('#lifeRef').innerHTML=`Reference points: CoreWeave depreciates over <b>6 yrs</b>, Lambda <b>5</b>, Nebius <b>4</b> [23][24]. Michael Burry has argued the true economic life is closer to <b>2–3 yrs</b> <span class="tag src">claim</span>.`;
+}
+['capex','life'].forEach(k=>{const e=$('#'+k);e.addEventListener('input',()=>{S[k]=+e.value;drawCalc();});});
+
+/* ---------- ch10 charts ---------- */
+const DUR=[
+ ['Power purchase agreement (source example)',15,'#c9d4e6',''],
+ ['Applied Digital → CoreWeave leases',15,'#c9d4e6','[17]'],
+ ['Core Scientific → CoreWeave hosting',12,'#c9d4e6','[18]'],
+ ['Microsoft ← IREN compute contract',5,'#a78bfa','[10]'],
+ ['Meta ← Nebius compute contract',5,'#a78bfa','[12]'],
+ ['Short AI compute contracts (source)',3,'#a78bfa',''],
+ ['CoreWeave GPU depreciation life',6,'#ff6b6b','[23]'],
+ ['Burry’s economic-life claim (2–3)',2.5,'#ff6b6b','claim']
+];
+function drawDur(){
+  const W=600,H=DUR.length*34+40,m={l:300,r:30,t:10,b:26},xmax=16;
+  const x=v=>m.l+v/xmax*(W-m.l-m.r);
+  let s='';
+  for(let v=0;v<=15;v+=5){s+=`<line x1="${x(v)}" x2="${x(v)}" y1="${m.t}" y2="${H-m.b}" stroke="rgba(140,170,220,.12)"/><text x="${x(v)}" y="${H-8}" text-anchor="middle" fill="#5f6f8c" font-size="10.5" class="t-mono">${v}y</text>`;}
+  DUR.forEach(([n,v,c,src],i)=>{const yy=m.t+i*34;
+    s+=`<text x="${m.l-8}" y="${yy+18}" text-anchor="end" fill="#cfd9ec" font-size="11.5">${n} <tspan fill="#5f6f8c">${src}</tspan></text>`;
+    s+=`<rect x="${x(0)}" y="${yy+6}" width="${x(v)-x(0)}" height="18" rx="4" fill="${c}" fill-opacity=".35" stroke="${c}"/>`;
+    s+=`<text x="${x(v)+6}" y="${yy+19}" fill="${c}" font-size="11" class="t-mono">${v}</text>`;});
+  $('#durChart').innerHTML=`<svg viewBox="0 0 ${W} ${H}">${s}</svg>`;
+}
+drawDur();
+function drawLtv(M){
+  $('#o_decl').textContent=S.decl+'% / yr';
+  const n=M.n,W=560,H=260,m={l:46,r:20,t:14,b:30};
+  const coll=[...Array(n+1)].map((_,t)=>S.capex*Math.pow(1-S.decl/100,t));
+  const loan=[M.pv,...M.sch.map(r=>r.close)];
+  const ym=niceMax(Math.max(S.capex,M.pv));
+  const x=t=>m.l+t/n*(W-m.l-m.r), y=v=>H-m.b-v/ym*(H-m.t-m.b);
+  let s=chartAxes(W,H,m,ym,0,4,v=>'$'+Math.round(v));
+  // shade underwater
+  for(let t=0;t<n;t++){ if(coll[t]<loan[t]||coll[t+1]<loan[t+1]) s+=`<rect x="${x(t)}" y="${m.t}" width="${x(t+1)-x(t)}" height="${H-m.t-m.b}" fill="rgba(255,107,107,.08)"/>`; }
+  const line=(arr,c,dash)=>`<polyline points="${arr.map((v,t)=>`${x(t)},${y(v)}`).join(' ')}" fill="none" stroke="${c}" stroke-width="2.6" ${dash?'stroke-dasharray="6 5"':''}/>`+arr.map((v,t)=>`<circle cx="${x(t)}" cy="${y(v)}" r="3.5" fill="${c}"/>`).join('');
+  s+=line(loan,'#f6b13c')+line(coll,'#ff6b6b');
+  for(let t=0;t<=n;t++) s+=`<text x="${x(t)}" y="${H-10}" text-anchor="middle" fill="#93a3bf" font-size="11" class="t-mono">Y${t}</text>`;
+  s+=`<text x="${x(n)-4}" y="${y(coll[n])-8}" text-anchor="end" fill="#ff6b6b" font-size="11" font-weight="600">GPU resale value</text><text x="${x(0)+6}" y="${y(loan[0])+16}" fill="#f6b13c" font-size="11" font-weight="600">loan balance</text>`;
+  const uw=coll.map((v,t)=>v<loan[t]-1e-6?t:-1).filter(t=>t>=0);
+  const under=uw.length?uw[0]:-1;
+  $('#ltvChart').innerHTML=`<svg viewBox="0 0 ${W} ${H}">${s}</svg>`+`<p class="note">${under>=0?`<span style="color:var(--coral)">Collateral is worth less than the loan in ${uw.length===1?'year '+uw[0]:'years '+uw[0]+'–'+uw[uw.length-1]}.</span> In that window, lenders are relying mainly on the customer’s payments. Because the loan amortizes, it can shrink back below the collateral later. One analysis calls the GPUs "the backstop, not the engine."`:'Collateral stays above the loan balance throughout, giving lenders a cushion if the customer defaults.'} <span class="tag hyp">hypothetical</span></p>`;
+}
+$('#decl').addEventListener('input',e=>{S.decl=+e.target.value;drawCalc();});
+function drawStress(M){
+  $('#o_pay').textContent=S.pay+'%';
+  const cf=S.rev*S.pay/100-S.rent-S.energy-S.other;
+  const cov=M.ds>0?cf/M.ds:0;
+  const W=560,H=150,m={l:150,r:30,t:16,b:20},xmax=niceMax(Math.max(M.cfads,M.ds,1)*1.05);
+  const x=v=>m.l+Math.max(v,0)/xmax*(W-m.l-m.r);
+  let s='';
+  const row=(i,lab,v,c,f)=>`<text x="${m.l-8}" y="${m.t+i*50+22}" text-anchor="end" fill="#cfd9ec" font-size="12">${lab}</text><rect x="${m.l}" y="${m.t+i*50+6}" width="${x(v)-m.l}" height="26" rx="5" fill="${f}" stroke="${c}"/><text x="${x(v)+6}" y="${m.t+i*50+24}" fill="${c}" font-size="12" class="t-mono">${money(v)}</text>`;
+  s+=row(0,'Cash available (CFADS)',cf,cov>=S.dscr?'#2dd4bf':cov>=1?'#f6b13c':'#ff6b6b',cov>=S.dscr?'url(#gTeal)':cov>=1?'url(#gAmber)':'rgba(255,107,107,.35)');
+  s+=row(1,'Required debt service',M.ds,'#f6b13c','rgba(246,177,60,.25)');
+  $('#stressChart').innerHTML=`<svg viewBox="0 0 ${W} ${H}">${s}</svg>`;
+  $('#stressMsg').innerHTML= cov>=S.dscr?`<div class="okbox">Coverage <b class="mono">${cov.toFixed(2)}×</b>. The deal still meets its ${S.dscr.toFixed(2)}× test.</div>`
+    : cov>=1?`<div class="warnbox" style="border-color:rgba(246,177,60,.5);background:rgba(246,177,60,.08);color:#ffe7bd">Coverage <b class="mono">${cov.toFixed(2)}×</b>. Lenders still get paid, but the cushion is gone. A covenant breach could trap cash or trigger default remedies.</div>`
+    : `<div class="warnbox">Coverage <b class="mono">${cov.toFixed(2)}×</b>. Cash doesn’t cover debt service. Lenders turn to reserves and the GPUs. If the facility is non-recourse, the parent can’t be forced to cover the gap, though some facilities include parent guarantees, and walking away carries reputational costs.</div>`;
+}
+$('#pay').addEventListener('input',e=>{S.pay=+e.target.value;drawCalc();});
+
+/* heatmap */
+(function(){
+  const risks=['Customer concentration','GPU obsolescence / collateral value','Contract shorter than asset life','Leverage & refinancing','Construction / delivery delay','Power availability'];
+  const D={A:[3,1,1,2,3,2],B:[3,3,3,3,2,2],C:[3,3,3,3,3,1]};
+  const col=v=>v===3?'rgba(255,107,107,.55)':v===2?'rgba(246,177,60,.45)':'rgba(45,212,191,.35)';
+  const t=v=>v===3?'High':v===2?'Medium':'Lower';
+  $('#heat').innerHTML=`<table class="mtable"><thead><tr><th>Risk</th><th>A · Landlord</th><th>B · Compute provider</th><th>C · Integrated</th></tr></thead><tbody>`+
+   risks.map((r,i)=>`<tr><td>${r}</td>${['A','B','C'].map(k=>`<td><span style="display:inline-block;min-width:84px;text-align:center;padding:4px 8px;border-radius:8px;background:${col(D[k][i])};color:#fff;font-weight:600;font-size:12.5px">${t(D[k][i])}</span></td>`).join('')}</tr>`).join('')+`</tbody></table>`;
+})();
+
+/* web of SPVs */
+(function(){
+  const cust=[['Meta','#a78bfa','investment grade'],['Anthropic','#a78bfa','must keep growing'],['OpenAI','#a78bfa','must keep growing']];
+  let s='';
+  s+=`<rect x="390" y="20" width="220" height="64" rx="14" fill="rgba(20,30,52,.9)" stroke="#38d6f5" stroke-width="1.6"/><text x="500" y="47" text-anchor="middle" fill="#fff" font-family="Space Grotesk" font-weight="700" font-size="22.1">Parent neocloud</text><text x="500" y="66" text-anchor="middle" fill="#93a3bf" font-size="15.0">e.g. CoreWeave</text>`;
+  cust.forEach(([c,col,sub],i)=>{
+    const cx=150+i*320;
+    s+=`<path d="M500 84 C 500 130, ${cx} 120, ${cx} 168" fill="none" stroke="#a78bfa" stroke-width="2" marker-end="url(#mV)"/><text x="${(500+cx)/2+(i===1?14:0)}" y="${i===1?128:118}" text-anchor="${i===1?'start':'middle'}" fill="#c8b9fb" font-size="14.3">equity</text>`;
+    s+=`<rect x="${cx-120}" y="170" width="240" height="140" rx="18" fill="rgba(140,180,240,.05)" stroke="#c9d4e6" stroke-dasharray="9 6"/><text x="${cx}" y="192" text-anchor="middle" fill="#fff" font-weight="700" font-family="Space Grotesk">SPV ${i+1}</text>`;
+    const R=mkIso(7,cx-62,250);
+    for(let k=0;k<4;k++) s+=R.rack(k*1.6,0,0,{w:1,d:.7,h:2.4});
+    s+=`<rect x="${cx+30}" y="215" width="70" height="40" rx="7" fill="url(#gViolet)" stroke="#a78bfa"/><text x="${cx+65}" y="239" text-anchor="middle" fill="#fff" font-size="14.3" font-weight="700">contract</text>`;
+    s+=`<rect x="${cx-70}" y="350" width="140" height="44" rx="12" fill="rgba(20,30,52,.9)" stroke="${col}"/><text x="${cx}" y="370" text-anchor="middle" fill="#fff" font-weight="700" font-size="18.2">${c}</text><text x="${cx}" y="386" text-anchor="middle" fill="#93a3bf" font-size="13.7">${sub}</text>`;
+    s+=`<path d="M${cx-30} 350 L ${cx-30} 314" stroke="#f6b13c" stroke-width="2.4" marker-end="url(#mA)"/><text x="${cx-36}" y="338" text-anchor="end" fill="#f6b13c" font-size="13.7">payments</text>`;
+    s+=`<path d="M${cx+30} 312 L ${cx+30} 348" stroke="#38d6f5" stroke-width="2.4" marker-end="url(#mC)"/><text x="${cx+36}" y="338" fill="#38d6f5" font-size="13.7">compute</text>`;
+    s+=`<rect x="${cx+130}" y="${226}" width="60" height="34" rx="8" fill="rgba(246,177,60,.1)" stroke="#f6b13c"/><text x="${cx+160}" y="248" text-anchor="middle" fill="#f6b13c" font-size="13.7" font-weight="700">lenders</text>`;
+    s+=`<path d="M${cx+130} 243 L ${cx+122} 243" stroke="#f6b13c" stroke-width="2" marker-end="url(#mA)"/>`;
+  });
+  $('#webScene').innerHTML=`<svg viewBox="0 0 1000 410">${s}</svg>`;
+})();
+
+/* Nvidia */
+(function(){
+  let s='';
+  const I=mkIso(10,140,90);
+  // nvidia vault
+  s+=I.box(0,0,0,9,7,0.6,{top:'#4b5c7c'});
+  for(let i=0;i<5;i++) s+=I.box(0.8+i*1.7,5.2,0.6,.6,.6,3,{top:'#7c8bab'});
+  s+=I.box(0,0,3.6,9,7,0.6,{top:'url(#gTeal)',stroke:'#2dd4bf'});
+  s+=`<text x="140" y="175" text-anchor="middle" fill="#fff" font-family="Space Grotesk" font-weight="700" font-size="23.4">NVIDIA</text>`;
+  // coreweave
+  s+=`<rect x="440" y="110" width="200" height="64" rx="14" fill="rgba(20,30,52,.9)" stroke="#38d6f5" stroke-width="1.6"/><text x="540" y="138" text-anchor="middle" fill="#fff" font-family="Space Grotesk" font-weight="700" font-size="22.1">CoreWeave</text><text x="540" y="157" text-anchor="middle" fill="#93a3bf" font-size="15.0">neocloud</text>`;
+  const arr=(d,c,mk,dash,w=2.6)=>`<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" marker-end="url(#${mk})" ${dash?'stroke-dasharray="9 7"':''}/>`;
+  s+=arr('M 230 70 C 320 30, 420 40, 500 106','#a78bfa','mV')+`<text x="340" y="36" fill="#c8b9fb" font-size="15.6" font-weight="600">owns ~11% of shares</text>`;
+  s+=arr('M 235 120 C 320 110, 380 125, 436 132','#c9d4e6','mS')+`<text x="300" y="108" fill="#c9d4e6" font-size="15.6" font-weight="600">sells GPUs</text>`;
+  s+=arr('M 438 158 C 380 175, 320 180, 235 160','#f6b13c','mA')+`<text x="300" y="192" fill="#f6b13c" font-size="15.6" font-weight="600">pays for chips</text>`;
+  s+=arr('M 225 205 C 300 300, 480 300, 540 180','#f6b13c','mA',true)+`<text x="250" y="296" fill="#f6b13c" font-size="15.6" font-weight="600">backstop: buys unsold capacity</text><text x="250" y="312" fill="#93a3bf" font-size="14.3">$6.3B order · through Apr 13, 2032 · contingent</text>`;
+  s+=`<path d="M 640 142 L 668 142" stroke="#38d6f5" stroke-width="2" marker-end="url(#mC)"/><rect x="672" y="112" width="150" height="60" rx="12" fill="rgba(56,214,245,.06)" stroke="#38d6f5" stroke-dasharray="5 4"/><text x="747" y="137" text-anchor="middle" fill="#cfe9f2" font-size="15.6" font-weight="600">helps lower</text><text x="747" y="154" text-anchor="middle" fill="#cfe9f2" font-size="15.6" font-weight="600">borrowing costs</text><text x="747" y="190" text-anchor="middle" fill="#a78bfa" font-size="13.7">per the source reel</text>`;
+  $('#nvScene').innerHTML=`<svg viewBox="0 0 840 320">${s}</svg>`;
+})();
+
+/* ---------- a11y ---------- */
+$$('input[type=range]').forEach(r=>{if(!r.getAttribute('aria-label')){const l=r.closest('label');if(l){const tx=[...l.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join(' ').trim();if(tx)r.setAttribute('aria-label',tx);}}});
+const hideSvgs=()=>$$('[role=img] svg, .mcard svg, #ch1cards svg').forEach(s=>{s.setAttribute('aria-hidden','true');s.setAttribute('focusable','false');});
+new MutationObserver(hideSvgs).observe(document.body,{childList:true,subtree:true});hideSvgs();
+/* ---------- scroll machinery ---------- */
+// rail
+const chapters=$$('section.chapter');
+$('#rail').innerHTML=chapters.map((c,i)=>`<a href="#${c.id}"><span>${c.dataset.title}</span><i></i></a>`).join('');
+const railLinks=$$('#rail a');
+addEventListener('scroll',()=>{
+  const h=document.documentElement;$('#progress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=0;chapters.forEach((c,i)=>{if(c.getBoundingClientRect().top<innerHeight*0.45)cur=i;});
+  railLinks.forEach((a,i)=>a.classList.toggle('on',i===cur));
+},{passive:true});
+// reveals
+const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target);}}),{threshold:.12});
+$$('.reveal').forEach(e=>ro.observe(e));
+// generic step observer
+function steps(sel,cb){
+  const cap=$(sel+' .stepcap');
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){$$(sel+' .step').forEach(s=>s.classList.toggle('active',s===e.target));if(cap)cap.innerHTML=e.target.querySelector('.card').innerHTML;cb(e.target);}}),{rootMargin:'-45% 0px -45% 0px'});
+  $$(sel+' .step').forEach(s=>io.observe(s));
+}
+steps('#factoryScrolly',el=>setFactory(+el.dataset.step));
+steps('#spvScrolly',el=>{spvLayer=el.dataset.layer;$$('#xrayBtns button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.layer===spvLayer)));drawSPV();});
+// contract blocks fill as section scrolls
+(function(){
+  const sec=$('#ch5');
+  const setK=k=>{$$('#blocks .blk').forEach((b,i)=>b.classList.toggle('paid',i<k));$('#yr').value=k;$('#o_yr').textContent=k===0?'signing day':'end of year '+k;
+    $('#cashLbl').textContent=k===0?'Cash at signing':'Cash received so far';$('#cashVal').textContent='$'+(k*100)+'M';$('#cashVal').style.color=k===0?'var(--coral)':'var(--amber)';};
+  let last=-1;
+  addEventListener('scroll',()=>{const r=sec.getBoundingClientRect();const p=Math.min(Math.max((innerHeight*0.6-r.top)/(r.height*0.7),0),1);const k=Math.min(5,Math.floor(p*5.2));if(k!==last){last=k;setK(k);}},{passive:true});
+  $('#yr').addEventListener('input',e=>{last=+e.target.value;setK(last);});
+  setK(0);
+})();
+
+/* ---------- ch8 production line ---------- */
+const STAGES=[
+ ['Lenders fund','#f6b13c','Cash released in tranches'],
+ ['Buy GPUs','#c9d4e6','Paid to hardware vendors'],
+ ['Install','#c9d4e6','Rack, cable, cool'],
+ ['Go live','#38d6f5','Testing and handover'],
+ ['Deliver compute','#38d6f5','Customer runs workloads'],
+ ['Get paid','#2dd4bf','Costs → lenders → parent']
+];
+let lineI=0;
+function drawLine(){
+  const W=1000,H=560;let s='';
+  const I0=(i)=>mkIso(13,150+(i%3)*330,30+Math.floor(i/3)*185);
+  STAGES.forEach(([n,c,sub],i)=>{
+    const I=I0(i), on=i<=lineI, cur=i===lineI;
+    let g=I.box(0,0,0,7,7,0.35,{top:cur?'rgba(56,214,245,.18)':'#1b263b',stroke:cur?'#38d6f5':'rgba(190,210,240,.18)'});
+    if(i===0){g+=I.box(1.5,1.5,0.35,4,4,2.2,{top:'url(#gAmber)',left:'rgba(246,177,60,.25)',right:'rgba(246,177,60,.35)',stroke:'#f6b13c'});for(let k=0;k<3;k++)g+=I.box(2+k*1.2,1.8,2.55+k*0.0,0.9,0.5,0.25,{top:'#ffd27a'});}
+    if(i===1){for(let k=0;k<3;k++)g+=I.box(1+k*1.9,2,0.35,1.5,2.5,1.2+k*0.2,{top:'#6b7b98'});}
+    if(i===2){for(let k=0;k<3;k++)g+=I.rack(1+k*1.8,2.5,0.35,{h:2.2});}
+    if(i===3){for(let k=0;k<3;k++)g+=I.rack(1+k*1.8,2.5,0.35,{h:2.2,led:'#2dd4bf'});}
+    if(i===4){for(let k=0;k<3;k++)g+=I.rack(1+k*1.8,2.5,0.35,{h:2.2});g+=I.path([[7,4,1.4],[10,4,3]],'flow-compute',`marker-end="url(#mC)"`);}
+    if(i===5){g+=I.box(1.5,1.5,0.35,4,4,1.6,{top:'url(#gTeal)',stroke:'#2dd4bf'});}
+    s+=`<g opacity="${on?1:0.42}" style="transition:opacity .5s">${g}</g>`;
+    const tp=I.P(3.5,3.5,0);
+    s+=`<text x="${tp[0]}" y="${tp[1]+60}" text-anchor="middle" fill="${on?c:'#5f6f8c'}" font-family="Space Grotesk" font-weight="700" font-size="20.3">${i+1}. ${n}</text>`;
+    s+=`<text x="${tp[0]}" y="${tp[1]+77}" text-anchor="middle" fill="#93a3bf" font-size="15.2">${sub}</text>`;
+    if(i%3<2){const a=I.P(8.2,3.5,0.4),b=I0(i+1).P(-1.6,3.5,0.4);const mk=i<lineI?(c==='#f6b13c'?'mA':c==='#38d6f5'?'mC':'mS'):'mS';s+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${i<lineI?c:'rgba(140,160,190,.3)'}" stroke-width="2" marker-end="url(#${mk})"/>`;}
+    if(i===2){const a=I.P(3.5,3.5,0),b=I0(3).P(3.5,3.5,0);const y1=a[1]+92,y2=b[1]-62;s+=`<path d="M${a[0]} ${y1} C ${a[0]} ${y1+26}, ${b[0]} ${y2-30}, ${b[0]} ${y2}" fill="none" stroke="${lineI>2?'#c9d4e6':'rgba(140,160,190,.3)'}" stroke-width="2" marker-end="url(#mS)"/>`;}
+  });
+  // waterfall bar along bottom, computed from model
+  const M=model(); const tot=Math.max(S.rev,1);
+  const parts=[['Rent',S.rent,'#c9d4e6'],['Energy',S.energy,'#c9d4e6'],['Other',S.other,'#c9d4e6'],['Interest',M.sch[0]?M.sch[0].int:0,'#ffd896'],['Principal',M.sch[0]?M.sch[0].prin:0,'#f6b13c'],['To parent',Math.max(M.cfads-M.ds,0),'#2dd4bf']];
+  const x0=60,w=880,y0=470;let x=x0;
+  s+=`<text x="${x0}" y="${y0-12}" fill="#dfe7f5" font-size="18.8" font-weight="700">Where Year 1's ${money(S.rev,0)} goes <tspan fill="#93a3bf" font-weight="400">(Chapter 7 assumptions · hypothetical)</tspan></text>`;
+  parts.forEach(([n,v,c])=>{if(v<=0)return;const ww=v/tot*w;
+    s+=`<rect x="${x}" y="${y0}" width="${ww}" height="52" fill="${c}" fill-opacity="${lineI>=5?(n==='Interest'?.78:.5):.12}" stroke="${c}" style="transition:fill-opacity .6s"/>`;
+    if(ww>70) s+=`<text x="${x+ww/2}" y="${y0+22}" text-anchor="middle" fill="#fff" font-size="15.9" font-weight="600">${n}</text><text x="${x+ww/2}" y="${y0+41}" text-anchor="middle" fill="#fff" font-size="15.2" class="t-mono">${money(v)}</text>`;
+    else s+=`<text x="${x+ww/2}" y="${y0+70}" text-anchor="middle" fill="${c}" font-size="14.5">${n} ${money(v,0)}</text>`;
+    x+=ww;});
+  $('#lineScene').innerHTML=`<svg viewBox="0 0 ${W} ${H}">${s}</svg>`;
+  $('#lineCap').innerHTML='';
+}
+steps('#buildScrolly',el=>{lineI=+el.dataset.i;drawLine();});
+const _dc=drawCalc; // ensure line redraws when model changes
+drawCalc=function(){_dc();drawLine();};
+drawCalc();
+})();
+</script>
+</body>
+</html>

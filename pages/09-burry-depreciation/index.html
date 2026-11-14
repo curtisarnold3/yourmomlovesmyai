@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Burry &amp; the AI Depreciation Question</title>
+<meta name="description" content="An interactive financial documentary: how GPU useful-life assumptions change depreciation, earnings, P/E valuations, cash flow and DCF value.">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#ch1">Skip to chapter 1</a>
+
+<header class="hud" role="banner">
+  <div class="brand">AI STACK · <b>08</b> · BURRY &amp; DEPRECIATION</div>
+  <div class="tracker" aria-live="polite">
+    <span class="g" id="hudGlyph" aria-hidden="true"></span>
+    <span class="lbl">The same $100B of GPUs, shown as</span>
+    <span class="as" id="hudAs"><i id="hudDot"></i><span id="hudText">Physical hardware</span></span>
+  </div>
+  <button id="motionBtn" type="button" aria-pressed="false" title="Turn animations off or on">Reduce motion</button>
+  <button id="resetBtn" type="button" title="Reset every tool to the source example">Reset</button>
+</header>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<nav class="rail" aria-label="Chapters">
+  <a href="#ch1"><span class="d">1</span><span class="l">Burry's argument</span></a>
+  <a href="#ch2"><span class="d">2</span><span class="l">How valuations work</span></a>
+  <a href="#ch3"><span class="d">3</span><span class="l">The $100B purchase</span></a>
+  <a href="#ch4"><span class="d">4</span><span class="l">5 years vs 2 years</span></a>
+  <a href="#ch5"><span class="d">5</span><span class="l">Effect on earnings</span></a>
+  <a href="#ch6"><span class="d">6</span><span class="l">Two sets of books</span></a>
+  <a href="#ch7"><span class="d">7</span><span class="l">Depreciation vs cash</span></a>
+  <a href="#ch8"><span class="d">8</span><span class="l">Discounted cash flow</span></a>
+  <a href="#ch9"><span class="d">9</span><span class="l">How long chips last</span></a>
+  <a href="#ch10"><span class="d">10</span><span class="l">Does value change?</span></a>
+</nav>
+
+<main id="main">
+<!-- ================= HERO ================= -->
+<section class="hero" id="top" data-hud="Physical hardware" data-hudc="acct">
+  <div>
+    <div class="kicker">AI Stack Visual Documentary · Episode 08</div>
+    <h1>Burry &amp; the <em>AI Depreciation</em> Question</h1>
+    <p class="sub">How GPU useful life changes earnings, valuations, and the economics of AI infrastructure</p>
+    <p class="lede">Picture two server racks, bolt for bolt identical. Same chips, same cooling, same $100 billion price tag. One accountant writes "5 years" on the first. Another writes "2 years" on the second. Nothing about the metal changes, and yet one company suddenly reports far higher profit. Is that a trick, a judgment call, or something that barely matters? Let's follow the money and find out.</p>
+    <div class="provenance" aria-label="How to read this page">
+      <span class="chip k-src">Source example (reel whiteboard)</span>
+      <span class="chip k-ver">Verified filing / law</span>
+      <span class="chip k-all">Allegation</span>
+      <span class="chip k-ill">Illustrative scenario</span>
+    </div>
+    <div class="scrollcue">Scroll — the whole story works without clicking</div>
+  </div>
+  <div class="twin" aria-label="Two identical GPU racks with different assumed accounting lives">
+    <figure><div id="heroRackA"></div><figcaption><span class="tag"><i style="background:var(--acct)"></i>Book life · 5 years</span></figcaption></figure>
+    <figure><div id="heroRackB"></div><figcaption><span class="tag"><i style="background:var(--risk)"></i>Book life · 2 years</span></figcaption></figure>
+  </div>
+</section>
+
+<!-- ================= CH 1 ================= -->
+<section class="chapter" id="ch1" data-hud="Physical hardware" data-hudc="acct">
+  <div class="ch-head"><div class="num">CHAPTER 01</div><h2>Burry's depreciation argument</h2><p class="q">Are hyperscalers assuming AI chips will last longer than their true economic useful lives?</p></div>
+  <div class="scrolly">
+    <div class="sticky"><div class="stage" id="v1" role="img" aria-label="Two identical racks; below each, an exact-scale strip of annual depreciation: five blocks of $20B or two blocks of $50B."></div></div>
+    <div class="steps">
+      <div class="step" data-step="0"><div class="card"><div class="lbl"><span class="chip k-all">Allegation</span> · Nov 10, 2025</div>
+        <p>Michael Burry — the investor portrayed in <em>The Big Short</em> — broke a two-year silence on X in late October 2025. On November 10 he went after something most people skip: the depreciation footnote.</p>
+        <p class="tweet">Understating depreciation by extending useful lives is “one of the more common frauds of the modern era.”</p>
+        <p class="note">His paraphrased case: hyperscalers buy Nvidia chips on a 2–3 year product cycle yet depreciate servers over 5–6 years. He estimated roughly $176B of understated depreciation across 2026–2028, singling out Oracle (earnings overstated ~27% by 2028, by his math) and Meta (~21%), with Alphabet, Microsoft and Amazon in his table. These are his estimates and opinions, not findings by any regulator or auditor.</p></div></div>
+      <div class="step" data-step="1"><div class="card"><div class="lbl">Same metal, different label</div>
+        <p>Here's the strange part. Look at the two racks — they're identical. The only thing that differs is a number in a spreadsheet: how many years the company <em>assumes</em> the hardware will keep earning money.</p>
+        <p>Spread $100B over 5 years and you book <b class="num">$20B</b> a year. Spread it over 2 and you book <b class="num">$50B</b>. Same purchase, different yearly expense.</p>
+        <p class="callout">Keep two ideas apart from here on. The <b>book life</b> is the label in the footnote: an accounting estimate. The <b>economic life</b> is how long the chips actually earn their keep before they must be replaced. Changing the label alone moves reported profit; changing the economics moves cash (Chapters 7–10).</p></div></div>
+      <div class="step" data-step="2"><div class="card"><div class="lbl"><span class="chip k-ver">Verified</span> What companies disclosed</div>
+        <p>The lives really did move. Microsoft lengthened server and network equipment from 4 to 6 years (fiscal 2023). Alphabet did the same for servers in 2023. Oracle went 5 → 6 in fiscal 2025. Meta moved most servers to 5.5 years in January 2025.</p>
+        <p>Amazon is the interesting one. It had extended servers from 5 to 6 years in January 2024 — then in January 2025 cut a subset of servers <em>and networking equipment</em> back to 5 years, citing the faster pace of AI and machine-learning technology. It now reports a 5–6 year range.</p></div></div>
+      <div class="step" data-step="3"><div class="card"><div class="lbl">Allegation ≠ proven violation</div>
+        <p>Under U.S. GAAP, a useful life is a management <em>estimate</em> of how long an asset will provide economic benefit. Revising it is a <b>change in accounting estimate</b>, applied going forward — not an accounting error, and not fraud by itself, provided the original estimate was reasonable given what was known at the time.</p>
+        <p>There's evidence on both sides. CoreWeave's CEO said a customer re-contracted H100s within 5% of the original price, and CoreWeave has signed A100 (2020-era) capacity into 2029 — though as a GPU landlord CoreWeave has its own stake in long chip lives. So the real question is narrower and harder: <b>are these assumptions reasonable and supported?</b></p></div></div>
+    </div>
+  </div>
+  <div class="lab" data-tool="Tool 1 · Compare useful-life assumptions" id="lab1">
+    <div class="lab-grid">
+      <div class="controls">
+        <div class="ctl"><label for="l1life">Assumed useful life <output id="l1lifeO" for="l1life"></output></label><input type="range" id="l1life" min="1" max="8" step="0.5"></div>
+        <div class="seg" role="group" aria-label="Preset lives"><button data-life="2">2 yrs</button><button data-life="3">3 yrs</button><button data-life="4">4 yrs</button><button data-life="5">5 yrs</button><button data-life="5.5">5.5 yrs</button><button data-life="6">6 yrs</button></div>
+        <p class="mini">Source example: $100B asset, $100B revenue, no other costs, 25% tax, 10B shares, no salvage.</p>
+      </div>
+      <div class="out">
+        <div class="kpis"><div class="kpi" style="--c:var(--acct)"><div class="t">Annual depreciation</div><div class="v" id="l1dep"></div></div><div class="kpi" style="--c:var(--acct)"><div class="t">Year-1 EPS (source model)</div><div class="v" id="l1eps"></div></div><div class="kpi" style="--c:var(--cash)"><div class="t">Cash paid for hardware</div><div class="v">$100.0B</div></div></div>
+        <div><h4>How the $100B is spread (exact scale, $B per year)</h4><div id="l1strip"></div></div>
+        <div><h4>Who disclosed something near this life? <span class="mini">(servers / network equipment; categories differ by company)</span></h4><div class="disclose" id="l1disc"></div></div>
+        <p class="callout" id="l1msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 2 ================= -->
+<section class="chapter" id="ch2" data-hud="An earnings number" data-hudc="val">
+  <div class="ch-head"><div class="num">CHAPTER 02</div><h2>How stock valuations work</h2><p class="q">How do investors use earnings to estimate a stock's value?</p></div>
+  <div class="scrolly">
+    <div class="sticky"><div class="stage" id="v2" role="img" aria-label="A house valued at $500 per square foot times 2,000 square feet equals $1,000,000, then a company valued at a P/E multiple times EPS."></div></div>
+    <div class="steps">
+      <div class="step" data-step="0"><div class="card"><div class="lbl"><span class="chip k-src">Source analogy</span></div>
+        <p>Your neighbor's house just sold for <b class="num">$500</b> a square foot. Yours is <b class="num">2,000</b> square feet. Without hiring anyone, you can ballpark your home at <b class="num">$1,000,000</b>.</p>
+        <p>That's a "comp": borrow a price from something similar, multiply by how much of it you have.</p></div></div>
+      <div class="step" data-step="1"><div class="card"><div class="lbl">From houses to companies</div>
+        <p>Stocks get the same treatment. Instead of price per square foot, investors often use the <b>price-to-earnings multiple</b>. Instead of square feet, they use <b>earnings per share</b>.</p>
+        <div class="formula"><span class="v">Implied share price</span> = <span class="v">P/E multiple</span> × <span class="c">EPS</span></div>
+        <p class="note">The reel sketched a comps chart for the big cloud companies averaging about 22× earnings. Those hand-drawn multiples weren't dated or sourced, so we don't reuse them as data — multiples move every trading day.</p></div></div>
+      <div class="step" data-step="2"><div class="card"><div class="lbl">The catch</div>
+        <p>EPS is an <em>accounting</em> number. Change the depreciation assumption and EPS moves — and if you hold the multiple fixed at, say, 20×, the implied price moves with it: <b class="num">$6.00 → $120</b>, <b class="num">$3.75 → $75</b>.</p></div></div>
+      <div class="step" data-step="3"><div class="card"><div class="lbl">Keep it honest</div>
+        <p>A multiple is not a law of physics. Markets can (and often do) look through accounting choices and apply a different multiple to lower-quality earnings. The calculator below shows one valuation approach — not a guaranteed market price.</p></div></div>
+    </div>
+  </div>
+  <div class="lab" data-tool="Tool 2 · P/E valuation calculator" id="lab2">
+    <div class="lab-grid">
+      <div class="controls">
+        <div class="ctl"><label for="l2eps">Earnings per share <output id="l2epsO"></output></label><input type="range" id="l2eps" min="0" max="10" step="0.05"></div>
+        <div class="ctl"><label for="l2pe">P/E multiple <output id="l2peO"></output></label><input type="range" id="l2pe" min="5" max="40" step="0.5"></div>
+        <div class="seg" role="group" aria-label="EPS presets"><button data-eps="6">EPS $6.00 (5-yr life)</button><button data-eps="3.75">EPS $3.75 (2-yr life)</button></div>
+        <div class="ctl"><label for="l2epsN">Or type EPS ($)</label><input type="number" id="l2epsN" step="0.01" inputmode="decimal"></div>
+        <div class="err" id="l2err" role="alert"></div>
+      </div>
+      <div class="out">
+        <div class="kpis"><div class="kpi big" style="--c:var(--val)"><div class="t">Implied share price</div><div class="v" id="l2price"></div></div><div class="kpi" style="--c:var(--val)"><div class="t">vs. $6.00 EPS at same multiple</div><div class="v" id="l2delta"></div></div></div>
+        <div id="l2chart"></div>
+        <p class="note" id="l2note"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 3 ================= -->
+<section class="chapter" id="ch3" data-hud="Cash payment" data-hudc="cash">
+  <div class="ch-head"><div class="num">CHAPTER 03</div><h2>The $100 billion GPU purchase</h2><p class="q">What happens financially when a company buys $100 billion of AI equipment?</p></div>
+  <div class="scrolly">
+    <div class="sticky"><div class="stage" id="v3" role="img" aria-label="A data hall being filled with GPU racks, with an exact-scale balance sheet showing cash converting into property and equipment."></div></div>
+    <div class="steps">
+      <div class="step" data-step="0"><div class="card"><div class="lbl"><span class="k cash"></span>Day one: cash leaves</div>
+        <p>The checks clear. <b class="num">$100B</b> of real cash leaves the company to pay for GPUs, trays, racks and networking. This is the moment money actually moves.</p>
+        <p class="note">Assumption: paid in cash at the start of Year 1 — no debt, leases or vendor financing.</p></div></div>
+      <div class="step" data-step="1"><div class="card"><div class="lbl">Placed in service</div>
+        <p>The racks are installed and switched on. On the balance sheet, cash goes down by $100B and <b>property &amp; equipment</b> goes up by $100B. Total assets? Unchanged on day one. The company swapped one asset for another.</p></div></div>
+      <div class="step" data-step="2"><div class="card"><div class="lbl"><span class="k acct"></span>Into the accounting records</div>
+        <p>Why not expense all $100B on day one? Because the racks will help earn revenue for several years. Accounting tries to <b>match</b> the cost to the years that benefit, so each year carries a share. That process is <b>depreciation</b>: part of the $100B moves from the balance sheet to the income statement as an expense each year.</p>
+        <p>Depreciation spreads a payment that already happened. It does not send the money out a second time.</p></div></div>
+      <div class="step" data-step="3"><div class="card"><div class="lbl">On the cash-flow statement</div>
+        <p>The $100B shows up exactly once, as <b>capital expenditure</b> in investing activities. Every later year, depreciation is <em>added back</em> when computing operating cash flow, because no cash moved.</p></div></div>
+    </div>
+  </div>
+  <div class="lab" data-tool="Tool 3 · Trace the capital expenditure" id="lab3">
+    <div class="lab-grid">
+      <div class="controls">
+        <div class="seg" role="tablist" aria-label="View">
+          <button role="tab" data-view="cash" aria-selected="true">1 · Cash payment</button>
+          <button role="tab" data-view="bs" aria-selected="false">2 · Balance-sheet asset</button>
+          <button role="tab" data-view="dep" aria-selected="false">3 · Future depreciation</button>
+          <button role="tab" data-view="fcf" aria-selected="false">4 · Free-cash-flow treatment</button>
+        </div>
+        <div class="ctl"><label>Book useful life</label><div class="seg" role="group" aria-label="Book useful life"><button data-l3="5" aria-pressed="true">5 yrs</button><button data-l3="2" aria-pressed="false">2 yrs</button></div></div>
+        <p class="mini">Explicit assumptions: $100B paid in cash at start of Year 1; placed in service immediately; full-year depreciation in Year 1; no financing; 100% bonus tax depreciation; $100B revenue; 25% tax.</p>
+      </div>
+      <div class="out" role="tabpanel" aria-live="polite"><div id="l3view"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 4 ================= -->
+<section class="chapter" id="ch4" data-hud="Depreciation schedule" data-hudc="acct">
+  <div class="ch-head"><div class="num">CHAPTER 04</div><h2>Five years vs. two years</h2><p class="q">How does the useful life change the annual expense?</p></div>
+  <div class="scrolly">
+    <div class="sticky"><div class="stage" id="v4" role="img" aria-label="Parallel exact-scale timelines: five bars of $20B for the five-year life and two bars of $50B for the two-year life; the same $100B cash outlay sits beneath both in Year 1."></div></div>
+    <div class="steps">
+      <div class="step" data-step="0"><div class="card"><div class="lbl">Same starting point</div><p>Both timelines begin with the same $100B asset, bought with the same $100B of cash (the amber bar). Watch only one thing change: how the cost is spread.</p></div></div>
+      <div class="step" data-step="1"><div class="card"><div class="lbl">Scenario A · 5 years</div><div class="formula"><span class="c">$100B</span> ÷ 5 = <span class="c">$20B per year</span></div><p>A thin, even slice each year for five years.</p></div></div>
+      <div class="step" data-step="2"><div class="card"><div class="lbl">Scenario B · 2 years</div><div class="formula"><span class="c">$100B</span> ÷ 2 = <span class="c">$50B per year</span></div><p>Thicker slices, finished in two years. Years 3–5 carry no depreciation for this asset at all.</p></div></div>
+      <div class="step" data-step="3"><div class="card"><div class="lbl">The total never changes</div><p>5 × $20B = 2 × $50B = <b>$100B</b>. Useful life changes <em>when</em> the cost hits earnings — not <em>how much</em> in total.</p><p class="note">A useful life is an accounting estimate, not a promised failure date. The hardware may keep running after it's fully depreciated, or be retired before.</p></div></div>
+    </div>
+  </div>
+  <div class="lab" data-tool="Tool 4 · Useful-life depreciation slider" id="lab4">
+    <div class="lab-grid">
+      <div class="controls">
+        <div class="ctl"><label for="l4life">Useful life (years) <output id="l4lifeO"></output></label><input type="range" id="l4life" min="1" max="8" step="0.5"></div>
+        <div class="ctl"><label for="l4res">Estimated residual value ($B) <output id="l4resO"></output></label><input type="range" id="l4res" min="0" max="40" step="1"></div>
+        <div class="ctl"><label for="l4cost">Depreciable cost ($B)</label><input type="number" id="l4cost" min="1" max="1000" step="1" inputmode="decimal"></div>
+        <div class="formula">(<span class="c">cost</span> − <span class="c">residual</span>) ÷ <span class="c">life</span></div>
+        <div class="err" id="l4err" role="alert"></div>
+      </div>
+      <div class="out">
+        <div class="kpis"><div class="kpi" style="--c:var(--acct)"><div class="t">Annual depreciation</div><div class="v" id="l4a"></div></div><div class="kpi" style="--c:var(--acct)"><div class="t">Accumulated (end)</div><div class="v" id="l4b"></div></div><div class="kpi" style="--c:var(--acct)"><div class="t">Remaining book value (end)</div><div class="v" id="l4c"></div></div><div class="kpi" style="--c:var(--acct)"><div class="t">Years to fully depreciate</div><div class="v" id="l4d"></div></div></div>
+        <div id="l4chart"></div>
+        <details class="tbl" open><summary>Schedule table</summary><div class="scroll-x" id="l4table"></div></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 5 ================= -->
+<section class="chapter" id="ch5" data-hud="Income statement" data-hudc="acct">
+  <div class="ch-head"><div class="num">CHAPTER 05</div><h2>The effect on earnings</h2><p class="q">How does a depreciation assumption change EPS?</p></div>
+  <div class="scrolly">
+    <div class="sticky"><div class="stage" id="v5" role="img" aria-label="Two exact-scale earnings bridges from $100B revenue: minus depreciation, minus tax, to net income of $60B (EPS $6.00) or $37.5B (EPS $3.75)."></div></div>
+    <div class="steps">
+      <div class="step" data-step="0"><div class="card"><div class="lbl"><span class="chip k-src">Source example</span></div><p>A simplified hyperscaler: <b class="num">$100B</b> revenue, the $100B of chips, no other operating costs, a 25% tax assumption and 10B shares. Deliberately unrealistic — so we can see one lever at a time.</p></div></div>
+      <div class="step" data-step="1"><div class="card"><div class="lbl">Subtract depreciation</div><p>Five-year life: $100B − $20B = <b class="num">$80B</b> pretax. Two-year life: $100B − $50B = <b class="num">$50B</b> pretax.</p></div></div>
+      <div class="step" data-step="2"><div class="card"><div class="lbl">Subtract illustrative tax (25%)</div><p>$80B × 25% = $20B → net income <b class="num">$60B</b>. $50B × 25% = $12.5B → net income <b class="num">$37.5B</b>.</p><p class="note">Teaching convention: tax is taken on the book earnings line. Real cash taxes follow separate tax books — Chapter 6.</p></div></div>
+      <div class="step" data-step="3"><div class="card"><div class="lbl">Divide by 10B shares</div><p><b class="num">EPS $6.00</b> vs <b class="num">EPS $3.75</b> — a 37.5% drop, from one assumption in one footnote. That's the core of Burry's earnings argument.</p></div></div>
+    </div>
+  </div>
+  <div class="lab" data-tool="Tool 5 · Interactive earnings bridge" id="lab5">
+    <div class="lab-grid">
+      <div class="controls" id="l5ctl"></div>
+      <div class="out">
+        <div class="kpis"><div class="kpi" style="--c:var(--acct)"><div class="t">Depreciation</div><div class="v" id="l5dep"></div></div><div class="kpi" style="--c:var(--acct)"><div class="t">Pretax income</div><div class="v" id="l5pt"></div></div><div class="kpi" style="--c:var(--acct)"><div class="t">Net income</div><div class="v" id="l5ni"></div></div><div class="kpi big" style="--c:var(--acct)"><div class="t">EPS</div><div class="v" id="l5eps"></div></div></div>
+        <div class="err" id="l5err" role="alert"></div>
+        <div id="l5chart"></div>
+        <div class="scroll-x" id="l5table"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 6 ================= -->
+<section class="chapter" id="ch6" data-hud="Book vs. tax records" data-hudc="acct">
+  <div class="ch-head"><div class="num">CHAPTER 06</div><h2>Two sets of books</h2><p class="q">Why can financial statements and tax records show different depreciation?</p></div>
+  <div class="scrolly">
+    <div class="sticky"><div class="stage" id="v6" role="img" aria-label="One rack branching into two records: financial-reporting depreciation of $20B per year for five years, and tax depreciation of the full $100B in year one under 100% bonus depreciation."></div></div>
+    <div class="steps">
+      <div class="step" data-step="0"><div class="card"><div class="lbl">One asset, two records</div><p>"Two sets of books" sounds shady. It isn't. Every large U.S. company keeps financial statements for investors and a separate tax return for the government — and they're <em>supposed</em> to differ.</p></div></div>
+      <div class="step" data-step="1"><div class="card"><div class="lbl"><span class="k acct"></span>Financial statements · goal: transparency</div><p>Management estimates a useful life and (commonly) uses straight-line depreciation so investors see a steady, comparable expense. Not every company or asset must use straight-line, but it's the norm for servers.</p></div></div>
+      <div class="step" data-step="2"><div class="card"><div class="lbl"><span class="k tax"></span>Tax books · goal: set policy <span class="chip k-ver">Verified law</span></div><p>Congress writes the tax depreciation rules. The 2025 law (P.L. 119-21, signed July 4, 2025) permanently restored <b>100% bonus depreciation</b> for qualified property <b>acquired and placed in service after January 19, 2025</b>.</p><p class="note">Not automatic for everything: property acquired earlier falls under the old phase-down (40% in 2025), taxpayers can elect out, and eligibility rules apply. Book useful life plays no role in this deduction. Property bought under a written binding contract signed before Jan 20, 2025 counts as acquired before that date, even if delivered later. Several states (e.g. California, New York) don't follow federal bonus depreciation, so some state cash tax is usually still due. Simplified here: the mid-quarter and disposal-year conventions.</p></div></div>
+      <div class="step" data-step="3"><div class="card"><div class="lbl">The timing gap → deferred tax</div><p>Year 1: book tax expense is $20B, but the tax return deducts all $100B, so cash tax on this business is $0. The $20B difference becomes a <b>deferred tax liability</b> — tax postponed, not forgiven. It unwinds as book depreciation catches up.</p></div></div>
+    </div>
+  </div>
+  <div class="lab" data-tool="Tool 6 · Compare the books" id="lab6">
+    <div class="lab-grid">
+      <div class="controls">
+        <div class="ctl"><label for="l6tax">Tax scenario</label><select id="l6tax"><option value="bonus100">100% bonus depreciation (qualifying)</option><option value="bonus40">40% bonus + 5-yr MACRS (acquired before Jan 20, 2025, placed in service in 2025)</option><option value="macrs5">No bonus: 5-yr MACRS (nonqualifying / elected out)</option><option value="bookConform">Hypothetical: tax = book depreciation</option></select></div>
+        <div class="ctl"><label>Book useful life</label><div class="seg" role="group" aria-label="Book useful life"><button data-l6="5" aria-pressed="true">5 yrs</button><button data-l6="2" aria-pressed="false">2 yrs</button></div></div>
+        <p class="mini" id="l6legal"></p>
+      </div>
+      <div class="out">
+        <div class="kpis"><div class="kpi" style="--c:var(--acct)"><div class="t">Year-1 book depreciation</div><div class="v" id="l6a"></div></div><div class="kpi" style="--c:var(--acct)"><div class="t">Year-1 tax depreciation</div><div class="v" id="l6b"></div></div><div class="kpi" style="--c:var(--cash)"><div class="t">Year-1 cash tax</div><div class="v" id="l6c"></div></div><div class="kpi" style="--c:var(--acct)"><div class="t">Largest deferred tax balance</div><div class="v" id="l6d"></div></div></div>
+        <div><h4>Depreciation by year ($B) — book vs tax</h4><div id="l6chart1"></div></div>
+        <div><h4>Income-tax expense vs. cash tax paid ($B)</h4><div id="l6chart2"></div></div>
+        <div><h4>Deferred tax balance ($B, + liability / − asset)</h4><div id="l6chart3"></div></div>
+        <p class="callout" id="l6msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 7 ================= -->
+<section class="chapter" id="ch7" data-hud="Cash-flow statement" data-hudc="gen">
+  <div class="ch-head"><div class="num">CHAPTER 07</div><h2>Depreciation vs. actual cash flow</h2><p class="q">Does changing book depreciation make more cash leave the company?</p></div>
+  <div class="scrolly">
+    <div class="sticky"><div class="stage" id="v7" role="img" aria-label="Two tracks over five years: accounting net income differs between the five- and two-year lives, while operating cash flow is identical in every year."></div></div>
+    <div class="steps">
+      <div class="step" data-step="0"><div class="card"><div class="lbl">Two tracks</div><p>Top track: what the income statement reports. Bottom track: what the bank account actually does. Same $100B purchase underneath both.</p></div></div>
+      <div class="step" data-step="1"><div class="card"><div class="lbl"><span class="k acct"></span>Accounting earnings differ</div><p>Five-year life: $60B net income every year. Two-year life: $37.5B in years 1–2, then $75B in years 3–5 once the chips are fully depreciated. Same lifetime total, different timing.</p></div></div>
+      <div class="step" data-step="2"><div class="card"><div class="lbl"><span class="k gen"></span>Cash flow doesn't</div><p>Operating cash flow is <b>identical</b> in every year under both lives: $100B, then $75B, $75B, $75B, $75B. Revenue is the same, cash taxes come from the tax books, and depreciation is noncash.</p></div></div>
+      <div class="step" data-step="3"><div class="card"><div class="lbl">Why: the reconciliation</div><div class="formula">OCF = <span class="c">NI</span> + <span class="c">depreciation</span> + <span class="c">deferred tax</span> − ΔWC</div><p>Add back the noncash charge, add back tax expensed but not paid, and every book-life choice washes out.</p></div></div>
+      <div class="step" data-step="4"><div class="card"><div class="lbl"><span class="chip k-all">Nuance</span></div><p>The reel says the life assumption has "no impact whatsoever" on cash flows. More precisely: <b>changing only the book schedule doesn't repeat or change the cash purchase.</b> Cash <em>can</em> change if tax depreciation were tied to it, if the hardware really must be replaced sooner, or through financing terms, covenants and investor reactions tied to reported earnings.</p></div></div>
+    </div>
+  </div>
+  <div class="lab" data-tool="Tool 7 · Cash-flow reconciliation" id="lab7">
+    <div class="lab-grid">
+      <div class="controls">
+        <div class="ctl"><label for="l7yr">Year <output id="l7yrO"></output></label><input type="range" id="l7yr" min="1" max="5" step="1"></div>
+        <div class="ctl"><label for="l7tax">Tax books</label><select id="l7tax"><option value="bonus100">100% bonus depreciation</option><option value="macrs5">5-yr MACRS, no bonus</option><option value="bookConform">Hypothetical: tax = book</option></select></div>
+        <div class="ctl"><label for="l7wc">Increase in working capital ($B/yr) <output id="l7wcO"></output></label><input type="range" id="l7wc" min="0" max="20" step="1"></div>
+        <div class="ctl"><label for="l7opex">Other cash operating costs ($B/yr) <output id="l7opexO"></output></label><input type="range" id="l7opex" min="0" max="60" step="1"></div>
+        <p class="mini">FCF = operating cash flow − capital expenditures (+ hardware sale proceeds). A common simplified presentation; definitions differ across companies and analysts.</p>
+      </div>
+      <div class="out">
+        <div class="two"><div><h4><span class="k acct"></span>Book life 5 years</h4><div id="l7a"></div></div><div><h4><span class="k risk"></span>Book life 2 years</h4><div id="l7b"></div></div></div>
+        <p class="callout" id="l7msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 8 ================= -->
+<section class="chapter" id="ch8" data-hud="Future free cash flow" data-hudc="gen">
+  <div class="ch-head"><div class="num">CHAPTER 08</div><h2>Discounted cash flow</h2><p class="q">How does an investor value a business using future cash flows?</p></div>
+  <div class="scrolly">
+    <div class="sticky"><div class="stage" id="v8" role="img" aria-label="A five-year timeline of projected free cash flows, each discounted back to today, with smaller present values for later years."></div></div>
+    <div class="steps">
+      <div class="step" data-step="0"><div class="card"><div class="lbl"><span class="chip k-src">Source Excel model</span></div><p>The reel calls this the gold standard: project the cash a business will generate, then discount it back to today. Its sketch uses operating cash flows of <b class="num">100, 110, 120, 130, 140</b> (example units — not billions).</p></div></div>
+      <div class="step" data-step="1"><div class="card"><div class="lbl">Money later is worth less</div><div class="formula">PV(FCF<sub>t</sub>) = FCF<sub>t</sub> ÷ (1 + r)<sup>t</sup></div><p>At a 10% discount rate, 140 received in year 5 is worth about 87 today. Later boxes shrink as they travel back.</p></div></div>
+      <div class="step" data-step="2"><div class="card"><div class="lbl">The question marks</div><p>Year 1 capex is the (100) chip purchase. Years 2–5 are drawn as <b>"?"</b>. That's the whole debate: how often must the chips be bought again? The visual fills in <em>one possible answer</em> — re-buying every 2 years — and the value drops. The 10-K's useful life doesn't enter a DCF directly, but it likely informs many investors' capex assumptions.</p></div></div>
+      <div class="step" data-step="3"><div class="card"><div class="lbl">Enterprise vs. equity</div><p>Businesses don't stop after year 5, so most DCFs add a <b>terminal value</b>: the value of all later years, often a steady cash flow growing at a disclosed rate <i>g</i>, worth FCF × (1 + g) ÷ (r − g). It is frequently the biggest piece of the answer — and the most assumption-heavy.</p><p>A DCF of free cash flow gives <b>enterprise value</b>. Subtract net debt and other claims to get <b>equity value</b>; divide by shares for a per-share estimate. It's still a model output built on assumptions — not the stock price.</p></div></div>
+    </div>
+  </div>
+  <div class="lab" data-tool="Tool 8 · DCF valuation calculator" id="lab8">
+    <div class="lab-grid">
+      <div class="controls" id="l8ctl"></div>
+      <div class="out">
+        <div class="kpis"><div class="kpi" style="--c:var(--gen)"><div class="t">Σ PV of FCF</div><div class="v" id="l8a"></div></div><div class="kpi" style="--c:var(--val)"><div class="t">PV of terminal value</div><div class="v" id="l8b"></div></div><div class="kpi big" style="--c:var(--val)"><div class="t">Enterprise value</div><div class="v" id="l8c"></div></div><div class="kpi" style="--c:var(--val)"><div class="t">Equity value</div><div class="v" id="l8d"></div></div></div>
+        <div class="err" id="l8err" role="alert"></div>
+        <div><h4>FCF (outline) vs. present value (filled) by year</h4><div id="l8chart"></div></div>
+        <div class="scroll-x" id="l8table"></div>
+        <p class="note" id="l8note"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 9 ================= -->
+<section class="chapter" id="ch9" data-hud="Replacement planning" data-hudc="risk">
+  <div class="ch-head"><div class="num">CHAPTER 09</div><h2>How long do AI chips really last?</h2><p class="q">Is accounting useful life the same as economic useful life?</p></div>
+  <div class="scrolly">
+    <div class="sticky"><div class="stage" id="v9" role="img" aria-label="A fleet of racks moving through six stages from new hardware to retirement, and a chart comparing book value with an illustrative economic value."></div></div>
+    <div class="steps">
+      <div class="step" data-step="0"><div class="card"><div class="lbl">Three different "lives"</div><p><b>Physical life:</b> how long it powers on. <b>Accounting life:</b> the estimate in the footnote. <b>Economic life:</b> how long it earns more than it costs to run, compared with buying something newer. A GPU can be alive, depreciating, and still economically obsolete — or fully depreciated and still printing money.</p></div></div>
+      <div class="step" data-step="1"><div class="card"><div class="lbl">What drives economic life</div><p>Performance per watt versus the next generation, electricity and cooling costs, the rental price per GPU-hour, demand for training versus inference, failure rates and resale value. Nvidia has moved to roughly annual architecture launches, which pressures the frontier.</p></div></div>
+      <div class="step" data-step="2"><div class="card"><div class="lbl"><span class="chip k-ver">Evidence both ways</span></div><p>Amazon, after lengthening server lives to 6 years in 2024, shortened a subset of servers and networking gear back to 5 in 2025, citing faster AI progress. Yet CoreWeave (which rents out GPUs, so it's not a neutral party) reported strong demand for older chips, including an H100 re-contract near its original price. Neither proves a universal answer — and we won't invent one.</p></div></div>
+      <div class="step" data-step="3"><div class="card"><div class="lbl">Second careers</div><p>Chips that fall off the frontier for training can be redeployed to inference or lighter workloads, earning less but still earning. When book value sits far above what the hardware can still earn, that gap can eventually surface as accelerated depreciation, write-downs or losses on retirement.</p><p class="note">Curves in this chapter are labeled scenarios, not forecasts.</p></div></div>
+    </div>
+  </div>
+  <div class="lab" data-tool="Tool 9 · GPU economic-life simulator" id="lab9">
+    <div class="seg" role="group" aria-label="Scenario presets" id="l9presets" style="margin-bottom:14px"></div>
+    <div class="lab-grid">
+      <div class="controls" id="l9ctl"></div>
+      <div class="out">
+        <div class="kpis"><div class="kpi" style="--c:var(--cash)"><div class="t">Capex over horizon</div><div class="v" id="l9a"></div></div><div class="kpi" style="--c:var(--gen)"><div class="t">NPV of pre-tax cash</div><div class="v" id="l9b"></div></div><div class="kpi" style="--c:var(--risk)"><div class="t">Best replacement cycle (new chips earn like the originals)</div><div class="v" id="l9c"></div></div><div class="kpi" style="--c:var(--acct)"><div class="t">Largest book-over-economic gap</div><div class="v" id="l9d"></div></div></div>
+        <div class="err" id="l9err" role="alert"></div>
+        <div><h4>One cohort: book value vs. illustrative economic value (start of each year, $B)</h4><div id="l9chart1"></div></div>
+        <div><h4>Fleet over time: revenue and replacement capex ($B)</h4><div id="l9chart2"></div></div>
+        <p class="callout" id="l9msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 10 ================= -->
+<section class="chapter" id="ch10" data-hud="Valuation" data-hudc="val">
+  <div class="ch-head"><div class="num">CHAPTER 10</div><h2>Does it change the stock's value?</h2><p class="q">When does a depreciation assumption change reported valuation — versus actual economic value?</p></div>
+  <div class="scrolly">
+    <div class="sticky"><div class="stage" id="v10" role="img" aria-label="Two valuation frameworks side by side: P/E-based value and DCF value, compared across three scenarios."></div></div>
+    <div class="steps">
+      <div class="step" data-step="0"><div class="card"><div class="lbl"><span class="k val"></span>P/E pathway</div><p>Longer book life → lower depreciation → higher EPS. Hold the multiple fixed, and the implied price rises. This is the channel Burry worries about: reported earnings flattering valuations.</p><p class="note">At default settings, why is the P/E bar so much taller than the DCF bar? Two reasons: a 20× multiple implicitly bakes in growth, while this DCF assumes zero growth at a 10% discount rate (roughly 10× steady cash flow); and the DCF counts the $100B purchase itself as a cash outflow in year 1, which P/E on earnings never does. Compare how each bar <em>moves</em> between scenarios, not their heights.</p></div></div>
+      <div class="step" data-step="1"><div class="card"><div class="lbl">Scenario A · book life stretched, economics unchanged</div><p>Set the book life at 6 years while the hardware really earns for 5. Year-1 EPS rises to $6.25; P/E value rises. DCF value? <b>Unchanged</b> — not a single dollar of cash moved.</p><p class="note">GAAP doesn't let the excess sit there: once it's clear the chips last 5 years, the remaining cost is spread over the shorter remaining life (a change in estimate), so later EPS dips a little. A life known to be too long from day one would be an error, not an estimate.</p></div></div>
+      <div class="step" data-step="2"><div class="card"><div class="lbl">Scenario B · economic life also shortens</div><p>Now suppose the chips truly must be replaced every 2 years, though the company started at a 5-year book life. Year-1 EPS looks exactly the same — but once the shorter life is evident, the remaining $80B is expensed in year 2 (EPS $1.50), new purchases use a 2-year life, capex triples over five years, and DCF value falls sharply. <b>This</b> is where the economics bite.</p></div></div>
+      <div class="step" data-step="3"><div class="card"><div class="lbl">Scenario C · redeployment</div><p>Same 2-year frontier cycle, but retired chips run inference for 2 more years, contributing 25% of frontier revenue <em>after</em> their own power and running costs (an illustrative assumption; it ignores the power capacity they tie up). Much of the lost value comes back. Second lives matter.</p></div></div>
+      <div class="step" data-step="4"><div class="card"><div class="lbl">The reveal</div><p>Back to our two identical racks. One purchase can produce different depreciation schedules, different EPS and different P/E values — with the same immediate cash outlay. What ultimately decides value is how long the hardware actually earns and how often it must be bought again.</p></div></div>
+    </div>
+  </div>
+  <div class="lab" data-tool="Tool 10 · Integrated valuation laboratory" id="lab10">
+    <div class="seg" role="group" aria-label="Scenarios" id="l10scen" style="margin-bottom:14px">
+      <button data-scen="base" aria-pressed="true">Baseline (book 5 / econ 5)</button><button data-scen="A" aria-pressed="false">A · Book life stretched</button><button data-scen="B" aria-pressed="false">B · Economic life shortens</button><button data-scen="C" aria-pressed="false">C · Redeployment</button>
+    </div>
+    <div class="lab-grid">
+      <div class="controls" id="l10ctl"></div>
+      <div class="out">
+        <div class="kpis" id="l10kpis"></div>
+        <div class="err" id="l10err" role="alert"></div>
+        <div class="two"><div class="pathway pe"><h4><span class="k val"></span>P/E pathway: EPS by year ($)</h4><div id="l10eps"></div></div><div class="pathway dcf"><h4><span class="k gen"></span>DCF pathway: FCF by year ($B)</h4><div id="l10fcf"></div></div></div>
+        <div><h4>Value vs. baseline (equity $ per share)</h4><div id="l10cmp"></div></div>
+        <p class="callout" id="l10msg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="conclusion" id="end" data-hud="Valuation" data-hudc="val">
+  <div class="kicker">The takeaway</div>
+  <blockquote>Depreciation changes how capital investment appears in reported earnings. But the economic value of an AI infrastructure business ultimately depends on the cash it can generate, the equipment it must replace, and the assumptions investors make about the future.</blockquote>
+  <p>Extending the accounting life of AI chips can increase reported earnings in the near term. Understanding the underlying business means looking past the depreciation schedule — to cash flow, actual hardware productivity, replacement cycles and future capital spending. Next time you see "useful life" in a 10-K footnote, you might read it a little differently.</p>
+</section>
+</main>
+
+<footer>
+  <h3>Sources &amp; method</h3>
+  <p><b>Source example:</b> The Wall Street Skinny reel "AI Chip depreciation," screen-recorded Nov 14, 2026 (Rec2 15:26–18:02; whiteboard frame 10_burry_Rec2-17m58). All $100B / 25% / 10B-share figures are teaching assumptions, not company financials.</p>
+  <ol>
+    <li>Burry's Nov 10, 2025 X post and $176B estimate — MarketWatch/Dow Jones newswire (Nov 11, 2025) via <a href="https://www.itiger.com/news/2582573293">itiger.com/news/2582573293</a>; CNBC report (Nov 11, 2025) syndicated at <a href="https://www.amrtimes.com.au/business/cnbc/big-short-investor-michael-burry-accuses-ai-hyperscalers-of-artificially-boosting-earnings-c-20655611">amrtimes.com.au</a>; Tiger Newspress (Nov 12, 2025) <a href="https://www.itiger.com/news/1139425265">itiger.com/news/1139425265</a>; <a href="https://www.tipranks.com/news/michael-burry-sounds-alarm-on-176b-depreciation-gap-among-tech-giants">TipRanks</a></li>
+    <li>Burry Substack follow-up and Nvidia memo — <a href="https://techcrunch.com/2025/11/27/this-thanksgivings-real-drama-may-be-michael-burry-versus-nvidia">TechCrunch, Nov 27, 2025</a></li>
+    <li>Microsoft FY2023 10-K (server/network 4→6 yrs): <a href="https://www.sec.gov/Archives/edgar/data/789019/000095017023035122/msft-20230630.htm">sec.gov</a></li>
+    <li>Alphabet FY2023 10-K (servers 4→6 yrs; certain network 5→6): <a href="https://www.sec.gov/Archives/edgar/data/1652044/000165204424000022/goog-20231231.htm">sec.gov</a></li>
+    <li>Meta 2025 10-Q (most servers/network assets to 5.5 yrs, effective Jan 1, 2025): <a href="https://www.sec.gov/Archives/edgar/data/1326801/000162828025036791/meta-20250630.htm">sec.gov</a></li>
+    <li>Amazon 10-Ks: FY2023 (2022 change 4→5 servers), <a href="https://www.sec.gov/Archives/edgar/data/1018724/000101872425000004/amzn-20241231.htm">FY2024</a> (5→6 in 2024; subset of servers and networking 6→5 from Jan 2025), <a href="https://www.sec.gov/Archives/edgar/data/1018724/000101872426000004/amzn-20251231.htm">FY2025</a> (range 5–6 yrs)</li>
+    <li>Oracle FY2025 10-K (servers/networking 5→6 yrs): <a href="https://www.sec.gov/Archives/edgar/data/1341439/000095017025087926/orcl-20250531.htm">sec.gov</a></li>
+    <li>CoreWeave Q3 2025 earnings call (Nov 10, 2025), H100 re-contract within 5%: <a href="https://s205.q4cdn.com/133937190/files/doc_events/2025/Nov/10/CORRECTED-TRANSCRIPT-CoreWeave-Inc-CRWV-US-Q3-2025-Earnings-Call-10-November-2025-5-00-PM-ET.pdf">transcript (PDF)</a>; A100 contract into 2029: <a href="https://www.tomshardware.com/tech-industry/coreweave-ceo-mike-intrator-says-it-has-signed-an-a100-contract-running-into-2029">Tom's Hardware</a></li>
+    <li>Nvidia "one-year rhythm" architecture cadence (Computex 2024): <a href="https://www.maginative.com/article/nvidia-unveils-rubin-gpu-architecture-and-roadmap-at-computex-2024/">Maginative</a></li>
+    <li>100% bonus depreciation under P.L. 119-21 and IRS Notice 2026-11: <a href="https://www.bdo.com/insights/tax/irs-issues-interim-guidance-on-bonus-depreciation-rules">BDO</a>; <a href="https://tax.thomsonreuters.com/news/irs-provides-guidance-on-post-obbb-bonus-depreciation/">Thomson Reuters</a>; <a href="https://www.grantthornton.com/insights/newsletters/tax/2026/hot-topics/feb-03/interim-guidance-issued-for-revived-bonus-depreciation">Grant Thornton</a></li>
+    <li>5-year MACRS class and Table A-1 rates: <a href="https://www.irs.gov/publications/p946">IRS Publication 946</a></li>
+    <li>Changes in estimate vs. errors: FASB ASC 250-10-45-17 (prospective treatment); depreciation and impairment of long-lived assets: ASC 360-10-35. The companies' own 10-K "change in accounting estimate" language (links above) applies these rules; public explainer: <a href="https://cpcongroup.com/insights/article/useful-life-change-accounting-estimate/">CPCON</a></li>
+    <li>Statute: <a href="https://www.govinfo.gov/content/pkg/PLAW-119publ21/html/PLAW-119publ21.htm">P.L. 119-21 (govinfo.gov)</a></li>
+  </ol>
+  <p class="mini">Not investment, accounting or tax advice. Every number on this page is computed live by one shared engine (src/*.js) and covered by automated tests. Illustrations are procedural vector drawings with no embedded text.</p>
+</footer>
+
+<div class="tip" id="tip" role="tooltip"></div>
+<script src="src/data-bundle.js"></script>
+<script src="src/depreciation-math.js"></script>
+<script src="src/earnings-model.js"></script>
+<script src="src/cash-flow-model.js"></script>
+<script src="src/dcf-model.js"></script>
+<script src="src/valuation-model.js"></script>
+<script src="src/illustrations.js"></script>
+<script src="src/charts.js"></script>
+<script src="src/app.js"></script>
+</body>
+</html>

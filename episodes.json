@@ -1,0 +1,96 @@
+[
+  {
+    "slug": "sand-to-thought",
+    "num": "01",
+    "short": "Sand to Thought",
+    "title": "Sand to Thought",
+    "dek": "How quartz sand becomes wafers, transistors, GPUs, data centers and, finally, an AI answer.",
+    "dir": "01-sand-to-thought",
+    "kind": "episode"
+  },
+  {
+    "slug": "who-makes-ai-chips",
+    "num": "02",
+    "short": "AI Chips",
+    "title": "Who Actually Makes AI Chips?",
+    "dek": "Follow one AI processor from a customer's order through design, fabs and packaging to a finished rack.",
+    "dir": "02-who-makes-ai-chips",
+    "kind": "episode"
+  },
+  {
+    "slug": "sector-pulse",
+    "num": "02",
+    "short": "Pulse",
+    "title": "Sector Pulse",
+    "dek": "Live market map of the chip supply chain, plus a Taiwan-shock scenario you can step through.",
+    "dir": "02b-sector-pulse",
+    "kind": "companion",
+    "parent": "who-makes-ai-chips",
+    "live": true
+  },
+  {
+    "slug": "nvidia-dollar",
+    "num": "03",
+    "short": "Nvidia's $1",
+    "title": "Tracing $1 of Nvidia Sales",
+    "dek": "Where one dollar of Nvidia revenue goes: profit, cash, investments and promises across the AI economy.",
+    "dir": "03-nvidia-dollar",
+    "kind": "episode"
+  },
+  {
+    "slug": "situational-awareness",
+    "num": "04",
+    "short": "Situational Awareness",
+    "title": "Situational Awareness",
+    "dek": "Episode in production.",
+    "dir": null,
+    "kind": "soon"
+  },
+  {
+    "slug": "open-vs-closed",
+    "num": "05",
+    "short": "Open vs. Closed",
+    "title": "Open vs. Closed AI Models",
+    "dek": "How model weights, inference and compute are reshaping who wins in AI.",
+    "dir": "05-open-vs-closed",
+    "kind": "episode"
+  },
+  {
+    "slug": "neoclouds",
+    "num": "06",
+    "short": "Neoclouds",
+    "title": "Neoclouds",
+    "dek": "How the new GPU-rental clouds finance their empires, and who's holding the debt.",
+    "dir": "06-neoclouds",
+    "kind": "episode"
+  },
+  {
+    "slug": "neocloud-contagion",
+    "num": "06",
+    "short": "Contagion",
+    "title": "Neocloud Contagion Monitor",
+    "dek": "Live default-risk and cascade model for neoclouds, their landlords, suppliers and lenders.",
+    "dir": "06b-neocloud-contagion",
+    "kind": "companion",
+    "parent": "neoclouds",
+    "live": true
+  },
+  {
+    "slug": "ai-kill-switch",
+    "num": "07",
+    "short": "AI Kill Switch",
+    "title": "Nvidia's AI Kill Switch",
+    "dek": "How AI agents run, how policies fence them in, and how hardware can quarantine a rogue one.",
+    "dir": "07-ai-kill-switch",
+    "kind": "episode"
+  },
+  {
+    "slug": "burry-depreciation",
+    "num": "09",
+    "short": "Burry",
+    "title": "Burry & the AI Depreciation Question",
+    "dek": "How a GPU's assumed useful life changes depreciation, earnings, P/E and what the stocks are worth.",
+    "dir": "09-burry-depreciation",
+    "kind": "episode"
+  }
+]

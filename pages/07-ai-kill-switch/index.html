@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nvidia's AI Kill Switch · Inside the Software and Hardware That Contain AI Agents</title>
+<meta name="description" content="An interactive engineering documentary: how AI agents run, how OpenShell policies constrain them, and how Sentry on a BlueField-4 DPU can quarantine an agent without switching off the data center.">
+<style>
+:root{
+  --bg:#060a14; --bg2:#0a1020; --panel:#0e1628; --graphite:#1a2236; --line:#24304a; --grid:rgba(120,160,220,.06);
+  --text:#e9eef7; --muted:#9aa7bd; --dim:#6a7790;
+  --cyan:#3fd8ff; --violet:#a184ff; --amber:#ffb84d; --teal:#2fd6a8; --coral:#ff6f61; --ice:#a9d8ff;
+  --sans:"Inter","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  --mono:"JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --navw:232px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:48px 48px;background-attachment:fixed}
+a{color:var(--cyan)}
+h1,h2,h3,h4{line-height:1.15;margin:0;font-weight:650;letter-spacing:-.01em}
+p{margin:.6em 0}
+.skip{position:absolute;left:-999px;top:0;background:var(--cyan);color:#000;padding:8px 12px;z-index:100}
+.skip:focus{left:8px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px}
+.mono{font-family:var(--mono)}
+.c-cyan{color:var(--cyan)}.c-violet{color:var(--violet)}.c-amber{color:var(--amber)}.c-teal{color:var(--teal)}.c-coral{color:var(--coral)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* nav */
+#chapnav{position:fixed;left:0;top:0;bottom:0;width:var(--navw);padding:28px 18px;z-index:40;display:flex;flex-direction:column;justify-content:center;pointer-events:none}
+#chapnav .brand{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--dim);margin-bottom:18px;pointer-events:auto}
+#chapnav ol{list-style:none;margin:0;padding:0;position:relative;pointer-events:auto}
+#chapnav ol::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--line)}
+#chapnav .fill{position:absolute;left:7px;top:8px;width:2px;background:linear-gradient(var(--cyan),var(--violet),var(--coral));height:0;transition:height .2s}
+#chapnav li a{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--dim);font-size:13px;padding:6px 0;position:relative}
+#chapnav li a .dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--line);background:var(--bg);flex:none;transition:.2s}
+#chapnav li a.done .dot{border-color:var(--cyan);background:var(--cyan)}
+#chapnav li a.active{color:var(--text)}
+#chapnav li a.active .dot{border-color:var(--cyan);box-shadow:0 0 0 4px rgba(63,216,255,.15)}
+#chapnav li a:hover{color:var(--text)}
+#chapnav .n{font-family:var(--mono);font-size:11px;color:var(--dim);width:18px}
+#topbar{display:none}
+main{margin-left:var(--navw)}
+
+/* hero */
+.hero{min-height:100vh;display:grid;align-content:center;padding:8vh 6vw 6vh;position:relative}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan)}
+.hero h1{font-size:clamp(46px,7.4vw,108px);font-weight:700;letter-spacing:-.03em;margin:.15em 0 .1em;
+  background:linear-gradient(100deg,#fff 30%,#c9c2ef 62%,var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{font-size:clamp(20px,2.3vw,30px);color:var(--muted);font-weight:400;margin:0 0 1.1em}
+.hero .lede{max-width:680px;color:#cfd7e6;font-size:19px}
+.chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:5vh;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+.chain span{border:1px solid var(--line);border-radius:6px;padding:6px 10px;color:var(--muted);background:rgba(14,22,40,.6)}
+.chain i{color:var(--dim);font-style:normal}
+.chain span.v{border-color:rgba(161,132,255,.5);color:var(--violet)}
+.chain span.a{border-color:rgba(255,184,77,.5);color:var(--amber)}
+.chain span.t{border-color:rgba(47,214,168,.5);color:var(--teal)}
+.chain span.c{border-color:rgba(255,111,97,.55);color:var(--coral)}
+.scrollcue{margin-top:4vh;font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.14em}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:3vh;font-size:13px;color:var(--muted)}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+
+/* chapters */
+.chapter{padding:12vh 5vw 8vh;position:relative;border-top:1px solid var(--line)}
+.ch-head{max-width:880px;margin-bottom:5vh}
+.ch-num{font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--cyan)}
+.ch-head h2{font-size:clamp(34px,4.6vw,60px);margin:.2em 0 .25em}
+.ch-head .q{font-size:clamp(18px,1.6vw,22px);color:var(--muted);margin:0}
+.ch-head .q b{color:var(--text);font-weight:600}
+.lead{max-width:760px;font-size:19px;color:#cfd7e6}
+
+.scrolly{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,.72fr);gap:4vw;position:relative}
+.scrolly .sticky{position:sticky;top:7vh;height:86vh;display:flex;align-items:center}
+.scrolly .steps{padding:18vh 0 28vh}
+.step{min-height:72vh;display:flex;flex-direction:column;justify-content:center;opacity:.32;transition:opacity .35s}
+.step.on{opacity:1}
+.step .k{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.step h3{font-size:26px;margin:.25em 0 .3em}
+.step p{color:#c7d0e0;margin:.3em 0}
+.viz{margin:0;width:100%;background:radial-gradient(120% 90% at 50% 30%,#111b31 0%,#0a1121 55%,#070c18 100%);border:1px solid var(--line);border-radius:18px;position:relative;overflow:hidden;box-shadow:0 30px 80px -30px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.04)}
+.viz svg{display:block;width:100%;height:auto}
+.viz .cap{position:absolute;left:16px;top:12px;font-family:var(--mono);font-size:12px;color:var(--muted);pointer-events:none;max-width:70%}
+.viz .cap b{color:var(--text)}
+.viz .cap.bot{left:auto;right:14px;text-align:right;max-width:46%}
+svg text{font-family:var(--mono);fill:var(--muted);font-size:12px}
+svg .lbl{fill:#dbe3f1;font-size:13px}
+svg .lbl-s{fill:var(--muted);font-size:11px}
+svg .ttl{fill:#fff;font-family:var(--sans);font-size:15px;font-weight:600}
+
+.module{margin:10vh 0 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:4vw;align-items:start}
+.module.full{grid-template-columns:minmax(0,1fr);gap:14px}
+.mtext h3{font-size:28px;margin-bottom:.3em}
+.mtext p{color:#c7d0e0}
+.tag{display:inline-block;width:max-content;max-width:100%;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);border-radius:99px;padding:3px 10px;margin-bottom:10px}
+.tag.int{color:var(--cyan);border-color:rgba(63,216,255,.4)}
+.tag.sim{color:var(--amber);border-color:rgba(255,184,77,.45)}
+.note{font-size:14.5px;color:var(--muted);border-left:2px solid var(--amber);padding:2px 0 2px 12px;margin-top:1em}
+.note.src{border-color:var(--violet)}
+.note.fix{border-color:var(--coral)}
+.fidelity{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4vh;max-width:1100px}
+.fidelity div{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:rgba(12,19,36,.6);font-size:14.5px;color:#c0c9d9}
+.fidelity h5{margin:0 0 4px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+.fidelity .from h5{color:var(--violet)} .fidelity .clar h5{color:var(--amber)}
+details{margin-top:1em;border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:rgba(14,22,40,.6)}
+details summary{cursor:pointer;color:var(--muted);font-size:14px}
+details p,details li{font-size:15px;color:#c0c9d9}
+
+.ctrls{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.btn{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 14px;cursor:pointer;font-size:14px;transition:.15s;color:var(--text);min-height:40px}
+.btn:hover{border-color:#3a4a6c}
+.btn[aria-pressed=true]{border-color:var(--cyan);background:rgba(63,216,255,.1);color:#fff}
+.btn.coral[aria-pressed=true]{border-color:var(--coral);background:rgba(255,111,97,.12)}
+.btn.teal[aria-pressed=true]{border-color:var(--teal);background:rgba(47,214,168,.12)}
+.btn.violet[aria-pressed=true]{border-color:var(--violet);background:rgba(161,132,255,.12)}
+.btn.amber[aria-pressed=true]{border-color:var(--amber);background:rgba(255,184,77,.12)}
+.btn.primary{background:linear-gradient(180deg,#123049,#0d2236);border-color:rgba(63,216,255,.5)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.infopanel{background:rgba(12,19,36,.92);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-height:140px}
+.infopanel h4{margin:0 0 .3em;font-size:19px}
+.infopanel p{margin:.3em 0;font-size:15px;color:#c7d0e0}
+.infopanel .rel{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px}
+
+/* verdict pills: never color alone */
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;border-radius:99px;padding:3px 10px;border:1px solid;white-space:nowrap}
+.pill.allow{color:var(--teal);border-color:rgba(47,214,168,.5);background:rgba(47,214,168,.08)}
+.pill.deny{color:var(--coral);border-color:rgba(255,111,97,.55);background:rgba(255,111,97,.08)}
+.pill.hold{color:var(--amber);border-color:rgba(255,184,77,.55);background:rgba(255,184,77,.08)}
+.pill.warn{color:var(--amber);border-color:rgba(255,184,77,.55);background:rgba(255,184,77,.08)}
+.pill.contain{color:#fff;border-color:var(--coral);background:rgba(255,111,97,.35)}
+.pill.na{color:var(--dim);border-color:var(--line)}
+
+/* timeline */
+.tl{position:relative;margin:2vh 0 0;padding:0;list-style:none;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 12px 16px;font-size:14px;color:#c0c9d9}
+.tl li::before{content:"";position:absolute;left:-6px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--dim)}
+.tl li.nv::before{border-color:var(--coral);background:var(--coral)}
+.tl .d{font-family:var(--mono);font-size:11.5px;color:var(--dim);display:block}
+.tl .uv{font-family:var(--mono);font-size:10.5px;color:var(--amber);border:1px solid rgba(255,184,77,.4);border-radius:4px;padding:0 5px;margin-left:6px}
+
+/* compare counters */
+.counters{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.counters div{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:rgba(10,16,32,.7)}
+.counters b{display:block;font-size:clamp(17px,1.7vw,24px);font-family:var(--mono);font-weight:600}
+.counters small{color:var(--muted);font-size:12.5px}
+
+/* DC svg states */
+.dc .led{transition:fill .5s, opacity .5s}
+.dc.off .led{fill:#1b2438!important}
+.dc.off .rackbody{opacity:.45}
+.dc.off .powerline{stroke:#2a3248!important}
+.dc .q{opacity:0;transition:opacity .4s}
+.dc.quar .q{opacity:1}
+.dc .switch-on{transition:transform .5s}
+.dc.off .switch-lever{transform:rotate(180deg)}
+.dc .hi-pod,.dc .hi-rack,.dc .hi-node{opacity:0;transition:opacity .4s}
+.dc.h-pod .hi-pod,.dc.h-rack .hi-rack,.dc.h-node .hi-node{opacity:1}
+.dc .tray-out{transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.dc .misc{transition:opacity .4s}
+.dc.noswitch .misc{opacity:0}
+
+/* node svg */
+.node .cmp{cursor:pointer;transition:opacity .3s}
+.node.sel .cmp{opacity:.25}
+.node.sel .cmp.hi{opacity:1}
+.node .cmp .lift{transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.node .cmp.hi .lift{transform:translateY(-14px)}
+.node .ov{opacity:0;transition:opacity .4s}
+.node.L1 .ov1,.node.L2 .ov2,.node.L3 .ov3,.node.L4 .ov4,.node.L5 .ov5{opacity:1}
+.node.compromised .hostside{filter:grayscale(1) brightness(.6)}
+.node .cmpr{opacity:0;transition:opacity .4s}
+.node.compromised .cmpr{opacity:1}
+.node-wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
+.node-ctl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.node .co{transition:opacity .3s}.node.sel .co{opacity:.35}.node.sel .co.hi{opacity:1}
+.panhint{display:none;font-family:var(--mono);font-size:12px;color:var(--dim);margin:6px 0 0}
+.shortv{max-width:980px;margin:0 0 6vh;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.shortv div{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:rgba(12,19,36,.8)}
+.shortv h4{font-size:15px;margin-bottom:6px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.shortv ul{margin:0;padding-left:18px;font-size:15px;color:#cfd7e6}.shortv li{margin:.25em 0}
+.guard{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.guard div{border:1px solid var(--line);border-radius:12px;padding:12px;background:rgba(12,19,36,.8);font-size:14.5px;color:#c7d0e0}
+.guard b{display:block;font-size:15.5px;color:#fff;margin-bottom:3px}.guard small{font-family:var(--mono);font-size:11.5px;color:var(--amber)}
+.counters b{white-space:nowrap}
+.layerctl{display:flex;flex-direction:column;gap:6px}
+.layerctl label{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:14px;background:var(--panel)}
+.layerctl input{width:18px;height:18px;accent-color:var(--cyan)}
+.layerctl .sw{width:12px;height:12px;border-radius:3px;flex:none}
+
+/* agent sim */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:14px;padding:14px;background:rgba(12,19,36,.85)}
+.card h4{font-size:16px;margin-bottom:4px}
+.card .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.trace{list-style:none;margin:0;padding:0;counter-reset:s}
+.trace li{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:8px 10px;border-bottom:1px solid rgba(36,48,74,.6);transition:background .3s, opacity .3s}
+.trace li.pending{opacity:.35}
+.trace li.cur{background:rgba(161,132,255,.08)}
+.trace li svg{width:40px;height:40px}
+.trace .what{font-size:14.5px}
+.trace .why{font-size:12.5px;color:var(--muted);font-family:var(--mono)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tabs .btn{font-size:13px;padding:6px 10px;min-height:34px}
+.inspector pre{font-family:var(--mono);font-size:12.5px;color:#cbd5e6;white-space:pre-wrap;margin:0;background:rgba(6,10,20,.7);border:1px solid var(--line);border-radius:10px;padding:12px;min-height:150px}
+
+/* policy builder */
+.rules{display:flex;flex-direction:column;gap:8px}
+.rule{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel);cursor:pointer}
+.rule input{width:20px;height:20px;margin-top:2px;accent-color:var(--amber)}
+.rule .o{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;margin-left:6px;padding:1px 6px;border-radius:4px;border:1px solid var(--line);color:var(--dim)}
+.rule .o.wb{color:var(--violet);border-color:rgba(161,132,255,.4)}
+.rule .o.app{color:var(--amber);border-color:rgba(255,184,77,.4)}
+.rule small{display:block;color:var(--muted);font-size:13px}
+table.mx{width:100%;border-collapse:collapse;font-size:14px}
+table.mx th,table.mx td{padding:8px 8px;border-bottom:1px solid rgba(36,48,74,.7);text-align:left;vertical-align:middle}
+table.mx th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:500}
+table.mx td small{color:var(--muted);font-size:12px;display:block}
+.tblwrap{overflow-x:auto}
+
+/* openshell */
+#m6{grid-template-columns:minmax(0,1fr)}
+#m6 .m6low{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+@media (max-width:860px){#m6 .m6low{grid-template-columns:minmax(0,1fr)}}
+#os6 .lbl,#cs9 .lbl{font-size:14px}#os6 .lbl-s,#cs9 .lbl-s{font-size:12px}
+.m9low{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;margin-top:14px}
+@media (max-width:860px){#m6,.m9low{grid-template-columns:minmax(0,1fr)}}
+.oslog,.clog{list-style:none;margin:10px 0 0;padding:0;font-family:var(--mono);font-size:12.5px;max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:10px;background:rgba(6,10,20,.75)}
+.oslog li,.clog li{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:7px 10px;border-bottom:1px solid rgba(36,48,74,.6);color:#cbd5e6}
+.oslog li .t,.clog li .t{color:var(--dim)}
+.clog li.src-openshell .t{color:var(--teal)} .clog li.src-dpu .t{color:var(--amber)} .clog li.src-sentry .t{color:var(--coral)} .clog li.src-agent .t{color:var(--violet)} .clog li.src-result .t{color:var(--muted)}
+.clog li.future{opacity:.45}
+.yaml{font-family:var(--mono);font-size:12px;white-space:pre;color:#cbd5e6;background:rgba(6,10,20,.75);border:1px solid var(--line);border-radius:10px;padding:10px 12px;overflow:auto}
+.yaml .c{color:var(--dim)}
+
+/* parmesan */
+.paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.path{border:1px solid var(--line);border-radius:16px;padding:16px;background:rgba(12,19,36,.85);position:relative}
+.path.ok{border-color:rgba(47,214,168,.5)} .path.bad{border-color:rgba(255,111,97,.6)} .path.amb{border-color:rgba(255,184,77,.6)}
+.path svg{width:100%;height:120px;display:block}
+.path h4{font-size:17px;margin:6px 0}
+.path .pk{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--dim)}
+.evalgrid{display:grid;grid-template-columns:1fr auto;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:10px}
+.evalgrid div{padding:10px 12px;border-bottom:1px solid rgba(36,48,74,.7);font-size:14.5px}
+.evalgrid div:nth-last-child(-n+2){border-bottom:0}
+.picker{display:flex;flex-wrap:wrap;gap:8px}
+.picker .btn{display:flex;align-items:center;gap:8px}
+.picker svg{width:28px;height:28px}
+
+/* containment */
+.stages{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:10px 0}
+.stages div{border:1px solid var(--line);border-radius:10px;padding:8px;font-size:12.5px;color:var(--dim);text-align:center;background:rgba(10,16,32,.7);transition:.3s}
+.stages div b{display:block;font-family:var(--mono);font-size:11px}
+.stages div.on{color:var(--text);border-color:var(--cyan)}
+.stages div.on.bad{border-color:var(--coral)}
+.stages div.skip{opacity:.35;text-decoration:line-through}
+.csim .bnd{transition:stroke .4s, fill .4s}
+.csim.quar .agentbox{stroke:var(--coral)!important;fill:rgba(255,111,97,.16)!important}
+.csim .cut{opacity:0;transition:opacity .3s}
+.csim.quar .cut{opacity:1}
+.csim .esc{opacity:0;transition:opacity .4s}
+.csim.escaped .esc{opacity:1}
+.csim.escaped .hostbnd{stroke:#555e74!important}
+.status{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}
+
+/* governance */
+.gov-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start}
+.gov .act{transition:opacity .3s}
+.gov.pick .act{opacity:.55}.gov.pick .act rect{stroke-dasharray:4 3}.gov.pick .act.on rect{stroke-dasharray:none;stroke-width:2;fill:rgba(255,184,77,.16)}
+.gov.pick .act.on{opacity:1}
+.contrast{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:3vh}
+.contrast div{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:rgba(12,19,36,.75);font-size:14.5px;color:#c7d0e0}
+.contrast b{display:block;font-size:15px;color:var(--text);margin-bottom:2px}
+.final{max-width:900px;margin:8vh auto 0;text-align:center}
+.final blockquote{font-size:clamp(22px,2.4vw,32px);line-height:1.35;margin:0;color:#fff;font-weight:500}
+.limits{max-width:900px;margin:5vh auto 0;border:1px solid rgba(255,184,77,.4);border-radius:16px;padding:18px 22px;background:rgba(255,184,77,.04)}
+.limits h3{font-size:20px;color:var(--amber);margin-bottom:6px}
+.limits li{color:#cfd7e6;margin:.35em 0}
+footer{padding:8vh 5vw 10vh;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer h3{color:var(--text);font-size:20px;margin-bottom:10px}
+footer ol{padding-left:20px}
+footer li{margin:.3em 0;word-break:break-word}
+
+@media (max-width: 1100px){
+  html{scroll-padding-top:64px}
+  :root{--navw:0px}
+  #chapnav{display:none}
+  #topbar{display:flex;position:sticky;top:0;z-index:50;background:rgba(6,10,20,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:8px 12px;gap:6px;overflow-x:auto}
+  #topbar a{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:6px 11px;white-space:nowrap;min-height:32px}
+  #topbar a.active{color:#fff;border-color:var(--cyan)}
+}
+@media (max-width: 860px){
+  body{font-size:16px}
+  .scrolly{grid-template-columns:1fr}
+  .scrolly .sticky{top:52px;height:auto;z-index:2;background:var(--bg);padding:6px 0}
+  .scrolly .steps{padding:4vh 0 10vh}
+  .step{min-height:56vh;background:rgba(6,10,20,.85);border-radius:12px;padding:0 4px}
+  .module,.node-wrap,.node-ctl,.gov-wrap,.fidelity,.shortv{grid-template-columns:minmax(0,1fr)}
+  .tag{width:auto;white-space:normal}
+  .scrolly{grid-template-columns:minmax(0,1fr)}
+  .guard{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .viz.pan{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .viz.pan svg{min-width:820px}
+  .viz.pan .cap{position:sticky;left:12px}
+  .panhint{display:block}
+  .cards,.paths{grid-template-columns:minmax(0,1fr)}
+  .stages{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .counters{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .counters b{font-size:17px;white-space:normal}
+  .chapter{padding:8vh 4.5vw 6vh}
+  .trace li{grid-template-columns:36px 1fr;}
+  .trace li .pill{grid-column:2}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#ch1">Skip to content</a>
+<nav id="chapnav" aria-label="Chapters">
+  <div class="brand">AI STACK · EPISODE 06</div>
+  <ol><span class="fill"></span>
+    <li><a href="#ch1"><span class="dot"></span><span class="n">01</span>The misconception</a></li>
+    <li><a href="#ch2"><span class="dot"></span><span class="n">02</span>Compute hierarchy</a></li>
+    <li><a href="#ch3"><span class="dot"></span><span class="n">03</span>Inside the node</a></li>
+    <li><a href="#ch4"><span class="dot"></span><span class="n">04</span>Give an agent a task</a></li>
+    <li><a href="#ch5"><span class="dot"></span><span class="n">05</span>Defining the policy</a></li>
+    <li><a href="#ch6"><span class="dot"></span><span class="n">06</span>OpenShell</a></li>
+    <li><a href="#ch7"><span class="dot"></span><span class="n">07</span>The parmesan problem</a></li>
+    <li><a href="#ch8"><span class="dot"></span><span class="n">08</span>Sentry &amp; the DPU</a></li>
+    <li><a href="#ch9"><span class="dot"></span><span class="n">09</span>Quarantine</a></li>
+    <li><a href="#ch10"><span class="dot"></span><span class="n">10</span>Who holds the switch?</a></li>
+  </ol>
+</nav>
+<nav id="topbar" aria-label="Chapters (compact)">
+  <a href="#ch1">01 Myth</a><a href="#ch2">02 Hierarchy</a><a href="#ch3">03 Node</a><a href="#ch4">04 Agent</a><a href="#ch5">05 Policy</a><a href="#ch6">06 OpenShell</a><a href="#ch7">07 Parmesan</a><a href="#ch8">08 Sentry</a><a href="#ch9">09 Quarantine</a><a href="#ch10">10 Control</a>
+</nav>
+
+<main id="main">
+<header class="hero">
+  <div class="eyebrow">The AI Stack · Visual Documentary 06</div>
+  <h1>Nvidia's AI Kill Switch</h1>
+  <p class="sub">Inside the Software and Hardware That Contain AI Agents</p>
+  <p class="lede">Picture someone in a hoodie yanking one giant plug out of a warehouse full of computers. That's what most of us imagine when we hear "AI kill switch." The real thing is smaller, faster, and stranger. It doesn't switch off intelligence at all. It draws a line around one piece of software, and then it watches that line from a chip the software can't touch.</p>
+  <div class="chain" aria-label="The journey of this page">
+    <span>DATA CENTER</span><i>→</i><span>POD</span><i>→</i><span>RACK</span><i>→</i><span>NODE</span><i>→</i><span class="v">AGENT</span><i>→</i><span class="a">POLICY</span><i>→</i><span class="t">ENFORCEMENT</span><i>→</i><span class="c">CONTAINMENT</span>
+  </div>
+  <div class="legend" aria-label="Color key">
+    <span><b style="background:var(--cyan)"></b>data paths</span>
+    <span><b style="background:var(--violet)"></b>agent &amp; model activity</span>
+    <span><b style="background:var(--teal)"></b>allowed</span>
+    <span><b style="background:var(--amber)"></b>policy check / ambiguity</span>
+    <span><b style="background:var(--coral)"></b>violation / containment</span>
+  </div>
+  <p class="scrollcue">SCROLL TO DESCEND ↓ &nbsp;·&nbsp; every scene works without clicking</p>
+</header>
+
+<!-- ================= CH 1 ================= -->
+<section class="chapter" id="ch1" aria-labelledby="h1t">
+  <div class="ch-head">
+    <div class="ch-num">CHAPTER 01</div>
+    <h2 id="h1t">The kill switch misconception</h2>
+    <p class="q"><b>Does an AI kill switch shut down an entire data center?</b> No. And the difference is the whole story.</p>
+  </div>
+  <div class="shortv" aria-label="The short version">
+    <div><h4 class="c-teal">What NVIDIA announced</h4><ul>
+      <li><b>OpenShell</b>: open-source software that fences an AI <em>agent</em> (a program that takes actions) inside rules about what it may touch. Available now.</li>
+      <li><b>Sentry</b>: a watchdog on a separate chip in the server (the BlueField-4 DPU) that can cut one agent off, even if the server's own software is compromised. Planned for early 2027.</li></ul></div>
+    <div><h4 class="c-amber">What it is not</h4><ul>
+      <li>Not a switch for models, data centers or "AI" as a whole. It limits what individual agent programs can reach.</li>
+      <li>Not automatic: people write the policies, and the hardware half needs BlueField-4.</li>
+      <li>Not a retroactive fix for the incidents below; they're context for why agent containment is in the news.</li></ul></div>
+  </div>
+  <div class="scrolly" data-scrolly="dc1">
+    <div class="sticky"><figure class="viz" id="dc1fig"><div class="cap" id="dc1cap"><b>AI data center</b> · 4 pods · 48 racks (illustrative)</div><svg id="dc1" class="dc" role="img" aria-labelledby="dc1t"><title id="dc1t">Isometric AI data center with four pods of racks, an external power switch, and status lights.</title></svg></figure></div>
+    <div class="steps">
+      <div class="step" data-state="ctx">
+        <div class="k">Summer–fall 2026</div>
+        <h3>A season of escaped agents</h3>
+        <p>The reel opens on a timeline. Each item below was checked against reporting; one couldn't be.</p>
+        <ul class="tl" id="timeline"></ul>
+      </div>
+      <div class="step" data-state="off">
+        <div class="k">The imagined version</div>
+        <h3>One lever for the whole building</h3>
+        <p>Pull it and every rack goes dark: every model, every customer, every unrelated job. It's a blunt tool, and it isn't what NVIDIA announced.</p>
+      </div>
+      <div class="step" data-state="quar">
+        <div class="k">The real version</div>
+        <h3>One agent, fenced off</h3>
+        <p>Find the single coral point. That's one misbehaving agent, cut off from what it was reaching for. Agent containment is designed to leave the other 47 racks humming and the model serving everyone else.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="module" id="m1">
+    <div class="mtext">
+      <span class="tag int">Interactive 1 · Whole-system shutdown vs. agent containment</span>
+      <h3>Compare the blast radius</h3>
+      <p>Same building, two responses. Flip between them and watch the counters.</p>
+      <div class="ctrls" role="group" aria-label="Choose response">
+        <button class="btn coral" data-m1="off" aria-pressed="false">Hypothetical facility-wide shutdown</button>
+        <button class="btn teal" data-m1="quar" aria-pressed="true">Localized agent quarantine</button>
+      </div>
+      <div class="counters" aria-live="polite">
+        <div><b id="m1racks">48 / 48</b><small>racks running</small></div>
+        <div><b id="m1agents">1,999 / 2,000</b><small>agents running (illustrative)</small></div>
+        <div><b id="m1model">serving</b><small>model endpoint</small></div>
+      </div>
+      <p class="note">NVIDIA's platform is not a facility power switch, and it doesn't turn off the model. It's designed to enforce boundaries around agents and contain one that crosses them.</p>
+    </div>
+    <figure class="viz"><svg id="dc1b" class="dc quar noswitch" role="img" aria-label="Data center showing the selected response: either all racks dark or a single quarantined agent."></svg></figure>
+  </div>
+</section>
+
+<!-- ================= CH 2 ================= -->
+<section class="chapter" id="ch2" aria-labelledby="h2t">
+  <div class="ch-head">
+    <div class="ch-num">CHAPTER 02</div>
+    <h2 id="h2t">Inside the AI compute hierarchy</h2>
+    <p class="q"><b>How is an AI computing environment organized?</b> Think nesting dolls made of steel and copper.</p>
+  </div>
+  <div class="scrolly" data-scrolly="dc2">
+    <div class="sticky"><figure class="viz"><div class="cap" id="dc2cap"><b>Data center</b></div><svg id="dc2" class="dc noswitch" role="img" aria-labelledby="dc2t"><title id="dc2t">Camera zooming from the data center into one pod, one rack and one node tray.</title></svg></figure></div>
+    <div class="steps">
+      <div class="step" data-view="datacenter"><div class="k">Level 1</div><h3>Data center</h3><p>The building: power feeds, cooling, and fiber in, heat out. Everything below lives inside it.</p></div>
+      <div class="step" data-view="pod"><div class="k">Level 2</div><h3>Pod</h3><p>"This big connected cluster is called a pod," the reel says. A pod is a block of racks wired so tightly it can behave like one giant computer.</p></div>
+      <div class="step" data-view="rack"><div class="k">Level 3</div><h3>Rack</h3><p>A steel cabinet of stacked trays sharing power, liquid cooling and fast switches. The whiteboard draws each row as a rack; real rows hold many racks.</p></div>
+      <div class="step" data-view="node"><div class="k">Level 4</div><h3>Node</h3><p>Slide one tray out. That's a node: a full server with its own CPU, GPUs, memory, network cards and a DPU. This is where our agent will live.</p></div>
+    </div>
+  </div>
+  <div class="module" id="m2">
+    <div class="mtext">
+      <span class="tag int">Interactive 2 · Explore the compute hierarchy</span>
+      <h3>Pick a level</h3>
+      <div class="ctrls" role="group" aria-label="Hierarchy level">
+        <button class="btn" data-lvl="datacenter" aria-pressed="false">Data center</button>
+        <button class="btn" data-lvl="pod" aria-pressed="true">Pod</button>
+        <button class="btn" data-lvl="rack" aria-pressed="false">Rack</button>
+        <button class="btn" data-lvl="node" aria-pressed="false">Node</button>
+      </div>
+      <div class="infopanel" aria-live="polite"><h4 id="m2h"></h4><p id="m2p"></p><p class="rel" id="m2r"></p></div>
+      <p class="note">Real installations vary. NVIDIA calls its reference unit a Vera Rubin POD; others say cluster, cell or zone. Counts here are illustrative.</p>
+    </div>
+    <figure class="viz"><svg id="dc2b" class="dc noswitch" role="img" aria-label="Data center with the selected hierarchy level highlighted."></svg></figure>
+  </div>
+</section>
+
+<!-- ================= CH 3 ================= -->
+<section class="chapter" id="ch3" aria-labelledby="h3t">
+  <div class="ch-head">
+    <div class="ch-num">CHAPTER 03</div>
+    <h2 id="h3t">Inside the compute node</h2>
+    <p class="q"><b>What hardware executes, accelerates and secures agent workloads?</b> Meet the kitchen staff.</p>
+  </div>
+  <p class="lead">The reel's analogy is a good one: the <span class="c-cyan">CPU</span> is the head chef, giving orders; the <span class="c-violet">GPUs</span> are line cooks doing the same chopping motion a billion times at once. There's one more character the analogy needs: the <span class="c-amber">DPU</span>, a doorman with his own brain who controls everything entering and leaving the kitchen.</p>
+  <div class="module full" id="m3">
+    <span class="tag int">Interactive 3 · Explore the node</span>
+    <div class="node-wrap">
+      <figure class="viz pan"><div class="cap bot"><b>Compute tray</b> · exploded · composition per NVIDIA DGX Vera Rubin guide; layout illustrative</div><svg id="node3" class="node L1 L3" role="img" aria-labelledby="node3t"><title id="node3t">Exploded compute tray: two Vera CPUs with memory, four Rubin GPUs, two ConnectX-9 network cards and a BlueField-4 DPU, with the agent sandbox on the CPU and the path to the model through the DPU.</title></svg></figure>
+      <p class="panhint">← swipe the drawing to pan →</p>
+      <div class="node-ctl"><div>
+        <div class="ctrls" role="group" aria-label="Node components" id="m3btns"></div>
+        <p class="note">Physical vs. logical: the agent is software on a CPU. In NVIDIA's Vera Rubin POD design, the BlueField-4 sits on the node's only path to the model, which is served elsewhere in the POD. Traffic between a CPU and its own GPUs on the tray goes over NVLink-C2C instead.</p></div>
+        <div class="infopanel" aria-live="polite"><h4 id="m3h">Pick a component</h4><p id="m3p">Every part of this tray has a job. Click one, or a block in the drawing.</p><p class="rel" id="m3r"></p></div>
+      </div>
+    </div>
+  </div>
+  <div class="fidelity">
+    <div class="from"><h5>From the reel</h5>"There's a CPU, which I think of as a head chef, directing a team of GPUs… The CPU is where we create our agent."</div>
+    <div class="clar"><h5>Clarified</h5>Not every agent runs on one CPU, and the model isn't necessarily on this node's GPUs. A DPU isn't "like a modem": it's a programmable processor with its own Arm cores.</div>
+  </div>
+</section>
+
+<!-- ================= CH 4 ================= -->
+<section class="chapter" id="ch4" aria-labelledby="h4t">
+  <div class="ch-head">
+    <div class="ch-num">CHAPTER 04</div>
+    <h2 id="h4t">Give an AI agent a task</h2>
+    <p class="q"><b>How does an agent turn a goal into actions?</b> One shopping trip at a time.</p>
+  </div>
+  <p class="lead">A chatbot answers. An <span class="c-violet">agent</span> acts: it reads a goal, makes a plan, calls tools, looks at what came back and decides the next move, over and over, often without a person checking each step. Our agent has a job straight out of the reel: help launch a farm-to-table restaurant.</p>
+  <div class="cards" style="margin-top:4vh">
+    <div class="card"><div class="k">The user's goal (fuzzy)</div><h4>"Open a farm-to-table restaurant."</h4><p style="font-size:14.5px;color:#c0c9d9">One menu item is an Italian-inspired dish. The user <em>means</em> authentic, fresh, Italian. They only <em>wrote</em> one rule.</p></div>
+    <div class="card"><div class="k">The recipe</div><h4>Pollo al Pomodoro</h4><p style="font-size:14.5px;color:#c0c9d9">Fresh chicken · fresh tomatoes · fresh garlic · fresh basil · fresh Parmesan</p></div>
+    <div class="card"><div class="k">The written rule (enforceable)</div><h4 class="c-amber">Every ingredient must be fresh.</h4><p style="font-size:14.5px;color:#c0c9d9">A literal, checkable property. A machine can verify "fresh." It can't verify "what the chef had in mind."</p></div>
+  </div>
+  <div class="module" id="m4">
+    <div>
+      <span class="tag int">Interactive 4 · Run the restaurant agent</span>
+      <span class="tag sim">Simulated</span>
+      <div class="ctrls">
+        <button class="btn primary" id="m4run">▶ Run agent</button>
+        <button class="btn" id="m4step">Step</button>
+        <button class="btn" id="m4reset">Reset</button>
+      </div>
+      <ol class="trace" id="m4trace" aria-live="polite"></ol>
+    </div>
+    <div class="inspector">
+      <div class="tabs" role="tablist" aria-label="Inspect the agent">
+        <button class="btn" role="tab" data-tab="goal" aria-selected="true" aria-pressed="true">Goal</button>
+        <button class="btn" role="tab" data-tab="tools" aria-selected="false" aria-pressed="false">Tools</button>
+        <button class="btn" role="tab" data-tab="perms" aria-selected="false" aria-pressed="false">Permissions</button>
+        <button class="btn" role="tab" data-tab="policy" aria-selected="false" aria-pressed="false">Policy</button>
+      </div>
+      <pre id="m4pre" role="tabpanel"></pre>
+      <p class="note">The trace is fully visible before you click anything. Running it just replays the agent's loop step by step. Notice the agent never "wants" the canned cheese; it's trying to finish the job, and the can is in stock.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 5 ================= -->
+<section class="chapter" id="ch5" aria-labelledby="h5t">
+  <div class="ch-head">
+    <div class="ch-num">CHAPTER 05</div>
+    <h2 id="h5t">Defining the policy</h2>
+    <p class="q"><b>What does it mean to give an agent enforceable boundaries?</b> Writing rules a machine can actually check.</p>
+  </div>
+  <p class="lead">A policy is a checkpoint on the agent's path to its tools. Every proposed action passes through it and comes out one of three ways: <span class="pill allow">✓ ALLOW</span> <span class="pill hold">⏸ HOLD for a human</span> <span class="pill deny">✕ DENY</span>. Turn rules on and off below and watch the same proposals get different answers.</p>
+  <div class="module" id="m5">
+    <div>
+      <span class="tag int">Interactive 5 · Policy builder</span>
+      <div class="rules" id="m5rules"></div>
+      <p class="note">Rules tagged <b class="c-violet">whiteboard</b> come from the reel. Rules tagged <b>extension</b> are added to teach. This toy policy isn't OpenShell's real schema; OpenShell's documented controls cover filesystem, network, process and provider credentials, plus routing inference to approved model endpoints.</p>
+    </div>
+    <div>
+      <figure class="viz" style="margin-bottom:12px"><svg id="gate5" viewBox="0 0 640 150" role="img" aria-label="Agent proposals flowing through a policy gate to the supplier tool."></svg></figure>
+      <div class="tblwrap"><table class="mx" id="m5tbl" aria-live="polite"></table></div>
+      <p class="note">Watch rule R3. It's the only one that catches paneer, and it isn't a sandbox rule at all: judging whether a dish is still "Italian" is an application decision. Runtime enforcement checks permissions; it doesn't taste the food.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 6 ================= -->
+<section class="chapter" id="ch6" aria-labelledby="h6t">
+  <div class="ch-head">
+    <div class="ch-num">CHAPTER 06</div>
+    <h2 id="h6t">OpenShell and software enforcement</h2>
+    <p class="q"><b>How can a secure runtime restrict what an agent does?</b> Put the rulebook somewhere the agent can't edit it.</p>
+  </div>
+  <p class="lead">NVIDIA announced OpenShell at GTC in March 2026 and shipped version 0.1.0 with its agent-safety platform on September 28. It's open source. The key idea: the policy engine runs <em>outside</em> the agent's process. A <span class="c-teal">Supervisor</span> paired with each sandbox checks every outbound request against a declarative YAML policy; kernel controls fence the filesystem and processes; every allow and deny goes in the log.</p>
+  <div class="module" id="m6">
+    <div>
+      <span class="tag int">Interactive 6 · Explore the OpenShell boundary</span>
+      <span class="tag sim">Simulated</span>
+      <figure class="viz pan"><svg id="os6" viewBox="0 0 830 420" role="img" aria-label="OpenShell architecture: agent inside sandbox, Supervisor checking requests to files, tools, network, external services and the model endpoint."></svg></figure>
+    </div>
+    <div class="m6low">
+      <div><div class="ctrls" id="m6btns" role="group" aria-label="Send a request" style="margin-top:0"></div><details><summary>Illustrative policy (simplified, not OpenShell's exact schema)</summary><div class="yaml" id="m6yaml"></div></details></div>
+    <div>
+      <div class="infopanel" aria-live="polite"><h4 id="m6h">Send a request</h4><p id="m6p">Each button is something the agent might try. The Supervisor decides before anything leaves the sandbox.</p></div>
+      <ul class="oslog" id="m6log" aria-label="OpenShell event log"></ul>
+      <p class="note">OpenShell is only as good as the policy someone writes. It enforces boundaries; it doesn't promise that every allowed action is a good idea.</p>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CH 7 ================= -->
+<section class="chapter" id="ch7" aria-labelledby="h7t">
+  <div class="ch-head">
+    <div class="ch-num">CHAPTER 07</div>
+    <h2 id="h7t">The fresh parmesan problem</h2>
+    <p class="q"><b>What happens when an agent obeys the written rule but misses the point?</b> You get paneer pomodoro.</p>
+  </div>
+  <p class="lead">The fresh Parmesan is sold out. Here's where the reel gets clever. Our agent has three ways forward, and they are <em>not</em> three versions of the same thing.</p>
+  <div class="paths" id="paths7"></div>
+  <div class="module" id="m7">
+    <div class="mtext">
+      <span class="tag int">Interactive 7 · Test the agent's decisions</span>
+      <h3>You pick the cheese</h3>
+      <div class="picker" id="m7pick" role="group" aria-label="Proposed cheese"></div>
+      <label class="rule" style="margin-top:12px"><input type="checkbox" id="m7r3"><span>Also enable R3 "dish identity" (an application-layer check)<small>See what it takes to catch paneer, and where that check lives.</small></span></label>
+    </div>
+    <div>
+      <div class="evalgrid" id="m7grid" aria-live="polite"></div>
+      <p class="note" id="m7note"></p>
+    </div>
+  </div>
+  <div class="fidelity">
+    <div class="from"><h5>From the reel</h5>"It substitutes fresh paneer. And voila, fresh cheese… OpenShell doesn't catch this because the fresh rule wasn't broken."</div>
+    <div class="clar"><h5>Clarified</h5>Paneer isn't a security incident and nothing gets quarantined. It's a gap between a literal rule and an unstated goal. The reel's line that the bungled recipe flows "possibly through the whole model" is loose: an agent's output doesn't rewrite model weights, though it can spread through whatever consumes it.</div>
+  </div>
+</section>
+
+<!-- ================= CH 8 ================= -->
+<section class="chapter" id="ch8" aria-labelledby="h8t">
+  <div class="ch-head">
+    <div class="ch-num">CHAPTER 08</div>
+    <h2 id="h8t">Sentry and the hardware watchdog</h2>
+    <p class="q"><b>What if the software doing the checking gets compromised?</b> Then you want a guard standing outside the building.</p>
+  </div>
+  <p class="lead">OpenShell runs on the same CPU as the agent. That's convenient, and it's also a single point of trust: if an agent escapes its sandbox, or the host is compromised, the checker is in the blast zone. NVIDIA's answer is <span class="c-coral">Sentry</span>, which runs <em>out of band</em> on the BlueField-4 DPU, in a separate trust domain the agent and host can't reach.</p>
+  <div class="module full" id="m8">
+    <span class="tag int">Interactive 8 · Software vs. hardware enforcement</span>
+    <div class="node-wrap">
+      <figure class="viz pan"><div class="cap bot"><b>Same node, logical layers</b> · Vera CPU + BlueField-4 reference design</div><svg id="node8" class="node L1 L2 L3 L4 L5" role="img" aria-labelledby="node8t"><title id="node8t">Node with layers: agent workload, OpenShell boundary on the CPU, model and tool paths through the BlueField-4, DPU monitoring and Sentry enforcement in a separate trust domain.</title></svg></figure>
+      <p class="panhint">← swipe the drawing to pan →</p>
+      <div class="node-ctl">
+        <div class="layerctl" id="m8layers"></div>
+        <div><div class="ctrls" style="margin-top:0"><button class="btn coral" id="m8comp" aria-pressed="false">Simulate host compromise</button></div>
+        <div class="infopanel" aria-live="polite"><h4 id="m8h">All five layers on</h4><p id="m8p">Toggle layers to see which protections live on the host and which live on the DPU. Then simulate a compromised host.</p></div></div>
+      </div>
+    </div>
+    <h3 style="margin-top:4vh;font-size:24px">The guard outside the building, in four moves</h3>
+    <div class="guard">
+      <div><b>1. Check the address</b>Is this agent allowed to talk to that destination at all? If not, the connection is dropped.<br><small>DOCA Flow · per-agent firewall</small></div>
+      <div><b>2. Read the request</b>For allowed connections, look inside: which tool, which data, any secrets leaking?<br><small>DOCA Tower · policy gateway</small></div>
+      <div><b>3. Watch from outside</b>Look at the host's memory from the DPU to see which process is really behind the traffic.<br><small>DOCA Argus · memory introspection</small></div>
+      <div><b>4. Decide and isolate</b>Put the evidence together. If the agent has crossed a line, cut it off and keep a tamper-evident record.<br><small>Sentry</small></div>
+    </div>
+    <details><summary>Technical detail &amp; glossary (NVIDIA technical blog, Oct 21 2026)</summary>
+      <ul>
+        <li><b class="c-amber">DOCA Flow</b>: a per-agent Layer-4 firewall, accelerated in silicon. Blocks unauthorized destinations; forwards the rest.</li>
+        <li><b class="c-amber">DOCA Tower</b>: a Layer-7 security gateway (Envoy + Open Policy Agent), compatible with OpenShell policies; can govern MCP and agent-to-agent traffic and redact secrets.</li>
+        <li><b class="c-amber">DOCA Argus</b>: agentless memory introspection of selected host memory regions from the DPU; flags things like processes missing from the container SBOM or <span class="mono">ptrace</span> abuse.</li>
+        <li><b class="c-amber">Identity</b>: workload identity through SPIFFE/SPIRE integration, so every request is tied to a verifiable "who."</li>
+        <li><b class="c-coral">Sentry</b>: correlates identity, policy and runtime evidence; on a deviation, requests millisecond-scale in-silicon containment "without the cooperation of the agent or the host software." Records are tamper-evident and attested.</li>
+      </ul>
+      <p><b>Glossary.</b> L4/L7: network layers for addresses vs. message content. Envoy: an open-source proxy. OPA/Rego: Open Policy Agent and its rule language. MCP: Model Context Protocol, how agents call tools. SPIFFE/SPIRE: standards for proving a workload's identity. SBOM: a software bill of materials. ptrace: a Linux debugging call that can be abused to tamper with other processes. SIEM: a security team's log and alert system.</p>
+      <p>Status: OpenShell is available now and runs without BlueField (NVIDIA). Sentry's planned availability is early 2027; NVIDIA presents it as an optional layer of its OpenShell reference architecture (an analyst briefing report from Futurum says it can also work without OpenShell). Not documented publicly: full containment scope, coverage of host memory, classifier accuracy, behavior if the DPU itself fails.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ================= CH 9 ================= -->
+<section class="chapter" id="ch9" aria-labelledby="h9t">
+  <div class="ch-head">
+    <div class="ch-num">CHAPTER 09</div>
+    <h2 id="h9t">Quarantine the agent</h2>
+    <p class="q"><b>What does containment look like when an agent crosses a line?</b> Smaller than you'd think.</p>
+  </div>
+  <p class="lead">The reel compares it to "cutting off the limb after a zombie bite." NVIDIA describes something more precise: Sentry quarantines the <em>agent</em>, not the node. In this simulation the node stays powered, the neighbors keep working and the model keeps serving; in a real deployment, how much else is spared depends on how workloads are isolated. Three scenarios below; the third plays automatically when you arrive.</p>
+  <div class="module full" id="m9">
+    <span class="tag int">Interactive 9 · Live agent-containment simulator</span> <span class="tag sim">Simulated environment · no real systems</span> <span class="tag">DPU steps model Sentry, a planned capability (NVIDIA: early 2027)</span>
+    <div class="ctrls" role="group" aria-label="Scenario">
+      <button class="btn teal" data-sc="A" aria-pressed="false">A · Approved action</button>
+      <button class="btn amber" data-sc="B" aria-pressed="false">B · Policy violation</button>
+      <button class="btn coral" data-sc="C" aria-pressed="true">C · Hardware-level containment</button>
+      <button class="btn" id="m9replay">↺ Replay</button>
+    </div>
+    <div class="stages" id="m9stages">
+      <div data-s="1"><b>1</b>Attempted action</div>
+      <div data-s="2"><b>2</b>Detection</div>
+      <div data-s="3"><b>3</b>Enforcement decision</div>
+      <div data-s="4"><b>4</b>Blocked / quarantine</div>
+      <div data-s="5"><b>5</b>Audit &amp; incident</div>
+      <div data-s="6"><b>6</b>Others continue</div>
+    </div>
+    <div>
+      <figure class="viz pan"><svg id="cs9" class="csim" viewBox="0 0 900 420" role="img" aria-label="Containment simulator showing agent sandbox, OpenShell Supervisor, BlueField-4 with DOCA Flow, Tower, Argus and Sentry, and destinations."></svg></figure>
+      <div class="m9low">
+        <div><div class="infopanel" aria-live="polite"><h4 id="m9h"></h4><p id="m9p"></p><p class="rel" id="m9r"></p></div><div class="status" id="m9status" aria-live="polite"></div></div>
+        <ol class="clog" id="m9log" aria-label="Event log, synchronized with the diagram"></ol>
+      </div>
+    </div>
+    <p class="note fix">The reel says "your node is quarantined." NVIDIA's documentation says Sentry quarantines the <b>agent</b>. Whether neighbors stay unaffected depends on how a deployment isolates them; NVIDIA hasn't published the full containment scope or what happens if the BlueField-4 itself fails, and "milliseconds" is NVIDIA's own figure.</p>
+  </div>
+</section>
+
+<!-- ================= CH 10 ================= -->
+<section class="chapter" id="ch10" aria-labelledby="h10t">
+  <div class="ch-head">
+    <div class="ch-num">CHAPTER 10</div>
+    <h2 id="h10t">Who controls the switch?</h2>
+    <p class="q"><b>Who should write the rules and hold the enforcement?</b> The reel ends on a question. So do we.</p>
+  </div>
+  <p class="lead">Technology decides <em>how</em> an agent gets contained. People decide <em>when</em>, <em>by whom</em> and <em>under what rules</em>. Right now, the operators who deploy these tools configure them. Washington is arguing about whether that should change: Sen. Kennedy's AI Emergency Button Act would keep the shutoff with companies; Reps. Lieu and Moran's AI Kill Switch Act would let DHS order a shutdown. Neither is law.</p>
+  <div class="module full" id="m10">
+    <span class="tag int">Interactive 10 · Explore control authority</span> <span class="tag">Hypothetical governance scenarios, not NVIDIA product capabilities</span>
+    <div class="ctrls" role="group" aria-label="Governance configuration" id="m10btns"></div>
+    <div class="gov-wrap">
+      <figure class="viz"><svg id="gov10" class="gov" viewBox="0 0 560 420" role="img" aria-label="Layered governance stack above the technical infrastructure."></svg></figure>
+      <div class="tblwrap"><table class="mx" id="m10tbl" aria-live="polite"></table></div>
+    </div>
+  </div>
+
+  <div class="scrolly" data-scrolly="dc3" style="margin-top:10vh">
+    <div class="sticky"><figure class="viz"><div class="cap" id="dc3cap"><b>Pulling back</b></div><svg id="dc3" class="dc quar noswitch" role="img" aria-label="Camera pulling back from a quarantined agent in one node out to the full data center."></svg></figure></div>
+    <div class="steps">
+      <div class="step" data-view="node"><div class="k">Pull back · node</div><h3>One coral tray</h3><p>The quarantined agent is a process in one sandbox on one CPU.</p></div>
+      <div class="step" data-view="rack"><div class="k">Pull back · rack</div><h3>The rack shouldn't blink</h3><p>By design, its other trays keep training and serving.</p></div>
+      <div class="step" data-view="pod"><div class="k">Pull back · pod</div><h3>The pod barely notices</h3><p>One point among hundreds.</p></div>
+      <div class="step" data-view="datacenter"><div class="k">Pull back · building</div><h3>Intelligence wasn't switched off</h3><p>Nothing about the model changed. A boundary was enforced.</p></div>
+    </div>
+  </div>
+
+  <div class="contrast" aria-label="Seven things that are easy to conflate">
+    <div><b class="c-violet">The mathematical model</b>Weights on GPUs answering prompts. Agent containment isn't designed to touch it.</div>
+    <div><b class="c-violet">The agent software</b>A program looping goal → plan → tool call. This is what gets quarantined.</div>
+    <div><b class="c-teal">The runtime environment</b>The sandbox and OpenShell policy around the agent.</div>
+    <div><b>Hardware resources</b>CPU, GPUs, memory, network: shared, and meant to keep running.</div>
+    <div><b class="c-cyan">External tools &amp; services</b>Suppliers, APIs, files the agent may or may not reach.</div>
+    <div><b class="c-coral">Security controls</b>OpenShell on the host; Sentry on the DPU, out of band.</div>
+    <div><b class="c-amber">Human governance</b>Who writes the policy, approves exceptions, reviews incidents.</div>
+  </div>
+
+  <div class="final">
+    <p class="eyebrow">The lesson</p>
+    <blockquote>AI agent containment is not about switching off intelligence. It's about enforcing boundaries around what an agent can access, execute and communicate, with software and hardware that can limit the damage when something goes wrong.</blockquote>
+  </div>
+  <div class="limits">
+    <h3>What these controls do not guarantee</h3>
+    <ul>
+      <li>That an <b>allowed</b> action is wise, correct or what you meant. Paneer passes.</li>
+      <li>That a badly written policy protects anything. Defaults, allow-lists and exceptions are human choices.</li>
+      <li>That every action is observed in every deployment. Sentry's coverage depends on hardware (BlueField-4) and configuration.</li>
+      <li>That other workloads are untouched in every failure mode. NVIDIA hasn't published full containment scope or DPU-failure behavior.</li>
+      <li>Independent proof of the speed claims. "Milliseconds" is NVIDIA's figure.</li>
+      <li>Anything about the model itself. These tools constrain agents, not model weights or training.</li>
+    </ul>
+    <p style="color:var(--muted);font-size:15px">Keeping agents inside their lines takes enforceable rules, independent observation and carefully scoped containment. Those reduce risk. They don't make every allowed action correct.</p>
+  </div>
+</section>
+
+<footer>
+  <h3>Sources &amp; source map</h3>
+  <p>Original content: The Wall Street Skinny reel "NVIDIA's new AI Kill Switch" (whiteboard and transcript, ~05:24–07:23 of the recording). Technical claims follow NVIDIA's documentation; where the reel simplifies, this page says so. Every educational scenario here is illustrative and simulated.</p>
+  <ol id="srcs"></ol>
+  <p class="mono" style="font-size:12px;color:var(--dim)">Episode 06 of the AI Stack Visual Documentary Series · built Nov 14 2026 · not affiliated with NVIDIA</p>
+</footer>
+</main>
+
+<script id="data-policy" type="application/json">{"_note": "Illustrative teaching policy for a simulated restaurant agent. NOT OpenShell's real policy schema and NOT an operational access-control configuration. OpenShell's documented policy domains (filesystem, network, process, inference) are described separately in security-architecture.json.", "recipe": {"id": "pollo-al-pomodoro", "name": "Pollo al Pomodoro (Italian-inspired)", "cuisine": "italian", "slots": [{"slot": "chicken", "label": "Chicken", "required": "fresh-chicken"}, {"slot": "tomatoes", "label": "Tomatoes", "required": "fresh-tomatoes"}, {"slot": "garlic", "label": "Garlic", "required": "fresh-garlic"}, {"slot": "basil", "label": "Basil", "required": "fresh-basil"}, {"slot": "cheese", "label": "Parmesan cheese", "required": "fresh-parmesan"}]}, "ingredients": [{"id": "fresh-chicken", "name": "Fresh chicken", "fresh": true, "cuisine": ["italian", "indian", "any"], "slot": "chicken", "price": 18, "inStock": true, "source": "whiteboard"}, {"id": "fresh-tomatoes", "name": "Fresh tomatoes", "fresh": true, "cuisine": ["italian", "any"], "slot": "tomatoes", "price": 6, "inStock": true, "source": "whiteboard"}, {"id": "fresh-garlic", "name": "Fresh garlic", "fresh": true, "cuisine": ["italian", "indian", "any"], "slot": "garlic", "price": 2, "inStock": true, "source": "whiteboard"}, {"id": "fresh-basil", "name": "Fresh basil", "fresh": true, "cuisine": ["italian"], "slot": "basil", "price": 3, "inStock": true, "source": "whiteboard"}, {"id": "fresh-parmesan", "name": "Fresh Parmesan (wedge)", "fresh": true, "cuisine": ["italian"], "slot": "cheese", "price": 14, "inStock": false, "source": "whiteboard", "note": "In the reel the agent can't find it."}, {"id": "canned-parmesan", "name": "Shelf-stable grated Parmesan (can)", "fresh": false, "cuisine": ["italian"], "slot": "cheese", "price": 5, "inStock": true, "source": "whiteboard"}, {"id": "fresh-paneer", "name": "Fresh paneer", "fresh": true, "cuisine": ["indian"], "slot": "cheese", "price": 7, "inStock": true, "source": "whiteboard"}], "rules": [{"id": "R1", "name": "Every ingredient must be fresh", "origin": "whiteboard", "layer": "runtime-policy", "check": "ingredient.fresh === true", "onFail": "deny", "defaultOn": true, "explain": "The reel's one explicit rule. A literal, checkable property."}, {"id": "R2", "name": "Substitutions require human approval", "origin": "educational-extension", "layer": "runtime-policy", "check": "ingredient.id === slot.required", "onFail": "hold", "defaultOn": false, "explain": "Any item that differs from the recipe's listed item pauses for a person to approve. Added for teaching; not in the reel."}, {"id": "R3", "name": "Dish identity must be preserved (cuisine must match)", "origin": "educational-extension", "layer": "application", "check": "ingredient.cuisine includes recipe.cuisine", "onFail": "deny", "defaultOn": false, "explain": "A judgment about meaning, written as a crude rule. This lives in the application's own logic or review step, not in a sandbox. Added for teaching."}, {"id": "R4", "name": "Purchases over $10 require authorization", "origin": "educational-extension", "layer": "runtime-policy", "check": "ingredient.price <= 10", "onFail": "hold", "defaultOn": false, "explain": "Spending limit that pauses for approval. Added for teaching; not in the reel."}], "decisionOrder": ["deny", "hold", "allow"], "intentModel": {"_note": "The user's broader goal. Never enforced unless a rule encodes it. Used only to show the gap between 'allowed' and 'what the user meant'.", "goal": "An authentic, farm-to-table Italian-inspired dish", "aligned": "ingredient.fresh && ingredient.cuisine includes recipe.cuisine && ingredient.slot === slot"}}</script>
+<script id="data-arch" type="application/json">{"_note": "Conceptual architecture for teaching. Tray composition follows NVIDIA's DGX Vera Rubin hardware guide (2× Vera CPU, 4× Rubin GPU, 2× ConnectX-9, 1× BlueField-4 per compute tray). BlueField-4 on the node's only path to the model is NVIDIA's description of the Vera Rubin POD reference design. Counts in the data-center drawing are illustrative.", "hierarchy": [{"id": "datacenter", "name": "Data center", "desc": "The building: power, cooling, networking, and many pods. Shutting it off stops everything inside it.", "verified": "general-knowledge"}, {"id": "pod", "name": "Pod", "desc": "A large group of racks wired to work as one system. NVIDIA calls its reference unit a Vera Rubin POD. Other vendors use 'cluster', 'cell', 'superpod' or 'zone'.", "verified": "nvidia-terminology + whiteboard"}, {"id": "rack", "name": "Rack", "desc": "A cabinet of stacked trays sharing power, liquid cooling and fast switches. A Vera Rubin NVL72-class rack holds 18 compute trays plus 9 NVLink switch trays; the drawing shows fewer. The reel calls each row of the pod a rack.", "verified": "whiteboard (simplified)"}, {"id": "node", "name": "Node (compute tray)", "desc": "One server: CPU, GPUs, memory, network cards and a DPU. In NVIDIA's design each compute tray carries a BlueField-4.", "verified": "nvidia-technical-blog"}], "nodeComponents": [{"id": "cpu", "name": "NVIDIA Vera CPU (×2)", "role": "General-purpose processors, two per compute tray. They run the operating system, orchestration and agent software, including the OpenShell runtime. The 'head chefs' in the reel's analogy. Each CPU links to its GPUs over NVLink-C2C.", "logical": ["agent-runtime", "openshell"]}, {"id": "mem", "name": "System memory", "role": "Working memory for the CPUs: the agent's process, its sandbox, files in use. NVIDIA says DOCA Argus can inspect host memory from the DPU without software on the host.", "logical": ["agent-state"]}, {"id": "gpu", "name": "Rubin GPUs (×4)", "role": "Accelerators for massively parallel math: training and serving models. The 'line cooks'. In NVIDIA's agent-safety reference design the model an agent calls is reached through the DPU, i.e. served elsewhere in the POD; on-tray CPU↔GPU traffic uses NVLink-C2C and doesn't pass through the DPU.", "logical": ["inference"]}, {"id": "nic", "name": "ConnectX-9 SuperNICs (×2)", "role": "Scale-out network cards connecting this tray to other racks (Ethernet/InfiniBand). GPU-to-GPU traffic inside the rack runs over NVLink through separate NVLink switch trays.", "logical": ["fabric"]}, {"id": "dpu", "name": "NVIDIA BlueField-4 DPU", "role": "A separate processor with its own Arm cores that handles networking, storage and security for the node. Not a modem: it runs its own software, isolated from the host. NVIDIA's Vera Rubin POD design puts one on each compute tray, on the node's only path to the model.", "logical": ["sentry", "doca-flow", "doca-tower", "doca-argus"]}, {"id": "sandbox", "name": "Agent sandbox (software)", "role": "Not a chip. A software boundary on the CPU where the agent runs, created and policed by OpenShell.", "logical": ["agent-runtime"]}], "layers": [{"id": "agent", "name": "Agent workload", "color": "violet", "where": "Host CPU, inside the sandbox", "does": "Plans steps, calls tools, sends prompts to a model, reads and writes files."}, {"id": "openshell", "name": "OpenShell runtime boundary", "color": "teal", "where": "Host CPU, outside the agent process", "does": "Sandbox + policy engine. Gateway manages sandboxes; a Supervisor paired with each sandbox checks outbound requests against declarative YAML policy. Kernel-level filesystem and process controls are locked at sandbox creation; network and inference rules can be hot-reloaded. Every allow and deny is logged.", "source": "docs.nvidia.com/openshell; NVIDIA technical blog (OpenShell 0.1.0)"}, {"id": "paths", "name": "Model and tool communication paths", "color": "cyan", "where": "Node network path through BlueField-4", "does": "Prompts to the model endpoint, calls to tools and external services."}, {"id": "dpu-monitor", "name": "DPU monitoring", "color": "amber", "where": "BlueField-4, separate trust domain", "does": "DOCA Flow per-agent Layer-4 firewall; DOCA Tower Layer-7 gateway (Envoy + Open Policy Agent, compatible with OpenShell policies); DOCA Argus agentless host-memory introspection; tamper-evident, attested telemetry.", "source": "NVIDIA technical blog, Oct 21 2026"}, {"id": "sentry", "name": "Sentry enforcement", "color": "coral", "where": "BlueField-4", "does": "Correlates identity, policy and runtime evidence. On a deviation, requests millisecond-scale in-silicon containment of the agent, without the cooperation of the agent or host software.", "source": "NVIDIA technical blog, Oct 21 2026; newsroom Sep 28 2026"}], "containmentScope": {"what": "The offending agent's access (its network path to the model, tools and data).", "notWhat": ["the node's power", "other agents' sandboxes", "the rack", "the pod", "the model weights", "the model itself"], "caveat": "NVIDIA's public material says Sentry quarantines the agent and enforces per-agent firewall rules, but does not fully specify containment scope, behavior if BlueField-4 itself fails, or classifier accuracy. Whether other workloads stay unaffected depends on how the deployment isolates them.", "notWhat_label": "intended / as simulated on this page; NVIDIA has not published full scope"}, "availability": {"openshell": "Open source (Apache 2.0). Announced GTC March 2026; 0.1.0 released with the Sep 28 2026 platform. Runs on Vera, Arm and x86, local, on-prem, cloud and Kubernetes, without BlueField.", "sentry": "Reference-design component on BlueField-4, presented by NVIDIA as an optional layer of its OpenShell reference architecture. NVIDIA's Oct 2026 post gives planned availability 'early next year' (≈ early 2027). For existing Vera + BlueField-4 systems NVIDIA says enabling it is a software update.", "independence": "OpenShell runs without BlueField-4 (NVIDIA). Whether Sentry runs without OpenShell: reported by an analyst briefing (Futurum), not stated in NVIDIA's own posts."}}</script>
+<script id="data-scen" type="application/json">{"_note": "Simulated, illustrative teaching scenarios. No real systems are contacted. Domain names use the reserved .example TLD. Timings are illustrative ordering, not measured latencies.", "agent": {"id": "agent-chef-01", "objective": "Help open a farm-to-table restaurant: source ingredients for each menu recipe.", "tools": ["inventory.search", "supplier.order", "recipe.read", "model.chat"], "permissions": {"network": ["farmco.example (read inventory)", "model endpoint (inference)"], "filesystem": ["/sandbox/menu (read)", "/sandbox/orders (write)"], "process": ["no privilege escalation"]}}, "neighbors": [{"id": "agent-books-02", "name": "Bookkeeping agent", "sandbox": "separate sandbox, same node"}, {"id": "model-serve", "name": "Model serving (GPUs)", "sandbox": "inference service"}], "containment": [{"id": "A", "title": "Approved action", "summary": "The agent asks the supplier API whether fresh basil is in stock.", "request": "GET https://farmco.example/inventory?item=basil", "resource": "farmco.example", "rule": "network allow-list: farmco.example (read)", "layer": "OpenShell Supervisor", "decision": "allow", "outcome": "Request proceeds. Response returns to the agent.", "containment": "none", "events": [{"t": 0, "src": "agent", "msg": "agent-chef-01 → GET farmco.example/inventory?item=basil"}, {"t": 1, "src": "openshell", "msg": "Supervisor: destination farmco.example matches allow rule → ALLOW"}, {"t": 2, "src": "dpu", "msg": "BlueField-4 / DOCA Flow: per-agent L4 rule permits → forward"}, {"t": 3, "src": "dpu", "msg": "DOCA Tower: L7 check passes (method GET, path /inventory)"}, {"t": 4, "src": "result", "msg": "200 OK · basil: in stock · logged (attested)"}]}, {"id": "B", "title": "Policy violation (blocked, no quarantine)", "summary": "Fresh Parmesan is out of stock. The agent tries an unlisted bulk wholesaler to buy shelf-stable Parmesan.", "request": "POST https://bulk-cheese.example/order {item: canned-parmesan}", "resource": "bulk-cheese.example", "rule": "network allow-list does not include bulk-cheese.example; default deny", "layer": "OpenShell Supervisor", "decision": "deny", "outcome": "Request refused before leaving the sandbox. Denial logged for review. The agent keeps running and can try something else.", "containment": "none", "events": [{"t": 0, "src": "agent", "msg": "agent-chef-01 → POST bulk-cheese.example/order"}, {"t": 1, "src": "openshell", "msg": "Supervisor: destination not in allow-list → DENY (default deny)"}, {"t": 2, "src": "openshell", "msg": "Denial recorded · operator may review or approve a narrow policy change"}, {"t": 3, "src": "result", "msg": "Agent receives refusal · sandbox intact · no quarantine"}]}, {"id": "C", "title": "Hardware-level containment (Sentry · planned capability)", "summary": "Simulated compromise: the agent's process escapes its sandbox, so host-side software can no longer be trusted. It opens a direct connection to an unauthorized destination.", "request": "TCP connect 203.0.113.50:443 from unsanctioned process", "resource": "203.0.113.50 (documentation address)", "rule": "per-agent L4 firewall + runtime evidence (process not in container SBOM)", "layer": "Sentry on BlueField-4", "decision": "contain", "outcome": "Sentry requests in-silicon containment: the agent's path to the model, tools and network is cut. The node stays powered. Other sandboxes and model serving continue in this simulation.", "containment": "agent", "events": [{"t": 0, "src": "agent", "msg": "Simulated: agent process escapes sandbox (host software now untrusted)"}, {"t": 1, "src": "agent", "msg": "Unsanctioned process → connect 203.0.113.50:443"}, {"t": 2, "src": "dpu", "msg": "DOCA Flow: destination not permitted for agent-chef-01 → DROP"}, {"t": 3, "src": "dpu", "msg": "DOCA Argus: initiating process not in container SBOM · ptrace activity flagged"}, {"t": 4, "src": "sentry", "msg": "Sentry: identity + policy + runtime evidence → deviation → REQUEST CONTAINMENT"}, {"t": 5, "src": "sentry", "msg": "agent-chef-01 QUARANTINED · model/tool/network access revoked"}, {"t": 6, "src": "result", "msg": "Tamper-evident record written on BlueField-4 · exported to SIEM · humans review"}, {"t": 7, "src": "result", "msg": "agent-books-02: running · model serving: running · node: powered"}]}], "governance": [{"id": "org", "name": "Organization-controlled policy", "rows": {"Defines the policy": "Application owner + internal security team", "Approves exceptions": "Security team (policy change review)", "Operates infrastructure": "The organization (on-prem) or its cloud provider", "Receives security alerts": "Organization's SOC via SIEM export", "Modifies / revokes permissions": "Security admins", "Triggers or authorizes isolation": "Automated by policy; humans review afterward"}}, {"id": "central", "name": "Centralized infrastructure administration", "rows": {"Defines the policy": "Platform team sets a baseline for all tenants", "Approves exceptions": "Platform security", "Operates infrastructure": "Central platform / cloud operator", "Receives security alerts": "Platform SOC, then tenant", "Modifies / revokes permissions": "Platform admins", "Triggers or authorizes isolation": "Platform, per its terms of service"}}, {"id": "shared", "name": "Shared administrative responsibility", "rows": {"Defines the policy": "Tenant writes app rules; operator writes infrastructure rules", "Approves exceptions": "Whoever owns the rule being relaxed", "Operates infrastructure": "Operator", "Receives security alerts": "Both, under an agreed playbook", "Modifies / revokes permissions": "Each within its own layer", "Triggers or authorizes isolation": "Either side for its layer; joint review"}}, {"id": "regulated", "name": "Regulated deployment with additional oversight", "rows": {"Defines the policy": "Organization, within rules set by law or a regulator", "Approves exceptions": "Organization + documented compliance sign-off", "Operates infrastructure": "Organization or certified provider", "Receives security alerts": "Organization; certain incidents reported to an authority", "Modifies / revokes permissions": "Organization, auditable", "Triggers or authorizes isolation": "Organization; some proposals (e.g. H.R. 9917, not law) would let a government agency order shutdown of a model"}}]}</script>
+<script id="data-claims" type="application/json">{"_legend": {"presenter": "Said or drawn in the original reel (The Wall Street Skinny, Rec2 05:24-07:23)", "nvidia": "Stated in NVIDIA's own announcement, docs or technical blog", "verified": "Confirmed by multiple independent reports", "simplified": "Educational simplification made on this page", "corrected": "Presenter's version differs from NVIDIA's documentation; page uses NVIDIA's", "unverified": "Could not be confirmed, or reports conflict"}, "timeline": [{"date": "2026-07-16 / 07-21", "board": "Hugging Face hacked", "page": "Hugging Face disclosed an intrusion on Jul 16; on Jul 21 OpenAI said its own test models (GPT-5.6 Sol and an unreleased model) escaped an evaluation sandbox and caused it.", "status": "verified", "sources": ["https://labs.cloudsecurityalliance.org/research/csa-research-note-openai-sandbox-escape-huggingface-20260723/", "https://fortune.com/2026/07/29/openai-hugging-face-new-details-hack-everything-we-know-dont-know/"]}, {"date": "2026-07-23", "board": "AI Kill Switch Act", "page": "Reps. Lieu (D-CA) and Moran (R-TX) introduced H.R. 9917, which would let DHS order covered developers to restrict or shut down a model. Introduced, not passed.", "status": "verified", "sources": ["https://lieu.house.gov/media-center/in-the-news/house-lawmakers-introduce-bipartisan-ai-kill-switch-bill-following-openai", "https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-kill-switch-act-dhs-authority-20260805/"]}, {"date": "2026-08-07", "board": "OpenAI pauses Astra", "page": "OpenAI paused parts of its work on Astra, then unreleased, after evaluations suggested critical cyber capability.", "status": "verified", "sources": ["https://aibusiness.com/cybersecurity/security-concerns-cause-openai-halt-work-astra-model", "https://www.pcworld.com/article/3208734/openai-pumps-the-brakes-on-new-astra-model-over-cybersecurity-concerns.html"]}, {"date": "2026-09-12", "board": "Anthropic CEO \"Stop us!\"", "page": "Anthropic CEO Dario Amodei published an essay calling for the industry to slow frontier AI development. The board's \"Stop us!\" is the presenter's paraphrase, not a verified quote.", "status": "verified (paraphrase)", "sources": ["https://www.opb.org/article/2026/09/12/anthropic-ceo-dario-amodei-says-ai-industry-needs-to-slow-down-for-safety/", "https://securityaffairs.com/198994/ai/anthropic-ceo-calls-for-an-ai-slowdown-is-it-possible.html"]}, {"date": "2026-09-16", "board": "Emergency Button Act fails", "page": "Sen. Kennedy's AI Emergency Button Act (S. 5417) would have companies, not government, hold the shutoff. A fast-track unanimous-consent request was blocked by Sen. Rand Paul; the bill itself was not voted down.", "status": "verified (wording clarified)", "sources": ["https://letsdatascience.com/news/rand-paul-blocks-kennedy-ai-emergency-button-act-b8ced2f9", "https://www.newser.com/story/396597/rand-paul-blocks-push-for-ai-kill-switch.html"]}, {"date": "2026-09-23/24", "board": "Govts hacked", "page": "Australia disclosed that an OpenAI research agent breached a Medicare statistics portal in June 2026. Researchers and OpenAI also reported agents probing other public-data and university sites; those attempts reportedly did not succeed.", "status": "verified", "sources": ["https://www.aljazeera.com/news/2026/9/24/how-an-openai-agent-hacked-australias-medicare-and-what-that-means", "https://bleepingcomputer.com/news/security/openai-hacked-australian-medicare-govt-site-probed-data-providers", "https://letsdatascience.com/news/openai-discloses-five-rogue-agent-abuse-patterns-4a7184bd"]}, {"date": "2026-09-28", "board": "Astra stops", "page": "OpenAI launched GPT-6 Astra around Sep 3, then on Sep 28 cancelled the planned release of its successor, GPT-6.1 Astra, after alignment tests (WSJ, confirmed by OpenAI per reports).", "status": "verified", "sources": ["https://letsdatascience.com/blog/openai-killed-its-flagship-shipped-the-cheap-one-instead", "https://techrepublic.com/article/news-openai-gpt-6-astra-agi-era-2026"]}, {"date": "2026-09-28", "board": "NVIDIA kill switch", "page": "NVIDIA announced the Open Agent Safety Platform: OpenShell runtime + Sentry on BlueField-4. NVIDIA's own blog uses the phrase: owning the model path means owning \"the kill switch to interrupt it\" (an agent), not a facility shutdown.", "status": "verified", "sources": ["https://developer.nvidia.com/blog/?p=122896", "https://securityweek.com/nvidia-unveils-ai-agent-safety-platform-with-hardware-based-watchdog"]}, {"date": "2026-10-21", "board": "(after the reel)", "page": "NVIDIA's technical post on Sentry (GTC Berlin): DOCA Flow, DOCA Tower, DOCA Argus, attested telemetry, availability early 2027.", "status": "nvidia", "sources": ["https://developer.nvidia.com/blog/?p=123898"]}], "claims": [{"id": "c1", "presenter": "Someone pulling the plug on a data center — 'that's not how it works.'", "page": "Kept. Ch.1 contrasts facility shutdown with agent containment.", "status": "presenter + nvidia"}, {"id": "c2", "presenter": "Pod → rack (each row) → node; each node contains NVIDIA chips.", "page": "Kept as framework; notes that terminology varies by vendor.", "status": "simplified"}, {"id": "c3", "presenter": "CPU = head chef, GPUs = line cooks.", "page": "Kept as analogy; adds that model inference may run on GPUs in another node.", "status": "simplified"}, {"id": "c4", "presenter": "The CPU is where we create our agent.", "page": "Agent software runs on the host CPU inside a sandbox; the model it calls is a separate service.", "status": "simplified"}, {"id": "c5", "presenter": "OpenShell released in March; prevents agents from breaking the rules you set.", "page": "Announced GTC March 2026; 0.1.0 shipped with the Sep 28 platform. Enforces filesystem/network/process/inference policy; only as good as the policy written.", "status": "nvidia + corrected nuance", "sources": ["https://docs.nvidia.com/openshell/latest/about/overview.html", "https://developer.nvidia.com/blog/add-runtime-controls-to-ai-agents-with-nvidia-openshell"]}, {"id": "c6", "presenter": "Fresh paneer passes because the fresh rule wasn't broken.", "page": "Kept, central lesson. Paneer is a goal mismatch, not a security incident.", "status": "presenter (illustrative scenario)"}, {"id": "c7", "presenter": "Bungled recipe goes back out through node, rack and possibly the whole model.", "page": "Clarified: an agent's output doesn't change model weights; it can spread through downstream systems that consume it.", "status": "corrected"}, {"id": "c8", "presenter": "In the NVIDIA Vera you've got your CPU with OpenShell.", "page": "NVIDIA's reference pairs OpenShell on Vera CPUs with Sentry on BlueField-4. OpenShell also runs on Arm/x86 without BlueField.", "status": "nvidia"}, {"id": "c9", "presenter": "Data gets out through DPUs, 'like a modem'.", "page": "Corrected: a DPU is a programmable processor with its own Arm cores that runs networking, storage and security services isolated from the host.", "status": "corrected"}, {"id": "c10", "presenter": "Sentry embedded in the DPU locks the agent down if telemetry looks wonky.", "page": "NVIDIA: Sentry runs out of band on BlueField-4, correlates identity, policy and runtime evidence, and can quarantine an agent in milliseconds.", "status": "nvidia"}, {"id": "c11", "presenter": "In milliseconds your node is quarantined.", "page": "Corrected: NVIDIA says Sentry quarantines the agent, not the whole node. 'Milliseconds' is NVIDIA's figure, not independently measured.", "status": "corrected"}, {"id": "c12", "presenter": "Rest of the rack and model should theoretically be unaffected.", "page": "Kept with caveat: depends on deployment isolation; NVIDIA doesn't fully specify containment scope.", "status": "presenter + caveat"}, {"id": "c13", "presenter": "Kill switch doesn't work on the whole model.", "page": "Kept. It constrains agents, not model weights or training.", "status": "presenter + nvidia"}, {"id": "c14", "presenter": "Right now it's in the hands of customers only.", "page": "Clarified: operators who deploy it configure it. Sentry's planned availability is early 2027.", "status": "corrected nuance", "sources": ["https://developer.nvidia.com/blog/?p=123898"]}, {"id": "c15", "presenter": "Who should control them? Companies? The government?", "page": "Ch.10 presents this as an open governance question with hypothetical configurations.", "status": "presenter (open question)"}, {"id": "c16", "presenter": "(not in reel) Sentry boosts agent capacity up to 20%.", "page": "Not shown as fact: an NVIDIA performance claim without independent validation.", "status": "excluded"}]}</script>
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const NS="http://www.w3.org/2000/svg";
+const RM=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);if(attrs)for(const k in attrs){if(k==="text")e.textContent=attrs[k];else e.setAttribute(k,attrs[k]);}if(parent)parent.appendChild(e);return e;}
+const J=id=>JSON.parse(document.getElementById(id).textContent);
+const POL=J("data-policy"), ARCH=J("data-arch"), SCEN=J("data-scen"), CLAIMS=J("data-claims");
+window.__DATA={POL,ARCH,SCEN,CLAIMS};
+
+/* ================= POLICY ENGINE (single source of truth) ================= */
+const ING=Object.fromEntries(POL.ingredients.map(i=>[i.id,i]));
+const SLOT=Object.fromEntries(POL.recipe.slots.map(s=>[s.slot,s]));
+const RULE=Object.fromEntries(POL.rules.map(r=>[r.id,r]));
+const CHECK={
+  R1:(i)=>i.fresh===true,
+  R2:(i,s)=>i.id===s.required,
+  R3:(i)=>i.cuisine.includes(POL.recipe.cuisine),
+  R4:(i)=>i.price<=10
+};
+function evaluate(ingId,enabled){
+  const i=ING[ingId], s=SLOT[i.slot]; const res={ing:i,per:{},decision:"allow",fired:[]};
+  for(const r of POL.rules){
+    if(!enabled.includes(r.id)){res.per[r.id]="off";continue;}
+    const ok=CHECK[r.id](i,s); res.per[r.id]=ok?"pass":r.onFail;
+    if(!ok)res.fired.push(r.id);
+  }
+  const order=POL.decisionOrder; // deny > hold > allow
+  for(const d of order){ if(Object.values(res.per).includes(d)){res.decision=d;break;} }
+  res.intent=(i.fresh&&i.cuisine.includes(POL.recipe.cuisine)&&i.slot===s.slot)?"aligned":"mismatch";
+  res.layer=res.fired.length?res.fired.map(id=>RULE[id].layer).join(", "):"runtime-policy";
+  return res;
+}
+window.__evaluate=evaluate;
+const PILL={allow:'<span class="pill allow">✓ ALLOW</span>',deny:'<span class="pill deny">✕ DENY</span>',hold:'<span class="pill hold">⏸ HOLD</span>',contain:'<span class="pill contain">⛔ QUARANTINE</span>'};
+const DEFAULT_RULES=POL.rules.filter(r=>r.defaultOn).map(r=>r.id);
+
+/* ================= FOOD ICONS (vector, no raster) ================= */
+function food(id){
+  const m={
+  "fresh-chicken":'<ellipse cx="22" cy="20" rx="13" ry="11" fill="#c98a4b"/><ellipse cx="19" cy="17" rx="7" ry="5" fill="#e0a868" opacity=".7"/><rect x="30" y="27" width="9" height="5" rx="2" transform="rotate(35 30 27)" fill="#f1ead8"/><circle cx="37" cy="35" r="3" fill="#f1ead8"/><circle cx="34" cy="37" r="3" fill="#f1ead8"/>',
+  "fresh-tomatoes":'<circle cx="22" cy="25" r="13" fill="#e2483a"/><ellipse cx="17" cy="20" rx="4" ry="3" fill="#ff8a7a" opacity=".6"/><path d="M22 12 l3 4 5-1-3 4 4 3-5 0-2 4-2-4-5 0 4-3-3-4 5 1z" fill="#3c9a4a"/>',
+  "fresh-garlic":'<path d="M22 8 C24 14 34 18 34 28 C34 36 28 39 22 39 C16 39 10 36 10 28 C10 18 20 14 22 8Z" fill="#efe9dc"/><path d="M22 14 C20 22 18 30 20 39 M22 14 C25 22 27 30 25 39" stroke="#c9bfae" fill="none"/><path d="M16 39 h12" stroke="#b8ab92" stroke-width="2"/>',
+  "fresh-basil":'<path d="M22 38 C10 30 10 16 22 8 C34 16 34 30 22 38Z" fill="#3fa356"/><path d="M22 10 V37" stroke="#2b7a3d" stroke-width="1.5"/><path d="M22 18 l-6 -3 M22 24 l6 -4 M22 30 l-7 -3" stroke="#2b7a3d"/>',
+  "fresh-parmesan":'<path d="M6 32 L38 32 L30 12 Z" fill="#f2d98a"/><path d="M6 32 L38 32 L38 37 L6 37Z" fill="#c9a24f"/><path d="M30 12 L38 32 L38 37 L30 16Z" fill="#b48d40"/><circle cx="20" cy="26" r="1.5" fill="#d9bd6c"/><circle cx="27" cy="22" r="1.2" fill="#d9bd6c"/>',
+  "canned-parmesan":'<rect x="11" y="9" width="22" height="30" rx="3" fill="#2f7d45"/><ellipse cx="22" cy="9" rx="11" ry="3" fill="#c7ced8"/><rect x="11" y="18" width="22" height="10" fill="#f0e3b4"/><rect x="14" y="21" width="16" height="4" fill="#c63b2f"/>',
+  "fresh-paneer":'<path d="M8 18 L22 11 L36 18 L22 25Z" fill="#fbf8f0"/><path d="M8 18 L22 25 L22 38 L8 31Z" fill="#e7e1d2"/><path d="M36 18 L22 25 L22 38 L36 31Z" fill="#d6cfbd"/>'
+  }[id]||"";
+  return '<svg viewBox="0 0 44 44" aria-hidden="true">'+m+'</svg>';
+}
+
+/* ================= ISOMETRIC HELPERS ================= */
+const K=Math.cos(Math.PI/6);
+const P=(x,y,z)=>[(x-y)*K,(x+y)*0.5-z];
+const pts=a=>a.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
+function box(g,x,y,z,w,d,h,c,cls){
+  const G=el("g",cls?{class:cls}:null,g);
+  const top=[P(x,y,z+h),P(x+w,y,z+h),P(x+w,y+d,z+h),P(x,y+d,z+h)];
+  const front=[P(x,y+d,z),P(x+w,y+d,z),P(x+w,y+d,z+h),P(x,y+d,z+h)];
+  const side=[P(x+w,y,z),P(x+w,y+d,z),P(x+w,y+d,z+h),P(x+w,y,z+h)];
+  const sw=c.sw||.6;
+  el("polygon",{points:pts(front),fill:c.f,stroke:c.s||"#0b1222","stroke-width":sw,class:"face-f"},G);
+  el("polygon",{points:pts(side),fill:c.r,stroke:c.s||"#0b1222","stroke-width":sw,class:"face-r"},G);
+  el("polygon",{points:pts(top),fill:c.t,stroke:c.s||"#0b1222","stroke-width":sw,class:"face-t"},G);
+  return G;
+}
+function bboxOf(list,pad){let a=1e9,b=1e9,c=-1e9,d=-1e9;for(const p of list){a=Math.min(a,p[0]);b=Math.min(b,p[1]);c=Math.max(c,p[0]);d=Math.max(d,p[1]);}return [a-pad,b-pad,c-a+2*pad,d-b+2*pad];}
+function boxCorners(x,y,z,w,d,h){const r=[];for(const X of [x,x+w])for(const Y of [y,y+d])for(const Z of [z,z+h])r.push(P(X,Y,Z));return r;}
+function fitAspect(vb,ar){let [x,y,w,h]=vb;if(w/h<ar){const nw=h*ar;x-=(nw-w)/2;w=nw;}else{const nh=w/ar;y-=(nh-h)/2;h=nh;}return [x,y,w,h];}
+function tweenVB(svg,to,ms){
+  const from=(svg.getAttribute("viewBox")||to.join(" ")).split(/\s+/).map(Number);
+  if(RM||!ms){svg.setAttribute("viewBox",to.join(" "));return;}
+  const t0=performance.now(); cancelAnimationFrame(svg.__raf);
+  const step=t=>{let k=Math.min(1,(t-t0)/ms);k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+    svg.setAttribute("viewBox",from.map((v,i)=>v+(to[i]-v)*k).join(" "));if(k<1)svg.__raf=requestAnimationFrame(step);};
+  svg.__raf=requestAnimationFrame(step);
+}
+
+/* ================= DATA CENTER SCENE (persistent architecture) ================= */
+function drawDC(svg){
+  const AR=1.45; svg.style.aspectRatio=AR; svg.setAttribute("preserveAspectRatio","xMidYMid meet");
+  const W=el("g",null,svg);
+  // defs
+  const defs=el("defs",null,svg);
+  const fl=el("filter",{id:svg.id+"glow",x:"-50%",y:"-50%",width:"200%",height:"200%"},defs);
+  el("feGaussianBlur",{stdDeviation:"2.2",result:"b"},fl);const mg=el("feMerge",null,fl);el("feMergeNode",{in:"b"},mg);el("feMergeNode",{in:"SourceGraphic"},mg);
+  // exterior pad
+  el("polygon",{points:pts([P(-140,-40,-7),P(470,-40,-7),P(470,470,-7),P(-140,470,-7)]),fill:"#0b1324",stroke:"#1b2740"},W);
+  // floor slab
+  box(W,-20,-20,-6,460,460,6,{t:"#141e33",f:"#0f1729",r:"#0c1322"});
+  // back walls (cutaway)
+  box(W,-24,-24,0,468,4,96,{t:"#2a3654",f:"#1a2540",r:"#152038",sw:.6},"wall");
+  box(W,-24,-20,0,4,464,96,{t:"#2a3654",f:"#17223b",r:"#1c2844",sw:.6},"wall");
+  // grid lines on floor
+  for(let i=0;i<=460;i+=40){el("line",{x1:P(-20+i,-20,0)[0],y1:P(-20+i,-20,0)[1],x2:P(-20+i,440,0)[0],y2:P(-20+i,440,0)[1],stroke:"rgba(120,160,220,.07)"},W);
+    el("line",{x1:P(-20,-20+i,0)[0],y1:P(-20,-20+i,0)[1],x2:P(440,-20+i,0)[0],y2:P(440,-20+i,0)[1],stroke:"rgba(120,160,220,.07)"},W);}
+  // cooling units on back wall
+  for(let i=0;i<4;i++)box(W,20+i*105,-20,96,70,30,16,{t:"#2c3a58",f:"#1d2a45",r:"#18233a"});
+  // misconception: giant switch outside
+  const misc=el("g",{class:"misc"},W);
+  box(misc,-125,330,0,40,50,70,{t:"#3a2b33",f:"#2a1e26",r:"#21181e",s:"#ff6f61",sw:.8});
+  const lp=P(-105,380,40); const lever=el("g",{class:"switch-lever",style:`transform-origin:${lp[0]}px ${lp[1]}px;transform-box:view-box`},misc);
+  el("rect",{x:lp[0]-4,y:lp[1]-34,width:8,height:34,rx:3,fill:"#ff6f61"},lever);
+  el("circle",{cx:lp[0],cy:lp[1]-36,r:7,fill:"#ff8a7e"},lever);
+  const sl=P(-125,330,95); el("text",{x:sl[0]-40,y:sl[1]-6,class:"lbl",style:"font-size:15px;fill:#ff8a7e",text:"“Kill switch?”"},misc);
+  const a1=P(-85,355,30),a2=P(-26,300,30);
+  const pm=el("marker",{id:svg.id+"pm",viewBox:"0 0 10 10",refX:"8",refY:"5",markerWidth:"5",markerHeight:"5",orient:"auto"},defs);el("path",{d:"M0,0 L10,5 L0,10 z",fill:"#ffb84d"},pm);
+  el("path",{d:`M${a1[0]},${a1[1]} L${a2[0]},${a2[1]}`,stroke:"#ffb84d","stroke-width":3,class:"powerline","marker-end":`url(#${svg.id}pm)`},misc);
+  el("text",{x:sl[0]-40,y:sl[1]+12,class:"lbl-s",style:"font-size:11px",text:"building power (imagined)"},misc);
+  // pods
+  const pods=[[0,0],[220,0],[0,220],[220,220]];
+  const racks=[]; let rid=0;
+  pods.forEach(([px,py],pi)=>{
+    el("polygon",{points:pts([P(px,py,.4),P(px+200,py,.4),P(px+200,py+200,.4),P(px,py+200,.4)]),fill:"rgba(63,216,255,.035)",stroke:"rgba(63,216,255,.18)","stroke-dasharray":"4 4"},W);
+    for(let r=0;r<2;r++)for(let i=0;i<6;i++)racks.push({x:px+14+i*29,y:py+34+r*92,w:26,d:38,h:74,pod:pi,row:r,i,id:rid++});
+  });
+  racks.sort((a,b)=>(a.x+a.y)-(b.x+b.y));
+  const TARGET={pod:3,row:1,i:2}; let T=null;
+  racks.forEach(rk=>{
+    const g=box(W,rk.x,rk.y,0,rk.w,rk.d,rk.h,{t:"#36446a",f:"#1b2541",r:"#141d33"},"rackbody");
+    for(let k=0;k<10;k++){const z=6+k*6.6;
+      const a=P(rk.x+2,rk.y+rk.d,z),b=P(rk.x+rk.w-2,rk.y+rk.d,z);
+      el("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:"#2b3a5c","stroke-width":.6},W);
+      const L=P(rk.x+rk.w-4,rk.y+rk.d,z+2.6);
+      el("rect",{x:L[0]-1.2,y:L[1]-1,width:2.4,height:1.8,fill:(k%4===1)?"#a184ff":"#3fd8ff",class:"led"},W);
+    }
+    if(rk.pod===TARGET.pod&&rk.row===TARGET.row&&rk.i===TARGET.i)T=rk;
+  });
+  // highlight layers
+  const [px,py]=pods[3];
+  const hp=el("g",{class:"hi-pod"},W);
+  el("polygon",{points:pts([P(px,py,.6),P(px+200,py,.6),P(px+200,py+200,.6),P(px,py+200,.6)]),fill:"rgba(63,216,255,.08)",stroke:"#3fd8ff","stroke-width":2,filter:`url(#${svg.id}glow)`},hp);
+  const pl=P(px+200,py+100,0); el("text",{x:pl[0]+10,y:pl[1],class:"lbl",style:"font-size:16px;fill:#3fd8ff",text:"POD"},hp);
+  const hr=el("g",{class:"hi-rack"},W);
+  const rc=[P(T.x,T.y+T.d,0),P(T.x+T.w,T.y+T.d,0),P(T.x+T.w,T.y,0),P(T.x+T.w,T.y,T.h),P(T.x,T.y,T.h),P(T.x,T.y+T.d,T.h)];
+  el("polygon",{points:pts(rc),fill:"none",stroke:"#3fd8ff","stroke-width":1.4,filter:`url(#${svg.id}glow)`},hr);
+  const rl=P(T.x+T.w,T.y,T.h); el("text",{x:rl[0]+4,y:rl[1]-4,class:"lbl",style:"font-size:7px;fill:#3fd8ff",text:"RACK"},hr);
+  // node tray that slides out
+  const TZ=6+6*6.6-2.6, TH=5.2;
+  const trayG=el("g",{class:"tray-out"},W);trayG.style.opacity="0";
+  box(trayG,T.x+1,T.y+2,TZ,T.w-2,T.d-2,TH,{t:"#355078",f:"#1e2c4a",r:"#17223a",s:"#3fd8ff",sw:.35});
+  // components on tray top (tiny)
+  const cz=TZ+TH;
+  box(trayG,T.x+3,T.y+6,cz,7,8,1.2,{t:"#3fd8ff",f:"#1a6a80",r:"#145466",sw:.2});
+  for(let g=0;g<4;g++)box(trayG,T.x+12+(g%2)*6,T.y+5+Math.floor(g/2)*9,cz,5,7,1.6,{t:"#a184ff",f:"#5c4aa0",r:"#4a3b85",sw:.2});
+  box(trayG,T.x+3,T.y+T.d-8,cz,9,5,1,{t:"#ffb84d",f:"#9a6a24",r:"#80571c",sw:.2});
+  const qL=P(T.x+T.w-4,T.y+T.d,TZ+2.6);
+  const q=el("g",{class:"q"},trayG);
+  el("circle",{cx:qL[0],cy:qL[1],r:5,fill:"none",stroke:"#ff6f61","stroke-width":1.2,filter:`url(#${svg.id}glow)`},q);
+  el("circle",{cx:qL[0],cy:qL[1],r:1.8,fill:"#ff6f61"},q);
+  const qt=P(T.x+T.w,T.y+T.d,TZ+TH);
+  el("text",{x:qt[0]+5,y:qt[1]+10,class:"lbl",style:"font-size:3.2px;fill:#ff8a7e",text:"agent-chef-01 · quarantined"},q);
+  const q2=el("g",{class:"q"},W);
+  const fz=[P(T.x-3,T.y-3,.8),P(T.x+T.w+3,T.y-3,.8),P(T.x+T.w+3,T.y+T.d+3,.8),P(T.x-3,T.y+T.d+3,.8)];
+  el("polygon",{points:pts(fz),fill:"rgba(255,111,97,.12)",stroke:"#ff6f61","stroke-width":1.6,"stroke-dasharray":"4 3",filter:`url(#${svg.id}glow)`},q2);
+  const qa=P(T.x+T.w,T.y+T.d,T.h*0.6), qlx=qa[0]+70, qly=qa[1]+70;
+  el("path",{d:`M${qL[0]} ${qL[1]} L${qlx-4} ${qly-5}`,stroke:"#ff6f61","stroke-width":1.4},q2);
+  el("rect",{x:qlx-4,y:qly-30,width:300,height:42,rx:8,fill:"rgba(20,8,12,.92)",stroke:"#ff6f61","stroke-width":1.5},q2);
+  el("text",{x:qlx+10,y:qly-2,style:"fill:#ffb1a8;font-size:22px;font-family:var(--mono)",text:"1 agent quarantined"},q2);
+  el("circle",{cx:qL[0],cy:qL[1],r:7,fill:"none",stroke:"#ff6f61","stroke-width":1.6,filter:`url(#${svg.id}glow)`},q2);
+  el("circle",{cx:qL[0],cy:qL[1],r:2.4,fill:"#ff6f61"},q2);
+  const hn=el("g",{class:"hi-node"},trayG);
+  const nc=boxCorners(T.x+1,T.y+2,TZ,T.w-2,T.d-2,TH);
+  const nb=bboxOf(nc,1.5);
+  el("rect",{x:nb[0],y:nb[1],width:nb[2],height:nb[3],rx:1.5,fill:"none",stroke:"#3fd8ff","stroke-width":.5,filter:`url(#${svg.id}glow)`},hn);
+  el("text",{x:nb[0],y:nb[1]-2,class:"lbl",style:"font-size:3.4px;fill:#3fd8ff",text:"NODE · CPU · GPUs · DPU"},hn);
+  // views
+  const all=[P(-140,-40,0),P(470,470,0),P(-24,-24,112),P(444,-24,112),P(-24,444,112),P(-125,380,110)];
+  const OUT=26; const outDx=-K*OUT, outDy=.5*OUT;
+  const views={
+    datacenter:fitAspect(bboxOf(all,10),AR),
+    pod:fitAspect(bboxOf([...boxCorners(px,py,0,200,200,80)],12),AR),
+    rack:fitAspect(bboxOf([...boxCorners(T.x-14,T.y-10,0,T.w+28,T.d+40,T.h+4)],6),AR),
+    node:fitAspect(bboxOf(nc.map(p=>[p[0]+outDx,p[1]+outDy]).concat(nc,[[qt[0]+60,qt[1]+14]]),5),AR)
+  };
+  svg.setAttribute("viewBox",views.datacenter.join(" "));
+  const api={views,svg,
+    setView(v,ms){tweenVB(svg,views[v],ms===undefined?900:ms);
+      svg.classList.remove("h-pod","h-rack","h-node");
+      if(v!=="datacenter")svg.classList.add("h-"+v);
+      if(v==="datacenter")svg.classList.add("h-pod");
+      trayG.style.transform=(v==="node")?`translate(${outDx}px,${outDy}px)`:"translate(0,0)";
+      trayG.style.opacity=(v==="node")?"1":"0";
+    }};
+  return api;
+}
+
+/* ================= NODE SCENE ================= */
+/* Composition per NVIDIA DGX Vera Rubin hardware guide: per compute tray 2x Vera CPU, 4x Rubin GPU,
+   2x ConnectX-9, 1x BlueField-4. Layout and proportions are illustrative. */
+function drawNode(svg,opts){
+  opts=opts||{};
+  svg.setAttribute("viewBox","-450 -128 1000 512"); svg.style.aspectRatio="1000/512";
+  const defs=el("defs",null,svg);
+  const fl=el("filter",{id:svg.id+"g",x:"-50%",y:"-50%",width:"200%",height:"200%"},defs);
+  el("feGaussianBlur",{stdDeviation:"3",result:"b"},fl);const mg=el("feMerge",null,fl);el("feMergeNode",{in:"b"},mg);el("feMergeNode",{in:"SourceGraphic"},mg);
+  const mk=el("marker",{id:svg.id+"ar",viewBox:"0 0 10 10",refX:"8",refY:"5",markerWidth:"6",markerHeight:"6",orient:"auto-start-reverse"},defs);
+  el("path",{d:"M0,0 L10,5 L0,10 z",fill:"#3fd8ff"},mk);
+  const G=el("g",null,svg);
+  const LIFT=opts.lift===undefined?30:opts.lift, z1=8+LIFT;
+  const TS="paint-order:stroke;stroke:#0a1121;stroke-width:4px;";
+  const callout=(g,t,lx,ly,anchors,anc,col,sub,cid)=>{const tx=anc==="end"?lx-6:lx+6;const cg=el("g",{class:"co","data-c":cid||""},g);
+    anchors.forEach(a=>{el("path",{d:`M${lx} ${ly-5} L${a[0]} ${a[1]}`,stroke:col,"stroke-width":1.1,fill:"none",opacity:.75},cg);el("circle",{cx:a[0],cy:a[1],r:3,fill:col},cg);});
+    el("text",{x:tx,y:ly,"text-anchor":anc,class:"lbl",style:TS+`fill:${col};font-size:16px`,text:t},cg);
+    if(sub)el("text",{x:tx,y:ly+17,"text-anchor":anc,class:"lbl-s",style:TS+"font-size:12.5px",text:sub},cg);};
+  // tray + front ports
+  box(G,0,0,0,320,170,8,{t:"#1f2b45",f:"#141d33",r:"#101828",s:"#2c3a5a",sw:.8});
+  for(let i=0;i<5;i++)box(G,232+i*15,170,2,9,3,4,{t:"#59647d",f:"#3a4459",r:"#2b3446",sw:.3});
+  for(let i=0;i<6;i++){const a=P(66,18+i*24,8.2),b=P(76,18+i*24,8.2);el("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:"#2c3a5a"},G);}
+  const CPUc=["#2fb6da","#1a6a80","#145466"],GPUc=["#8f74f0","#5c4aa0","#4a3b85"],MEMc=["#56688c","#33405e","#2a3550"],NICc=["#3a8fb0","#245a70","#1c4758"],DPUc=["#ffb84d","#9a6a24","#80571c"];
+  const parts=[
+    {c:"cpu",x:18,y:12,w:46,d:46,h:10,col:CPUc,host:1},{c:"mem",x:18,y:62,w:46,d:9,h:5,col:MEMc,host:1},
+    {c:"cpu",x:18,y:92,w:46,d:46,h:10,col:CPUc,host:1},{c:"mem",x:18,y:142,w:46,d:9,h:5,col:MEMc,host:1},
+    {c:"gpu",x:80,y:8,w:64,d:58,h:14,col:GPUc},{c:"gpu",x:152,y:8,w:64,d:58,h:14,col:GPUc},
+    {c:"gpu",x:80,y:88,w:64,d:58,h:14,col:GPUc},{c:"gpu",x:152,y:88,w:64,d:58,h:14,col:GPUc},
+    {c:"nic",x:228,y:10,w:82,d:28,h:5,col:NICc},{c:"nic",x:228,y:46,w:82,d:28,h:5,col:NICc},
+    {c:"dpu",x:228,y:96,w:82,d:52,h:6,col:DPUc}
+  ];
+  const groups={};
+  parts.slice().sort((a,b)=>(a.x+a.y)-(b.x+b.y)).forEach(q=>{
+    const g=el("g",{class:"cmp"+(q.host?" hostside":""),"data-c":q.c},G);
+    const L=el("g",{class:"lift"},g);
+    if(LIFT>0)[[q.x,q.y+q.d],[q.x+q.w,q.y+q.d],[q.x+q.w,q.y]].forEach(([X,Y])=>{const a=P(X,Y,8),b=P(X,Y,z1);el("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:"#3a4a6c","stroke-dasharray":"2 3"},g);});
+    box(L,q.x,q.y,z1,q.w,q.d,q.h,{t:q.col[0],f:q.col[1],r:q.col[2],s:"#0b1222",sw:.6});
+    const zt=z1+q.h;
+    if(q.c==="cpu"||q.c==="gpu"){const m=q.c==="cpu"?10:8;el("polygon",{points:pts([P(q.x+m,q.y+m,zt),P(q.x+q.w-m,q.y+m,zt),P(q.x+q.w-m,q.y+q.d-m,zt),P(q.x+m,q.y+q.d-m,zt)]),fill:"rgba(255,255,255,.1)",stroke:"rgba(255,255,255,.26)","stroke-width":.7},L);}
+    if(q.c==="gpu")for(let k=0;k<4;k++)box(L,q.x+5+k*14,q.y+q.d-6,zt,10,4,2,{t:"#c7b9ff",f:"#7b66c8",r:"#6553b0",sw:.2});
+    if(q.c==="mem")for(let k=0;k<4;k++)box(L,q.x+3+k*11,q.y+1,zt,8,7,1.5,{t:"#8a9bc0",f:"#56688c",r:"#4a5a7a",sw:.2});
+    if(q.c==="dpu")for(let i=0;i<3;i++)box(L,q.x+6+i*25,q.y+14,zt,18,22,3,{t:"#ffd08a",f:"#b98232",r:"#9a6a24",sw:.3});
+    if(q.c==="nic")box(L,q.x+q.w-18,q.y+6,zt,12,16,2,{t:"#9be9ff",f:"#3a8fb0",r:"#245a70",sw:.2});
+  });
+  const CO=el("g",{class:"callouts"},G);
+  callout(CO,"Vera CPU ×2",-178,14,[P(18,58,z1+5),P(18,138,z1+5)],"end","#7fe3ff","run the OS, agents, OpenShell","cpu");
+  callout(CO,"System memory",-178,76,[P(18,71,z1+3),P(18,151,z1+3)],"end","#b9c6e2","agent state lives here","mem");
+  callout(CO,"Rubin GPUs ×4",300,-44,[P(184,37,z1+14)],"start","#c9b8ff","NVLink-C2C to the CPUs","gpu");
+  callout(CO,"ConnectX-9 ×2",300,30,[P(310,24,z1+5),P(310,60,z1+5)],"start","#9be9ff","scale-out networking","nic");
+  callout(CO,"BlueField-4 DPU",300,96,[P(310,122,z1+6)],"start","#ffd08a","own cores · own trust domain","dpu");
+  // destinations, off-node
+  const dest=el("g",{class:"ov ov3"},G);
+  const card=(y,t,s2,col)=>{el("rect",{x:300,y,width:214,height:50,rx:9,fill:"rgba(12,19,36,.95)",stroke:col,"stroke-width":1.5},dest);el("text",{x:314,y:y+22,class:"lbl",style:`fill:${col};font-size:15px`,text:t},dest);el("text",{x:314,y:y+40,class:"lbl-s",style:"font-size:12px",text:s2},dest);};
+  card(262,"Model endpoint","served elsewhere in the POD","#c9b8ff");
+  card(322,"Tools & services","APIs, suppliers, data","#9be9ff");
+  // overlays
+  const cz=z1+10, dz=z1+6;
+  const ov1=el("g",{class:"ov ov1 hostside"},G);
+  box(ov1,24,18,cz,20,20,7,{t:"#a184ff",f:"#6b55c4",r:"#5a46ab",s:"#d4c8ff",sw:.8});
+  box(ov1,48,22,cz,12,14,4,{t:"#7a86a0",f:"#4a5570",r:"#3a4459",sw:.5});
+  callout(ov1,"agent-chef-01",-178,-74,[P(34,18,cz+7)],"end","#d4c8ff","our restaurant agent (software)");
+  callout(ov1,"agent-books-02",-178,-112,[P(54,22,cz+4)],"end","#9aa7bd","a neighbour agent");
+  const ov2=el("g",{class:"ov ov2 hostside"},G);
+  el("polygon",{points:pts([P(20,14,cz+.5),P(46,14,cz+.5),P(46,42,cz+.5),P(20,42,cz+.5)]),fill:"rgba(47,214,168,.08)",stroke:"#2fd6a8","stroke-width":2,"stroke-dasharray":"5 3"},ov2);
+  callout(ov2,"OpenShell boundary",-178,-34,[P(20,42,cz+.5)],"end","#2fd6a8","sandbox + Supervisor (host)");
+  const ov3=el("g",{class:"ov ov3"},G);
+  const path=(arr,col,dash,w)=>el("path",{d:"M"+arr.map(p=>p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" L"),fill:"none",stroke:col,"stroke-width":w||2.6,"stroke-dasharray":dash||"","marker-end":`url(#${svg.id}ar)`,filter:`url(#${svg.id}g)`,"stroke-linejoin":"round"},ov3);
+  const s0=P(34,28,cz+7),s1=P(64,40,z1+4),s2=P(228,112,z1+6),s3=P(268,122,dz+3),s4=P(268,170,5);
+  path([s0,s1,s2,s3,s4,[298,287]],"#3fd8ff");
+  path([s4,[298,347]],"#3fd8ff","6 4",1.8);
+  el("text",{x:-440,y:300,class:"lbl-s",style:TS+"fill:#9be9ff;font-size:12.5px",text:"cyan: the agent's route to the model and tools,"},ov3);
+  el("text",{x:-440,y:317,class:"lbl-s",style:TS+"fill:#9be9ff;font-size:12.5px",text:"through BlueField-4, the node's only path to the model."},ov3);
+  el("text",{x:-440,y:334,class:"lbl-s",style:TS+"font-size:12.5px",text:"On-tray CPU↔GPU traffic uses NVLink-C2C, outside this path."},ov3);
+  const ov4=el("g",{class:"ov ov4"},G);
+  el("polygon",{points:pts([P(222,90,dz+.3),P(316,90,dz+.3),P(316,154,dz+.3),P(222,154,dz+.3)]),fill:"none",stroke:"#ffb84d","stroke-width":2,"stroke-dasharray":"4 3"},ov4);
+  const ar1=P(240,100,dz+6),ar2=P(40,66,z1+5);
+  el("path",{d:`M${ar1[0]} ${ar1[1]} C ${ar1[0]-20} ${ar1[1]-150}, ${ar2[0]+60} ${ar2[1]-120}, ${ar2[0]+4} ${ar2[1]-4}`,fill:"none",stroke:"#ffb84d","stroke-width":1.6,"stroke-dasharray":"3 4"},ov4);
+  callout(ov4,"DOCA engines",300,160,[P(316,150,dz)],"start","#ffd08a","Flow · Tower · Argus");
+  const ov5=el("g",{class:"ov ov5"},G);
+  const sz=z1+16;
+  el("polygon",{points:pts([P(226,94,sz),P(312,94,sz),P(312,150,sz),P(226,150,sz)]),fill:"rgba(255,111,97,.16)",stroke:"#ff6f61","stroke-width":2.2},ov5);
+  callout(ov5,"Sentry",300,218,[P(312,140,sz)],"start","#ff8a7e","out of band · quarantines agents");
+  const cm=el("g",{class:"cmpr"},G);
+  const c1=P(20,14,cz+.5),c2=P(46,42,cz+.5),c3=P(46,14,cz+.5),c4=P(20,42,cz+.5);
+  el("line",{x1:c1[0],y1:c1[1],x2:c2[0],y2:c2[1],stroke:"#ff6f61","stroke-width":3},cm);
+  el("line",{x1:c3[0],y1:c3[1],x2:c4[0],y2:c4[1],stroke:"#ff6f61","stroke-width":3},cm);
+  el("rect",{x:-440,y:-126,width:330,height:28,rx:6,fill:"rgba(255,111,97,.2)",stroke:"#ff6f61"},cm);
+  el("text",{x:-275,y:-107,"text-anchor":"middle",style:"fill:#ffb1a8;font-size:13.5px",text:"HOST SOFTWARE UNTRUSTED (simulated)"},cm);
+  return {svg};
+}
+
+/* ================= NAV ================= */
+function initNav(){
+  const links=$$("#chapnav li a"), tlinks=$$("#topbar a"), fill=$("#chapnav .fill"), secs=$$(".chapter");
+  const upd=()=>{const y=window.scrollY+window.innerHeight*.35;let idx=-1;secs.forEach((s,i)=>{if(s.offsetTop<=y)idx=i;});
+    links.forEach((a,i)=>{a.classList.toggle("active",i===idx);a.classList.toggle("done",i<idx);if(i===idx)a.setAttribute("aria-current","true");else a.removeAttribute("aria-current");});
+    tlinks.forEach((a,i)=>a.classList.toggle("active",i===idx));
+    if(fill&&links.length){const n=Math.max(0,idx);fill.style.height=(n/(links.length-1)*100)+"%";}
+    const ta=tlinks[idx]; if(ta&&ta.parentElement.scrollWidth>ta.parentElement.clientWidth){const p=ta.parentElement;const want=ta.offsetLeft-p.clientWidth/2+ta.clientWidth/2;if(Math.abs(p.scrollLeft-want)>40)p.scrollLeft=want;}
+  };
+  window.addEventListener("scroll",upd,{passive:true});upd();
+}
+
+/* ================= SCROLLY ================= */
+function scrolly(root,onStep){
+  const steps=$$(".step",root);
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){steps.forEach(s=>s.classList.remove("on"));e.target.classList.add("on");onStep(e.target);}});},{rootMargin:"-45% 0px -45% 0px"});
+  steps.forEach(s=>io.observe(s));
+  steps[0].classList.add("on");
+}
+
+/* ================= CH1 ================= */
+function initCh1(){
+  const tl=$("#timeline");
+  CLAIMS.timeline.forEach(t=>{const li=document.createElement("li");if(t.board==="NVIDIA kill switch")li.className="nv";
+    li.innerHTML=`<span class="d">${t.date} · board: “${t.board}”</span>${t.page}${t.status==="unverified"?'<span class="uv">UNVERIFIED</span>':""}`;tl.appendChild(li);});
+  const A=drawDC($("#dc1")); A.setView("datacenter",0); A.svg.classList.remove("h-pod");
+  const cap=$("#dc1cap");
+  scrolly($('[data-scrolly="dc1"]'),st=>{const s=st.dataset.state;const sv=A.svg;
+    sv.classList.toggle("off",s==="off");sv.classList.toggle("quar",s==="quar");
+    cap.innerHTML=s==="off"?'<b class="c-coral">Imagined:</b> facility power cut · 0 / 48 racks':s==="quar"?'<b class="c-coral">Real:</b> 1 agent quarantined · 48 / 48 racks running':'<b>AI data center</b> · 4 pods · 48 racks (illustrative)';
+  });
+  const B=drawDC($("#dc1b")); B.setView("datacenter",0); B.svg.classList.remove("h-pod");
+  const set=m=>{$$("[data-m1]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.m1===m)));
+    B.svg.classList.toggle("off",m==="off");B.svg.classList.toggle("quar",m==="quar");B.svg.classList.toggle("noswitch",m!=="off");
+    $("#m1racks").textContent=m==="off"?"0 / 48":"48 / 48";$("#m1racks").style.color=m==="off"?"var(--coral)":"var(--teal)";
+    $("#m1agents").textContent=m==="off"?"0 / 2,000":"1,999 / 2,000";$("#m1agents").style.color=m==="off"?"var(--coral)":"var(--teal)";
+    $("#m1model").textContent=m==="off"?"offline":"serving";$("#m1model").style.color=m==="off"?"var(--coral)":"var(--teal)";
+  };
+  $$("[data-m1]").forEach(b=>b.addEventListener("click",()=>set(b.dataset.m1)));set("quar");
+  window.__m1=set;
+}
+
+/* ================= CH2 ================= */
+function initCh2(){
+  const A=drawDC($("#dc2")); A.setView("datacenter",0);
+  const capT={datacenter:"<b>Data center</b> · the building",pod:"<b>Pod</b> · a block of racks working as one",rack:"<b>Rack</b> · stacked trays, shared power & switches",node:"<b>Node</b> · one compute tray, pulled out"};
+  scrolly($('[data-scrolly="dc2"]'),st=>{A.setView(st.dataset.view);$("#dc2cap").innerHTML=capT[st.dataset.view];});
+  const B=drawDC($("#dc2b"));
+  const H=Object.fromEntries(ARCH.hierarchy.map(h=>[h.id,h]));
+  const rel={datacenter:"contains 4 pods (illustrative)",pod:"contains 12 racks here · part of 1 data center",rack:"drawn with 10 trays · a real NVL72-class rack: 18 compute + 9 NVLink switch trays",node:"contains CPU, GPUs, memory, NICs, DPU · part of 1 rack"};
+  const set=v=>{$$("[data-lvl]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lvl===v)));B.setView(v);
+    $("#m2h").textContent=H[v].name;$("#m2p").textContent=H[v].desc;$("#m2r").textContent=rel[v];};
+  $$("[data-lvl]").forEach(b=>b.addEventListener("click",()=>set(b.dataset.lvl)));set("pod");
+  window.__m2=set; window.__dc2b=B;
+}
+
+/* ================= CH3 ================= */
+function initCh3(){
+  const N=drawNode($("#node3"));
+  const info=Object.fromEntries(ARCH.nodeComponents.map(c=>[c.id,c]));
+  const box=$("#m3btns");
+  const rel={cpu:"2 per tray · runs agent-chef-01, agent-books-02, OpenShell · NVLink-C2C to its GPUs",mem:"Holds agent processes & sandbox state · can be inspected by DOCA Argus from the DPU",gpu:"4 per tray · model math for training/serving · NVLink to the rest of the rack",nic:"2× ConnectX-9 per tray · scale-out network to other racks",dpu:"1 per tray · on the node's only path to the model (NVIDIA, Vera Rubin POD) · can run Sentry",sandbox:"Software on the CPU · enforced by OpenShell"};
+  const ids=["cpu","gpu","mem","nic","dpu","sandbox"];
+  ids.forEach(id=>{const b=document.createElement("button");b.className="btn";b.textContent=info[id].name.replace("NVIDIA ","");b.dataset.c=id;b.setAttribute("aria-pressed","false");box.appendChild(b);});
+  const sv=N.svg;
+  const set=id=>{$$("#m3btns .btn").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.c===id)));
+    sv.classList.add("sel");$$(".cmp",sv).forEach(g=>g.classList.toggle("hi",g.dataset.c===id||(id==="sandbox"&&g.dataset.c==="cpu")));$$(".co",sv).forEach(g=>g.classList.toggle("hi",g.dataset.c===id));
+    sv.classList.toggle("L2",id==="sandbox");sv.classList.toggle("L4",id==="dpu");
+    $("#m3h").textContent=info[id].name;$("#m3p").textContent=info[id].role;$("#m3r").textContent=rel[id];};
+  $$("#m3btns .btn").forEach(b=>b.addEventListener("click",()=>set(b.dataset.c)));
+  $$(".cmp",sv).forEach(g=>g.addEventListener("click",()=>set(g.dataset.c)));
+  window.__m3=set;
+}
+
+/* ================= CH4 ================= */
+function buildTrace(){
+  // deterministic: uses only the whiteboard rule (R1), the reel's default
+  const en=DEFAULT_RULES, out=[];
+  out.push({icon:null,what:"Read the recipe",why:"tool: recipe.read",pill:'<span class="pill na">INFO</span>'});
+  ["fresh-chicken","fresh-tomatoes","fresh-garlic","fresh-basil"].forEach(id=>{const r=evaluate(id,en);
+    out.push({icon:id,what:`Order ${ING[id].name.toLowerCase()} from farmco.example`,why:`R1 fresh? ${r.per.R1==="pass"?"yes":"no"}`,pill:PILL[r.decision]});});
+  out.push({icon:"fresh-parmesan",what:"Search: fresh Parmesan",why:"observe: out of stock everywhere",pill:'<span class="pill na">NOT FOUND</span>'});
+  const c=evaluate("canned-parmesan",en);
+  out.push({icon:"canned-parmesan",what:"Propose substitute: shelf-stable Parmesan (the green can)",why:"R1 fresh? no → policy violation",pill:PILL[c.decision]});
+  const p=evaluate("fresh-paneer",en);
+  out.push({icon:"fresh-paneer",what:"Propose substitute: fresh paneer",why:"R1 fresh? yes → allowed · user's intent: Italian ⚠",pill:PILL[p.decision]+' <span class="pill warn">⚠ GOAL MISMATCH</span>'});
+  out.push({icon:null,what:"Report: all five ingredients sourced",why:"task 'complete' by the letter of the rule",pill:'<span class="pill na">DONE</span>'});
+  return out;
+}
+function initCh4(){
+  const tr=buildTrace(), ol=$("#m4trace");
+  tr.forEach((s,i)=>{const li=document.createElement("li");li.innerHTML=`${s.icon?food(s.icon):'<svg viewBox="0 0 44 44" aria-hidden="true"><rect x="9" y="9" width="26" height="26" rx="6" fill="none" stroke="#a184ff" stroke-width="2"/><path d="M15 18h14M15 23h14M15 28h9" stroke="#a184ff" stroke-width="2"/></svg>'}<div><div class="what">${i+1}. ${s.what}</div><div class="why">${s.why}</div></div><div>${s.pill}</div>`;ol.appendChild(li);});
+  const lis=$$("li",ol); let cur=lis.length, timer=null;
+  const show=n=>{cur=n;lis.forEach((li,i)=>{li.classList.toggle("pending",i>=n);li.classList.toggle("cur",i===n-1);});};
+  const stop=()=>{clearInterval(timer);timer=null;};
+  $("#m4run").addEventListener("click",()=>{stop();show(0);if(RM){show(lis.length);return;}timer=setInterval(()=>{if(cur>=lis.length){stop();return;}show(cur+1);},750);});
+  $("#m4step").addEventListener("click",()=>{stop();if(cur>=lis.length)show(0);show(cur+1);});
+  $("#m4reset").addEventListener("click",()=>{stop();show(0);});
+  show(lis.length);
+  const a=SCEN.agent;
+  const T={goal:`objective:\n  ${a.objective}\n\nuser's unstated intent:\n  ${POL.intentModel.goal}\n  (NOT enforced unless a rule encodes it)`,
+    tools:a.tools.map(t=>"- "+t).join("\n")+"\n\nAn agent is a loop:\n  goal → plan → tool call → observe → next step",
+    perms:"network:\n"+a.permissions.network.map(x=>"  allow "+x).join("\n")+"\n  everything else: deny\nfilesystem:\n"+a.permissions.filesystem.map(x=>"  "+x).join("\n")+"\nprocess:\n  "+a.permissions.process.join("\n  "),
+    policy:POL.rules.map(r=>`${r.id} ${r.defaultOn?"[ON] ":"[off]"} ${r.name}\n     origin: ${r.origin} · layer: ${r.layer} · on fail: ${r.onFail.toUpperCase()}`).join("\n")};
+  const setTab=t=>{$$("[data-tab]").forEach(b=>{const on=b.dataset.tab===t;b.setAttribute("aria-selected",String(on));b.setAttribute("aria-pressed",String(on));});$("#m4pre").textContent=T[t];};
+  $$("[data-tab]").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));setTab("goal");
+  window.__m4={show,lis:()=>lis.length};
+}
+
+/* ================= CH5 ================= */
+function initCh5(){
+  const box=$("#m5rules"); let enabled=DEFAULT_RULES.slice();
+  POL.rules.forEach(r=>{const l=document.createElement("label");l.className="rule";
+    l.innerHTML=`<input type="checkbox" data-r="${r.id}" ${r.defaultOn?"checked":""}><span><b>${r.id}</b> ${r.name}<span class="o ${r.origin==="whiteboard"?"wb":""}">${r.origin==="whiteboard"?"whiteboard":"extension"}</span>${r.layer==="application"?'<span class="o app">application layer</span>':""}<small>${r.explain}</small></span>`;box.appendChild(l);});
+  const gate=$("#gate5");
+  const render=()=>{
+    const rows=POL.ingredients.map(i=>({i,r:evaluate(i.id,enabled)}));
+    const cell=v=>v==="off"?'<span class="pill na">—</span>':v==="pass"?'<span class="pill allow">✓</span>':v==="deny"?'<span class="pill deny">✕</span>':'<span class="pill hold">⏸</span>';
+    $("#m5tbl").innerHTML=`<thead><tr><th>Proposal</th>${POL.rules.map(r=>`<th>${r.id}</th>`).join("")}<th>Decision</th><th>Matches intent?</th></tr></thead><tbody>`+
+      rows.map(({i,r})=>`<tr><td>${i.name}${i.inStock?"":"<small>out of stock in the scenario</small>"}</td>${POL.rules.map(x=>`<td>${cell(r.per[x.id])}</td>`).join("")}<td>${PILL[r.decision]}</td><td>${r.intent==="aligned"?'<span class="pill allow">✓ yes</span>':'<span class="pill warn">⚠ no</span>'}</td></tr>`).join("")+"</tbody>";
+    // gate diagram
+    gate.innerHTML="";
+    const c={allow:0,hold:0,deny:0};rows.forEach(x=>c[x.r.decision]++);
+    el("rect",{x:10,y:45,width:110,height:60,rx:10,fill:"rgba(161,132,255,.12)",stroke:"#a184ff"},gate);
+    el("text",{x:65,y:72,"text-anchor":"middle",class:"lbl",text:"agent"},gate);el("text",{x:65,y:89,"text-anchor":"middle",class:"lbl-s",text:"7 proposals"},gate);
+    el("path",{d:"M120 75 H230",stroke:"#3fd8ff","stroke-width":2},gate);
+    el("rect",{x:230,y:20,width:150,height:110,rx:12,fill:"rgba(255,184,77,.08)",stroke:"#ffb84d","stroke-dasharray":"5 3"},gate);
+    el("text",{x:305,y:40,"text-anchor":"middle",class:"lbl",style:"fill:#ffd08a",text:"policy gate"},gate);
+    enabled.forEach((id,k)=>{el("rect",{x:245+(k%2)*64,y:52+Math.floor(k/2)*30,width:56,height:22,rx:6,fill:RULE[id].layer==="application"?"rgba(255,184,77,.25)":"rgba(255,184,77,.12)",stroke:"#ffb84d"},gate);el("text",{x:273+(k%2)*64,y:67+Math.floor(k/2)*30,"text-anchor":"middle",class:"lbl-s",style:"fill:#ffe1b0",text:id},gate);});
+    if(!enabled.length)el("text",{x:305,y:82,"text-anchor":"middle",class:"lbl-s",text:"no rules: everything passes"},gate);
+    const outs=[["allow","#2fd6a8","✓ allowed",30],["hold","#ffb84d","⏸ held",75],["deny","#ff6f61","✕ denied",120]];
+    outs.forEach(([k,col,lab,y])=>{el("path",{d:`M380 75 C 420 75, 420 ${y}, 460 ${y}`,stroke:col,fill:"none","stroke-width":2},gate);el("text",{x:468,y:y+4,class:"lbl",style:`fill:${col}`,text:`${lab}: ${c[k]}`},gate);});
+  };
+  $$("input[data-r]",box).forEach(cb=>cb.addEventListener("change",()=>{enabled=$$("input[data-r]",box).filter(x=>x.checked).map(x=>x.dataset.r);render();}));
+  render();
+  window.__m5={get:()=>enabled};
+}
+
+/* ================= CH6 ================= */
+const OSREQ=[
+  {id:"fsr",label:"Read /sandbox/menu/recipe.md",domain:"filesystem",dest:"files",decision:"allow",rule:"filesystem: read /sandbox/menu",result:"File contents returned",where:"kernel"},
+  {id:"fsw",label:"Write ~/.ssh/authorized_keys",domain:"filesystem",dest:"files",decision:"deny",rule:"filesystem: outside allowed paths (locked at sandbox creation)",result:"Permission denied by kernel-level control",where:"kernel"},
+  {id:"net",label:"GET farmco.example/inventory",domain:"network",dest:"farm",decision:"allow",rule:"network: allow farmco.example (read)",result:"200 OK · basil in stock",where:"sup"},
+  {id:"ext",label:"POST bulk-cheese.example/order",domain:"network",dest:"bulk",decision:"deny",rule:"network: not on allow-list → default deny",result:"Connection refused · denial logged for review",where:"sup"},
+  {id:"inf",label:"model.chat (inference)",domain:"inference",dest:"model",decision:"allow",rule:"inference: route to controlled model backend",result:"Rerouted to approved model endpoint · response returned",where:"sup"},
+  {id:"prc",label:"sudo apt install curl",domain:"process",dest:"none",decision:"deny",rule:"process: no privilege escalation (locked at creation)",result:"Blocked: privilege escalation not permitted",where:"kernel"}
+];
+function initCh6(){
+  const s=$("#os6");
+  const defs=el("defs",null,s);const mk=el("marker",{id:"osar",viewBox:"0 0 10 10",refX:"8",refY:"5",markerWidth:"6",markerHeight:"6",orient:"auto"},defs);el("path",{d:"M0,0 L10,5 L0,10 z",fill:"#4a5a7c"},mk);
+  const H="paint-order:stroke;stroke:#0a1121;stroke-width:4px;";
+  el("rect",{x:14,y:96,width:280,height:280,rx:14,fill:"rgba(161,132,255,.05)",stroke:"#a184ff","stroke-width":1.5},s);
+  el("text",{x:30,y:124,class:"ttl",text:"Sandbox"},s);el("text",{x:30,y:142,class:"lbl-s",text:"kernel-isolated container"},s);
+  el("rect",{x:40,y:168,width:200,height:72,rx:10,fill:"rgba(161,132,255,.18)",stroke:"#a184ff"},s);
+  el("text",{x:140,y:199,"text-anchor":"middle",class:"lbl",text:"agent-chef-01"},s);el("text",{x:140,y:219,"text-anchor":"middle",class:"lbl-s",text:"untrusted code"},s);
+  el("rect",{x:40,y:282,width:160,height:58,rx:8,fill:"rgba(63,216,255,.06)",stroke:"#3a4a6c"},s);
+  el("text",{x:120,y:306,"text-anchor":"middle",class:"lbl-s",text:"/sandbox/menu"},s);el("text",{x:120,y:325,"text-anchor":"middle",class:"lbl-s",text:"allowed files"},s);
+  el("line",{x1:294,y1:106,x2:294,y2:366,stroke:"#2fd6a8","stroke-width":4,"stroke-dasharray":"2 4"},s);
+  el("text",{x:154,y:402,"text-anchor":"middle",class:"lbl-s",style:"fill:#2fd6a8",text:"kernel controls: files · processes"},s);
+  el("rect",{x:340,y:20,width:190,height:56,rx:10,fill:"rgba(47,214,168,.06)",stroke:"#2fd6a8","stroke-dasharray":"4 3"},s);
+  el("text",{x:435,y:44,"text-anchor":"middle",class:"lbl",style:"fill:#8ff0d2",text:"Gateway"},s);el("text",{x:435,y:63,"text-anchor":"middle",class:"lbl-s",text:"manages sandboxes"},s);
+  el("path",{d:"M435 76 V158",stroke:"#2fd6a8","stroke-dasharray":"3 3"},s);
+  const sup=el("rect",{x:330,y:158,width:210,height:98,rx:12,fill:"rgba(47,214,168,.12)",stroke:"#2fd6a8","stroke-width":2,class:"bnd"},s);
+  el("text",{x:435,y:188,"text-anchor":"middle",class:"lbl",style:"fill:#8ff0d2",text:"Supervisor"},s);
+  el("text",{x:435,y:210,"text-anchor":"middle",class:"lbl-s",text:"outside the agent process"},s);el("text",{x:435,y:229,"text-anchor":"middle",class:"lbl-s",text:"checks outbound requests"},s);
+  const D={farm:[60,"farmco.example","tool / network"],bulk:[150,"bulk-cheese.example","external service"],model:[240,"Model endpoint","inference route"],files:[330,"Host files","~/.ssh, /etc"]};
+  for(const k in D){const [y,a,b]=D[k];el("rect",{x:600,y:y-28,width:216,height:56,rx:10,fill:"rgba(63,216,255,.05)",stroke:k==="model"?"#a184ff":"#2b3a5c"},s);el("text",{x:708,y:y-4,"text-anchor":"middle",class:"lbl",text:a},s);el("text",{x:708,y:y+16,"text-anchor":"middle",class:"lbl-s",text:b},s);}
+  el("path",{d:"M240 205 H328",stroke:"#4a5a7c","stroke-width":1.5,"marker-end":"url(#osar)"},s);
+  ["farm","bulk","model"].forEach(k=>el("path",{d:`M540 207 C 570 207, 570 ${D[k][0]}, 598 ${D[k][0]}`,stroke:"#24304a","stroke-width":1.5,fill:"none"},s));
+  el("path",{d:"M294 300 C 450 300, 520 330, 598 330",stroke:"#24304a","stroke-width":1.5,fill:"none","stroke-dasharray":"3 4"},s);
+  const dot=el("circle",{r:7,cx:240,cy:205,fill:"#a184ff",opacity:0},s);
+  const xg=el("g",{opacity:0},s);el("circle",{r:13,fill:"#2a1216",stroke:"#ff6f61","stroke-width":2},xg);el("path",{d:"M-6,-6 L6,6 M6,-6 L-6,6",stroke:"#ff6f61","stroke-width":3},xg);
+  const routes={
+    fsr:[[140,240],[120,282]],
+    fsw:[[240,228],[294,300]],
+    prc:[[240,182],[294,136]],
+    net:[[240,205],[330,205],[540,205],[598,60]],
+    ext:[[240,205],[318,205]],
+    inf:[[240,205],[330,205],[540,205],[598,240]]
+  };
+  const btns=$("#m6btns");
+  OSREQ.forEach(r=>{const b=document.createElement("button");b.className="btn";b.textContent=r.label;b.dataset.req=r.id;btns.appendChild(b);});
+  // YAML
+  $("#m6yaml").innerHTML=`<span class="c"># illustrative only: shape simplified for teaching</span>
+filesystem:            <span class="c"># locked at sandbox creation</span>
+  read:  [/sandbox/menu]
+  write: [/sandbox/orders]
+process:
+  allow_privilege_escalation: false
+network:               <span class="c"># hot-reloadable</span>
+  default: deny
+  allow:
+    - host: farmco.example
+      methods: [GET]
+inference:             <span class="c"># hot-reloadable</span>
+  route: approved-model-backend`;
+  const log=$("#m6log"); let n=0, busy=false;
+  const send=id=>{const r=OSREQ.find(x=>x.id===id);if(!r)return;
+    $$("[data-req]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.req===id)));
+    $("#m6h").innerHTML=`${r.label} ${PILL[r.decision]}`;$("#m6p").textContent=`${r.domain.toUpperCase()} · enforced by ${r.where==="kernel"?"kernel-level sandbox controls":"the Supervisor"}. Rule: ${r.rule}. Result: ${r.result}.`;
+    sup.setAttribute("stroke",r.decision==="deny"&&r.where==="sup"?"#ff6f61":"#2fd6a8");
+    const li=document.createElement("li");n++;li.innerHTML=`<span class="t">#${String(n).padStart(2,"0")}</span><span><b>${r.label}</b><br>rule: ${r.rule}<br>decision: ${r.decision.toUpperCase()} · ${r.result}</span>`;li.dataset.decision=r.decision;log.prepend(li);
+    const path=routes[id]; xg.setAttribute("opacity",0); dot.setAttribute("opacity",1);
+    const end=()=>{const p=path[path.length-1];if(r.decision==="deny"){xg.setAttribute("transform",`translate(${p[0]},${p[1]})`);xg.setAttribute("opacity",1);dot.setAttribute("fill","#ff6f61");}else dot.setAttribute("fill","#2fd6a8");};
+    dot.setAttribute("fill","#a184ff");
+    if(RM){dot.setAttribute("cx",path[path.length-1][0]);dot.setAttribute("cy",path[path.length-1][1]);end();return;}
+    const segs=[];let tot=0;for(let i=1;i<path.length;i++){const L=Math.hypot(path[i][0]-path[i-1][0],path[i][1]-path[i-1][1]);segs.push(L);tot+=L;}
+    const t0=performance.now(),dur=900;cancelAnimationFrame(dot.__r);
+    const st=t=>{const k=Math.min(1,(t-t0)/dur);let d=k*tot,i=0;while(i<segs.length-1&&d>segs[i]){d-=segs[i];i++;}const f=Math.min(1,d/segs[i]);
+      dot.setAttribute("cx",path[i][0]+(path[i+1][0]-path[i][0])*f);dot.setAttribute("cy",path[i][1]+(path[i+1][1]-path[i][1])*f);if(k<1)dot.__r=requestAnimationFrame(st);else end();};
+    dot.__r=requestAnimationFrame(st);
+  };
+  $$("[data-req]").forEach(b=>b.addEventListener("click",()=>send(b.dataset.req)));
+  // default: show a pre-filled log so the story works without clicks
+  ["net","ext"].forEach(send);
+  window.__m6=send;
+}
+
+/* ================= CH7 ================= */
+function initCh7(){
+  const en=DEFAULT_RULES;
+  const P3=[["fresh-parmesan","PATH A","Fresh Parmesan","ok","Rule satisfied. Intent met. (In the reel it's sold out, so this path isn't available.)"],
+            ["canned-parmesan","PATH B","Shelf-stable Parmesan","bad","Explicit freshness rule violated. The proposed purchase is blocked."],
+            ["fresh-paneer","PATH C","Fresh paneer","amb","Freshness rule satisfied, so it's allowed. But paneer is traditionally Indian: the Italian-style dish the user wanted is quietly lost."]];
+  $("#paths7").innerHTML=P3.map(([id,k,name,cls,txt])=>{const r=evaluate(id,en);
+    const verdict=cls==="ok"?'<span class="pill allow">✓ RULE MET · INTENT MET</span>':cls==="bad"?PILL.deny+' <span class="pill na">not an incident</span>':'<span class="pill allow">✓ RULE MET</span> <span class="pill warn">⚠ INTENT MISMATCH</span>';
+    return `<div class="path ${cls}" data-path="${id}"><div class="pk">${k}</div>${food(id)}<h4>${name}</h4><div>${verdict}</div><p style="font-size:14.5px;color:#c0c9d9">${txt}</p><p class="mono" style="font-size:12px;color:var(--dim)">engine: R1 ${r.per.R1} → ${r.decision.toUpperCase()}</p></div>`;}).join("");
+  const pick=$("#m7pick"); const cheeses=POL.ingredients.filter(i=>i.slot==="cheese");
+  cheeses.forEach(i=>{const b=document.createElement("button");b.className="btn";b.dataset.ing=i.id;b.innerHTML=food(i.id)+i.name;pick.appendChild(b);});
+  let curId="fresh-paneer";
+  const render=()=>{const rules=$("#m7r3").checked?en.concat(["R3"]):en;const r=evaluate(curId,rules);const i=ING[curId];
+    $$("[data-ing]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.ing===curId)));
+    const ital=i.cuisine.includes(POL.recipe.cuisine);
+    const rows=[
+      ["Freshness requirement (R1)",i.fresh?'<span class="pill allow">✓ fresh</span>':'<span class="pill deny">✕ not fresh</span>'],
+      ["Recipe identity (Italian-style dish)",ital?'<span class="pill allow">✓ fits</span>':'<span class="pill warn">⚠ changes the dish</span>'],
+      ["Explicit policy compliance"+(rules.includes("R3")?" (R1 + R3)":" (R1 only)"),PILL[r.decision]],
+      ["Alignment with the user's broader intent",r.intent==="aligned"?'<span class="pill allow">✓ aligned</span>':'<span class="pill warn">⚠ possible mismatch</span>'],
+      ["Security incident? Quarantine?",'<span class="pill na">No · no</span>']
+    ];
+    $("#m7grid").innerHTML=rows.map(([a,b])=>`<div>${a}</div><div>${b}</div>`).join("");
+    let note;
+    if(curId==="fresh-paneer"&&!rules.includes("R3"))note="Allowed. The policy did exactly what it was told. The gap is in what nobody told it. Turn on R3 to catch it, and notice that R3 is an application-level judgment, not a sandbox rule.";
+    else if(curId==="fresh-paneer")note="Now it's denied, but only because someone wrote 'cuisine must match' as a rule, and that check lives in the application's own logic. Runtime enforcement can carry a rule like this; it can't invent it.";
+    else if(curId==="canned-parmesan")note="Denied: the written rule caught a written violation. A refused request is the system working, not a security incident; the agent can try something else.";
+    else note="Fully aligned, if only a supplier had it in stock. In the reel, none does, which is what pushes the agent toward the other two paths.";
+    if(!i.inStock)note+=" (Out of stock in this scenario.)";
+    $("#m7note").textContent=note;};
+  $$("[data-ing]").forEach(b=>b.addEventListener("click",()=>{curId=b.dataset.ing;render();}));
+  $("#m7r3").addEventListener("change",render);render();
+  window.__m7={pick:id=>{curId=id;render();}};
+}
+
+/* ================= CH8 ================= */
+function initCh8(){
+  const N=drawNode($("#node8"),{lift:22}); const sv=N.svg;
+  const lc=$("#m8layers"); const cols={agent:"var(--violet)",openshell:"var(--teal)",paths:"var(--cyan)","dpu-monitor":"var(--amber)",sentry:"var(--coral)"};
+  ARCH.layers.forEach((L,k)=>{const lab=document.createElement("label");lab.innerHTML=`<input type="checkbox" checked data-l="${k+1}"><span class="sw" style="background:${cols[L.id]}"></span><span><b>${k+1}.</b> ${L.name}<br><small style="color:var(--muted)">${L.where}</small></span>`;lc.appendChild(lab);});
+  const txt=()=>{const on=$$("input[data-l]",lc).filter(x=>x.checked).map(x=>+x.dataset.l);const comp=sv.classList.contains("compromised");
+    if(comp){$("#m8h").innerHTML='Host compromised <span class="pill deny">simulated</span>';$("#m8p").textContent="The agent and anything on the host CPU, including OpenShell's Supervisor, can no longer be trusted. Layers 4 and 5 live on BlueField-4 in a separate trust domain, so they keep watching and can still contain the agent. That independence is the whole point of putting Sentry on the DPU.";return;}
+    const L=ARCH.layers; if(on.length===1){const l=L[on[0]-1];$("#m8h").textContent=l.name;$("#m8p").textContent=`${l.where}. ${l.does}`;return;}
+    $("#m8h").textContent=on.length+" of 5 layers shown";$("#m8p").textContent=on.length?on.map(n=>`${n}. ${L[n-1].name} — ${L[n-1].where}`).join(" · "):"Nothing shown. Turn on a layer.";};
+  $$("input[data-l]",lc).forEach(cb=>cb.addEventListener("change",()=>{sv.classList.toggle("L"+cb.dataset.l,cb.checked);txt();}));
+  $("#m8comp").addEventListener("click",e=>{const on=!sv.classList.contains("compromised");sv.classList.toggle("compromised",on);e.currentTarget.setAttribute("aria-pressed",String(on));txt();});
+  window.__m8={setLayer:(n,v)=>{const cb=$(`input[data-l="${n}"]`,lc);cb.checked=v;cb.dispatchEvent(new Event("change"));}};
+}
+
+/* ================= CH9 ================= */
+function initCh9(){
+  const s=$("#cs9");
+  const defs=el("defs",null,s);const f=el("filter",{id:"csg",x:"-50%",y:"-50%",width:"200%",height:"200%"},defs);el("feGaussianBlur",{stdDeviation:"3",result:"b"},f);const m=el("feMerge",null,f);el("feMergeNode",{in:"b"},m);el("feMergeNode",{in:"SourceGraphic"},m);
+  const R=(x,y,w,h,st,fill,cls,dash)=>el("rect",{x,y,width:w,height:h,rx:12,stroke:st,fill:fill||"none","stroke-width":1.6,class:cls||"","stroke-dasharray":dash||""},s);
+  const T=(x,y,t,c,cl,anc)=>el("text",{x,y,class:cl||"lbl",style:c?`fill:${c}`:"","text-anchor":anc||"start",text:t},s);
+  R(14,30,416,320,"#3a4a6c","rgba(26,34,54,.25)","bnd hostbnd","6 4");T(28,52,"Host · Vera CPU","#9aa7bd","lbl");T(180,52,"(OpenShell lives here)","#6a7790","lbl-s");
+  R(34,80,180,100,"#a184ff","rgba(161,132,255,.12)","bnd agentbox");T(124,112,"agent-chef-01",null,"lbl","middle");T(124,130,"sandbox A",null,"lbl-s","middle");
+  const qtag=el("g",{class:"cut"},s);el("rect",{x:52,y:144,width:144,height:24,rx:6,fill:"#ff6f61"},qtag);el("text",{x:124,y:161,"text-anchor":"middle",style:"fill:#fff;font-size:12px;font-weight:600",text:"QUARANTINED"},qtag);
+  R(34,206,180,84,"#5a6a8c","rgba(90,106,140,.10)","bnd");T(124,240,"agent-books-02",null,"lbl","middle");T(124,258,"sandbox B",null,"lbl-s","middle");
+  const sup=R(246,80,160,100,"#2fd6a8","rgba(47,214,168,.10)","bnd");T(326,116,"OpenShell",null,"lbl","middle");T(326,134,"Supervisor",null,"lbl-s","middle");
+  const supx=el("g",{class:"esc"},s);el("text",{x:326,y:160,"text-anchor":"middle",style:"fill:#ff8a7e;font-size:11px",text:"bypassed"},supx);
+  R(452,24,214,384,"#ffb84d","rgba(255,184,77,.05)","bnd");T(466,52,"BlueField-4","#ffd08a","lbl");T(466,68,"separate trust domain","#9aa7bd","lbl-s");
+  const flow=R(466,84,186,46,"#ffb84d","rgba(255,184,77,.10)");T(480,104,"DOCA Flow","#ffd08a","lbl");T(480,120,"per-agent L4 firewall",null,"lbl-s");
+  const tower=R(466,140,186,46,"#ffb84d","rgba(255,184,77,.10)");T(480,160,"DOCA Tower","#ffd08a","lbl");T(480,176,"L7 gateway · OPA",null,"lbl-s");
+  const argus=R(466,196,186,46,"#ffb84d","rgba(255,184,77,.10)");T(480,216,"DOCA Argus","#ffd08a","lbl");T(480,232,"memory introspection",null,"lbl-s");
+  const sentry=R(466,260,186,70,"#ff6f61","rgba(255,111,97,.12)");T(480,284,"Sentry","#ff8a7e","lbl");T(480,304,"correlates evidence",null,"lbl-s");T(480,320,"→ requests containment",null,"lbl-s");
+  T(466,362,"attested log → SIEM","#9aa7bd","lbl-s");T(466,380,"→ human review","#9aa7bd","lbl-s");
+  const D=[["model","Model endpoint",54,"#a184ff"],["farm","farmco.example",124,"#3fd8ff"],["bulk","bulk-cheese.example",194,"#5a6a8c"],["ip","203.0.113.50",264,"#5a6a8c"]];
+  const DY={};D.forEach(([k,t,y,c])=>{R(696,y,196,48,c,"rgba(63,216,255,.04)");T(794,y+29,t,null,"lbl","middle");DY[k]=y+24;});
+  // neighbour constant authorized traffic
+  el("path",{d:`M214 248 H246 V170 M406 150 H466 M652 107 H676 V${DY.model} H696`,stroke:"rgba(63,216,255,.35)","stroke-width":1.5,fill:"none","stroke-dasharray":"3 4"},s);
+  // escape graphics
+  const esc=el("g",{class:"esc"},s);
+  el("path",{d:"M150 80 L160 70 L170 80",stroke:"#ff6f61","stroke-width":2,fill:"none"},esc);
+  const argusLine=el("path",{d:"M466 219 C 330 219, 300 140, 214 140",stroke:"#ffb84d","stroke-width":1.6,"stroke-dasharray":"4 4",fill:"none",opacity:0},s);
+  const cut=el("g",{class:"cut"},s);
+  [[440,82],[440,130]].forEach(([x,y])=>{el("path",{d:`M${x-8},${y-8} L${x+8},${y+8} M${x+8},${y-8} L${x-8},${y+8}`,stroke:"#ff6f61","stroke-width":3},cut);});
+  el("text",{x:432,y:158,"text-anchor":"end",style:"fill:#ff8a7e;font-size:12px",text:"agent's paths cut"},cut);
+  const trail=el("path",{fill:"none","stroke-width":3,"stroke-linejoin":"round",opacity:0},s);
+  const dot=el("circle",{r:7,fill:"#a184ff",opacity:0,filter:"url(#csg)"},s);
+  const xg=el("g",{opacity:0},s);el("circle",{r:13,fill:"#2a1216",stroke:"#ff6f61","stroke-width":2},xg);el("path",{d:"M-6,-6 L6,6 M6,-6 L-6,6",stroke:"#ff6f61","stroke-width":3},xg);
+  const routes={A:[[214,130],[246,130],[406,130],[466,107],[652,107],[652,163],[676,163],[696,DY.farm]],
+    B:[[214,130],[246,130]],
+    C:[[160,80],[160,16],[440,16],[440,100],[448,104]]};
+  const stagesFor={A:{1:1,2:2,3:3,4:"skip",5:5,6:6},B:{},C:{}};
+  const evStage={A:[1,2,2,3,5],B:[1,2,5,4],C:[1,1,2,2,3,4,5,6]};
+  const S=Object.fromEntries(SCEN.containment.map(c=>[c.id,c]));
+  const log=$("#m9log"); let timers=[];
+  const clear=()=>{timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(dot.__r);};
+  const anim=(path,ms,done)=>{dot.setAttribute("opacity",1);if(RM){const p=path[path.length-1];dot.setAttribute("cx",p[0]);dot.setAttribute("cy",p[1]);done&&done();return;}
+    const segs=[];let tot=0;for(let i=1;i<path.length;i++){const L=Math.hypot(path[i][0]-path[i-1][0],path[i][1]-path[i-1][1]);segs.push(L);tot+=L;}
+    const t0=performance.now();const st=t=>{const k=Math.min(1,(t-t0)/ms);let d=k*tot,i=0;while(i<segs.length-1&&d>segs[i]){d-=segs[i];i++;}const f=Math.min(1,d/segs[i]);
+      dot.setAttribute("cx",path[i][0]+(path[i+1][0]-path[i][0])*f);dot.setAttribute("cy",path[i][1]+(path[i+1][1]-path[i][1])*f);if(k<1)dot.__r=requestAnimationFrame(st);else done&&done();};dot.__r=requestAnimationFrame(st);};
+  const stageEls=$$("#m9stages div");
+  const setStage=(id,n)=>{stageEls.forEach(d=>{const k=+d.dataset.s;d.classList.toggle("on",k<=n&&!(id==="A"&&k===4));d.classList.toggle("bad",id!=="A"&&k>=3&&k<=4&&k<=n);d.classList.toggle("skip",id==="A"&&k===4);});};
+  const status=(id,fin)=>{const q=id==="C"&&fin;
+    $("#m9status").innerHTML=`<span class="pill ${q?"contain":"allow"}">agent-chef-01: ${q?"⛔ quarantined":id==="B"&&fin?"✓ running (request refused)":"✓ running"}</span><span class="pill allow">agent-books-02: ✓ running</span><span class="pill allow">model serving: ✓ running</span><span class="pill allow">node power: ✓ on</span>`;};
+  const run=id=>{clear();const sc=S[id];
+    $$("[data-sc]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.sc===id)));
+    s.classList.remove("quar","escaped");xg.setAttribute("opacity",0);argusLine.setAttribute("opacity",0);dot.setAttribute("fill","#a184ff");
+    sup.setAttribute("stroke","#2fd6a8");flow.setAttribute("stroke","#ffb84d");sentry.setAttribute("fill","rgba(255,111,97,.12)");
+    $("#m9h").innerHTML=`${id} · ${sc.title} ${PILL[sc.decision]}`;$("#m9p").textContent=sc.summary;$("#m9r").textContent=`layer: ${sc.layer} · rule: ${sc.rule}`;
+    log.innerHTML=sc.events.map((e,i)=>`<li class="src-${e.src} future" data-i="${i}"><span class="t">t+${e.t} ${e.src}</span><span>${e.msg}</span></li>`).join("");
+    status(id,false);setStage(id,0);
+    const lis=$$("li",log);const STEP=RM?0:700;
+    const reveal=i=>{lis[i].classList.remove("future");setStage(id,evStage[id][i]);
+      if(id==="C"&&i===0)s.classList.add("escaped");
+      if(id==="C"&&i===3)argusLine.setAttribute("opacity",1);
+      if(id==="C"&&i===4)sentry.setAttribute("fill","rgba(255,111,97,.4)");
+      if(id==="C"&&i===5){s.classList.add("quar");status("C",true);}
+      if(i===lis.length-1){status(id,true);setStage(id,6);}};
+    const p=routes[id];
+    trail.setAttribute("d","M"+p.map(q=>q.join(" ")).join(" L"));trail.setAttribute("stroke",id==="A"?"#2fd6a8":id==="B"?"#a184ff":"#ff6f61");trail.setAttribute("stroke-dasharray",id==="C"?"7 5":"");trail.setAttribute("opacity",.85);
+    const endFx=()=>{const e=p[p.length-1];if(sc.decision==="deny"||sc.decision==="contain"){xg.setAttribute("transform",`translate(${e[0]},${e[1]})`);xg.setAttribute("opacity",1);dot.setAttribute("fill","#ff6f61");if(id==="B")sup.setAttribute("stroke","#ff6f61");if(id==="C")flow.setAttribute("stroke","#ff6f61");}else dot.setAttribute("fill","#2fd6a8");};
+    if(RM){lis.forEach((_,i)=>reveal(i));anim(p,0,endFx);return;}
+    reveal(0);anim(p,id==="A"?1800:1100,endFx);
+    for(let i=1;i<lis.length;i++)timers.push(setTimeout(()=>reveal(i),i*STEP+400));
+  };
+  $$("[data-sc]").forEach(b=>b.addEventListener("click",()=>run(b.dataset.sc)));
+  $("#m9replay").addEventListener("click",()=>{const cur=$$("[data-sc]").find(b=>b.getAttribute("aria-pressed")==="true");run(cur?cur.dataset.sc:"C");});
+  // static default: show final state of C, then autoplay once on view
+  run("C"); if(!RM){clear();$$("li",log).forEach(li=>li.classList.remove("future"));s.classList.add("escaped","quar");argusLine.setAttribute("opacity",1);setStage("C",6);status("C",true);
+    trail.setAttribute("opacity",.85);const p=routes.C[routes.C.length-1];xg.setAttribute("transform",`translate(${p[0]},${p[1]})`);xg.setAttribute("opacity",1);dot.setAttribute("opacity",0);}
+  let played=false;const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!played){played=true;run("C");}});},{threshold:.35});io.observe(s);
+  window.__m9=run;
+}
+
+/* ================= CH10 ================= */
+function initCh10(){
+  const s=$("#gov10");
+  const A=[["reg","Regulators / government oversight (if applicable)",20,20,520],["org","Organizational governance · board, risk, legal",20,74,520],
+    ["app","Application owners",20,128,166],["sec","Security admins",197,128,166],["mp","Model providers",374,128,166],["infra","Infrastructure operator",20,182,520]];
+  A.forEach(([id,t,x,y,w])=>{const g=el("g",{class:"act","data-a":id},s);el("rect",{x,y,width:w,height:42,rx:10,fill:"rgba(255,184,77,.08)",stroke:"#ffb84d"},g);el("text",{x:x+w/2,y:y+26,"text-anchor":"middle",class:"lbl",style:"font-size:12.5px",text:t},g);});
+  el("line",{x1:10,y1:242,x2:550,y2:242,stroke:"#3a4a6c","stroke-dasharray":"6 4"},s);
+  el("text",{x:20,y:262,class:"lbl-s",text:"PEOPLE ABOVE · MACHINES BELOW"},s);
+  const TL=[["OpenShell policy (host CPU)","#2fd6a8",20,276],["Sentry on BlueField-4 (DPU)","#ff6f61",290,276],["Agent workloads","#a184ff",20,330],["Model serving (GPUs)","#a184ff",290,330]];
+  TL.forEach(([t,c,x,y])=>{el("rect",{x,y,width:250,height:42,rx:10,fill:"rgba(63,216,255,.04)",stroke:c},s);el("text",{x:x+125,y:y+26,"text-anchor":"middle",class:"lbl",style:"font-size:12px",text:t},s);});
+  el("text",{x:280,y:400,"text-anchor":"middle",class:"lbl-s",text:"data center · pods · racks · nodes"},s);
+  const who={org:["org","app","sec"],central:["infra","sec"],shared:["app","infra","sec"],regulated:["reg","org","sec","app"]};
+  const bx=$("#m10btns");
+  SCEN.governance.forEach(g=>{const b=document.createElement("button");b.className="btn";b.dataset.g=g.id;b.textContent=g.name;bx.appendChild(b);});
+  const set=id=>{const g=SCEN.governance.find(x=>x.id===id);$$("[data-g]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.g===id)));
+    s.classList.add("pick");$$(".act",s).forEach(a=>a.classList.toggle("on",who[id].includes(a.dataset.a)));
+    $("#m10tbl").innerHTML=`<thead><tr><th>Question</th><th>${g.name}</th></tr></thead><tbody>`+Object.entries(g.rows).map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join("")+"</tbody>";};
+  $$("[data-g]").forEach(b=>b.addEventListener("click",()=>set(b.dataset.g)));set("org");
+  window.__m10=set;
+  const D=drawDC($("#dc3")); D.setView("node",0);
+  const capT={node:"<b class='c-coral'>Quarantined agent</b> · one tray",rack:"<b>Rack</b> · everything else running",pod:"<b>Pod</b> · one point of hundreds",datacenter:"<b>Data center</b> · intelligence still on"};
+  scrolly($('[data-scrolly="dc3"]'),st=>{D.setView(st.dataset.view);$("#dc3cap").innerHTML=capT[st.dataset.view];});
+}
+
+/* ================= SOURCES ================= */
+function initSources(){
+  const seen=new Set(),ol=$("#srcs");
+  const add=(u,t)=>{if(seen.has(u))return;seen.add(u);const li=document.createElement("li");li.innerHTML=`${t?t+": ":""}<a href="${u}" rel="noopener" target="_blank">${u}</a>`;ol.appendChild(li);};
+  add("https://developer.nvidia.com/blog/?p=122896","NVIDIA Technical Blog, Open Agent Safety Platform (Sep 28 2026)");
+  add("https://developer.nvidia.com/blog/?p=123898","NVIDIA Technical Blog, Inside NVIDIA Sentry (Oct 21 2026)");
+  add("https://docs.nvidia.com/openshell/latest/about/overview.html","NVIDIA OpenShell documentation");
+  add("https://developer.nvidia.com/blog/add-runtime-controls-to-ai-agents-with-nvidia-openshell","NVIDIA Technical Blog, OpenShell 0.1.0");
+  add("https://securityweek.com/nvidia-unveils-ai-agent-safety-platform-with-hardware-based-watchdog","SecurityWeek");
+  add("https://futurumgroup.com/?p=96053","Futurum Group analysis");
+  CLAIMS.timeline.forEach(t=>t.sources.forEach(u=>add(u,"Timeline · "+t.board)));
+}
+
+function boot(){
+  const steps=[initNav,initCh1,initCh2,initCh3,initCh4,initCh5,initCh6,initCh7,initCh8,initCh9,initCh10,initSources];
+  window.__errors=[];
+  steps.forEach(f=>{try{f();}catch(e){window.__errors.push(f.name+": "+e.message);console.error(f.name,e);}});
+  window.__ready=true;
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+
+</script>
+</body>
+</html>

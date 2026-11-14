@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sector Pulse: How a Shock Travels Through the AI Chip Supply Chain</title>
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/pulse.css">
+</head>
+<body>
+<a class="skip" href="#replay">Skip to the replay</a>
+<header class="phead">
+  <div class="wrap">
+    <div class="kicker">AI Stack Visual Documentary · Part 02 companion</div>
+    <h1>Sector Pulse</h1>
+    <p class="sub">How a shock travels, or doesn't, through the AI chip supply chain</p>
+    <p class="lede">The same map as Fig 10.2, but every company is now colored by how its stock is moving, and every link glows with how tightly the two companies' prices have historically moved together. Scrub through Nov 3–13, 2026: a sector-wide crash, the Jensen Huang scandal and his resignation, and a CoreWeave-led rebound. They look nothing alike.</p>
+    <div class="badges">
+      <span class="badge" id="liveBadge"><i></i>Live feed: not connected · historical replay</span>
+      <a class="badge" style="text-decoration:none;border-color:rgba(255,107,107,.6);color:#ff6b6b" href="#scenario"><i style="background:#ff6b6b"></i>Scenario: Taiwan goes dark ↓</a>
+      <span class="badge muted">Prices: Yahoo Finance via yfinance, hourly + daily, retrieved Nov 14 2026</span>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="pane" id="replay" aria-labelledby="rt">
+<div class="wrap">
+  <h2 id="rt" class="sr">Replay</h2>
+  <div class="replay-grid">
+    <div class="stage mapstage">
+      <span class="tag"><b>Pulse map</b> · color = move vs. prior close · glow = co-movement · dashed = market closed</span>
+      <svg id="pmap" viewBox="0 0 1240 760" role="img" aria-label="Supply-chain map with each company colored by its stock move at the selected time" aria-describedby="nowRead"></svg>
+      <div class="scale" aria-hidden="true"><span>−10%</span><b></b><span>+10%</span></div>
+    </div>
+    <aside class="side">
+      <div class="clock" aria-live="polite"><div id="clockUtc">—</div><div class="m" id="clockLocal">—</div><div class="mkts" id="mkts"></div></div>
+      <div class="readout" id="nowRead" aria-live="polite"></div>
+      <div class="readout headline" id="newsRead"></div>
+    </aside>
+  </div>
+
+  <div class="scrub">
+    <div class="ctl" style="margin:0 0 8px">
+      <button class="btn" id="play" aria-pressed="false">▶ Play replay</button>
+      <button class="btn ghost" id="speed" aria-label="Playback speed">Speed 1×</button>
+      <span class="lab inline">Jump to</span>
+      <span id="evBtns" class="evbtns" role="group" aria-label="Jump to event"></span>
+    </div>
+    <div class="track"><div class="evmarks" id="evMarks" aria-hidden="true"></div>
+      <input type="range" id="t" min="0" max="0" value="0" class="range" aria-label="Replay time"></div>
+    <div class="m tiny">Hourly bars, Nov 3–13, 2026 (UTC timeline). Asian markets trade while New York sleeps, so a shock in a US session usually appears in Tokyo, Taipei and Seoul on the <em>next</em> calendar day.</div>
+  </div>
+</div>
+</section>
+
+<section class="pane" id="matrix" aria-labelledby="mt">
+<div class="wrap">
+  <div class="chead"><div class="cnum">A</div><div><h2 id="mt">The heat map: every company, every session</h2><div class="q">Daily moves, Oct 21 – Nov 13. Select a column to dissect that day.</div></div></div>
+  <div class="stage"><span class="tag"><b>Fig A</b> · daily % change · Asian listings shown under the US session they react to</span>
+    <svg id="hm" viewBox="0 0 1240 660" role="img" aria-label="Heat map of daily stock moves by company and session"></svg>
+  </div>
+</div>
+</section>
+
+<section class="pane" id="study" aria-labelledby="st">
+<div class="wrap">
+  <div class="chead"><div class="cnum">B</div><div><h2 id="st">Systemic or company-specific?</h2><div class="q">For the selected day: what each stock did vs. what its normal sensitivity to the chip sector (SMH) implied.</div></div></div>
+  <div class="split rev">
+    <div class="stage"><span class="tag"><b>Fig B</b> · <span id="stDay">—</span> · bar = actual · tick = expected from sector beta</span>
+      <svg id="bars" viewBox="0 0 640 760" role="img" aria-label="Actual versus expected moves for each company on the selected day" aria-describedby="stRead"></svg>
+    </div>
+    <div>
+      <div class="ctl" id="stBtns" role="group" aria-label="Choose a day"><span class="lab">Choose a day</span></div>
+      <div class="readout" id="stRead" aria-live="polite"></div>
+      <p class="note">"Expected" = the company's beta to the SMH chip ETF (estimated May 1 – Oct 30, 2026, before this window) × SMH's move that day. The gap is the move the sector doesn't explain. Thin samples and one-factor models are rough; treat gaps under ~2 points as noise.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="pane" id="links" aria-labelledby="lt">
+<div class="wrap">
+  <div class="chead"><div class="cnum">C</div><div><h2 id="lt">Who moves with whom</h2><div class="q">Six-month correlation of daily returns, with Asian listings lag-aligned to the US session they follow.</div></div></div>
+  <div class="split">
+    <div class="prose">
+      <p>This is the network's wiring diagram for <em>valuation</em>, which isn't the same as its wiring for <em>atoms</em>. Equipment makers (Applied, Lam, KLA) move almost as one, because they sell to the same handful of fabs off the same capex budgets. Nvidia, the biggest company on the map, is surprisingly loosely tied to its own suppliers.</p>
+      <div class="readout" id="corrRead" aria-live="polite"><h4>Hover or tap a cell</h4><p>Each square shows how closely two companies' daily moves have tracked each other. 1.0 means lockstep; 0 means unrelated.</p></div>
+      <div class="card" style="margin-top:16px"><h5>Does Asia simply follow New York?</h5><p id="lagText"></p></div>
+    </div>
+    <div class="stage"><span class="tag"><b>Fig C</b> · correlation matrix</span>
+      <svg id="cm" viewBox="0 0 640 640" role="img" aria-label="Correlation matrix of daily returns among supply-chain companies"></svg>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="pane" id="watch" aria-labelledby="wt">
+<div class="wrap">
+  <div class="chead"><div class="cnum">D</div><div><h2 id="wt">What this network tends to do next</h2><div class="q">Patterns in the data, not predictions or investment advice.</div></div></div>
+  <div class="cols3" id="watchCards"></div>
+  <div class="card livecard" style="margin-top:22px"><h5>Live mode</h5><p id="liveText">This page is currently a historical replay. A live version would refresh prices and headlines on a schedule and recompute the same comparisons as each session unfolds.</p></div>
+  <p class="note">Nothing here is financial advice. Correlations and betas describe the past six months and can break, especially around earnings and policy news. Company-specific shocks (like Nov 9–10) don't necessarily repeat the pattern of sector-wide ones (like Nov 5).</p>
+</div>
+</section>
+<section class="pane scen" id="scenario" aria-labelledby="sct">
+<div class="wrap">
+  <div class="chead"><div class="cnum">E</div><div><h2 id="sct">Scenario: Taiwan goes dark</h2><div class="q">What happens to this network if Taiwan's chip output stops? <span class="illus">hypothetical · not a forecast</span></div></div></div>
+  <div class="prose" style="max-width:860px"><p>Pick a disruption and step through time. Physical links turn amber as inventories drain and red when they're cut. Each company is shaded by a <strong>modeled stock drawdown</strong> built from three transparent ingredients: how much it depends on Taiwan's output, how much it sells into Taiwan's fabs, and its historical sensitivity to the chip sector. You set the two biggest unknowns with the sliders.</p></div>
+  <div class="ctl" id="scKind" role="group" aria-label="Disruption type"><span class="lab">Disruption</span></div>
+  <div class="ctl" role="group" aria-label="Timeline" style="align-items:center"><span class="lab">Timeline</span><span id="scSteps" style="display:inline-flex;flex-wrap:wrap;gap:8px"></span><button class="btn t" id="scPlay" aria-pressed="false">▶ Play scenario</button></div>
+  <div class="scsliders">
+    <label>Worst-case chip-sector drawdown <b id="scPeakV">45%</b><input type="range" class="range" id="scPeak" min="15" max="75" step="5" value="45"></label>
+    <label>Weeks of materials stockpiled in Taiwan (import embargo) <b id="scInvV">6 weeks</b><input type="range" class="range" id="scInv" min="2" max="16" step="1" value="6"></label>
+  </div>
+  <div class="replay-grid" style="margin-top:14px">
+    <div class="stage"><span class="tag"><b>Fig E</b> · hypothetical disruption map</span>
+      <svg id="scMap" viewBox="0 0 1240 760" role="img" aria-label="Supply-chain map under a hypothetical Taiwan disruption" aria-describedby="scPhase"></svg></div>
+    <aside class="side"><div class="readout" id="scPhase" aria-live="polite"></div>
+      <div class="stage" style="padding-top:6px"><svg id="scBars" viewBox="0 0 420 700" role="img" aria-label="Modeled drawdown by company"></svg></div></aside>
+  </div>
+  <details class="card" style="margin-top:20px"><summary><b>How this model works, and every assumption in it</b></summary>
+    <p style="margin-top:10px">For each company: <code>drawdown = worst-case × market-fear curve(time) × (0.25 × sector beta + 0.75 × exposure hit)</code>, where the exposure hit is the larger of (needs Taiwan output × share of Taiwan output lost) and (sells into Taiwan × share of that market lost). Taiwan-based companies take an extra asset hit that grows over time and is largest in the invasion case. One round of spill-over then pulls each company slightly toward its supply-chain neighbors. Samsung is treated as a possible alternative foundry, so it can come out ahead. Exposure percentages marked "assumed" are judgment calls, not reported figures. Change them and the picture changes.</p>
+    <div style="overflow-x:auto"><table class="sctable" id="scTable"></table></div>
+    <p class="note">Factual anchors: TSMC makes ~90% of the most advanced chips (<a href="https://in.marketscreener.com/news/why-do-almost-all-chips-come-from-taiwan-ce7f5dd9dc8cf32d">MarketScreener</a>); ~85–90% of TSMC's leading-edge output remains in Taiwan (<a href="https://semiconductorx.com/spotlight-intel-tsmc.html">SemiconductorX</a>); TSMC makes every Nvidia AI GPU, and its Arizona fab was not producing CoWoS packaging (<a href="https://policyrisk.com/supplymap/company/tsmc">PolicyRisk</a>); TSMC takes ~70–80% of annual EUV output (<a href="https://policyrisk.com/supplymap/company/asml-holding">PolicyRisk</a>); Micron makes more than 65% of its DRAM in Taiwan, with its largest HBM site in Taichung (<a href="https://www.taipeitimes.com/News/biz/archives/2023/09/11/2003806037">Taipei Times</a>, <a href="https://www.3dtested.com/pc-components/gpus/micron-to-expand-production-of-hbm3e-memory-across-the-world-to-increase-hbm-market-share-report">3DTested</a>). Everything else is a modeling assumption. This is an educational stress test of supply-chain dependence. It does not predict any event, its likelihood, or real price moves, and it is not investment advice.</p>
+  </details>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="wrap">
+  <div>
+    <h6>Method</h6>
+    <p>Prices: hourly and daily bars from Yahoo Finance (unofficial, via the open-source yfinance library), retrieved Nov 14, 2026. Spot-checked against reported Nvidia closes for Nov 5 (−9.3%), Nov 9 (−4.3%), Nov 10 (−5.5%) and Nov 11 (+2.9%). Betas and correlations: daily returns, May 1 – Oct 30, 2026. JSR is private and has no price. Map links are representative, not exhaustive.</p>
+    <p><a href="/who-makes-ai-chips/" target="_top">← Back to "Who Actually Makes AI Chips?"</a></p>
+  </div>
+  <div>
+    <h6>News sources for the event markers</h6>
+    <ul id="srcList"></ul>
+  </div>
+</div>
+</footer>
+<script src="assets/data.js"></script>
+<script src="assets/pulse-v3.js"></script>
+<script src="assets/scenario.js"></script>
+</body>
+</html>
