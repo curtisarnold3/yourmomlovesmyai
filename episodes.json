@@ -42,9 +42,9 @@
     "num": "04",
     "short": "Situational Awareness",
     "title": "Situational Awareness",
-    "dek": "Episode in production.",
-    "dir": null,
-    "kind": "soon"
+    "dek": "How a powerful AI thesis became a leveraged long/short trade, and why the trade broke in July 2026.",
+    "dir": "04-situational-awareness",
+    "kind": "episode"
   },
   {
     "slug": "open-vs-closed",
