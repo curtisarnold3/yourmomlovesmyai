@@ -15,7 +15,7 @@
   },
   "sources": {
     "s-transcript": {
-      "title": "Rec1_0850AM_transcript.txt, segment 02:46-05:34 (The Wall Street Skinny reel, auto-transcribed)",
+      "title": "Rec1_0850AM_transcript.txt, segment 02:46-05:34 (The Wall Street Skinny whiteboard explainer, auto-transcribed)",
       "url": null,
       "kind": "source presentation"
     },
@@ -122,7 +122,7 @@
       }
     ],
     "status": "verified",
-    "note": "Hyperscale and ACIE are Data Center market platforms Nvidia began reporting in fiscal 2027; Edge Computing is the other platform. The 10-Q recast Q1 after moving one company from ACIE to Hyperscale. The reel's 51/41/8 matches the filed six-month mix (51.6/40.8/7.6).",
+    "note": "Hyperscale and ACIE are Data Center market platforms Nvidia began reporting in fiscal 2027; Edge Computing is the other platform. The 10-Q recast Q1 after moving one company from ACIE to Hyperscale. The stated 51/41/8 matches the filed six-month mix (51.6/40.8/7.6).",
     "sources": [
       "s-transcript",
       "s-whiteboard",
@@ -243,7 +243,7 @@
         "source": 0.08,
         "verified": 0.0793,
         "m": 14110,
-        "why": "Money Nvidia owes but hasn't paid yet stays in the bank for now: supplier bills ($4.1B), accrued items such as taxes payable and customer advances ($8.0B; advances are cash already received for future deliveries), and other long-term liabilities, mostly taxes ($2.0B). The reel calls all of it 'owed to suppliers'."
+        "why": "Money Nvidia owes but hasn't paid yet stays in the bank for now: supplier bills ($4.1B), accrued items such as taxes payable and customer advances ($8.0B; advances are cash already received for future deliveries), and other long-term liabilities, mostly taxes ($2.0B). The source calls all of it 'owed to suppliers'."
       },
       {
         "id": "nc",
@@ -738,7 +738,7 @@
         "type": "own_use",
         "m": 29000,
         "treatment": "ghost",
-        "note": "Cloud service agreements. Per the 10-Q they 'provide the cloud infrastructure to support our research and development of our open models' and autonomous-vehicle software. That's Nvidia's own spending, not support for anyone else. The reel's $1.23 is only reproduced if this is included.",
+        "note": "Cloud service agreements. Per the 10-Q they 'provide the cloud infrastructure to support our research and development of our open models' and autonomous-vehicle software. That's Nvidia's own spending, not support for anyone else. The stated $1.23 is only reproduced if this is included.",
         "per_dollar": 0.1631
       },
       {
@@ -803,7 +803,7 @@
       "note": "Neither the source nor the filing gives an expected payout. Guarantees pay only on default and only the shortfall, so expected cash outflow is likely far below the gross cap, but it cannot be quantified here."
     },
     "status": "calculated",
-    "note": "We found a combination of filed items that sums to the reel's $1.23 ($218.5B = $1.229). The reel never gave its breakdown, so this is our inference. It reaches $1.23 only by counting $29B of cloud compute Nvidia buys for its own R&D. Without that, ecosystem commitments and guarantees are $189.5B ($1.07). It mixes a July 26 period-end note with guarantees signed in August.",
+    "note": "We found a combination of filed items that sums to the stated $1.23 ($218.5B = $1.229). No breakdown was given, so this is our inference. It reaches $1.23 only by counting $29B of cloud compute Nvidia buys for its own R&D. Without that, ecosystem commitments and guarantees are $189.5B ($1.07). It mixes a July 26 period-end note with guarantees signed in August.",
     "sources": [
       "s-transcript",
       "s-whiteboard",
@@ -873,7 +873,7 @@
       "status": "verified",
       "lehman_ratio": "30.7x (Nov 30, 2007) and 31.7x (Feb 29, 2008), total assets / equity",
       "nvidia_like_for_like": 1.4,
-      "why_not_comparable": "Bank leverage is total assets / shareholders' equity, and Lehman's assets were funded mostly with borrowed money. The reel's 2.49 is (assets + gross promise caps + an illustrative figure) / six months of revenue. Different numerator, different denominator. Measured the way Lehman's was, Nvidia's leverage on Jul 26, 2026 was 1.4x ($320.3B assets / $229.0B equity)."
+      "why_not_comparable": "Bank leverage is total assets / shareholders' equity, and Lehman's assets were funded mostly with borrowed money. The stated 2.49 is (assets + gross promise caps + an illustrative figure) / six months of revenue. Different numerator, different denominator. Measured the way Lehman's was, Nvidia's leverage on Jul 26, 2026 was 1.4x ($320.3B assets / $229.0B equity)."
     },
     "status": "calculated",
     "sources": [
@@ -907,13 +907,13 @@
       "id": "c4",
       "claim": "42c cash from operations",
       "status": "verified",
-      "finding": "$74.4B = 41.8c. The reel's rounded items sum to 41c (rounding)."
+      "finding": "$74.4B = 41.8c. The stated rounded items sum to 41c (rounding)."
     },
     {
       "id": "c5",
       "claim": "Borrowed 14c, sold 7c of securities, 63c new cash",
       "status": "verified",
-      "finding": "$24.9B of notes = 14.0c. Equity sold (gross) plus debt securities (net) = 6.8c. 'New cash' is the reel's own construct, not a GAAP subtotal."
+      "finding": "$24.9B of notes = 14.0c. Equity sold (gross) plus debt securities (net) = 6.8c. 'New cash' is the source's own construct, not a GAAP subtotal."
     },
     {
       "id": "c6",
@@ -973,13 +973,13 @@
       "id": "c15",
       "claim": "Lehman at 32:1 gross leverage",
       "status": "verified",
-      "finding": "Lehman reported 30.7x (Nov 2007) and 31.7x (Feb 2008), assets / equity. Nvidia measured the same way: 1.4x. The reel's 2.49 is a different ratio altogether."
+      "finding": "Lehman reported 30.7x (Nov 2007) and 31.7x (Feb 2008), assets / equity. Nvidia measured the same way: 1.4x. The stated 2.49 is a different ratio altogether."
     },
     {
       "id": "c16",
       "claim": "Nvidia 'looks more like a venture capital or hedge fund'",
       "status": "source",
-      "finding": "This is the reel's interpretation, not an accounting classification. Nvidia reports as a semiconductor company. Its equity holdings are about 31% of total assets."
+      "finding": "This is the source's interpretation, not an accounting classification. Nvidia reports as a semiconductor company. Its equity holdings are about 31% of total assets."
     }
   ]
 }

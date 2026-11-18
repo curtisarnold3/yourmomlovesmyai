@@ -44,7 +44,7 @@
     <p class="sub">How GPU useful life changes earnings, valuations, and the economics of AI infrastructure</p>
     <p class="lede">Picture two server racks, bolt for bolt identical. Same chips, same cooling, same $100 billion price tag. One accountant writes "5 years" on the first. Another writes "2 years" on the second. Nothing about the metal changes, and yet one company suddenly reports far higher profit. Is that a trick, a judgment call, or something that barely matters? Let's follow the money and find out.</p>
     <div class="provenance" aria-label="How to read this page">
-      <span class="chip k-src">Source example (reel whiteboard)</span>
+      <span class="chip k-src">Source example (whiteboard)</span>
       <span class="chip k-ver">Verified filing / law</span>
       <span class="chip k-all">Allegation</span>
       <span class="chip k-ill">Illustrative scenario</span>
@@ -108,7 +108,7 @@
       <div class="step" data-step="1"><div class="card"><div class="lbl">From houses to companies</div>
         <p>Stocks get the same treatment. Instead of price per square foot, investors often use the <b>price-to-earnings multiple</b>. Instead of square feet, they use <b>earnings per share</b>.</p>
         <div class="formula"><span class="v">Implied share price</span> = <span class="v">P/E multiple</span> × <span class="c">EPS</span></div>
-        <p class="note">The reel sketched a comps chart for the big cloud companies averaging about 22× earnings. Those hand-drawn multiples weren't dated or sourced, so we don't reuse them as data — multiples move every trading day.</p></div></div>
+        <p class="note">The original sketched a comps chart for the big cloud companies averaging about 22× earnings. Those hand-drawn multiples weren't dated or sourced, so we don't reuse them as data — multiples move every trading day.</p></div></div>
       <div class="step" data-step="2"><div class="card"><div class="lbl">The catch</div>
         <p>EPS is an <em>accounting</em> number. Change the depreciation assumption and EPS moves — and if you hold the multiple fixed at, say, 20×, the implied price moves with it: <b class="num">$6.00 → $120</b>, <b class="num">$3.75 → $75</b>.</p></div></div>
       <div class="step" data-step="3"><div class="card"><div class="lbl">Keep it honest</div>
@@ -263,7 +263,7 @@
       <div class="step" data-step="1"><div class="card"><div class="lbl"><span class="k acct"></span>Accounting earnings differ</div><p>Five-year life: $60B net income every year. Two-year life: $37.5B in years 1–2, then $75B in years 3–5 once the chips are fully depreciated. Same lifetime total, different timing.</p></div></div>
       <div class="step" data-step="2"><div class="card"><div class="lbl"><span class="k gen"></span>Cash flow doesn't</div><p>Operating cash flow is <b>identical</b> in every year under both lives: $100B, then $75B, $75B, $75B, $75B. Revenue is the same, cash taxes come from the tax books, and depreciation is noncash.</p></div></div>
       <div class="step" data-step="3"><div class="card"><div class="lbl">Why: the reconciliation</div><div class="formula">OCF = <span class="c">NI</span> + <span class="c">depreciation</span> + <span class="c">deferred tax</span> − ΔWC</div><p>Add back the noncash charge, add back tax expensed but not paid, and every book-life choice washes out.</p></div></div>
-      <div class="step" data-step="4"><div class="card"><div class="lbl"><span class="chip k-all">Nuance</span></div><p>The reel says the life assumption has "no impact whatsoever" on cash flows. More precisely: <b>changing only the book schedule doesn't repeat or change the cash purchase.</b> Cash <em>can</em> change if tax depreciation were tied to it, if the hardware really must be replaced sooner, or through financing terms, covenants and investor reactions tied to reported earnings.</p></div></div>
+      <div class="step" data-step="4"><div class="card"><div class="lbl"><span class="chip k-all">Nuance</span></div><p>The source says the life assumption has "no impact whatsoever" on cash flows. More precisely: <b>changing only the book schedule doesn't repeat or change the cash purchase.</b> Cash <em>can</em> change if tax depreciation were tied to it, if the hardware really must be replaced sooner, or through financing terms, covenants and investor reactions tied to reported earnings.</p></div></div>
     </div>
   </div>
   <div class="lab" data-tool="Tool 7 · Cash-flow reconciliation" id="lab7">
@@ -289,7 +289,7 @@
   <div class="scrolly">
     <div class="sticky"><div class="stage" id="v8" role="img" aria-label="A five-year timeline of projected free cash flows, each discounted back to today, with smaller present values for later years."></div></div>
     <div class="steps">
-      <div class="step" data-step="0"><div class="card"><div class="lbl"><span class="chip k-src">Source Excel model</span></div><p>The reel calls this the gold standard: project the cash a business will generate, then discount it back to today. Its sketch uses operating cash flows of <b class="num">100, 110, 120, 130, 140</b> (example units — not billions).</p></div></div>
+      <div class="step" data-step="0"><div class="card"><div class="lbl"><span class="chip k-src">Source Excel model</span></div><p>The source calls this the gold standard: project the cash a business will generate, then discount it back to today. Its sketch uses operating cash flows of <b class="num">100, 110, 120, 130, 140</b> (example units — not billions).</p></div></div>
       <div class="step" data-step="1"><div class="card"><div class="lbl">Money later is worth less</div><div class="formula">PV(FCF<sub>t</sub>) = FCF<sub>t</sub> ÷ (1 + r)<sup>t</sup></div><p>At a 10% discount rate, 140 received in year 5 is worth about 87 today. Later boxes shrink as they travel back.</p></div></div>
       <div class="step" data-step="2"><div class="card"><div class="lbl">The question marks</div><p>Year 1 capex is the (100) chip purchase. Years 2–5 are drawn as <b>"?"</b>. That's the whole debate: how often must the chips be bought again? The visual fills in <em>one possible answer</em> — re-buying every 2 years — and the value drops. The 10-K's useful life doesn't enter a DCF directly, but it likely informs many investors' capex assumptions.</p></div></div>
       <div class="step" data-step="3"><div class="card"><div class="lbl">Enterprise vs. equity</div><p>Businesses don't stop after year 5, so most DCFs add a <b>terminal value</b>: the value of all later years, often a steady cash flow growing at a disclosed rate <i>g</i>, worth FCF × (1 + g) ÷ (r − g). It is frequently the biggest piece of the answer — and the most assumption-heavy.</p><p>A DCF of free cash flow gives <b>enterprise value</b>. Subtract net debt and other claims to get <b>equity value</b>; divide by shares for a per-share estimate. It's still a model output built on assumptions — not the stock price.</p></div></div>
@@ -375,7 +375,7 @@
 
 <footer>
   <h3>Sources &amp; method</h3>
-  <p><b>Source example:</b> The Wall Street Skinny reel "AI Chip depreciation," screen-recorded Nov 14, 2026 (Rec2 15:26–18:02; whiteboard frame 10_burry_Rec2-17m58). All $100B / 25% / 10B-share figures are teaching assumptions, not company financials.</p>
+  <p><b>Source example:</b> The Wall Street Skinny explainer "AI Chip depreciation," screen-recorded Nov 14, 2026 (Rec2 15:26–18:02; whiteboard frame 10_burry_Rec2-17m58). All $100B / 25% / 10B-share figures are teaching assumptions, not company financials.</p>
   <ol>
     <li>Burry's Nov 10, 2025 X post and $176B estimate — MarketWatch/Dow Jones newswire (Nov 11, 2025) via <a href="https://www.itiger.com/news/2582573293">itiger.com/news/2582573293</a>; CNBC report (Nov 11, 2025) syndicated at <a href="https://www.amrtimes.com.au/business/cnbc/big-short-investor-michael-burry-accuses-ai-hyperscalers-of-artificially-boosting-earnings-c-20655611">amrtimes.com.au</a>; Tiger Newspress (Nov 12, 2025) <a href="https://www.itiger.com/news/1139425265">itiger.com/news/1139425265</a>; <a href="https://www.tipranks.com/news/michael-burry-sounds-alarm-on-176b-depreciation-gap-among-tech-giants">TipRanks</a></li>
     <li>Burry Substack follow-up and Nvidia memo — <a href="https://techcrunch.com/2025/11/27/this-thanksgivings-real-drama-may-be-michael-burry-versus-nvidia">TechCrunch, Nov 27, 2025</a></li>

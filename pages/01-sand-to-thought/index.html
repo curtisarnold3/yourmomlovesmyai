@@ -678,7 +678,7 @@ section.chapter,.finale{scroll-margin-top:0}
     <div class="mtext">
       <span class="tag">From the original whiteboard</span>
       <h3>The kitchen analogy</h3>
-      <p>The source reel compares the <b>CPU</b> to a brilliant head chef who cooks anything, one plate at a time. The <b>GPU</b> is an army of line cooks all chopping at once. The <b>ASIC</b> is a waffle iron: it makes exactly one thing, perfectly.</p>
+      <p>The original whiteboard compares the <b>CPU</b> to a brilliant head chef who cooks anything, one plate at a time. The <b>GPU</b> is an army of line cooks all chopping at once. The <b>ASIC</b> is a waffle iron: it makes exactly one thing, perfectly.</p>
       <p class="note src">A useful picture, with three fixes. The chef actually has a few sous-chefs, since CPUs are multi-core. The waffle iron can manage a little more than waffles, since TPUs carry small general-purpose units too. And the line cooks have to all do the same motion together; ask them to each cook something different and most of them stand idle. Workload A above shows exactly that.</p>
     </div>
   </div>
@@ -732,7 +732,7 @@ section.chapter,.finale{scroll-margin-top:0}
   </div>
 
   <div class="hier" id="hierRow" aria-label="Scale hierarchy"></div>
-  <p class="note src" style="max-width:900px">From the source reels: "a pod is the big connected cluster… each rack consists of individual nodes… each node contains the chips." One correction: a <em>row</em> holds many racks. A rack is a single cabinet about 2 m tall.</p>
+  <p class="note src" style="max-width:900px">From the source: "a pod is the big connected cluster… each rack consists of individual nodes… each node contains the chips." One correction: a <em>row</em> holds many racks. A rack is a single cabinet about 2 m tall.</p>
 </section>
 
 <!-- ================= CH8 ================= -->
@@ -803,7 +803,7 @@ section.chapter,.finale{scroll-margin-top:0}
 </section>
 
 <footer>
-  <p><b>Sand to Thought</b> · an interactive reconstruction of the “AI 101: Chips” whiteboard reel (The Wall Street Skinny), corrected and expanded for technical accuracy. All illustrations are hand-built vector graphics; labelled illustrative values are not measurements.</p>
+  <p><b>Sand to Thought</b> · an interactive reconstruction of the “AI 101: Chips” whiteboard explainer (The Wall Street Skinny), corrected and expanded for technical accuracy. All illustrations are hand-built vector graphics; labelled illustrative values are not measurements.</p>
   <p>Project files: <span class="mono">source-map.md · technical-audit.md · educational-audit.md · browser-test-report.md · progress.html</span></p>
 </footer>
 </main>
@@ -1341,9 +1341,9 @@ let nodeAssembly = null;
   const info = {
     cpu: ['The coordinator', 'Usually two host CPUs. They run the operating system, load and prepare data, launch work on the GPUs and handle anything branchy (Workload A from Chapter 5).', 'Talks to: memory (DDR channels) · GPUs and NICs (PCIe) · storage'],
     gpu: ['The arithmetic engines', 'Eight accelerator modules. Each one packages the GPU die beside stacks of high-bandwidth memory (HBM) that hold the model weights. Feeding data in fast enough matters as much as raw compute.', 'Talks to: each other via the NVLink switches · CPUs over PCIe · its own NIC for other nodes'],
-    memory: ['The CPU’s workspace', 'Rows of DRAM modules (DIMMs) around each CPU, typically a terabyte or more per node. Memory chips are a different kind of chip from logic chips like GPUs and CPUs (a distinction the source reels make).', 'Talks to: CPUs only, over many parallel memory channels'],
+    memory: ['The CPU’s workspace', 'Rows of DRAM modules (DIMMs) around each CPU, typically a terabyte or more per node. Memory chips are a different kind of chip from logic chips like GPUs and CPUs (a distinction the source makes).', 'Talks to: CPUs only, over many parallel memory channels'],
     storage: ['Long-term storage', 'NVMe solid-state drives built from NAND flash. They hold datasets, model files and training checkpoints, and keep them when the power is off.', 'Talks to: CPUs over PCIe; GPUs can also read them directly'],
-    network: ['The way out', 'Network cards, often one per GPU, each running at hundreds of gigabits per second. Data processing units (DPUs) also offload networking and security. The source reels describe Nvidia using the DPU to quarantine a misbehaving node.', 'Talks to: GPUs and CPUs inside · rack and spine switches outside (Chapter 7)'],
+    network: ['The way out', 'Network cards, often one per GPU, each running at hundreds of gigabits per second. Data processing units (DPUs) also offload networking and security. The source describes Nvidia using the DPU to quarantine a misbehaving node.', 'Talks to: GPUs and CPUs inside · rack and spine switches outside (Chapter 7)'],
     interconnect: ['The GPU-to-GPU fabric', 'Dedicated switch chips link all eight GPUs with far more bandwidth than PCIe. That lets them split one model and exchange results every layer, acting almost like one giant GPU.', 'Talks to: every GPU'],
     power: ['Clean, steady power', 'Supplies convert rack power into the low, tightly regulated voltages chips need. Voltage regulators beside each chip then step it down again to under 1 V. A node like this can draw on the order of 10 kW, about what several homes use.', 'Feeds: everything'],
     cooling: ['Getting rid of the heat', 'Nearly every watt that goes in comes out as heat. Fans push air through, and many AI nodes now use liquid cold plates on GPUs and CPUs with coolant piped to the rack (Chapter 7).', 'Touches: GPUs, CPUs, power supplies'],

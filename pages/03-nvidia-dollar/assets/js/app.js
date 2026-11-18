@@ -193,11 +193,11 @@ function ch1(){
   }
   function explain(){
     const c=cats.find(x=>x.id===sel);
-    if(!c){$('#ch1Explain').innerHTML=`Revenue is the only point where the dollar really is a dollar paid by a customer. Flow widths are drawn to scale. ${mode==='source'?`Showing the reel's rounded split, <b>51 / 41 / 8</b> ${badge('source')}. It matches the 10-Q's six-month split of 51.6 / 40.8 / 7.6 ${badge('verified')}.`:`Showing the 10-Q's exact six-month split, <b>51.6 / 40.8 / 7.6</b> ${badge('verified')}: $91.8B / $72.5B / $13.6B. The reel rounded it to 51/41/8.`} Hyperscale and ACIE are the two halves of Nvidia's Data Center business. Pick a group to learn more.`;return}
+    if(!c){$('#ch1Explain').innerHTML=`Revenue is the only point where the dollar really is a dollar paid by a customer. Flow widths are drawn to scale. ${mode==='source'?`Showing the stated rounded split, <b>51 / 41 / 8</b> ${badge('source')}. It matches the 10-Q's six-month split of 51.6 / 40.8 / 7.6 ${badge('verified')}.`:`Showing the 10-Q's exact six-month split, <b>51.6 / 40.8 / 7.6</b> ${badge('verified')}: $91.8B / $72.5B / $13.6B. The source rounded it to 51/41/8.`} Hyperscale and ACIE are the two halves of Nvidia's Data Center business. Pick a group to learn more.`;return}
     const extra={hyperscale:'Public clouds and large consumer-internet platforms. They also rent capacity to frontier labs, which is why OpenAI and Anthropic spending can show up here.',
       acie:'Nvidia\'s newest reporting bucket: AI clouds (CoreWeave, Nebius, Crusoe, Lambda), sovereign AI projects, industrial users and enterprises running AI on-premise. Several of these customers are also companies Nvidia has invested in (Chapter 5).',
       edge:'Gaming GeForce cards, AI PCs, workstations, cars and robots. It was the whole company in 2010. Now it\'s rounding.'}[c.id];
-    $('#ch1Explain').innerHTML=`<b>${esc(c.label)}</b> · <span class="val">${fv(c.source,'source')}</span> in the reel ${badge('source')} · <span class="val">${fv(c.h1_filed,'filed')}</span> in the 10-Q (${bil(c.amount_m_h1)} over six months) ${badge('verified')}<br>${extra}<br><span style="color:var(--ink-3)">Examples: ${esc(c.examples)}</span>`;
+    $('#ch1Explain').innerHTML=`<b>${esc(c.label)}</b> · <span class="val">${fv(c.source,'source')}</span> as stated ${badge('source')} · <span class="val">${fv(c.h1_filed,'filed')}</span> in the 10-Q (${bil(c.amount_m_h1)} over six months) ${badge('verified')}<br>${extra}<br><span style="color:var(--ink-3)">Examples: ${esc(c.examples)}</span>`;
   }
   function render(){$('#ch1Art').innerHTML=art();$('#ch1Bar').innerHTML=bar();explain();bindHits($('#ch1Art'),pick);bindHits($('#ch1Bar'),pick);
     $$('#ch1Cats .btn').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.id===sel)))}
@@ -205,7 +205,7 @@ function ch1(){
   $('#ch1Cats').innerHTML=cats.map(c=>`<button class="btn" data-id="${c.id}" aria-pressed="false"><span class="sw" style="background:${color[c.id]}"></span>${esc(c.label.split(':')[0].split('(')[0].trim())}</button>`).join(' ');
   $$('#ch1Cats .btn').forEach(b=>b.addEventListener('click',()=>pick(b.dataset.id)));
   const mb=$$('#ch1 [data-mode]');mb.forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;pressGroup(mb,b);render()}));
-  $('#ch1Table').innerHTML=table(cats.map(c=>[esc(c.label),cents(c.source),cents(c.h1_filed,1),cents(c.q2_share,1),bil(c.amount_m_h1)]),['Group','Reel','10-Q six months','Q2 only','Six-month $']);
+  $('#ch1Table').innerHTML=table(cats.map(c=>[esc(c.label),cents(c.source),cents(c.h1_filed,1),cents(c.q2_share,1),bil(c.amount_m_h1)]),['Group','As stated','10-Q six months','Q2 only','Six-month $']);
   $('#ch1Src').innerHTML=srcLine(R.sources)+'<br>'+esc(R.note);
   render();RENDERS.push(render);
 }
@@ -236,7 +236,7 @@ function ch2(){
   $$('#ch2Steps [data-i]').forEach(b=>b.addEventListener('click',()=>{shown=+b.dataset.i+1;active=I.steps[shown-1].id;render()}));
   $('#ch2All').addEventListener('click',()=>{shown=null;active=null;render()});
   const mb=$$('#ch2 [data-mode]');mb.forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;pressGroup(mb,b);render()}));
-  $('#ch2Table').innerHTML=table(I.steps.map(s=>[esc(s.label),cents(s.source,0,s.kind!=='total'),cents(s.verified,1,s.kind!=='total'),bil(s.m)]),['Line','Reel','10-Q','Six-month $']);
+  $('#ch2Table').innerHTML=table(I.steps.map(s=>[esc(s.label),cents(s.source,0,s.kind!=='total'),cents(s.verified,1,s.kind!=='total'),bil(s.m)]),['Line','As stated','10-Q','Six-month $']);
   $('#ch2Src').innerHTML=srcLine(I.sources);
   render();RENDERS.push(render);
 }
@@ -248,7 +248,7 @@ function ch3(){
   function steps(){
     const v=s=>mode==='source'?s.source:s.verified;
     const st=F.steps.map(s=>({id:s.id,label:s.label,short:short[s.id],kind:s.kind==='total'?'total':'delta',value:v(s),m:s.m,treat:s.kind==='total'?'ledger':(s.id==='paper'?'paper':(s.kind==='minus'?'cashminus':'cash')),tipx:s.why}));
-    if(mode==='source'&&Math.abs(F.rounding_residual_source)>0.001) st.push({id:'resid',label:'Rounding residual (reel items sum to 41¢)',short:'Rounding residual',kind:'delta',value:F.rounding_residual_source,treat:'residual'});
+    if(mode==='source'&&Math.abs(F.rounding_residual_source)>0.001) st.push({id:'resid',label:'Rounding residual (stated items sum to 41¢)',short:'Rounding residual',kind:'delta',value:F.rounding_residual_source,treat:'residual'});
     st.push({id:'ocf',label:'Cash from operations',short:'Operating cash',kind:'total',value:v(F.result),m:F.result.m,treat:'cash'});
     return st;
   }
@@ -271,14 +271,14 @@ function ch3(){
     if(view==='ni') html=`<b>Net income: ${fv(mode==='source'?0.66:F.steps[0].verified,mode)}</b> ${badge('verified')}. That's profit under accounting rules: revenue when earned, costs when incurred, investment gains when valued. It's drawn as a ledger outline because it's a measurement, not money in hand.`;
     else if(view==='ocf') html=`<b>Operating cash flow: ${fv(mode==='source'?0.42:F.result.verified,mode)}</b> (${bil(F.result.m)}) ${badge('verified')}. Cash that actually came in from running the business. It's drawn solid teal because it's real money.`;
     else if(s&&s.why) html=`<b>${esc(s.label)}</b> · <span class="val">${fv(mode==='source'?s.source:s.verified,mode,true)}</span> · ${bil(s.m)} ${badge('verified')}<br>${esc(s.why)}`;
-    else if(active==='resid') html=`<b>Rounding residual: +1¢</b> ${badge('calculated')}. The reel's rounded items sum to 41¢, but its total says 42¢. The exact filing values sum to 41.8¢, so the gap is rounding and doesn't hide a missing adjustment. Switch to "10-Q (exact)" and it disappears.`;
+    else if(active==='resid') html=`<b>Rounding residual: +1¢</b> ${badge('calculated')}. The stated rounded items sum to 41¢, but its total says 42¢. The exact filing values sum to 41.8¢, so the gap is rounding and doesn't hide a missing adjustment. Switch to "10-Q (exact)" and it disappears.`;
     else if(mode==='filed') html=`Exact 10-Q values: ${F.steps.map((x,i)=>i?(x.verified<0?' − ':' + ')+cents(Math.abs(x.verified),1):cents(x.verified,1)).join('')} = <b>${cents(F.result.verified,1)}</b> of operating cash (${bil(F.result.m)}) ${badge('verified')}. Using unrounded figures, there's no residual.`;
     else html=`Start at 66¢ of profit, remove what didn't arrive as cash, add back what didn't leave as cash, and you get <b>42¢</b> ${badge('source')} ${badge('verified')}. Gray bars took cash away, teal bars added it back, and the hatched purple bar is paper gains. ${esc(F.note)}`;
     $('#ch3Explain').innerHTML=html;
   }
   const vb=$$('#ch3 [data-view]');vb.forEach(b=>b.addEventListener('click',()=>{view=b.dataset.view;active=null;pressGroup(vb,b);render()}));
   const mb=$$('#ch3 [data-mode]');mb.forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;pressGroup(mb,b);render()}));
-  $('#ch3Table').innerHTML=table([...F.steps,F.result].map(s=>[esc(s.label),cents(s.source,0,!!s.kind&&s.kind!=='total'),cents(s.verified,1,!!s.kind&&s.kind!=='total'),bil(s.m)]),['Line','Reel','10-Q','Six-month $']);
+  $('#ch3Table').innerHTML=table([...F.steps,F.result].map(s=>[esc(s.label),cents(s.source,0,!!s.kind&&s.kind!=='total'),cents(s.verified,1,!!s.kind&&s.kind!=='total'),bil(s.m)]),['Line','As stated','10-Q','Six-month $']);
   $('#ch3Src').innerHTML=srcLine(F.sources);
   render();RENDERS.push(render);
 }
@@ -304,25 +304,25 @@ function ch4(){
     nodeL.forEach(n=>{const on=!sel||sel===n.id;const x1=xL+wL,x2=xM;g+=`<path class="ribbon" d="M${x1} ${n.y} C ${(x1+x2)/2} ${n.y}, ${(x1+x2)/2} ${cm}, ${x2} ${cm} L ${x2} ${cm+n.h} C ${(x1+x2)/2} ${cm+n.h}, ${(x1+x2)/2} ${n.y+n.h}, ${x1} ${n.y+n.h} Z" fill="${scol[n.id]}" fill-opacity="${on?.32:.06}" stroke="${scol[n.id]}" stroke-opacity="${on?.6:.1}" ${n.class==='financing'?'stroke-dasharray="5 3"':''}/>`;cm+=n.h});
     cm=yM;
     nodeR.forEach(n=>{const on=!sel||sel===n.id;const x1=xM+wM,x2=xR;g+=`<path class="ribbon" d="M${x1} ${cm} C ${(x1+x2)/2} ${cm}, ${(x1+x2)/2} ${n.y}, ${x2} ${n.y} L ${x2} ${n.y+n.h} C ${(x1+x2)/2} ${n.y+n.h}, ${(x1+x2)/2} ${cm+n.h}, ${x1} ${cm+n.h} Z" fill="${scol[n.id]}" fill-opacity="${on?.32:.06}" stroke="${scol[n.id]}" stroke-opacity="${on?.6:.1}"/>`;cm+=n.h});
-    const node=(n,x,w,anchor)=>{const on=!sel||sel===n.id;return `<g class="mark" style="opacity:${on?1:.35}" data-hit="${n.id}" data-tip="<b>${esc(n.label)}</b><br><span class='t-num'>${cents(n.source)}</span> reel · ${cents(n.verified,1)} filed · ${bil(n.m)}"><rect x="${x}" y="${n.y}" width="${w}" height="${n.h}" rx="5" ${treat(p,tmap[n.id])}/>
+    const node=(n,x,w,anchor)=>{const on=!sel||sel===n.id;return `<g class="mark" style="opacity:${on?1:.35}" data-hit="${n.id}" data-tip="<b>${esc(n.label)}</b><br><span class='t-num'>${cents(n.source)}</span> stated · ${cents(n.verified,1)} filed · ${bil(n.m)}"><rect x="${x}" y="${n.y}" width="${w}" height="${n.h}" rx="5" ${treat(p,tmap[n.id])}/>
       <text class="lab-num" x="${x+w/2}" y="${n.y+n.h/2+5}" text-anchor="middle" style="font-size:15px;font-weight:700;fill:#fff;paint-order:stroke;stroke:#06101f;stroke-width:3px">${cents(n.source)}</text>
       <text class="lab" x="${anchor==='end'?x-8:x+w+8}" y="${n.y+n.h/2-2}" text-anchor="${anchor}">${tspans(wrap(n.label,anchor==='end'?16:18),anchor==='end'?x-8:x+w+8,14)}</text></g>`};
     // nodes: put labels outside
     nodeL.forEach(n=>{g+=node(n,xL+wL-46,46,'end')});
-    g+=`<g><rect x="${xM}" y="${yM}" width="${wM}" height="${totalH}" rx="6" ${treat(p,'cash')}/><text class="lab-num" x="${xM+wM/2}" y="${yM-12}" text-anchor="middle" style="font-size:16px">63¢</text><text class="lab-strong" x="${xM+wM/2}" y="${yM+totalH+20}" text-anchor="middle">New cash</text><text class="lab" x="${xM+wM/2}" y="${yM+totalH+36}" text-anchor="middle">(the reel's subtotal)</text></g>`;
+    g+=`<g><rect x="${xM}" y="${yM}" width="${wM}" height="${totalH}" rx="6" ${treat(p,'cash')}/><text class="lab-num" x="${xM+wM/2}" y="${yM-12}" text-anchor="middle" style="font-size:16px">63¢</text><text class="lab-strong" x="${xM+wM/2}" y="${yM+totalH+20}" text-anchor="middle">New cash</text><text class="lab" x="${xM+wM/2}" y="${yM+totalH+36}" text-anchor="middle">(the stated subtotal)</text></g>`;
     nodeR.forEach(n=>{g+=node(n,xR,46,'start')});
     g+=`<text class="tick" x="${xL+wL-23}" y="${top-14}" text-anchor="middle">WHERE IT CAME FROM</text><text class="tick" x="${xR+23}" y="${top-14}" text-anchor="middle">WHERE IT WENT</text>`;
     $('#ch4Chart').innerHTML=`<svg viewBox="-16 0 ${W+16} ${H+20}" role="img" aria-label="Cash flow diagram: operating cash 42 cents, borrowing 14 cents and securities sold 7 cents make 63 cents of new cash, used as 13 cents kept, 26 cents to shareholders and 24 cents invested in the AI ecosystem.">${g}</svg>`;
     bindHits($('#ch4Chart'),pick);
     const n=[...K.sources_of_cash,...K.uses_of_cash].find(x=>x.id===sel);
-    $('#ch4Explain').innerHTML=n?`<b>${esc(n.label)}</b> · <span class="val">${cents(n.source)}</span> reel ${badge('source')} · <span class="val">${cents(n.verified,1)}</span> = ${bil(n.m)} filed ${badge(n.id==='kept'?'calculated':'verified')}<br><span style="color:var(--ink-3)">${klass[n.class]}.</span> ${esc(n.why||(n.id==='ocf'?'The cash from operations in Chapter 3. It\'s the only source here that the business itself earned.':''))}`:
+    $('#ch4Explain').innerHTML=n?`<b>${esc(n.label)}</b> · <span class="val">${cents(n.source)}</span> stated ${badge('source')} · <span class="val">${cents(n.verified,1)}</span> = ${bil(n.m)} filed ${badge(n.id==='kept'?'calculated':'verified')}<br><span style="color:var(--ink-3)">${klass[n.class]}.</span> ${esc(n.why||(n.id==='ocf'?'The cash from operations in Chapter 3. It\'s the only source here that the business itself earned.':''))}`:
       `Only the teal stream on the left was <i>earned</i>. The hatched amber stream was borrowed, and the dashed cyan stream came from selling assets Nvidia already owned. On the right: purple became stakes in other companies, solid amber went to shareholders, and teal stayed home. ${badge('verified')} ${esc(K.note)}`;
     $$('#ch4Btns .btn').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.id===sel)));
   }
   function pick(id){sel=sel===id?null:id;render()}
   $('#ch4Btns').innerHTML=[...K.sources_of_cash,...K.uses_of_cash].map(n=>`<button class="btn small" data-id="${n.id}" aria-pressed="false"><span class="sw" style="background:${scol[n.id]}"></span>${esc(n.label.split('(')[0].trim())}</button>`).join(' ');
   $$('#ch4Btns .btn').forEach(b=>b.addEventListener('click',()=>pick(b.dataset.id)));
-  $('#ch4Table').innerHTML=table([...K.sources_of_cash,{label:'= New cash',source:K.new_cash.source,verified:K.new_cash.verified,m:K.new_cash.m},...K.uses_of_cash].map(s=>[esc(s.label),cents(s.source),cents(s.verified,1),bil(s.m)]),['Item','Reel','10-Q','Six-month $'])+
+  $('#ch4Table').innerHTML=table([...K.sources_of_cash,{label:'= New cash',source:K.new_cash.source,verified:K.new_cash.verified,m:K.new_cash.m},...K.uses_of_cash].map(s=>[esc(s.label),cents(s.source),cents(s.verified,1),bil(s.m)]),['Item','As stated','10-Q','Six-month $'])+
     `<p style="margin:8px 0 0">Comparison only: $1.00 of revenue vs 63¢ of new cash leaves a 37¢ gap (on the whiteboard). That gap isn't a use of cash. It's the costs, taxes and working capital already covered in Chapters 2–3, offset by the borrowing and asset sales here.</p>`;
   $('#ch4Src').innerHTML=srcLine(K.sources);
   render();
@@ -395,10 +395,10 @@ function ch6(){
   const tr={open:'equity',new:'deployed',buy:'deployed',appr:'paper',val:'paper',sell:'cashminus',close:'equity'};
   const short={open:'Jan 2026 holdings',new:'New investment',buy:'Equity bought',sell:'Equity sold',appr:'Appreciation',val:'Valuation change',close:'Jul 2026 holdings'};
   const why={open:'What Nvidia owned in other companies on Jan 25, 2026: public stocks plus private stakes. Mostly frontier labs (Anthropic, xAI), then supply-chain names like Intel.',
-    new:'Cash that left Nvidia and became stakes. The reel says most of it was one $30B OpenAI investment, with the rest in optics suppliers, Marvell and neoclouds.',
+    new:'Cash that left Nvidia and became stakes. The source says most of it was one $30B OpenAI investment, with the rest in optics suppliers, Marvell and neoclouds.',
     buy:'Purchases of equity securities in the cash-flow statement: $42.4B.',
     sell:'Equity securities sold for $7.2B. Selling turns a holding back into cash (Chapter 4\'s "securities sold").',
-    appr:'The reel\'s net "appreciation". It\'s a change in <i>value</i>, not cash received. In the filing it equals valuation gains (~13¢) minus equity sold (~4¢).',
+    appr:'The stated net "appreciation". It\'s a change in <i>value</i>, not cash received. In the filing it equals valuation gains (~13¢) minus equity sold (~4¢).',
     val:'Calculated residual: the change in holdings not explained by buying or selling. That\'s mostly mark-to-market gains on public stakes and re-pricing of private ones. It lines up with the $23.7B of gains in Chapter 2.',
     close:'About $99B of stakes on Jul 26, 2026, valued but not cashed. Selling it all at once would almost certainly fetch less.'};
   function steps(){const b=mode==='source'?P.bridge_source:P.bridge_filed;return b.map(s=>({id:s.id,label:s.label,short:short[s.id],kind:s.kind==='total'?'total':'delta',value:mode==='source'?s.source:s.verified,m:s.m,treat:tr[s.id],tipx:s.detail}))}
@@ -423,7 +423,7 @@ function ch6(){
     if(s) html=`<b>${esc(s.label)}</b> · <span class="val">${fv(s.value,mode,s.kind!=='total')}</span>${s.m?' · '+bil(s.m):''} ${badge(mode==='source'?'source':(s.id==='val'?'calculated':'verified'))}<br>${why[s.id]}`;
     else if(m) html=`<b>${esc(m.label)}</b>: <span class="val">${cents(m.source)}</span> of the July holdings ${badge('source')}. ${esc(m.note)} ${badge('unverified')} The filing doesn't break holdings down by company.`;
     else html=mode==='source'?`22¢ + 24¢ + 10¢ = <b>56¢</b> ${badge('source')}. The filing agrees: 22.5¢ → 55.6¢ (${bil(P.bridge_filed[0].m)} → ${bil(P.bridge_filed[4].m)}) ${badge('verified')}. Switch to the 10-Q view to see sales and gains separately.`
-      :`The 10-Q view separates what the reel nets together: +23.8¢ bought, −4.1¢ sold, and +13.4¢ of valuation change ${badge('calculated')}. Purple hatching means value that's on paper only.`;
+      :`The 10-Q view separates what the stated figure nets together: +23.8¢ bought, −4.1¢ sold, and +13.4¢ of valuation change ${badge('calculated')}. Purple hatching means value that's on paper only.`;
     $('#ch6Explain').innerHTML=html;
     $$('#ch6Btns .btn').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.id===active)));
   }
@@ -431,7 +431,7 @@ function ch6(){
     $('#ch6Btns').innerHTML=ids.map(id=>`<button class="btn small" data-id="${id}" aria-pressed="false">${short[id]}</button>`).join(' ');
     $$('#ch6Btns .btn').forEach(b=>b.addEventListener('click',()=>{active=active===b.dataset.id?null:b.dataset.id;mixSel=null;render()}))}
   const mb=$$('#ch6 [data-mode]');mb.forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;active=null;pressGroup(mb,b);btns();render()}));
-  $('#ch6Table').innerHTML=table([...P.bridge_source.map(s=>['Reel: '+esc(s.label),cents(s.source),'']),...P.bridge_filed.map(s=>['10-Q: '+esc(s.label),cents(s.verified,1),bil(s.m)])],['Item','Per $1','$']);
+  $('#ch6Table').innerHTML=table([...P.bridge_source.map(s=>['Stated: '+esc(s.label),cents(s.source),'']),...P.bridge_filed.map(s=>['10-Q: '+esc(s.label),cents(s.verified,1),bil(s.m)])],['Item','Per $1','$']);
   $('#ch6Src').innerHTML=srcLine(P.sources)+'<br>'+esc(P.note);
   btns();render();RENDERS.push(render);
 }
@@ -497,7 +497,7 @@ function ch7(){
     return `<svg viewBox="0 0 ${W} ${y+6}" role="img" aria-label="Bars comparing cash invested, commitments, guarantees and potential payments, per dollar of sales">${g}</svg>`;
   }
   const txt={
-    all:`The reel's <b>$1.23</b> ${badge('source')} equals one combination of filed items, ${bil(Cm.reconstructed_total_m)} = <b>${cents(Cm.reconstructed_total,1)}</b> ${badge('calculated')}. That includes $29B of cloud compute Nvidia buys for itself (gray outline). Leave that out and ecosystem promises come to <b>${cents(Cm.ecosystem_total,1)}</b>. Five kinds of item are in the mix: future equity checks, capacity agreements, leases to pass on, own-use cloud and guarantees. Solid shapes are money already paid, dashed shapes are promises, and coral marks risk that appears only if someone else fails to pay. The guarantees' expected payout isn't disclosed anywhere.`,
+    all:`The stated <b>$1.23</b> ${badge('source')} equals one combination of filed items, ${bil(Cm.reconstructed_total_m)} = <b>${cents(Cm.reconstructed_total,1)}</b> ${badge('calculated')}. That includes $29B of cloud compute Nvidia buys for itself (gray outline). Leave that out and ecosystem promises come to <b>${cents(Cm.ecosystem_total,1)}</b>. Five kinds of item are in the mix: future equity checks, capacity agreements, leases to pass on, own-use cloud and guarantees. Solid shapes are money already paid, dashed shapes are promises, and coral marks risk that appears only if someone else fails to pay. The guarantees' expected payout isn't disclosed anywhere.`,
     cash:`<b>Cash already invested</b> ${badge('verified')}: 23.8¢ of equity bought in six months, part of 55.6¢ of holdings. This money has actually left Nvidia's bank account and is drawn as solid amber pipes.`,
     commit:`<b>Contractual commitments</b> ${badge('verified')}: $25B of future equity investments (possibly including the last $10B of the OpenAI pledge), $36B of AI-cloud capacity agreements, and $20B of leases Nvidia signed and plans to reassign to third parties. All are agreed and not yet paid, and some are "subject to certain contingencies." Drawn as a dashed amber frame. The $29B gray row is cloud compute for Nvidia's own R&D. It's a commitment, but it isn't support for anyone else.`,
     guar:`<b>Credit guarantees</b> ${badge('verified')}: lease and power-payment guarantees capped at $105B for the SB Energy/OpenAI Ohio campus (the press calls them residual-value guarantees) (signed Aug 2026) and $3.5B of land, power and shell guarantees for AI clouds. These are <i>maximums</i>. Nvidia pays only if a tenant defaults, and only the shortfall. The Ohio guarantees don't take effect until each lease starts (first phase expected FY2029), and OpenAI has agreed to indemnify Nvidia for certain losses. Drawn as a translucent coral shell.`,
@@ -505,7 +505,7 @@ function ch7(){
   };
   function render(){$('#ch7Art').innerHTML=art();$('#ch7Chart').innerHTML=chart();focusTips($('#ch7Chart'));$('#ch7Explain').innerHTML=txt[view]}
   const vb=$$('#ch7 [data-view]');vb.forEach(b=>b.addEventListener('click',()=>{view=b.dataset.view;pressGroup(vb,b);render()}));
-  $('#ch7Table').innerHTML=table([...items.map(i=>[esc(i.label),cents(i.per_dollar,1),bil(i.m)]),['<b>Reconstructed total</b>',cents(Cm.reconstructed_total,1),bil(Cm.reconstructed_total_m)],['Reel total',cents(Cm.source_total),''],...Cm.source_mix.map(x=>['Reel mix: '+esc(x.label),cents(x.source),''])],['Item','Per $1','$']);
+  $('#ch7Table').innerHTML=table([...items.map(i=>[esc(i.label),cents(i.per_dollar,1),bil(i.m)]),['<b>Reconstructed total</b>',cents(Cm.reconstructed_total,1),bil(Cm.reconstructed_total_m)],['Stated total',cents(Cm.source_total),''],...Cm.source_mix.map(x=>['Stated mix: '+esc(x.label),cents(x.source),''])],['Item','Per $1','$']);
   $('#ch7Src').innerHTML=srcLine(Cm.sources)+'<br>'+esc(Cm.note);
   render();
 }
@@ -524,7 +524,7 @@ function ch8(){
     g+=`<line x1="90" x2="${W-20}" y1="${base-k}" y2="${base-k}" stroke="#2aa9e0" stroke-dasharray="4 4" stroke-opacity=".6"/>`;
     let cum=0;
     E.layers.forEach(L=>{const on=sc.layers.includes(L.id);const h=L.source*k;const y=base-(cum+L.source)*k;
-      g+=`<g class="mark" style="opacity:${on?1:.12}" data-tip="<b>${esc(L.label)}</b><br><span class='t-num'>${cents(L.source)}</span> reel · ${cents(L.calc,1)} rebuilt${L.note?'<br>'+esc(L.note):''}">
+      g+=`<g class="mark" style="opacity:${on?1:.12}" data-tip="<b>${esc(L.label)}</b><br><span class='t-num'>${cents(L.source)}</span> stated · ${cents(L.calc,1)} rebuilt${L.note?'<br>'+esc(L.note):''}">
         <rect x="${x0}" y="${y+1}" width="${bw}" height="${h-2}" rx="4" ${treat(p,tmap[L.id])}/>
         ${on?`<text class="lab-num" x="${x0+bw/2}" y="${y+h/2+5}" text-anchor="middle" style="font-weight:700;paint-order:stroke;stroke:#06101f;stroke-width:3px">${cents(L.source)}</text>
         <line x1="${x0+bw+4}" x2="${x0+bw+16}" y1="${y+h/2}" y2="${y+h/2}" stroke="#8590ad"/>
@@ -543,7 +543,7 @@ function ch8(){
   $('#ch8Btns').innerHTML=E.scenarios.map((s,i)=>`<button class="btn" data-id="${s.id}" aria-pressed="false">${i+1} · ${esc(s.label)}</button>`).join(' ');
   $$('#ch8Btns .btn').forEach(b=>b.addEventListener('click',()=>{sc=E.scenarios.find(s=>s.id===b.dataset.id);render()}));
   const eco=M.commitments.ecosystem_total;
-  $('#ch8Table').innerHTML=table([...E.layers.map(L=>[esc(L.label),cents(L.source),cents(L.calc,1)]),['Commitments excl. Nvidia\'s own-use cloud','',cents(eco,1)],...E.scenarios.map(s=>['<b>'+esc(s.label)+'</b>',cents(s.source),s.id==='s2'?cents(0.5561+eco,2)+' excl. own-use':s.id==='s3'?cents(0.5561+eco+0.7029,2)+' excl. own-use':''])],['Layer','Reel','Rebuilt'])+`<p style="margin:8px 0 0"><b>Lehman comparison</b> ${badge('verified')}: Lehman ${esc(E.lehman.lehman_ratio)}. ${esc(E.lehman.why_not_comparable)}</p>`;
+  $('#ch8Table').innerHTML=table([...E.layers.map(L=>[esc(L.label),cents(L.source),cents(L.calc,1)]),['Commitments excl. Nvidia\'s own-use cloud','',cents(eco,1)],...E.scenarios.map(s=>['<b>'+esc(s.label)+'</b>',cents(s.source),s.id==='s2'?cents(0.5561+eco,2)+' excl. own-use':s.id==='s3'?cents(0.5561+eco+0.7029,2)+' excl. own-use':''])],['Layer','As stated','Rebuilt'])+`<p style="margin:8px 0 0"><b>Lehman comparison</b> ${badge('verified')}: Lehman ${esc(E.lehman.lehman_ratio)}. ${esc(E.lehman.why_not_comparable)}</p>`;
   $('#ch8Src').innerHTML=srcLine(E.sources);
   render();
 }

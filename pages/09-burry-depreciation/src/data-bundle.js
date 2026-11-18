@@ -134,7 +134,7 @@ window.BD_DATA = {
   ]
  },
  "source-example": {
-  "_about": "Teaching assumptions reconstructed from The Wall Street Skinny reel 'AI Chip depreciation' (Rec2 15:26-18:02, whiteboard frame 10_burry_Rec2-17m58.jpg). These are illustrative numbers, NOT any company's financial statements.",
+  "_about": "Teaching assumptions reconstructed from The Wall Street Skinny explainer 'AI Chip depreciation' (Rec2 15:26-18:02, whiteboard frame 10_burry_Rec2-17m58.jpg). These are illustrative numbers, NOT any company's financial statements.",
   "units": "USD billions unless stated; shares in billions",
   "assetCost": 100,
   "revenue": 100,
@@ -202,7 +202,7 @@ window.BD_DATA = {
     null,
     null
    ],
-   "capexNote": "Year 1 shows (100); later years are drawn as '?' — the open question the reel poses."
+   "capexNote": "Year 1 shows (100); later years are drawn as '?' — the open question the original poses."
   }
  },
  "tax-scenarios": {
