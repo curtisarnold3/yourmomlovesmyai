@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The AI Cake in 3D · Five Glass Layers, Every String Between Them</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060b16;--panel:rgba(12,20,38,.82);--line:rgba(140,170,220,.16);--line2:rgba(140,170,220,.32);--text:#e9eef8;--muted:#98a7c2;--dim:#62728f;
+--energy:#f6b13c;--chips:#a78bfa;--infra:#38d6f5;--models:#2dd4bf;--apps:#ff7eb6;--mono:'JetBrains Mono',ui-monospace,monospace;--head:'Space Grotesk',Inter,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font:14px/1.5 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0}
+#labels{position:fixed;inset:0;pointer-events:none}
+.lbl{font:500 11px/1.1 Inter,sans-serif;color:#dfe7f5;white-space:nowrap;padding:2px 6px;border-radius:6px;background:rgba(6,11,22,.55);border:1px solid rgba(140,170,220,.14);transform:translateY(-14px);pointer-events:auto;cursor:pointer;transition:opacity .2s}
+.lbl.hub{font-weight:600;font-size:12px}
+.lbl.off{opacity:0;pointer-events:none}
+.lbl.dim{opacity:0;pointer-events:none}
+.lbl.hot{opacity:1;background:rgba(6,11,22,.9);border-color:rgba(255,255,255,.35)}
+.plane-lbl{font:700 13px/1 var(--head);letter-spacing:.14em;text-transform:uppercase;padding:6px 10px;border-radius:8px;background:rgba(6,11,22,.6);pointer-events:none}
+.panel{position:fixed;background:var(--panel);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#intro{left:16px;top:16px;width:min(380px,calc(100vw - 32px));padding:16px 18px;max-height:calc(100vh - 140px);overflow:auto}
+#intro h1{font:700 20px/1.2 var(--head);margin:0 0 8px;letter-spacing:-.01em}
+#intro p{margin:0 0 9px;color:#c9d4e6;font-size:13.5px}
+#intro .kick{font:600 10.5px var(--mono);letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+#intro.min p,#intro.min .legend,#intro.min .hint{display:none}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.chip{font:500 11.5px Inter,sans-serif;display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:999px;border:1px solid var(--line2);background:rgba(255,255,255,.03);color:var(--text);cursor:pointer;user-select:none}
+.chip i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.chip.off{opacity:.35;text-decoration:line-through}
+.hint{font-size:12px;color:var(--muted);margin-top:8px}
+button.mini{font:600 11px var(--mono);background:transparent;border:1px solid var(--line2);color:var(--muted);border-radius:8px;padding:4px 8px;cursor:pointer}
+button.mini:hover{color:var(--text);border-color:var(--text)}
+#bar{left:50%;transform:translateX(-50%);bottom:14px;padding:8px 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:calc(100vw - 24px)}
+#bar label{font:500 12px Inter;color:var(--muted);display:flex;align-items:center;gap:6px}
+#bar input[type=range]{width:110px;accent-color:var(--infra)}
+#search{font:13px Inter;background:rgba(255,255,255,.05);border:1px solid var(--line2);border-radius:8px;color:var(--text);padding:6px 9px;width:170px}
+#search::placeholder{color:var(--dim)}
+#results{position:absolute;bottom:46px;left:10px;min-width:220px;max-height:260px;overflow:auto;padding:4px;display:none}
+#results div{padding:6px 9px;border-radius:7px;cursor:pointer;font-size:13px}
+#results div:hover{background:rgba(255,255,255,.07)}
+#detail{right:16px;top:16px;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 110px);overflow:auto;padding:16px 18px;display:none}
+#detail h2{font:700 19px/1.2 var(--head);margin:2px 0 4px}
+#detail .meta{font:500 11.5px var(--mono);color:var(--muted);margin-bottom:10px}
+#detail p{margin:0 0 10px;color:#d4ddec;font-size:13.5px}
+#detail h3{font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.conn{display:flex;gap:8px;padding:7px 8px;border-radius:9px;border:1px solid transparent;cursor:pointer;align-items:flex-start}
+.conn:hover{background:rgba(255,255,255,.05);border-color:var(--line)}
+.conn .sw{width:10px;height:10px;border-radius:3px;margin-top:4px;flex:none}
+.conn b{font-weight:600}
+.conn small{display:block;color:var(--muted);font-size:12px}
+.conn .src{font-size:11px;color:var(--dim)}
+.conn .src a{color:#7fb8ff}
+.tag{display:inline-block;font:600 10px var(--mono);padding:2px 6px;border-radius:5px;margin-left:4px;vertical-align:1px}
+.tag.bg{background:rgba(246,177,60,.15);color:var(--energy)}
+.x{position:absolute;right:12px;top:10px}
+.trace{margin:4px 0 2px;display:flex;gap:6px;flex-wrap:wrap}
+.trace button{font:600 11.5px Inter;border-radius:8px;padding:6px 9px;border:1px solid var(--line2);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer}
+.trace button.on{background:rgba(56,214,245,.16);border-color:var(--infra)}
+#tracenote{font-size:12px;color:var(--muted);margin:6px 0 0}
+#sources{inset:40px auto auto 50%;transform:translateX(-50%);width:min(720px,calc(100vw - 32px));max-height:calc(100vh - 80px);overflow:auto;padding:18px 20px;display:none;z-index:5}
+#sources ol{padding-left:20px;margin:8px 0 0}
+#sources li{margin:0 0 6px;font-size:12.5px;color:#c9d4e6;word-break:break-word}
+#sources a{color:#7fb8ff}
+#tip{position:fixed;pointer-events:none;padding:6px 9px;border-radius:8px;background:rgba(6,11,22,.92);border:1px solid var(--line2);font-size:12px;display:none;max-width:280px;z-index:4}
+#loading{position:fixed;inset:0;display:grid;place-items:center;font:600 13px var(--mono);color:var(--muted);letter-spacing:.1em}
+@media (max-width:760px){
+ #intro{top:10px;left:10px;padding:12px 14px}
+ #intro h1{font-size:17px}
+ #intro.min h1{margin:0}
+ #intro:not(.min) p:nth-of-type(n+3){display:none}
+ #bar label.opt{display:none}
+ #bar .sp{display:none}
+ #detail{top:auto;bottom:118px;right:10px;left:10px;width:auto;max-height:46vh}
+ #bar{bottom:8px;gap:6px}
+ #bar input[type=range]{width:80px}
+ #search{width:130px}
+}
+</style>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body>
+<div id="loading">STACKING THE GLASS…</div>
+<div id="stage"></div>
+<div id="labels"></div>
+<div id="tip"></div>
+
+<section id="intro" class="panel">
+  <div class="kick">AI Stack · 10 · The cake in 3D</div>
+  <h1>Five panes of glass, and every string between them</h1>
+  <p>Huang's line is that <em>every app pulls on every layer beneath it, all the way down to the power plant.</em> This is what that pull looks like. Each pane is one layer of the cake, each dot is a company or product, and each string is a real deal: a power contract, a chip order, a cloud lease, an equity stake, a model behind an app.</p>
+  <p>Click any dot, then hit <b>Trace to the power plant</b>. Start with Claude, Siri or Copilot and watch how much of the planet lights up.</p>
+  <p>The chip and neocloud strings come straight from this series' Sector Pulse and Contagion Monitor maps. The rest were researched for this page (as of Nov 18, 2026). Strings marked <span class="tag bg">background</span> weren't re-verified here.</p>
+  <div class="legend" id="legend"></div>
+  <div class="hint">Drag to orbit · scroll or pinch to zoom · right-drag to pan · tap a string type to hide it</div>
+  <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap"><button class="mini" id="minbtn">Collapse</button><button class="mini" id="srcbtn">All sources</button></div>
+</section>
+
+<section id="detail" class="panel" aria-live="polite"></section>
+
+<section id="sources" class="panel"><button class="mini x" id="srcclose">Close</button><h2 style="font:700 18px var(--head);margin:0">Sources</h2><ol id="srclist"></ol></section>
+
+<div id="bar" class="panel">
+  <div style="position:relative"><input id="search" placeholder="Find a company…" autocomplete="off"><div id="results" class="panel"></div></div>
+  <label class="sp">Spacing <input type="range" id="spacing" min="30" max="120" value="62"></label>
+  <label><input type="checkbox" id="allLabels"> All labels</label>
+  <label class="opt"><input type="checkbox" id="spin"> Spin</label>
+  <label class="opt"><input type="checkbox" id="flow" checked> Flow</label>
+  <button class="mini" id="reset">Reset view</button>
+</div>
+
+<script id="data" type="application/json">{"nodes": [{"id": "constellation", "n": "Constellation Energy", "L": 0, "g": "Nuclear", "d": "Largest US nuclear fleet. Restarting Three Mile Island Unit 1 (now Crane Clean Energy Center) for Microsoft under a 20-year PPA.", "t": "CEG"}, {"id": "talen", "n": "Talen Energy", "L": 0, "g": "Nuclear", "d": "Owns the Susquehanna nuclear plant in Pennsylvania; contracted to supply Amazon up to 1,920 MW through 2042.", "t": "TLN"}, {"id": "vistra", "n": "Vistra", "L": 0, "g": "Nuclear", "d": "Signed 20-year agreements with Meta in Jan 2026 to support existing nuclear plants in PJM.", "t": "VST"}, {"id": "terrapower", "n": "TerraPower", "L": 0, "g": "Nuclear", "d": "Bill Gates-backed advanced reactor developer; part of Meta's up-to-6.6 GW nuclear package (Jan 2026).", "t": null}, {"id": "oklo", "n": "Oklo", "L": 0, "g": "Nuclear", "d": "Advanced fission startup; Meta funding early procurement and development (Jan 2026).", "t": "OKLO"}, {"id": "nextera", "n": "NextEra Energy", "L": 0, "g": "Nuclear", "d": "Restarting Iowa's 615 MW Duane Arnold plant for Google under a 25-year PPA; DOE loan up to $1.9B; target early 2029.", "t": "NEE"}, {"id": "kairos", "n": "Kairos Power", "L": 0, "g": "Nuclear", "d": "Molten-salt small modular reactors; Google contracted ~500 MW across six or seven units, first by 2030.", "t": null}, {"id": "xenergy", "n": "X-energy", "L": 0, "g": "Nuclear", "d": "Amazon-backed high-temperature gas SMR developer.", "t": null}, {"id": "entergy", "n": "Entergy Louisiana", "L": 0, "g": "Gas & grid", "d": "Building 10 gas plants (7+ GW) paid for by Meta to power Hyperion; ~240 miles of new transmission. New plants still need state approval.", "t": "ETR"}, {"id": "gevernova", "n": "GE Vernova", "L": 0, "g": "Turbines", "d": "The biggest gas-turbine maker. Backlog plus slot reservations hit 116 GW in Q2 2026; new orders now get 2031 delivery slots.", "t": "GEV"}, {"id": "siemens", "n": "Siemens Energy", "L": 0, "g": "Turbines", "d": "Gas-turbine backlog ~69 GW after booking 15 GW in its fiscal Q3 2026.", "t": "ENR"}, {"id": "mhi", "n": "Mitsubishi Heavy", "L": 0, "g": "Turbines", "d": "Large-frame gas-turbine backlog ~35 GW. With GE Vernova and Siemens Energy, one of only three heavy-duty turbine makers at scale.", "t": "7011.T"}, {"id": "bloom", "n": "Bloom Energy", "L": 0, "g": "On-site power", "d": "Solid-oxide fuel cells as primary data-center power: up to 2.8 GW for Oracle, up to 1 GW via AEP. Largest disclosed long in the Situational Awareness fund's 13F.", "t": "BE"}, {"id": "aep", "n": "American Electric Power", "L": 0, "g": "Gas & grid", "d": "Utility; agreed to buy up to 1 GW of Bloom fuel cells to serve data-center load the grid can't reach fast enough.", "t": "AEP"}, {"id": "brookfield", "n": "Brookfield", "L": 0, "g": "Energy capital", "d": "Expanded its Bloom fuel-cell financing partnership to $25B (Jun 2026), turning on-site power into a service.", "t": "BN"}, {"id": "sbenergy", "n": "SB Energy (SoftBank)", "L": 0, "g": "On-site power", "d": "SoftBank's power developer. Builds and runs the Milam County, TX Stargate campus leased to OpenAI (~1.2 GW). Nvidia guarantees up to $105B of OpenAI lease payments on SB Energy's Ohio campus.", "t": null}, {"id": "voltagrid", "n": "VoltaGrid", "L": 0, "g": "On-site power", "d": "Mobile gas generation. Powered up Colossus 1 in four months; reported on-site power at the Shackelford County Stargate site.", "t": null}, {"id": "solarturb", "n": "Solar Turbines (Caterpillar)", "L": 0, "g": "Turbines", "d": "Titan-350 gas turbines at xAI/SpaceX's Southaven, MS plant feeding Colossus 2 (~495 MW operating, ~1.24 GW planned).", "t": "CAT"}, {"id": "megapack", "n": "Tesla Megapack", "L": 0, "g": "On-site power", "d": "Grid-scale batteries buffering power between the Southaven turbines and Colossus 2.", "t": "TSLA"}, {"id": "taipower", "n": "Taipower", "L": 0, "g": "Gas & grid", "d": "Taiwan's state grid. Chip-industry demand forecast to roughly double from ~52 billion kWh (2026) to ~110 billion kWh (2035); TSMC alone uses close to 10% of the island's power.", "t": null}, {"id": "stategrid", "n": "China's grid", "L": 0, "g": "Gas & grid", "d": "Huang's CSIS point: China has about twice the US's energy capacity, which matters most at the cake's base.", "t": null}, {"id": "nv", "n": "Nvidia", "L": 1, "g": "Chip design", "d": "Dominant GPU maker and the hub of this map. Also an investor in labs, neoclouds and suppliers. Huang resigned Nov 12, 2026; CFO Colette Kress is interim CEO.", "t": "NVDA"}, {"id": "amd", "n": "AMD", "L": 1, "g": "Chip design", "d": "Second-source GPUs (Instinct). 6 GW deals with OpenAI and Meta.", "t": "AMD"}, {"id": "avgo", "n": "Broadcom", "L": 1, "g": "Chip design", "d": "Custom accelerators (Google TPU, OpenAI's chip, Meta MTIA) plus Ethernet networking.", "t": "AVGO"}, {"id": "cdn", "n": "Cadence", "L": 1, "g": "EDA software", "d": "Chip-design software every designer licenses.", "t": "CDNS"}, {"id": "snps", "n": "Synopsys", "L": 1, "g": "EDA software", "d": "Chip-design software; Nvidia took a $2B stake.", "t": "SNPS"}, {"id": "amat", "n": "Applied Materials", "L": 1, "g": "Fab tools", "d": "Deposition and etch tools inside every leading fab.", "t": "AMAT"}, {"id": "lam", "n": "Lam Research", "L": 1, "g": "Fab tools", "d": "Etch and deposition; critical for HBM stacking too.", "t": "LRCX"}, {"id": "tel", "n": "Tokyo Electron", "L": 1, "g": "Fab tools", "d": "Coaters, developers, etch.", "t": "8035.T"}, {"id": "asml", "n": "ASML", "L": 1, "g": "Fab tools", "d": "Sole supplier of EUV lithography.", "t": "ASML"}, {"id": "kla", "n": "KLA", "L": 1, "g": "Fab tools", "d": "Inspection and metrology.", "t": "KLAC"}, {"id": "disco", "n": "DISCO", "L": 1, "g": "Fab tools", "d": "Wafer dicing and grinding.", "t": "6146.T"}, {"id": "shin", "n": "Shin-Etsu", "L": 1, "g": "Materials", "d": "Silicon wafers (with SUMCO ≈52% of supply).", "t": "4063.T"}, {"id": "sumco", "n": "SUMCO", "L": 1, "g": "Materials", "d": "Silicon wafers.", "t": "3436.T"}, {"id": "jsr", "n": "JSR (private)", "L": 1, "g": "Materials", "d": "Photoresists; taken private by JIC in 2024.", "t": null}, {"id": "ajin", "n": "Ajinomoto", "L": 1, "g": "Materials", "d": "Yes, the seasoning company: >95% of the ABF film inside CPU/GPU substrates.", "t": "2802.T"}, {"id": "ibiden", "n": "Ibiden", "L": 1, "g": "Materials", "d": "Package substrates.", "t": "4062.T"}, {"id": "unim", "n": "Unimicron", "L": 1, "g": "Materials", "d": "Package substrates.", "t": "3037.TW"}, {"id": "tsmc", "n": "TSMC", "L": 1, "g": "Foundry", "d": "~90% of leading-edge logic, plus CoWoS packaging. Almost every arrow in the chip layer passes through here.", "t": "TSM"}, {"id": "hynix", "n": "SK Hynix", "L": 1, "g": "Memory", "d": "HBM leader.", "t": "000660.KS"}, {"id": "mu", "n": "Micron", "L": 1, "g": "Memory", "d": "HBM/DRAM; >65% of its DRAM made in Taiwan.", "t": "MU"}, {"id": "sams", "n": "Samsung", "L": 1, "g": "Memory", "d": "Memory plus a second foundry (Tesla AI5/AI6 at Taylor, TX).", "t": "005930.KS"}, {"id": "adv", "n": "Advantest", "L": 1, "g": "Test", "d": "Chip testers.", "t": "6857.T"}, {"id": "ter", "n": "Teradyne", "L": 1, "g": "Test", "d": "Chip testers.", "t": "TER"}, {"id": "fox", "n": "Foxconn", "L": 1, "g": "Server assembly", "d": "Builds GB200/GB300 racks.", "t": "2317.TW"}, {"id": "wis", "n": "Wistron", "L": 1, "g": "Server assembly", "d": "Builds Nvidia compute trays and racks.", "t": "3231.TW"}, {"id": "dell", "n": "Dell", "L": 1, "g": "Server assembly", "d": "AI servers; ~$5.8B GPU and equipment sale to IREN.", "t": "DELL"}, {"id": "smci", "n": "Supermicro", "L": 1, "g": "Server assembly", "d": "AI servers for neoclouds.", "t": "SMCI"}, {"id": "sndk", "n": "Sandisk", "L": 1, "g": "Memory", "d": "NAND flash for datasets and checkpoints; a Situational Awareness long. No verified one-to-one tie is mapped yet, so it floats alone.", "t": "SNDK"}, {"id": "intel", "n": "Intel", "L": 1, "g": "Chip design", "d": "CPUs and a foundry; Nvidia completed a $5B stake (~70% of its supply-chain holdings).", "t": "INTC"}, {"id": "mrvl", "n": "Marvell", "L": 1, "g": "Chip design", "d": "Custom silicon and optical DSPs; Nvidia took a $2B stake (Mar 31, 2026).", "t": "MRVL"}, {"id": "cohr", "n": "Coherent", "L": 1, "g": "Optics", "d": "Optical transceivers; Nvidia $2B stake.", "t": "COHR"}, {"id": "lite", "n": "Lumentum", "L": 1, "g": "Optics", "d": "Lasers and optics; Nvidia $2B stake.", "t": "LITE"}, {"id": "tpu", "n": "Google TPU", "L": 1, "g": "Custom silicon", "d": "Google's in-house accelerator, co-developed with Broadcom. Now rented to Anthropic and Meta.", "t": null}, {"id": "trainium", "n": "AWS Trainium", "L": 1, "g": "Custom silicon", "d": "Amazon's training/inference chip; powers Anthropic's Project Rainier.", "t": null}, {"id": "maia", "n": "Microsoft Maia", "L": 1, "g": "Custom silicon", "d": "Microsoft's in-house accelerator.", "t": null}, {"id": "mtia", "n": "Meta MTIA", "L": 1, "g": "Custom silicon", "d": "Meta's in-house accelerator; next gen aimed at training.", "t": null}, {"id": "oaixpu", "n": "OpenAI custom chip", "L": 1, "g": "Custom silicon", "d": "Co-designed with Broadcom (10 GW term sheet); reportedly on TSMC 3 nm.", "t": null}, {"id": "cerebras", "n": "Cerebras", "L": 1, "g": "Chip design", "d": "Wafer-scale inference systems; OpenAI bought 750 MW and lent ~$1B.", "t": "CBRS"}, {"id": "groq", "n": "Groq", "L": 1, "g": "Chip design", "d": "Inference chips; Nvidia's filings show a $2.9B Groq payment.", "t": null}, {"id": "huawei", "n": "Huawei Ascend", "L": 1, "g": "Chip design", "d": "China's leading AI chip (910C, 950PR/DT). ~$12B 2026 AI-chip revenue expected; DeepSeek V4 tuned for it.", "t": null}, {"id": "smic", "n": "SMIC", "L": 1, "g": "Foundry", "d": "China's leading foundry; makes Ascend on a 7nm-class node without EUV.", "t": "0981.HK"}, {"id": "ai5", "n": "Tesla AI5", "L": 1, "g": "Custom silicon", "d": "Tesla's self-driving/robot chip, dual-sourced at Samsung and TSMC.", "t": null}, {"id": "azure", "n": "Microsoft Azure", "L": 2, "g": "Hyperscaler", "d": "OpenAI's primary cloud; Fairwater \"AI superfactory\" sites in Wisconsin and Atlanta linked by an AI WAN.", "t": "MSFT"}, {"id": "aws", "n": "AWS", "L": 2, "g": "Hyperscaler", "d": "Anthropic's primary cloud and training partner (Project Rainier); also sells OpenAI capacity.", "t": "AMZN"}, {"id": "gcp", "n": "Google Cloud", "L": 2, "g": "Hyperscaler", "d": "Runs Gemini and rents TPUs to Anthropic, Meta and others; hosts OpenAI models in Model Garden.", "t": "GOOGL"}, {"id": "oci", "n": "Oracle Cloud", "L": 2, "g": "Hyperscaler", "d": "Landlord for most Stargate sites; reported ~$300B OpenAI deal.", "t": "ORCL"}, {"id": "metadc", "n": "Meta data centers", "L": 2, "g": "Hyperscaler", "d": "Hyperion (Louisiana, ~5 GW compute) and others; financed partly off balance sheet via Blue Owl.", "t": "META"}, {"id": "colossus", "n": "SpaceX Colossus 1 & 2", "L": 2, "g": "Hyperscaler", "d": "Memphis. Built by xAI (now part of SpaceX); ~2 GW total. Rented to Anthropic, Cursor and Reflection while Grok trains on Colossus 2.", "t": "SPCX"}, {"id": "alicloud", "n": "Alibaba Cloud", "L": 2, "g": "Hyperscaler", "d": "Runs Qwen; among buyers chasing Huawei Ascend 950 orders.", "t": "BABA"}, {"id": "crwv", "n": "CoreWeave", "L": 2, "g": "Neocloud", "d": "Largest neocloud; Nvidia owns ~11% and backstops $6.3B of capacity. Model 1-yr default probability ~33% in the Contagion Monitor.", "t": "CRWV"}, {"id": "nbis", "n": "Nebius", "L": 2, "g": "Neocloud", "d": "Microsoft (~$17.4B) and Meta (~$3B) contracts; Nvidia $2B stake.", "t": "NBIS"}, {"id": "iren", "n": "IREN", "L": 2, "g": "Neocloud", "d": "Former bitcoin miner with its own power; $9.7B Microsoft contract.", "t": "IREN"}, {"id": "wyfi", "n": "WhiteFiber", "L": 2, "g": "Neocloud", "d": "Small, concentrated customer base.", "t": "WYFI"}, {"id": "lambda", "n": "Lambda", "L": 2, "g": "Neocloud", "d": "Private GPU cloud; Nvidia leases back ~18k of its own GPUs.", "t": null}, {"id": "crusoe", "n": "Crusoe", "L": 2, "g": "Neocloud", "d": "Builds the Abilene Stargate campus for Oracle/OpenAI; also runs its own GPU cloud.", "t": null}, {"id": "fluid", "n": "Fluidstack", "L": 2, "g": "Neocloud", "d": "GPU cloud leasing miner sites; Google backstops its rent. Partner on Anthropic's own data centers.", "t": null}, {"id": "glxy", "n": "Galaxy (Helios)", "L": 2, "g": "Landlord", "d": "Helios campus leased to CoreWeave.", "t": "GLXY"}, {"id": "apld", "n": "Applied Digital", "L": 2, "g": "Landlord", "d": "Polaris Forge 1 (~400 MW) leased to CoreWeave.", "t": "APLD"}, {"id": "corz", "n": "Core Scientific", "L": 2, "g": "Landlord", "d": "CoreWeave is its sole AI tenant.", "t": "CORZ"}, {"id": "cifr", "n": "Cipher", "L": 2, "g": "Landlord", "d": "10-yr Fluidstack lease; Google backstop.", "t": "CIFR"}, {"id": "wulf", "n": "TeraWulf", "L": 2, "g": "Landlord", "d": "Lake Mariner leases to Fluidstack; Google backstop + warrants.", "t": "WULF"}, {"id": "vantage", "n": "Vantage Data Centers", "L": 2, "g": "Landlord", "d": "Developing the 1.4 GW Shackelford County, TX Stargate site for Oracle/OpenAI.", "t": null}, {"id": "bx", "n": "Blackstone", "L": 2, "g": "Capital", "d": "Anchored CoreWeave's $8.5B DDTL 4.0.", "t": "BX"}, {"id": "owl", "n": "Blue Owl", "L": 2, "g": "Capital", "d": "Owns 80% of Meta's Hyperion SPV (~$27B bonds).", "t": "OWL"}, {"id": "apo", "n": "Apollo", "L": 2, "g": "Capital", "d": "Private-credit lender in the neocloud web.", "t": "APO"}, {"id": "softbank", "n": "SoftBank", "L": 2, "g": "Capital", "d": "Stargate partner and OpenAI investor ($30B pledge, final tranche reported Oct 2026).", "t": "9984.T"}, {"id": "openai", "n": "OpenAI (GPT)", "L": 3, "g": "Frontier lab", "d": "GPT-5.6 family. ~$1.15T of vendor commitments across seven suppliers.", "t": null}, {"id": "anthropic", "n": "Anthropic (Claude)", "L": 3, "g": "Frontier lab", "d": "Claude Fable / Opus / Sonnet / Haiku. Trains and serves on Trainium, TPUs and Nvidia GPUs. Only frontier model on all three big clouds.", "t": null}, {"id": "gdm", "n": "Google DeepMind (Gemini)", "L": 3, "g": "Frontier lab", "d": "Gemini models on TPUs; the base for Apple's next Foundation Models.", "t": null}, {"id": "metasl", "n": "Meta Superintelligence Labs", "L": 3, "g": "Frontier lab", "d": "Muse Spark (closed, Apr 2026) powers Meta AI. Compute from Nvidia, AMD, Google TPUs, MTIA and neoclouds.", "t": null}, {"id": "spacexai", "n": "SpaceXAI (Grok)", "L": 3, "g": "Frontier lab", "d": "xAI, now inside SpaceX. Grok 5 training on Colossus 2.", "t": null}, {"id": "msai", "n": "Microsoft MAI", "L": 3, "g": "Frontier lab", "d": "Microsoft's in-house models, trained on Fairwater.", "t": null}, {"id": "mistral", "n": "Mistral", "L": 3, "g": "Open-weight lab", "d": "French lab; Nvidia among its investors.", "t": null}, {"id": "deepseek", "n": "DeepSeek", "L": 3, "g": "Open-weight lab", "d": "V4 (1.6T MoE) optimized for Huawei Ascend; pre-training on Ascend 950DT planned by end of 2026.", "t": null}, {"id": "qwen", "n": "Alibaba Qwen", "L": 3, "g": "Open-weight lab", "d": "Qwen3.8-Max: 2.4T total / 95B active, open weights (Aug 2026, reported).", "t": null}, {"id": "kimi", "n": "Moonshot Kimi", "L": 3, "g": "Open-weight lab", "d": "Kimi K3: 2.8T total / ~104B active, open weights (Jul 2026). Cursor's Composer is built on Moonshot models.", "t": null}, {"id": "nemotron", "n": "Nvidia Nemotron", "L": 3, "g": "Open-weight lab", "d": "Nvidia's open models; Nemotron 4 (≥1T, reported, unreleased).", "t": null}, {"id": "reflection", "n": "Reflection AI", "L": 3, "g": "Open-weight lab", "d": "Rents Colossus 2 GB300s: $150M/month from July 2026.", "t": null}, {"id": "tml", "n": "Thinking Machines", "L": 3, "g": "Frontier lab", "d": "Mira Murati's lab; Google Cloud GB300 deal.", "t": null}, {"id": "care", "n": "Aidoc CARE", "L": 3, "g": "Domain model", "d": "Clinical foundation model; first FDA clearance for a foundation-model device (14 CT conditions, Jan 2026).", "t": null}, {"id": "hf", "n": "Hugging Face", "L": 3, "g": "Model hub", "d": "Where open weights are published. Nvidia agreed to buy it for $12.93B; pending, DOJ inquiry reported.", "t": null}, {"id": "chatgpt", "n": "ChatGPT", "L": 4, "g": "Assistants", "d": "OpenAI's consumer app.", "t": null}, {"id": "codex", "n": "Codex", "L": 4, "g": "Coding", "d": "OpenAI's coding agent.", "t": null}, {"id": "claudeapp", "n": "Claude", "L": 4, "g": "Assistants", "d": "Anthropic's app.", "t": null}, {"id": "claudecode", "n": "Claude Code", "L": 4, "g": "Coding", "d": "Anthropic's coding agent; >$2.5B run-rate by Feb 2026.", "t": null}, {"id": "geminiapp", "n": "Gemini app", "L": 4, "g": "Assistants", "d": "Google's assistant; Nano Banana 2 image model.", "t": null}, {"id": "m365", "n": "Microsoft 365 Copilot", "L": 4, "g": "Work software", "d": "Copilot in Word/Excel/PowerPoint. Defaults to GPT-5.6; Claude Opus 5 in the model picker; Claude default-on in most commercial tenants since Jan 2026.", "t": null}, {"id": "ghcopilot", "n": "GitHub Copilot", "L": 4, "g": "Coding", "d": "Offers OpenAI and Anthropic models.", "t": null}, {"id": "cursor", "n": "Cursor", "L": 4, "g": "Coding", "d": "AI code editor. SpaceX agreed to buy it for $60B (pending). Own Composer models plus OpenAI, Anthropic, Google and xAI.", "t": null}, {"id": "siri", "n": "Siri / Apple Intelligence", "L": 4, "g": "Assistants", "d": "Next-gen Apple Foundation Models based on Gemini (~$1B/yr); ChatGPT stays an opt-in.", "t": null}, {"id": "metaai", "n": "Meta AI", "L": 4, "g": "Assistants", "d": "In WhatsApp, Instagram, Facebook and glasses; runs Muse Spark.", "t": null}, {"id": "grokapp", "n": "Grok", "L": 4, "g": "Assistants", "d": "xAI's assistant inside X.", "t": null}, {"id": "deepseekapp", "n": "DeepSeek app", "L": 4, "g": "Assistants", "d": "DeepSeek's chatbot.", "t": null}, {"id": "aidoc", "n": "Aidoc (radiology)", "L": 4, "g": "Healthcare", "d": "Radiology triage in ~2,000 hospitals on the CARE model.", "t": null}, {"id": "dragon", "n": "Dragon Copilot", "L": 4, "g": "Healthcare", "d": "Microsoft's clinical assistant, now drafting radiology reports using Foundry healthcare models.", "t": null}, {"id": "waymo", "n": "Waymo", "L": 4, "g": "Robots & vehicles", "d": "Robotaxis; first custom 5nm TSMC sensor chip, still uses Nvidia and AMD elsewhere.", "t": null}, {"id": "tesla", "n": "Tesla FSD + Optimus", "L": 4, "g": "Robots & vehicles", "d": "Self-driving cars and humanoid robots on AI5.", "t": "TSLA"}, {"id": "crm", "n": "Salesforce", "L": 4, "g": "SaaS under pressure", "d": "Per-seat software; a Situational Awareness short-thesis name (source-only).", "t": "CRM"}, {"id": "adbe", "n": "Adobe", "L": 4, "g": "SaaS under pressure", "d": "Creative software; short reported by SA; image models like Nano Banana 2 compete with Firefly.", "t": "ADBE"}, {"id": "wday", "n": "Workday", "L": 4, "g": "SaaS under pressure", "d": "HR software; SA short thesis (source-only).", "t": "WDAY"}, {"id": "intu", "n": "Intuit", "L": 4, "g": "SaaS under pressure", "d": "Tax/accounting software; SA short thesis (source-only).", "t": "INTU"}], "links": [{"a": "taipower", "b": "tsmc", "t": "power", "l": "Grid power for TSMC fabs (~10% of Taiwan's electricity)", "s": ["taipower", "taipower2"]}, {"a": "taipower", "b": "mu", "t": "power", "l": "Powers Micron's Taiwan DRAM/HBM fabs (Taichung)", "s": ["taipower2", "site_chips"]}, {"a": "constellation", "b": "azure", "t": "power", "l": "Crane (TMI-1) restart, ~835 MW, 20-yr PPA", "s": ["tracker"]}, {"a": "constellation", "b": "metadc", "t": "power", "l": "Meta funding life-extension of existing nuclear", "s": ["carnegie"]}, {"a": "talen", "b": "aws", "t": "power", "l": "Susquehanna: up to 1,920 MW through 2042", "s": ["tracker"]}, {"a": "xenergy", "b": "aws", "t": "power", "l": "Amazon-backed SMRs", "s": ["xenergy", "carnegie"]}, {"a": "vistra", "b": "metadc", "t": "power", "l": "20-yr nuclear PPAs (Jan 2026)", "s": ["meta_nuc"]}, {"a": "terrapower", "b": "metadc", "t": "power", "l": "Part of up-to-6.6 GW nuclear package", "s": ["meta_nuc"]}, {"a": "oklo", "b": "metadc", "t": "power", "l": "Meta funds early procurement", "s": ["meta_nuc"]}, {"a": "entergy", "b": "metadc", "t": "power", "l": "10 gas plants, 7+ GW for Hyperion", "s": ["hyperion"]}, {"a": "nextera", "b": "gcp", "t": "power", "l": "Duane Arnold restart, 615 MW, 25-yr PPA", "s": ["duane"]}, {"a": "kairos", "b": "gcp", "t": "power", "l": "~500 MW of SMRs, first by 2030", "s": ["kairos"]}, {"a": "bloom", "b": "oci", "t": "power", "l": "Up to 2.8 GW of fuel cells (Apr 2026)", "s": ["bloom_orcl"]}, {"a": "bloom", "b": "aep", "t": "power", "l": "Up to 1 GW of fuel cells", "s": ["bloom_orcl"]}, {"a": "bloom", "b": "nbis", "t": "power", "l": "Fuel cells for Nebius data centers", "s": ["bloom_nbis"]}, {"a": "brookfield", "b": "bloom", "t": "capital", "l": "$25B fuel-cell financing", "s": ["bloom_bf"]}, {"a": "solarturb", "b": "colossus", "t": "power", "l": "Titan-350 turbines at Southaven, MS", "s": ["colossus_gem"]}, {"a": "voltagrid", "b": "colossus", "t": "power", "l": "Mobile gas that first lit Colossus 1", "s": ["colossus_pwr"]}, {"a": "voltagrid", "b": "vantage", "t": "power", "l": "Reported on-site gas at Shackelford", "s": ["stargate"]}, {"a": "megapack", "b": "colossus", "t": "power", "l": "Battery buffer for Colossus 2", "s": ["megapack"]}, {"a": "stategrid", "b": "alicloud", "t": "power", "l": "China's grid (≈2× US capacity per Huang)", "s": ["csis"]}, {"a": "stategrid", "b": "deepseek", "t": "power", "l": "Inner Mongolia cluster for 160k Ascend chips", "s": ["deepseek_hw", "csis"]}, {"a": "gevernova", "b": "entergy", "t": "power", "l": "Gas turbines for utility buildouts (sector-level link)", "s": ["gev"]}, {"a": "siemens", "b": "entergy", "t": "power", "l": "Gas turbines for utility buildouts (sector-level link)", "s": ["euci"]}, {"a": "mhi", "b": "entergy", "t": "power", "l": "Gas turbines for utility buildouts (sector-level link)", "s": ["euci"]}, {"a": "sbenergy", "b": "openai", "t": "compute", "l": "Milam County Stargate, ~1.2 GW lease", "s": ["stargate"]}, {"a": "softbank", "b": "sbenergy", "t": "capital", "l": "SoftBank subsidiary", "s": ["stargate_epoch"]}, {"a": "cdn", "b": "nv", "t": "fab", "l": "EDA licenses", "s": ["site_chips"]}, {"a": "snps", "b": "nv", "t": "fab", "l": "EDA licenses", "s": ["site_chips"]}, {"a": "cdn", "b": "amd", "t": "fab", "l": "EDA licenses", "s": ["site_chips"]}, {"a": "snps", "b": "amd", "t": "fab", "l": "EDA licenses", "s": ["site_chips"]}, {"a": "cdn", "b": "avgo", "t": "fab", "l": "EDA licenses", "s": ["site_chips"]}, {"a": "snps", "b": "avgo", "t": "fab", "l": "EDA licenses", "s": ["site_chips"]}, {"a": "nv", "b": "tsmc", "t": "fab", "l": "Designs sent to fab", "s": ["site_chips"]}, {"a": "amd", "b": "tsmc", "t": "fab", "l": "Designs sent to fab", "s": ["site_chips"]}, {"a": "avgo", "b": "tsmc", "t": "fab", "l": "Designs sent to fab", "s": ["site_chips"]}, {"a": "nv", "b": "fox", "t": "fab", "l": "Rack orders", "s": ["site_chips"]}, {"a": "shin", "b": "tsmc", "t": "fab", "l": "Silicon wafers", "s": ["site_chips"]}, {"a": "sumco", "b": "tsmc", "t": "fab", "l": "Silicon wafers", "s": ["site_chips"]}, {"a": "shin", "b": "hynix", "t": "fab", "l": "Silicon wafers", "s": ["site_chips"]}, {"a": "sumco", "b": "mu", "t": "fab", "l": "Silicon wafers", "s": ["site_chips"]}, {"a": "amat", "b": "tsmc", "t": "fab", "l": "Fab tools", "s": ["site_chips"]}, {"a": "lam", "b": "tsmc", "t": "fab", "l": "Fab tools", "s": ["site_chips"]}, {"a": "tel", "b": "tsmc", "t": "fab", "l": "Fab tools", "s": ["site_chips"]}, {"a": "asml", "b": "tsmc", "t": "fab", "l": "EUV lithography", "s": ["site_chips"]}, {"a": "kla", "b": "tsmc", "t": "fab", "l": "Inspection", "s": ["site_chips"]}, {"a": "disco", "b": "tsmc", "t": "fab", "l": "Dicing/grinding", "s": ["site_chips"]}, {"a": "adv", "b": "tsmc", "t": "fab", "l": "Testers", "s": ["site_chips"]}, {"a": "ter", "b": "tsmc", "t": "fab", "l": "Testers", "s": ["site_chips"]}, {"a": "lam", "b": "hynix", "t": "fab", "l": "Fab tools", "s": ["site_chips"]}, {"a": "asml", "b": "mu", "t": "fab", "l": "Lithography", "s": ["site_chips"]}, {"a": "asml", "b": "sams", "t": "fab", "l": "Lithography", "s": ["site_chips"]}, {"a": "jsr", "b": "tsmc", "t": "fab", "l": "Photoresist", "s": ["site_chips"]}, {"a": "ajin", "b": "ibiden", "t": "fab", "l": "ABF film", "s": ["site_chips"]}, {"a": "ajin", "b": "unim", "t": "fab", "l": "ABF film", "s": ["site_chips"]}, {"a": "ibiden", "b": "tsmc", "t": "fab", "l": "Substrates", "s": ["site_chips"]}, {"a": "unim", "b": "tsmc", "t": "fab", "l": "Substrates", "s": ["site_chips"]}, {"a": "hynix", "b": "tsmc", "t": "fab", "l": "HBM stacks for CoWoS", "s": ["site_chips"]}, {"a": "mu", "b": "tsmc", "t": "fab", "l": "HBM stacks for CoWoS", "s": ["site_chips"]}, {"a": "sams", "b": "tsmc", "t": "fab", "l": "HBM stacks for CoWoS", "s": ["site_chips"]}, {"a": "tsmc", "b": "fox", "t": "fab", "l": "Finished packages", "s": ["site_chips"]}, {"a": "tsmc", "b": "wis", "t": "fab", "l": "Finished packages", "s": ["site_chips"]}, {"a": "nv", "b": "intel", "t": "capital", "l": "$5B stake (completed)", "s": ["site_nvd"]}, {"a": "nv", "b": "mrvl", "t": "capital", "l": "$2B stake (Mar 31, 2026)", "s": ["site_nvd"]}, {"a": "nv", "b": "cohr", "t": "capital", "l": "$2B stake", "s": ["site_nvd"]}, {"a": "nv", "b": "lite", "t": "capital", "l": "$2B stake", "s": ["site_nvd"]}, {"a": "nv", "b": "snps", "t": "capital", "l": "$2B stake", "s": ["site_nvd"]}, {"a": "nv", "b": "groq", "t": "capital", "l": "$2.9B Groq payment in filings", "s": ["site_nvd"]}, {"a": "avgo", "b": "tpu", "t": "fab", "l": "Co-designs and supplies TPUs (through 2031)", "s": ["anth_tpu"]}, {"a": "tsmc", "b": "tpu", "t": "fab", "l": "Fabricates TPUs (background)", "s": []}, {"a": "tsmc", "b": "trainium", "t": "fab", "l": "Fabricates Trainium (background)", "s": []}, {"a": "mrvl", "b": "trainium", "t": "fab", "l": "Custom-silicon partner (background)", "s": []}, {"a": "tsmc", "b": "maia", "t": "fab", "l": "Fabricates Maia (background)", "s": []}, {"a": "avgo", "b": "mtia", "t": "fab", "l": "Custom-silicon partner (background)", "s": []}, {"a": "avgo", "b": "oaixpu", "t": "fab", "l": "Co-designs; 10 GW term sheet", "s": ["oai_amd"]}, {"a": "tsmc", "b": "oaixpu", "t": "fab", "l": "Reportedly TSMC 3 nm", "s": ["oai_xpu"]}, {"a": "tsmc", "b": "cerebras", "t": "fab", "l": "Fabricates wafer-scale engines (background)", "s": []}, {"a": "smic", "b": "huawei", "t": "fab", "l": "Ascend on SMIC N+3 (7nm-class, no EUV)", "s": ["huawei"]}, {"a": "sams", "b": "huawei", "t": "fab", "l": "HBM stockpile imported from Samsung", "s": ["hbm_stock"]}, {"a": "sams", "b": "ai5", "t": "fab", "l": "AI5 on Samsung 2nm, Taylor TX", "s": ["tesla"]}, {"a": "tsmc", "b": "ai5", "t": "fab", "l": "Second AI5 source", "s": ["tesla"]}, {"a": "nv", "b": "dell", "t": "fab", "l": "GPUs into Dell servers", "s": ["site_neo"]}, {"a": "nv", "b": "smci", "t": "fab", "l": "GPUs into Supermicro servers", "s": ["site_neo"]}, {"a": "nv", "b": "sbenergy", "t": "capital", "l": "Up to $105B guarantee on OpenAI's Ohio lease", "s": ["site_nvd"]}, {"a": "fox", "b": "crwv", "t": "hw", "l": "Finished racks", "s": ["site_chips"]}, {"a": "wis", "b": "crwv", "t": "hw", "l": "Finished racks", "s": ["site_chips"]}, {"a": "nv", "b": "crwv", "t": "hw", "l": "Primary GPU supplier", "s": ["site_neo"]}, {"a": "nv", "b": "crwv", "t": "capital", "l": "~11% stake + $6.3B capacity backstop", "s": ["n_futuriom", "n_backstop"]}, {"a": "nv", "b": "nbis", "t": "hw", "l": "GPU supplier", "s": ["site_neo"]}, {"a": "nv", "b": "nbis", "t": "capital", "l": "$2B stake (Mar 2026)", "s": ["site_nvd"]}, {"a": "dell", "b": "iren", "t": "hw", "l": "~$5.8B GPU & equipment purchase", "s": ["n_iren"]}, {"a": "nv", "b": "lambda", "t": "hw", "l": "GPU supplier; leases back ~18k GPUs", "s": ["n_lambda"]}, {"a": "nv", "b": "crusoe", "t": "hw", "l": "GPU supplier", "s": ["site_neo"]}, {"a": "nv", "b": "wyfi", "t": "hw", "l": "GPU supplier", "s": ["site_neo"]}, {"a": "nv", "b": "azure", "t": "hw", "l": "GB200/GB300 racks in Fairwater", "s": ["fairwater"]}, {"a": "nv", "b": "colossus", "t": "hw", "l": "~555k GPUs (GB200/GB300)", "s": ["colossus_gpu"]}, {"a": "nv", "b": "oci", "t": "hw", "l": "GPUs for Stargate sites", "s": ["stargate"]}, {"a": "nv", "b": "metadc", "t": "hw", "l": "Millions of Blackwell/Rubin GPUs", "s": ["meta_nv"]}, {"a": "amd", "b": "metadc", "t": "hw", "l": "Up to 6 GW Instinct GPUs", "s": ["meta_amd"]}, {"a": "mtia", "b": "metadc", "t": "hw", "l": "In-house chips", "s": ["meta_amd"]}, {"a": "tpu", "b": "gcp", "t": "hw", "l": "Google's own silicon", "s": ["anth_tpu"]}, {"a": "trainium", "b": "aws", "t": "hw", "l": "Amazon's own silicon", "s": ["anth_aws"]}, {"a": "maia", "b": "azure", "t": "hw", "l": "Microsoft's own silicon", "s": ["site_oc"]}, {"a": "huawei", "b": "alicloud", "t": "hw", "l": "Seeking Ascend 950 orders", "s": ["ascend_orders"]}, {"a": "amd", "b": "openai", "t": "hw", "l": "6 GW Instinct; warrant up to 160M AMD shares", "s": ["oai_amd"]}, {"a": "nv", "b": "openai", "t": "hw", "l": "Up to 10 GW LOI (~$100B)", "s": ["oai_vendors"]}, {"a": "nv", "b": "openai", "t": "capital", "l": "$30B in OpenAI's $110B round", "s": ["site_nvd"]}, {"a": "cerebras", "b": "openai", "t": "hw", "l": "750 MW inference (+1.25 GW option)", "s": ["oai_cerebras"]}, {"a": "oaixpu", "b": "openai", "t": "hw", "l": "OpenAI-designed accelerators", "s": ["oai_amd"]}, {"a": "huawei", "b": "deepseek", "t": "hw", "l": "V4 tuned for Ascend; 160k 950DT planned", "s": ["deepseek_hw"]}, {"a": "nv", "b": "anthropic", "t": "capital", "l": "$10B investment (Huang: likely last pre-IPO)", "s": ["site_nvd"]}, {"a": "nv", "b": "spacexai", "t": "capital", "l": "Nvidia stake in xAI", "s": ["site_nvd"]}, {"a": "nv", "b": "mistral", "t": "capital", "l": "Nvidia stake", "s": ["site_nvd"]}, {"a": "nv", "b": "nemotron", "t": "hw", "l": "Nvidia's own models", "s": ["site_oc"]}, {"a": "nv", "b": "hf", "t": "capital", "l": "$12.93B acquisition (pending)", "s": ["site_oc"]}, {"a": "ai5", "b": "tesla", "t": "hw", "l": "FSD + Optimus brain", "s": ["tesla"]}, {"a": "tsmc", "b": "waymo", "t": "hw", "l": "Custom 5nm sensor ASIC", "s": ["waymo"]}, {"a": "nv", "b": "waymo", "t": "hw", "l": "Merchant chips remain", "s": ["waymo"]}, {"a": "amd", "b": "waymo", "t": "hw", "l": "Merchant chips remain", "s": ["waymo"]}, {"a": "crwv", "b": "apld", "t": "compute", "l": "Polaris Forge 1: ~400 MW, ~$11B lease", "s": ["n_apld"]}, {"a": "crwv", "b": "corz", "t": "compute", "l": "Sole AI tenant; >$10B over 12 yrs", "s": ["n_corz"]}, {"a": "crwv", "b": "glxy", "t": "compute", "l": "Helios: 15-yr leases", "s": ["n_glxy"]}, {"a": "fluid", "b": "wulf", "t": "compute", "l": "10-yr Lake Mariner leases", "s": ["n_wulf"]}, {"a": "fluid", "b": "cifr", "t": "compute", "l": "10-yr colocation lease", "s": ["n_cifr"]}, {"a": "gcp", "b": "wulf", "t": "capital", "l": "Backstops ~$3.2B of Fluidstack rent; ~14% warrants", "s": ["n_wulf"]}, {"a": "gcp", "b": "cifr", "t": "capital", "l": "Backstops $1.4B of Fluidstack rent", "s": ["n_cifr"]}, {"a": "nbis", "b": "azure", "t": "compute", "l": "~$17.4B (up to $19.4B) through 2031", "s": ["n_nbis"]}, {"a": "iren", "b": "azure", "t": "compute", "l": "~$9.7B, 5 yrs", "s": ["n_iren"]}, {"a": "crwv", "b": "azure", "t": "compute", "l": "Historically largest customer", "s": ["n_msft"]}, {"a": "lambda", "b": "azure", "t": "compute", "l": "Multibillion GPU deal", "s": ["n_tc"]}, {"a": "vantage", "b": "oci", "t": "compute", "l": "Shackelford 1.4 GW for Oracle/OpenAI", "s": ["stargate"]}, {"a": "bx", "b": "crwv", "t": "capital", "l": "Anchored $8.5B DDTL 4.0", "s": ["n_wing"]}, {"a": "owl", "b": "metadc", "t": "capital", "l": "Owns 80% of Hyperion SPV", "s": ["n_hyp"]}, {"a": "apo", "b": "crwv", "t": "capital", "l": "Private-credit lender in the neocloud web (sector-level)", "s": ["site_neo"]}, {"a": "azure", "b": "openai", "t": "compute", "l": "Primary cloud (~$250B); ships first on Azure", "s": ["oai_vendors", "copilot"]}, {"a": "oci", "b": "openai", "t": "compute", "l": "~$300B; landlord for Stargate sites", "s": ["oai_vendors", "stargate"]}, {"a": "aws", "b": "openai", "t": "compute", "l": "$38B over 7 yrs", "s": ["oai_vendors"]}, {"a": "crwv", "b": "openai", "t": "compute", "l": "Up to $22.4B", "s": ["oai_clouds"]}, {"a": "gcp", "b": "openai", "t": "compute", "l": "Cloud capacity; OpenAI models in Model Garden", "s": ["oai_clouds"]}, {"a": "crusoe", "b": "openai", "t": "compute", "l": "Builds Abilene Stargate campus", "s": ["n_crusoe"]}, {"a": "softbank", "b": "openai", "t": "capital", "l": "$30B pledge", "s": ["site_nvd"]}, {"a": "azure", "b": "openai", "t": "capital", "l": "Major shareholder (background)", "s": []}, {"a": "aws", "b": "anthropic", "t": "compute", "l": "Primary cloud + Project Rainier; Claude on Bedrock", "s": ["anth_aws"]}, {"a": "gcp", "b": "anthropic", "t": "compute", "l": "1 GW TPUs now, ~3.5 GW from 2027; Claude on Vertex", "s": ["anth_tpu"]}, {"a": "azure", "b": "anthropic", "t": "compute", "l": "≥$44.9B commitment; Claude on Foundry", "s": ["anth_msft"]}, {"a": "colossus", "b": "anthropic", "t": "compute", "l": "$1.25B/month through May 2029", "s": ["anth_spacex", "s1"]}, {"a": "fluid", "b": "anthropic", "t": "compute", "l": "Partner on Anthropic's $50B US data-center build", "s": ["anth_50b"]}, {"a": "aws", "b": "anthropic", "t": "capital", "l": "$8B investment", "s": ["anth_stake"]}, {"a": "gcp", "b": "anthropic", "t": "capital", "l": "~14% stake", "s": ["anth_stake"]}, {"a": "colossus", "b": "spacexai", "t": "compute", "l": "Grok 5 training on Colossus 2", "s": ["s1"]}, {"a": "colossus", "b": "reflection", "t": "compute", "l": "$150M/month of GB300s", "s": ["reflection"]}, {"a": "gcp", "b": "gdm", "t": "compute", "l": "Gemini trains on TPUs", "s": ["anth_tpu"]}, {"a": "gcp", "b": "metasl", "t": "compute", "l": "Multibillion TPU rental", "s": ["meta_tpu"]}, {"a": "gcp", "b": "tml", "t": "compute", "l": "GB300 capacity deal", "s": ["tml"]}, {"a": "metadc", "b": "metasl", "t": "compute", "l": "Hyperion and Meta's fleet", "s": ["muse"]}, {"a": "crwv", "b": "metasl", "t": "compute", "l": "~$14.2B contract", "s": ["n_qz"]}, {"a": "nbis", "b": "metasl", "t": "compute", "l": "~$3B, 5 yrs", "s": ["n_nbis"]}, {"a": "azure", "b": "msai", "t": "compute", "l": "Trained on Fairwater", "s": ["fairwater"]}, {"a": "alicloud", "b": "qwen", "t": "compute", "l": "Alibaba's own cloud", "s": ["site_oc"]}, {"a": "qwen", "b": "hf", "t": "open", "l": "Open weights published", "s": ["site_oc"]}, {"a": "kimi", "b": "hf", "t": "open", "l": "Open weights published", "s": ["site_oc"]}, {"a": "deepseek", "b": "hf", "t": "open", "l": "Open weights published", "s": ["site_oc"]}, {"a": "nemotron", "b": "hf", "t": "open", "l": "Open weights published", "s": ["site_oc"]}, {"a": "mistral", "b": "hf", "t": "open", "l": "Open weights published", "s": ["site_oc"]}, {"a": "gdm", "b": "hf", "t": "open", "l": "Gemma 4 open weights", "s": ["site_oc"]}, {"a": "openai", "b": "hf", "t": "open", "l": "gpt-oss open weights", "s": ["site_oc"]}, {"a": "kimi", "b": "cursor", "t": "model", "l": "Composer models built on Moonshot base", "s": ["cursor"]}, {"a": "colossus", "b": "cursor", "t": "compute", "l": "Trains Composer; SpaceX buying Cursor ($60B, pending)", "s": ["cursor"]}, {"a": "azure", "b": "dragon", "t": "compute", "l": "Foundry healthcare models", "s": ["dragon"]}, {"a": "openai", "b": "chatgpt", "t": "model", "l": "", "s": ["site_oc"]}, {"a": "openai", "b": "codex", "t": "model", "l": "", "s": ["site_oc"]}, {"a": "openai", "b": "m365", "t": "model", "l": "GPT-5.6 is the default", "s": ["copilot"]}, {"a": "openai", "b": "ghcopilot", "t": "model", "l": "GPT-5.x models", "s": ["copilot"]}, {"a": "openai", "b": "cursor", "t": "model", "l": "Model picker", "s": ["cursor_models"]}, {"a": "openai", "b": "siri", "t": "model", "l": "ChatGPT stays opt-in", "s": ["siri"]}, {"a": "anthropic", "b": "claudeapp", "t": "model", "l": "", "s": ["site_oc"]}, {"a": "anthropic", "b": "claudecode", "t": "model", "l": "", "s": ["cursor"]}, {"a": "anthropic", "b": "m365", "t": "model", "l": "Claude Opus 5 in picker; default-on since Jan 2026", "s": ["copilot_claude", "anth_msft"]}, {"a": "anthropic", "b": "ghcopilot", "t": "model", "l": "Claude models", "s": ["copilot"]}, {"a": "anthropic", "b": "cursor", "t": "model", "l": "Model picker; once a reported 40–50% of Anthropic revenue", "s": ["cursor"]}, {"a": "gdm", "b": "geminiapp", "t": "model", "l": "", "s": ["siri"]}, {"a": "gdm", "b": "siri", "t": "model", "l": "~$1B/yr; Gemini-based Foundation Models", "s": ["siri", "siri_cost"]}, {"a": "gdm", "b": "cursor", "t": "model", "l": "Model picker", "s": ["cursor_models"]}, {"a": "metasl", "b": "metaai", "t": "model", "l": "Muse Spark", "s": ["muse"]}, {"a": "spacexai", "b": "grokapp", "t": "model", "l": "", "s": ["s1"]}, {"a": "spacexai", "b": "cursor", "t": "model", "l": "Grok in Cursor's own model pool", "s": ["cursor_models"]}, {"a": "deepseek", "b": "deepseekapp", "t": "model", "l": "", "s": ["site_oc"]}, {"a": "msai", "b": "m365", "t": "model", "l": "Microsoft's own models", "s": ["fairwater"]}, {"a": "care", "b": "aidoc", "t": "model", "l": "CARE powers triage", "s": ["aidoc"]}, {"a": "anthropic", "b": "crm", "t": "threat", "l": "Situational Awareness thesis: agents compress per-seat demand", "s": ["site_sa"]}, {"a": "anthropic", "b": "wday", "t": "threat", "l": "Situational Awareness thesis: agents compress per-seat demand", "s": ["site_sa"]}, {"a": "anthropic", "b": "intu", "t": "threat", "l": "Situational Awareness thesis: agents compress per-seat demand", "s": ["site_sa"]}, {"a": "anthropic", "b": "adbe", "t": "threat", "l": "Situational Awareness thesis: agents compress per-seat demand", "s": ["site_sa"]}, {"a": "gdm", "b": "adbe", "t": "threat", "l": "Nano Banana 2 vs Firefly", "s": ["nanobanana"]}], "sources": {"aidoc": ["AI Health Guide: Aidoc CARE foundation model, first FDA clearance (Jan 2026)", "https://ai-health-global.pages.dev/reviews/aidoc-review/"], "anth_50b": ["IT Brief: Anthropic $50B US compute investment plan", "https://itbrief.news/story/anthropic-signs-biggest-compute-deal-with-google-broadcom"], "anth_aws": ["Constellation Research: Amazon remains Anthropic's primary cloud; Project Rainier", "https://www.constellationr.com/insights/news/anthropic-inks-deal-google-broadcom-tpu-capacity"], "anth_msft": ["FourWeekMBA: Claude default in M365 Copilot; $44.9B Microsoft compute commitment", "https://fourweekmba.com/microsoft-365-copilot-enables-anthropic-claude-models-by-default/"], "anth_spacex": ["HotHardware: Anthropic–SpaceX Colossus deal, $1.25B/month", "https://hothardware.com/news/anthropic-inks-spacex-deal-ahead-of-2-trillion-ipo"], "anth_stake": ["Implicator: Google ~14% stake; Amazon $8B in Anthropic", "https://www.implicator.ai/anthropic-and-google-circle-a-cloud-pact-measured-in-tens-of-billions/"], "anth_tpu": ["The Next Web: Anthropic ~3.5 GW TPU via Google + Broadcom (Apr 2026)", "https://thenextweb.com/news/anthropic-google-broadcom-compute-deal"], "ascend_orders": ["Capacity: ByteDance, Tencent, Alibaba seek Ascend 950 orders after DeepSeek V4", "https://capacityglobal.com/news/deepseek-v4-triggers-scramble/"], "bloom_bf": ["EnkiAI: Bloom–Brookfield financing expanded to $25B (Jun 2026)", "https://enkiai.com/fuel-cell/bloom-energy-sofc-aep-agreement/"], "bloom_nbis": ["EnkiAI: Bloom fuel-cell project funding for Nebius data centers", "https://enkiai.com/why-bloom-energy-is-crushing-the-hydrogen-market/"], "bloom_orcl": ["Hydrogen Fuel News: Bloom Energy up to 2.8 GW for Oracle (Apr 2026)", "https://www.hydrogenfuelnews.com/fuel-cell-capacity-growth-bloom-energys-expanded-deal-with-oracle/8575599/"], "carnegie": ["Carnegie Endowment: assessing hyperscaler nuclear commitments (Jun 2026)", "https://carnegieendowment.org/research/2026/06/beyond-the-hype-assessing-hyperscaler-nuclear-commitments-against-us-energy-realities"], "colossus_gem": ["Global Energy Monitor: Colossus 2 power station (Solar Turbines Titan-350)", "https://www.gem.wiki/Colossus_2_power_station"], "colossus_gpu": ["Introl: Colossus at 2 GW, ~555k Nvidia GPUs", "https://introl.com/blog/xai-colossus-2-gigawatt-expansion-555k-gpus-january-2026"], "colossus_pwr": ["Cleanview: Colossus 1 & 2 behind-the-meter power (VoltaGrid, gas, batteries)", "https://cleanview.co/reports/behind-the-meter-data-centers/full-report/colossus"], "copilot": ["IDM: M365 Copilot defaults to GPT-5.6; Apr 2026 amended Microsoft–OpenAI agreement", "https://idm.net.au/node/15705"], "copilot_claude": ["ProPakistani: Claude Opus 5 across Microsoft 365 Copilot apps (Aug 2026)", "https://propakistani.pk/2026/08/28/microsoft-now-supports-claude-across-its-copilot-apps/"], "csis": ["Business Today: Huang at CSIS on the five-layer cake (Dec 2025)", "https://www.businesstoday.in/bt-tv/video/jensen-huang-breaks-down-ai-the-5-layer-cake-explained-504938-2025-12-04"], "cursor": ["Amplifying: SpaceX to acquire Cursor; Composer on Moonshot base", "https://edge.amplifying.ai/coding-agents/cursor"], "cursor_models": ["Cursor docs: available models", "https://cursor.com/help/models-and-usage/available-models"], "deepseek_hw": ["TrendForce: DeepSeek to deploy 160k Ascend 950DT", "https://www.trendforce.com/news/?p=64461"], "dragon": ["Microsoft: Dragon Copilot for radiology, Foundry healthcare models", "https://www.microsoft.com/en-us/industry/blog/?p=123769"], "duane": ["DCD: Google–NextEra Duane Arnold restart PPA", "https://www.datacenterdynamics.com/en/news/google-signs-power-deal-with-nextenergy-to-restart-iowas-615mw-duane-arnold-nuclear-plant-for-ai-data-centers/"], "euci": ["EUCI: turbine backlogs — Siemens Energy 69 GW, Mitsubishi 35 GW", "https://www.euci.com/?p=190165"], "fairwater": ["Microsoft: Fairwater AI superfactory (Wisconsin + Atlanta)", "https://news.microsoft.com/source/features/ai/from-wisconsin-to-atlanta-microsoft-connects-datacenters-to-build-its-first-ai-superfactory/"], "gev": ["Turbomachinery: GE Vernova gas backlog 116 GW (Jul 2026)", "https://www.turbomachinerymag.com/view/ge-vernova-gas-turbine-backlog-hits-116-gw-as-power-orders-more-than-double"], "hbm_stock": ["Model Diplomat: China's HBM stockpile imported from Samsung", "https://modeldiplomat.com/story/deepseeks-ai-chip-bid-redefines-china"], "huawei": ["Tom's Hardware: Huawei ~$12B AI-chip revenue; SMIC N+3 7nm-class", "https://www.tomshardware.com/tech-industry/huawei-expects-12-billion-in-ai-chip-revenue-this-year-as-nvidias-china-market-share-hits-zero"], "hyperion": ["Fortune: Meta orders 10 gas plants for Hyperion (Mar 27, 2026)", "https://dc.fortune.com/2026/03/27/meta-hyperion-10-gas-power-plants-louisiana-entergy/"], "kairos": ["SoftwareSeni: Google–Kairos 500 MW SMR agreement", "https://www.softwareseni.com/why-tech-giants-are-going-nuclear-the-ai-power-crisis-driving-trillion-dollar-energy-deals/"], "megapack": ["The Decoder: Southaven turbines + Tesla Megapacks feeding Colossus 2", "https://the-decoder.com/?p=27414"], "meta_amd": ["Dataconomy: Meta–AMD up to 6 GW; multipronged silicon", "https://dataconomy.com/2026/02/27/meta-signs-multibillion-dollar-deal-to-rent-google-tpus-for-ai-training/"], "meta_nuc": ["Energy Digital: Meta's Jan 2026 PPAs with Vistra, TerraPower, Oklo", "https://energydigital.com/articles/the-nuclear-family-behind-big-techs-obsession-with-fission"], "meta_nv": ["24/7 Wall St: Meta–Nvidia millions of Blackwell/Rubin GPUs", "https://247wallst.com/investing/2026/02/27/meta-platforms-does-it-again-signs-a-multi-billion-deal-with-google/"], "meta_tpu": ["SiliconANGLE: Meta rents Google Cloud TPUs (Feb 2026)", "https://siliconangle.com/2026/02/26/google-meta-reportedly-strike-new-multibillion-dollar-ai-chip-deal/"], "muse": ["Digit: Meta Superintelligence Labs ships Muse Spark", "https://www.digit.fyi/?p=133896"], "n_apld": ["Crypto Briefing: Applied Digital Polaris Forge 1 leased to CoreWeave", "https://cryptobriefing.com/applied-digital-ai-infrastructure-milestone/"], "n_backstop": ["Converge Digest: Nvidia $6.3B residual-capacity order", "https://convergedigest.com/nvidia-to-buy-coreweaves-unused-capacity/?amp=1"], "n_cifr": ["Decrypt: Cipher–Fluidstack lease, Google $1.4B backstop", "https://decrypt.co/341339/google-dives-deeper-bitcoin-mining-backstopping-ai-hosting?amp=1"], "n_corz": ["Quartr: Core Scientific investor update", "https://quartr.com/events/core-scientific-inc-corz-investor-update_oqh0wpCL"], "n_crusoe": ["Contrary Research: Crusoe, Stargate Abilene developer", "https://research.contrary.com/report/crusoe"], "n_futuriom": ["Futuriom: Nvidia CoreWeave stake ~11.5%", "https://www.futuriom.com/articles/news/nvidia-tops-coreweave-stake-with-2-billion/2026/01"], "n_glxy": ["Converge Digest: CoreWeave 800 MW at Galaxy Helios", "https://convergedigest.com/coreweave-locks-in-800-mw-at-galaxys-helios-campus-in-texas/"], "n_hyp": ["Global Data Center Hub: Hyperion SPV structure", "https://www.globaldatacenterhub.com/p/the-hyperion-financing-is-the-signal"], "n_iren": ["IREN: $9.7B Microsoft contract; $5.8B Dell purchase", "https://iren.gcs-web.com/news-releases/news-release-details/iren-secures-97bn-ai-cloud-contract-microsoft"], "n_lambda": ["The Next Web: Lambda customers incl. Nvidia leaseback", "https://thenextweb.com/news/lambda-hudson-river-trading-cloud-deal-nvidia-chips"], "n_msft": ["FourWeekMBA (CNBC): Microsoft and neocloud concentration", "https://fourweekmba.com/ai-neocloud-stocks-fell-20-9-in-four-days-s-p-500-fell-3/"], "n_nbis": ["Capital Brief: Nebius $3B Meta deal, $17.4B Microsoft deal", "https://www.capitalbrief.com/briefing/neocloud-nebius-inks-usd3b-deal-with-meta-posts-soaring-q3-sales-4f8a4b80-b989-4ef2-bc91-eea8e4a7e4bb/"], "n_qz": ["Quartz: GPU-collateralized debt (Meta $14.2B contract)", "https://qz.com/gpu-collateralized-debt-ai-neocloud-coreweave-financing-risks-050526"], "n_tc": ["TechCrunch: Lambda–Microsoft deal", "https://www.techcrunch.com/2025/11/03/lambda-inks-multi-billion-dollar-ai-infrastructure-deal-with-microsoft/"], "n_wing": ["Wing VC: How the GPU Became Collateral", "https://www.wing.vc/content/how-the-gpu-became-collateral"], "n_wulf": ["Barchart/GlobeNewswire: TeraWulf CB-5 lease, Google backstop", "https://www.barchart.com/story/news/34218778/terawulf-announces-fluidstack-expansion-with-160-mw-cb-5-lease-at-lake-mariner"], "nanobanana": ["Rallies: Nano Banana 2 pressures Adobe Firefly", "https://rallies.ai/news/google-secures-multibillion-dollar-meta-tpu-deal-and-launches-nano-banana-2-ai-model"], "oai_amd": ["Tom's Hardware: OpenAI–AMD 6 GW, Broadcom 10 GW", "https://www.tomshardware.com/tech-industry/openai-couldnt-finance-its-data-centers-so-it-took-control-of-hardware-instead"], "oai_cerebras": ["Hudson Labs: OpenAI–Cerebras 750 MW (+1.25 GW option)", "https://hudson-labs.com/research/openai-ecosystem-partners"], "oai_clouds": ["Built In: OpenAI cloud deals incl. Google Cloud", "https://builtin.com/articles/openai-cloud-deals"], "oai_vendors": ["Tom Tunguz: OpenAI's $1.15T vendor commitments", "https://tomtunguz.com/openai-hardware-spending-2025-2035/"], "oai_xpu": ["OpenAI custom inference chip on TSMC 3 nm (secondary report)", "https://ai-news-site-1ih.pages.dev/en/news/openai-compute-bet-reshaping-ai-economics-en"], "reflection": ["Wccftech: SpaceX rents Colossus 2 GB300s to Reflection ($6.3B)", "https://wccftech.com/spacex-rented-out-colossus-1-over-its-mish-mash-of-gpus-but-now-its-renting-out-colossus-2-capacity-as-well-raising-doubts-over-grok-ais-future//amp/"], "s1": ["Simon Willison quoting the SpaceX S-1 (May 20, 2026)", "https://simonwillison.net/2026/may/20/spacex-s1/"], "siri": ["Android Authority: Apple–Google Gemini deal for Siri", "https://www.androidauthority.com/apple-siri-google-gemini-deal-3631890"], "siri_cost": ["The Batch: Apple paying ~$1B/yr, structured as cloud contract", "https://www.deeplearning.ai/the-batch/apple-announced-a-partnership-with-google-to-power-siri-and-other-ai-features"], "site_chips": ["Part 02 · Who Makes AI Chips + Sector Pulse supply-chain map (this series)", "https://yourmomlovesmyai.com/sector-pulse/"], "site_neo": ["Neocloud Contagion Monitor, typed ties (this series)", "https://yourmomlovesmyai.com/neocloud-contagion/"], "site_nvd": ["Tracing $1 of Nvidia Sales (this series)", "https://yourmomlovesmyai.com/nvidia-dollar/"], "site_oc": ["Ep. 05 · Open vs. Closed AI Models (this series)", "https://yourmomlovesmyai.com/open-vs-closed/"], "site_sa": ["04 · Situational Awareness portfolio map (this series)", "https://yourmomlovesmyai.com/situational-awareness/"], "stargate": ["LLM Pulse: Stargate sites as of Nov 15, 2026", "https://llmpulse.ai/blog/stargate-data-centers/"], "stargate_epoch": ["Epoch AI: where the Stargate sites stand", "https://epoch.ai/blog/openai-stargate-where-the-us-sites-stand"], "taipower": ["Environment+Energy Leader: Taipower semiconductor demand forecast", "https://environmentenergyleader.com/stories/taiwan-is-guaranteeing-chipmakers-power-not-just-land,132620"], "taipower2": ["Taipei Times: Taipower 43 new substations for chip + AI demand (Oct 2026)", "https://www.taipeitimes.com/News/biz/archives/2026/10/15/2003865971"], "tesla": ["Drive Tesla: AI5 dual-sourced at Samsung (Taylor) and TSMC", "https://driveteslacanada.ca/news/tesla-ai5-chip-samsung-tape-out-2nm/"], "tml": ["Pulse: Thinking Machines–Google Cloud GB300 deal", "https://www.pulse.bot/human-resources/news/metas-loss-is-thinking-machines-gain-3045ed89-b8c5-4547-aa29-b33cea4f866b/"], "tracker": ["Data Center Project Tracker (May 2026): TMI restart, Talen–Amazon, Duane Arnold", "https://www.gravel2gavel.com/files/2026/05/Data-Center-Project-Tracker-05-15-26.pdf"], "waymo": ["FourWeekMBA: Waymo's 5nm TSMC ASIC, keeps Nvidia/AMD", "https://fourweekmba.com/ai-waymo-custom-asic-sensor-fusion-ojai-merchant-chips/"], "xenergy": ["Latitude Media: SMR startups incl. Amazon-backed X-energy", "https://www.latitudemedia.com/news/google-backs-restart-of-nexteras-defunct-iowa-nuclear-plant/"], "nvblog": ["Jensen Huang, \"AI Is a 5-Layer Cake\", NVIDIA Blog (Mar 10, 2026)", "https://blogs.nvidia.com/blog/ai-5-layer-cake"]}, "layers": ["Energy", "Chips", "Infrastructure", "Models", "Applications"]}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from './vendor/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from './vendor/CSS2DRenderer.js';
+
+const D = JSON.parse(document.getElementById('data').textContent);
+const LAYER_COL = ['#f6b13c','#a78bfa','#38d6f5','#2dd4bf','#ff7eb6'];
+const TYPES = {
+  power:{c:'#f6b13c',n:'Power'}, fab:{c:'#a78bfa',n:'Chip supply chain'}, hw:{c:'#c9b8ff',n:'Chips & servers delivered'},
+  compute:{c:'#38d6f5',n:'Compute / cloud capacity'}, capital:{c:'#7ee787',n:'Equity, loans, backstops'},
+  model:{c:'#2dd4bf',n:'Model powers app'}, open:{c:'#c9d4e6',n:'Open weights published'}, threat:{c:'#ff6b6b',n:'Competitive threat'}
+};
+const W = 240, H = 150; // plane size
+let SP = 62;            // layer spacing
+
+/* ---------- graph prep ---------- */
+const byId = new Map(D.nodes.map(n => [n.id, n]));
+D.nodes.forEach(n => { n.deg = 0; n.out = []; n.inc = []; });
+D.links.forEach((l, i) => { l.i = i; const a = byId.get(l.a), b = byId.get(l.b); a.deg++; b.deg++; a.out.push(l); b.inc.push(l); });
+
+/* ---------- deterministic layout per plane ---------- */
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const groupsByLayer = [0,1,2,3,4].map(L => [...new Set(D.nodes.filter(n => n.L === L).map(n => n.g))]);
+const anchor = {};
+groupsByLayer.forEach((gs, L) => gs.forEach((g, k) => {
+  const a = (k / gs.length) * Math.PI * 2 + L * 0.7;
+  const r = gs.length === 1 ? 0 : 0.62;
+  anchor[L + '|' + g] = [Math.cos(a) * r * W / 2, Math.sin(a) * r * H / 2];
+}));
+D.nodes.forEach(n => { const [ax, az] = anchor[n.L + '|' + n.g]; n.x = ax + (rnd() - .5) * 30; n.z = az + (rnd() - .5) * 20; });
+for (let it = 0; it < 500; it++) {
+  const cool = 1 - it / 500;
+  D.nodes.forEach(n => { n.fx = 0; n.fz = 0; });
+  for (let i = 0; i < D.nodes.length; i++) for (let j = i + 1; j < D.nodes.length; j++) {
+    const a = D.nodes[i], b = D.nodes[j]; if (a.L !== b.L) continue;
+    let dx = a.x - b.x, dz = a.z - b.z, d2 = dx * dx + dz * dz + .01; const f = (a.L >= 3 ? 2800 : 1500) / d2;
+    const d = Math.sqrt(d2); dx /= d; dz /= d; a.fx += dx * f; a.fz += dz * f; b.fx -= dx * f; b.fz -= dz * f;
+  }
+  D.links.forEach(l => { const a = byId.get(l.a), b = byId.get(l.b); const k = a.L === b.L ? .03 : .007;
+    const dx = b.x - a.x, dz = b.z - a.z; a.fx += dx * k; a.fz += dz * k; b.fx -= dx * k; b.fz -= dz * k; });
+  D.nodes.forEach(n => { const [ax, az] = anchor[n.L + '|' + n.g]; n.fx += (ax - n.x) * .02; n.fz += (az - n.z) * .02;
+    const s = Math.min(1, 6 / (Math.hypot(n.fx, n.fz) + 1e-6)); n.x += n.fx * s * cool * 2; n.z += n.fz * s * cool * 2;
+    n.x = Math.max(-W / 2 + 10, Math.min(W / 2 - 10, n.x)); n.z = Math.max(-H / 2 + 8, Math.min(H / 2 - 8, n.z)); });
+}
+
+/* ---------- three setup ---------- */
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(innerWidth, innerHeight);
+stage.appendChild(renderer.domElement);
+const lr = new CSS2DRenderer({ element: document.getElementById('labels') }); lr.setSize(innerWidth, innerHeight);
+const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0x060b16, 0.0016);
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 4000);
+const HOME = new THREE.Vector3(300, 250, 400);
+camera.position.copy(HOME);
+const introEl = document.getElementById('intro');
+const mobile = () => innerWidth < 760;
+if (mobile()) { introEl.classList.add('min'); document.getElementById('minbtn').textContent = 'Expand'; }
+function frame() {
+  const off = !mobile() && !introEl.classList.contains('min') ? -Math.min(200, innerWidth * .14) : 0;
+  camera.setViewOffset(innerWidth, innerHeight, off, 0, innerWidth, innerHeight);
+}
+frame();
+if (mobile()) { HOME.multiplyScalar(1.3); camera.position.copy(HOME); }
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.dampingFactor = .08; controls.target.set(0, 1.8 * SP, 0); controls.autoRotateSpeed = .6;
+controls.maxDistance = 1200; controls.minDistance = 40;
+scene.add(new THREE.AmbientLight(0xffffff, .9));
+
+const yOf = L => L * SP;
+const planes = [];
+D.layers.forEach((name, L) => {
+  const g = new THREE.Group();
+  const col = new THREE.Color(LAYER_COL[L]);
+  const glass = new THREE.Mesh(new THREE.PlaneGeometry(W, H), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: .055, side: THREE.DoubleSide, depthWrite: false }));
+  glass.rotation.x = -Math.PI / 2; g.add(glass);
+  const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(W, H)), new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: .55 }));
+  edge.rotation.x = -Math.PI / 2; g.add(edge);
+  const grid = new THREE.GridHelper(W, 24, col, col); grid.scale.z = H / W; grid.material.transparent = true; grid.material.opacity = .06; g.add(grid);
+  const el = document.createElement('div'); el.className = 'plane-lbl'; el.style.color = LAYER_COL[L]; el.style.border = '1px solid ' + LAYER_COL[L] + '55';
+  el.textContent = (L + 1) + ' · ' + name;
+  const lab = new CSS2DObject(el); lab.position.set(-W / 2 - 4, 0, H / 2 + 6); g.add(lab);
+  g.position.y = yOf(L); scene.add(g); planes.push(g);
+});
+
+/* nodes */
+const nodeGeo = new THREE.SphereGeometry(1, 20, 14);
+const haloGeo = new THREE.RingGeometry(1.25, 1.6, 32);
+D.nodes.forEach(n => {
+  const r = 1.4 + Math.sqrt(n.deg) * .75;
+  const col = new THREE.Color(LAYER_COL[n.L]);
+  const m = new THREE.Mesh(nodeGeo, new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 1 }));
+  m.scale.setScalar(r); m.userData.node = n;
+  const halo = new THREE.Mesh(haloGeo, new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: .35, side: THREE.DoubleSide, depthWrite: false }));
+  halo.rotation.x = -Math.PI / 2; halo.scale.setScalar(r * 1.15); halo.position.y = -r * .9;
+  const grp = new THREE.Group(); grp.add(m); grp.add(halo);
+  grp.position.set(n.x, yOf(n.L) + r * .9, n.z); scene.add(grp);
+  const el = document.createElement('div'); el.className = 'lbl' + (n.deg >= 6 ? ' hub' : ''); el.textContent = n.n; el.style.borderColor = LAYER_COL[n.L] + '40';
+  el.addEventListener('click', e => { e.stopPropagation(); select(n); });
+  el.addEventListener('pointerenter', () => hover(n)); el.addEventListener('pointerleave', () => hover(null));
+  const lab = new CSS2DObject(el); lab.position.set(0, r + .5, 0); grp.add(lab);
+  n.mesh = m; n.halo = halo; n.grp = grp; n.el = el; n.r = r;
+});
+
+/* links as hanging strings */
+const pairCount = {};
+function curveFor(l) {
+  const a = byId.get(l.a), b = byId.get(l.b);
+  const pa = a.grp.position.clone(), pb = b.grp.position.clone();
+  const key = [l.a, l.b].sort().join('|'); const k = (pairCount[key] = (pairCount[key] || 0) + 1) - 1;
+  const h = (l.i * 37 % 100) / 100 - .5; // stable per link
+  if (a.L === b.L) {
+    const mid = pa.clone().lerp(pb, .5); const d = pa.distanceTo(pb);
+    mid.y += 6 + d * .22 + k * 5;
+    return new THREE.QuadraticBezierCurve3(pa, mid, pb);
+  }
+  const dy = pb.y - pa.y;
+  const side = new THREE.Vector3(pb.z - pa.z, 0, pa.x - pb.x).normalize().multiplyScalar((h * 26) + k * 7);
+  const c1 = pa.clone().add(new THREE.Vector3(0, dy * .42, 0)).add(side);
+  const c2 = pb.clone().add(new THREE.Vector3(0, -dy * .42, 0)).add(side);
+  return new THREE.CubicBezierCurve3(pa, c1, c2, pb);
+}
+const dotGeo = new THREE.SphereGeometry(.55, 8, 6);
+function buildLinks() {
+  Object.keys(pairCount).forEach(k => delete pairCount[k]);
+  D.links.forEach(l => {
+    if (l.tube) { scene.remove(l.tube); l.tube.geometry.dispose(); }
+    if (l.dot) scene.remove(l.dot);
+    const curve = curveFor(l); l.curve = curve;
+    const thin = l.t === 'open' || l.t === 'threat';
+    const geo = new THREE.TubeGeometry(curve, 40, thin ? .16 : .26, 5, false);
+    const mat = new THREE.MeshBasicMaterial({ color: TYPES[l.t].c, transparent: true, opacity: .42, depthWrite: false });
+    l.tube = new THREE.Mesh(geo, mat); l.tube.userData.link = l; scene.add(l.tube);
+    l.dot = new THREE.Mesh(dotGeo, new THREE.MeshBasicMaterial({ color: TYPES[l.t].c, transparent: true, opacity: .95 }));
+    l.phase = (l.i * .137) % 1; scene.add(l.dot);
+  });
+  applyState();
+}
+
+/* ---------- state ---------- */
+const hiddenTypes = new Set();
+let selected = null, hovered = null, traceMode = 'direct', allLabels = false;
+function chain(n, dir) { // dir 'down' = suppliers recursively, 'up' = consumers recursively
+  const seenN = new Set([n.id]), seenL = new Set(); const q = [n];
+  while (q.length) { const c = q.shift();
+    const ls = dir === 'down' ? c.inc : c.out;
+    ls.forEach(l => { if (hiddenTypes.has(l.t)) return; if (l.t === 'threat') return; seenL.add(l.i);
+      const o = byId.get(dir === 'down' ? l.a : l.b); if (!seenN.has(o.id)) { seenN.add(o.id); q.push(o); } }); }
+  return { nodes: seenN, links: seenL };
+}
+function focusSet() {
+  const f = selected || hovered; if (!f) return null;
+  if (f === selected && traceMode !== 'direct') {
+    const res = { nodes: new Set([f.id]), links: new Set() };
+    if (traceMode === 'down' || traceMode === 'both') { const c = chain(f, 'down'); c.nodes.forEach(x => res.nodes.add(x)); c.links.forEach(x => res.links.add(x)); }
+    if (traceMode === 'up' || traceMode === 'both') { const c = chain(f, 'up'); c.nodes.forEach(x => res.nodes.add(x)); c.links.forEach(x => res.links.add(x)); }
+    return res;
+  }
+  const res = { nodes: new Set([f.id]), links: new Set() };
+  [...f.out, ...f.inc].forEach(l => { if (hiddenTypes.has(l.t)) return; res.links.add(l.i); res.nodes.add(l.a); res.nodes.add(l.b); });
+  return res;
+}
+function applyState() {
+  const fs = focusSet();
+  D.links.forEach(l => {
+    const vis = !hiddenTypes.has(l.t); l.tube.visible = vis; l.dot.visible = vis && flowOn;
+    const on = !fs || fs.links.has(l.i);
+    l.tube.material.opacity = !fs ? .38 : on ? .95 : .03;
+    l.dot.material.opacity = !fs ? .9 : on ? 1 : 0;
+  });
+  D.nodes.forEach(n => {
+    const on = !fs || fs.nodes.has(n.id);
+    n.mesh.material.opacity = on ? 1 : .14; n.halo.material.opacity = on ? .35 : .04;
+    const showLbl = allLabels || n.deg >= 6 || (fs && fs.nodes.has(n.id));
+    n.el.classList.toggle('off', !showLbl);
+    n.el.classList.toggle('dim', !!fs && !on);
+    n.el.classList.toggle('hot', !!fs && on);
+  });
+  if (selected && traceMode !== 'direct') {
+    const fsN = fs.nodes.size - 1, fsL = fs.links.size; const layers = new Set([...fs.nodes].map(id => byId.get(id).L));
+    document.getElementById('tracenote').textContent = `${fsN} companies and ${fsL} strings across ${layers.size} of 5 layers.`;
+  }
+}
+let flowOn = true;
+
+/* ---------- detail panel ---------- */
+const det = document.getElementById('detail');
+const SITE_RE = /^https:\/\/yourmomlovesmyai\.com(\/[^#?]*)/;
+const lnk = (url, text) => { const m = SITE_RE.exec(url); return m ? `<a href="${m[1]}" target="_top">${text}</a>` : `<a href="${url}" target="_blank" rel="noopener">${text}</a>`; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function srcHTML(l) {
+  if (!l.s.length) return '<span class="tag bg">background</span>';
+  return l.s.map(k => { const s = D.sources[k]; return lnk(esc(s[1]), esc(s[0])); }).join(' · ');
+}
+function connRow(l, otherId, arrow) {
+  const o = byId.get(otherId);
+  return `<div class="conn" data-id="${o.id}"><span class="sw" style="background:${TYPES[l.t].c}"></span><div><b>${arrow} ${esc(o.n)}</b> <span style="color:${LAYER_COL[o.L]};font-size:11px">${esc(D.layers[o.L])}</span><small>${esc(TYPES[l.t].n)}${l.l ? ' · ' + esc(l.l) : ''}</small><div class="src">${srcHTML(l)}</div></div></div>`;
+}
+function renderDetail(n) {
+  if (!n) { det.style.display = 'none'; return; }
+  const below = n.inc.filter(l => !hiddenTypes.has(l.t)), above = n.out.filter(l => !hiddenTypes.has(l.t));
+  det.innerHTML = `<button class="mini x" id="dclose">Close</button>
+   <div class="meta" style="color:${LAYER_COL[n.L]}">${n.L + 1} · ${esc(D.layers[n.L]).toUpperCase()} · ${esc(n.g)}${n.t ? ' · ' + esc(n.t) : ''}</div>
+   <h2>${esc(n.n)}</h2><p>${esc(n.d)}</p>
+   <div class="trace">
+     <button data-m="direct" class="${traceMode === 'direct' ? 'on' : ''}">Direct ties</button>
+     <button data-m="down" class="${traceMode === 'down' ? 'on' : ''}">Trace to the power plant ↓</button>
+     <button data-m="up" class="${traceMode === 'up' ? 'on' : ''}">Trace up to the apps ↑</button>
+     <button data-m="both" class="${traceMode === 'both' ? 'on' : ''}">Both</button>
+   </div><div id="tracenote">${traceMode === 'direct' ? 'Showing direct ties only.' : ''}</div>
+   ${below.length ? `<h3>Depends on (${below.length})</h3>` + below.map(l => connRow(l, l.a, '←')).join('') : ''}
+   ${above.length ? `<h3>Feeds into (${above.length})</h3>` + above.map(l => connRow(l, l.b, '→')).join('') : ''}
+   ${!below.length && !above.length ? '<p style="color:var(--muted)">No mapped strings with the current filters.</p>' : ''}`;
+  det.style.display = 'block';
+  det.querySelector('#dclose').onclick = () => select(null);
+  det.querySelectorAll('.trace button').forEach(b => b.onclick = () => { traceMode = b.dataset.m; renderDetail(n); applyState(); refit(); });
+  det.querySelectorAll('.conn').forEach(c => c.onclick = e => { if (e.target.tagName === 'A') return; select(byId.get(c.dataset.id)); });
+}
+let flyFrom = null, flyTo = null, flyT = 1;
+function select(n) {
+  selected = n; renderDetail(n); applyState();
+  if (n && mobile()) { introEl.classList.add('min'); document.getElementById('minbtn').textContent = 'Expand'; }
+  if (n) { if (traceMode !== 'direct') refit(); else { flyFrom = controls.target.clone(); flyTo = n.grp.position.clone(); flyT = 0; } }
+}
+function refit() {
+  const fs = focusSet(); if (!fs) return;
+  const c = new THREE.Vector3(); let k = 0; fs.nodes.forEach(id => { c.add(byId.get(id).grp.position); k++; }); c.divideScalar(k);
+  flyFrom = controls.target.clone(); flyTo = c; flyT = 0;
+}
+function hover(n) { if (hovered === n) return; hovered = n; if (!selected) applyState(); }
+
+/* ---------- legend & controls ---------- */
+const leg = document.getElementById('legend');
+Object.entries(TYPES).forEach(([k, t]) => {
+  const c = document.createElement('span'); c.className = 'chip'; c.innerHTML = `<i style="background:${t.c}"></i>${t.n}`;
+  c.onclick = () => { hiddenTypes.has(k) ? hiddenTypes.delete(k) : hiddenTypes.add(k); c.classList.toggle('off'); applyState(); if (selected) renderDetail(selected); };
+  leg.appendChild(c);
+});
+document.getElementById('minbtn').onclick = e => { const i = document.getElementById('intro'); i.classList.toggle('min'); e.target.textContent = i.classList.contains('min') ? 'Expand' : 'Collapse'; frame(); };
+const srcP = document.getElementById('sources');
+document.getElementById('srclist').innerHTML = Object.values(D.sources).map(s => `<li>${lnk(esc(s[1]), esc(s[0]))}<br><span style="color:var(--dim)">${esc(s[1])}</span></li>`).join('');
+document.getElementById('srcbtn').onclick = () => srcP.style.display = 'block';
+document.getElementById('srcclose').onclick = () => srcP.style.display = 'none';
+document.getElementById('allLabels').onchange = e => { allLabels = e.target.checked; applyState(); };
+document.getElementById('spin').onchange = e => controls.autoRotate = e.target.checked;
+document.getElementById('flow').onchange = e => { flowOn = e.target.checked; applyState(); };
+document.getElementById('reset').onclick = () => { select(null); camera.position.copy(HOME); controls.target.set(0, 1.8 * SP, 0); frame(); };
+document.getElementById('spacing').oninput = e => {
+  SP = +e.target.value; planes.forEach((p, L) => p.position.y = yOf(L));
+  D.nodes.forEach(n => n.grp.position.y = yOf(n.L) + n.r * .9); buildLinks();
+};
+const sIn = document.getElementById('search'), sRes = document.getElementById('results');
+sIn.oninput = () => {
+  const q = sIn.value.trim().toLowerCase(); if (!q) { sRes.style.display = 'none'; return; }
+  const hits = D.nodes.filter(n => (n.n + ' ' + (n.t || '') + ' ' + n.g).toLowerCase().includes(q)).slice(0, 10);
+  sRes.innerHTML = hits.map(n => `<div data-id="${n.id}"><span style="color:${LAYER_COL[n.L]}">●</span> ${esc(n.n)} <span style="color:var(--dim);font-size:11px">${esc(D.layers[n.L])}</span></div>`).join('') || '<div style="color:var(--dim)">No match</div>';
+  sRes.style.display = 'block';
+  sRes.querySelectorAll('[data-id]').forEach(d => d.onclick = () => { select(byId.get(d.dataset.id)); sRes.style.display = 'none'; sIn.value = ''; });
+};
+addEventListener('keydown', e => { if (e.key === 'Escape') { select(null); srcP.style.display = 'none'; } });
+
+/* ---------- picking ---------- */
+const ray = new THREE.Raycaster(); const mouse = new THREE.Vector2(); const tip = document.getElementById('tip');
+let downAt = null;
+renderer.domElement.addEventListener('pointerdown', e => downAt = [e.clientX, e.clientY]);
+renderer.domElement.addEventListener('pointerup', e => {
+  if (!downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 5) return;
+  const hit = pick(e); if (hit && hit.node) select(hit.node); else if (!hit) select(null);
+});
+renderer.domElement.addEventListener('pointermove', e => {
+  const hit = pick(e);
+  if (hit && hit.node) { hover(hit.node); tip.style.display = 'none'; renderer.domElement.style.cursor = 'pointer'; return; }
+  hover(null); renderer.domElement.style.cursor = '';
+  if (hit && hit.link) { const l = hit.link; const a = byId.get(l.a), b = byId.get(l.b);
+    tip.innerHTML = `<b>${esc(a.n)} → ${esc(b.n)}</b><br><span style="color:${TYPES[l.t].c}">${esc(TYPES[l.t].n)}</span>${l.l ? '<br>' + esc(l.l) : ''}`;
+    tip.style.left = (e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; tip.style.display = 'block'; }
+  else tip.style.display = 'none';
+});
+function pick(e) {
+  mouse.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(mouse, camera);
+  const nh = ray.intersectObjects(D.nodes.map(n => n.mesh))[0]; if (nh) return { node: nh.object.userData.node };
+  const fs = focusSet();
+  const tubes = D.links.filter(l => l.tube.visible && (!fs || fs.links.has(l.i))).map(l => l.tube);
+  const lh = ray.intersectObjects(tubes)[0]; if (lh) return { link: lh.object.userData.link };
+  return null;
+}
+
+/* ---------- loop ---------- */
+addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); lr.setSize(innerWidth, innerHeight); frame(); });
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (reduce) { document.getElementById('flow').checked = false; flowOn = false; }
+const clock = new THREE.Clock();
+buildLinks();
+document.getElementById('loading').remove();
+function tick() {
+  const dt = clock.getDelta(), t = clock.elapsedTime;
+  if (flyT < 1) { flyT = Math.min(1, flyT + dt * 1.6); const e = 1 - Math.pow(1 - flyT, 3); controls.target.lerpVectors(flyFrom, flyTo, e); }
+  if (flowOn) D.links.forEach(l => { if (!l.dot.visible) return; const u = (l.phase + t * .12) % 1; l.dot.position.copy(l.curve.getPoint(u)); });
+  controls.update(); renderer.render(scene, camera); lr.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+tick();
+</script>
+</body>
+</html>

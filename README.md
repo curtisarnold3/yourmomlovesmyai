@@ -21,7 +21,7 @@ vercel.json                Clean URLs (/neoclouds/), cache headers
 
 URLs: `/sand-to-thought/`, `/who-makes-ai-chips/`, `/sector-pulse/`, `/nvidia-dollar/`,
 `/situational-awareness/` (coming soon), `/open-vs-closed/`, `/neoclouds/`,
-`/neocloud-contagion/`, `/ai-kill-switch/`, `/burry-depreciation/`.
+`/neocloud-contagion/`, `/ai-kill-switch/`, `/burry-depreciation/`, `/ai-cake-3d/`.
 
 ## Why the episodes are framed instead of merged
 
@@ -39,6 +39,12 @@ clean URLs. The ↗ button opens any episode full screen on its own.
 When Situational Awareness is ready: drop it in `pages/04-situational-awareness/`, set that
 entry's `"dir": "04-situational-awareness"` and `"kind": "episode"`, rebuild, push.
 For a new card thumbnail, save a 640×400 JPG to `assets/thumbs/<slug>.jpg`.
+
+## The AI Cake in 3D (episode 10)
+
+`pages/10-ai-cake-3d/` is a three.js scene. three.js 0.160 is vendored in `vendor/` (MIT, license included),
+so the page has no CDN dependency. The dataset (nodes, links, sources) is the JSON inside
+`<script id="data">` in its `index.html`.
 
 ## Live data
 

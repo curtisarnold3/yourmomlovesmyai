@@ -92,5 +92,14 @@
     "dek": "How a GPU's assumed useful life changes depreciation, earnings, P/E and what the stocks are worth.",
     "dir": "09-burry-depreciation",
     "kind": "episode"
+  },
+  {
+    "slug": "ai-cake-3d",
+    "num": "10",
+    "short": "Cake in 3D",
+    "title": "The AI Cake in 3D",
+    "dek": "Huang's five-layer cake as five glass planes: 122 companies and every sourced deal strung between energy, chips, infrastructure, models and apps.",
+    "dir": "10-ai-cake-3d",
+    "kind": "episode"
   }
 ]
