@@ -1,0 +1,71 @@
+#ch10{max-width:1180px;margin:0 auto;padding:clamp(40px,8vw,96px) clamp(16px,4vw,32px)}
+#ch10 .kicker{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--violet,#9a7df0);margin:0 0 .4rem}
+#ch10 h2{font-size:clamp(1.9rem,5vw,3.1rem);line-height:1.1;margin:0 0 1rem}
+#ch10 h3{font-size:1.1rem;margin:0 0 .6rem}
+#ch10 h4{font-size:1rem;margin:0 0 .5rem}
+#ch10 .hook{font-size:clamp(1.05rem,2.2vw,1.25rem);line-height:1.6;max-width:68ch;margin:0 0 1.25rem}
+#ch10 .fine{font-size:.85rem;line-height:1.5;opacity:.8;max-width:72ch}
+#ch10 .toy-banner{display:flex;flex-wrap:wrap;gap:.35rem .9rem;align-items:baseline;border:2px solid var(--violet,#9a7df0);background:rgba(154,125,240,.12);border-radius:10px;padding:.7rem 1rem;margin:0 0 1rem;font-size:.95rem}
+#ch10 .toy-banner strong{color:var(--violet,#9a7df0);letter-spacing:.03em}
+#ch10 .panel{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:clamp(14px,2.5vw,22px);margin-top:18px}
+#ch10 .caveat-box{border:2px solid var(--amber,#f0a32e);background:rgba(240,163,46,.1);border-radius:12px;padding:.9rem 1.1rem;margin:0 0 1.25rem}
+#ch10 .caveat-box h3{color:var(--amber,#f0a32e)}
+#ch10 .toybox{border:2px dashed var(--violet,#9a7df0)}
+#ch10 .toybox p{line-height:1.55;max-width:80ch}
+#ch10 .caveat-box p{margin:.3rem 0;line-height:1.55}
+#ch10 .caveat-box .bases{display:flex;flex-wrap:wrap;gap:.6rem 1.6rem;margin:.6rem 0}
+#ch10 .caveat-box .basis{border-left:3px solid currentColor;padding-left:.6rem}
+#ch10 .caveat-box .basis b{font-size:1.4rem;display:block;line-height:1.2}
+#ch10 .controls{display:flex;flex-wrap:wrap;gap:12px 28px;margin:1rem 0 .4rem}
+#ch10 .ctl{display:flex;flex-direction:column;gap:.3rem}
+#ch10 .ctl-label{font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;opacity:.75}
+#ch10 .seg{display:inline-flex;border:1px solid rgba(255,255,255,.25);border-radius:10px;overflow:hidden}
+#ch10 .seg button{font:inherit;color:inherit;background:rgba(255,255,255,.04);border:0;border-right:1px solid rgba(255,255,255,.18);min-height:44px;min-width:44px;padding:.4rem .9rem;cursor:pointer}
+#ch10 .seg button:last-child{border-right:0}
+#ch10 .seg button[aria-pressed="true"]{background:rgba(59,196,242,.25);font-weight:700}
+#ch10 button:focus-visible,#ch10 a:focus-visible,#ch10 summary:focus-visible,#ch10 [tabindex]:focus-visible{outline:3px solid var(--cyan,#3bc4f2);outline-offset:2px}
+#ch10 .reframe-note{min-height:1.5em;margin:.2rem 0 1rem}
+#ch10 .cmp-head,#ch10 .row{display:grid;grid-template-columns:minmax(120px,170px) minmax(0,1fr) minmax(0,1fr);gap:12px}
+#ch10 .cmp[data-view="then"] .cmp-head,#ch10 .cmp[data-view="then"] .row,#ch10 .cmp[data-view="now"] .cmp-head,#ch10 .cmp[data-view="now"] .row{grid-template-columns:minmax(120px,170px) minmax(0,1fr)}
+#ch10 .cmp[data-view="then"] .h-now,#ch10 .cmp[data-view="then"] .cell.now,#ch10 .cmp[data-view="now"] .h-then,#ch10 .cmp[data-view="now"] .cell.then{display:none}
+#ch10 .cmp-head{font-weight:700;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;padding:0 0 .5rem;opacity:.9}
+#ch10 .h-then{color:var(--amber,#f0a32e)} #ch10 .h-now{color:var(--cyan,#3bc4f2)}
+#ch10 .row{padding:14px 0;border-top:1px solid rgba(255,255,255,.12)}
+#ch10 .dim h3{font-size:1rem;margin:0 0 .25rem}
+#ch10 .dim p{font-size:.82rem;opacity:.75;margin:0;line-height:1.4}
+#ch10 .cell,#ch10 .reframe{min-width:0;overflow-wrap:anywhere}
+#ch10 .cell{background:rgba(255,255,255,.04);border-radius:10px;padding:.7rem .85rem;font-size:.92rem;line-height:1.5}
+#ch10 .cell.then{border-left:3px solid var(--amber,#f0a32e)}
+#ch10 .cell.now{border-left:3px solid var(--cyan,#3bc4f2)}
+#ch10 .cell .cell-lab{display:none;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;opacity:.75;margin:0 0 .3rem}
+#ch10 .cell ul{margin:0;padding-left:1.05rem}
+#ch10 .cell li{margin:.35rem 0}
+#ch10 .cell .dk{font-style:italic;opacity:.85}
+#ch10 .num{white-space:normal;overflow-wrap:anywhere}
+#ch10 .num .tag{white-space:nowrap}
+#ch10 .reframe{grid-column:1/-1;display:none;border-radius:10px;padding:.65rem .9rem;font-size:.92rem;line-height:1.5}
+#ch10 .cmp[data-reading="bull"] .reframe.bull,#ch10 .cmp[data-reading="bear"] .reframe.bear,#ch10 .cmp[data-reading="neutral"] .reframe.unk{display:block}
+#ch10 .reframe.bull{background:rgba(46,196,182,.12);border:1px solid var(--teal,#2ec4b6)}
+#ch10 .reframe.bear{background:rgba(255,107,107,.1);border:1px solid var(--coral,#ff6b6b)}
+#ch10 .reframe.unk{background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.3)}
+#ch10 .reframe b{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.15rem;opacity:.85}
+#ch10 .args-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+#ch10 .args-col ul{margin:0;padding-left:1.05rem;line-height:1.5;font-size:.92rem}
+#ch10 .args-col li{margin:.55rem 0}
+#ch10 .args-col .who{display:block;font-size:.8rem;opacity:.75}
+#ch10 .args-col .who a{text-decoration:underline;margin-right:.4rem}
+#ch10 .args-col.bull{border-top:3px solid var(--teal,#2ec4b6);padding-top:.5rem}
+#ch10 .args-col.bear{border-top:3px solid var(--coral,#ff6b6b);padding-top:.5rem}
+#ch10 .cmp[data-reading="bull"]~.args .args-col.bear,#ch10 .cmp[data-reading="bear"]~.args .args-col.bull{opacity:.45}
+#ch10 .openq ul{line-height:1.55;padding-left:1.1rem;max-width:80ch}
+#ch10 .openq li{margin:.45rem 0}
+#ch10 .openq summary{cursor:pointer;min-height:40px;display:flex;align-items:center;font-weight:600}
+#ch10 .links-row{margin:1.2rem 0 0;display:flex;flex-wrap:wrap;gap:.4rem 1.4rem}
+#ch10 .links-row a{text-decoration:underline;min-height:40px;display:inline-flex;align-items:center}
+#ch10 .means{margin:2rem 0 0;font-size:clamp(1.05rem,2vw,1.2rem);line-height:1.6;max-width:70ch;border-left:4px solid var(--violet,#9a7df0);padding-left:1rem}
+@media (max-width:860px){
+  #ch10 .cmp-head{display:none}
+  #ch10 .row,#ch10 .cmp[data-view="then"] .row,#ch10 .cmp[data-view="now"] .row{grid-template-columns:minmax(0,1fr)}
+  #ch10 .cell .cell-lab{display:block}
+  #ch10 .args-cols{grid-template-columns:1fr}
+}

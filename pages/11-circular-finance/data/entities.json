@@ -1,0 +1,1361 @@
+{
+ "as_of": "2026-11-20",
+ "layers": [
+  "supply",
+  "neocloud",
+  "hyperscaler",
+  "lab",
+  "capital"
+ ],
+ "nodes": [
+  {
+   "id": "nvidia",
+   "name": "Nvidia",
+   "layer": "supply",
+   "ticker": "NVDA",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": 32.4,
+    "valuation_usd_b": null,
+    "as_of": "2026-10-25",
+    "status": "verified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": "verified",
+     "valuation_usd_b": null
+    },
+    "source_urls": [
+     "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000088/q3fy27pr.htm",
+     "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/"
+    ],
+    "source_ids": [
+     "s_55e7265b",
+     "s_5ddd1b7b"
+    ],
+    "note": "Long-term debt $32.4B (from $7.5B). No market cap is shown: the price was $150.96 on Nov 18 but we have no share count."
+   },
+   "links": {
+    "site_path": "/nvidia-dollar.html"
+   },
+   "extra_node": false,
+   "facts": [
+    "q3-revenue",
+    "q3-yoy",
+    "q3-dc-revenue",
+    "q3-gm",
+    "q4-guide",
+    "q3-fcf",
+    "q3-ocf",
+    "cash-mkt",
+    "mkt-equity",
+    "nonmkt-equity",
+    "equity-purchases-9m",
+    "equity-gains-9m",
+    "equity-commitments",
+    "nvda-guarantee-total",
+    "nvda-guarantee-total-jul",
+    "nvda-guar-land-power-shell",
+    "nvda-guar-sbenergy",
+    "nvda-guar-power-systems",
+    "nvda-own-rd-commitments",
+    "supply-commitments",
+    "neocloud-contingent",
+    "nv-cds"
+   ],
+   "no_verified_deals": false
+  },
+  {
+   "id": "amd",
+   "name": "AMD",
+   "layer": "supply",
+   "ticker": "AMD",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/who-makes-ai-chips.html"
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "broadcom",
+   "name": "Broadcom",
+   "layer": "supply",
+   "ticker": "AVGO",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/who-makes-ai-chips.html"
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "tsmc",
+   "name": "TSMC",
+   "layer": "supply",
+   "ticker": "TSM",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/who-makes-ai-chips.html"
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "coreweave",
+   "name": "CoreWeave",
+   "layer": "neocloud",
+   "ticker": "CRWV",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": 46.9,
+    "valuation_usd_b": null,
+    "as_of": "2026-09-30",
+    "status": "verified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": "verified",
+     "valuation_usd_b": null
+    },
+    "source_urls": [
+     "https://www.sec.gov/Archives/edgar/data/0001769628/000176962826000461/coreweave3q26earningspress.htm",
+     "https://www.sec.gov/Archives/edgar/data/0001769628/000176962826000465/crwv-20260930.htm"
+    ],
+    "source_ids": [
+     "s_f30d204e",
+     "s_80ea2f53"
+    ],
+    "note": "Recourse $41.6B + non-recourse $5.3B, excl. finance leases. No market cap is shown: the price was $44.91 on Nov 19 (reported) but we have no share count."
+   },
+   "links": {
+    "site_path": "/neoclouds.html"
+   },
+   "extra_node": false,
+   "facts": [
+    "crwv-q3-26-revenue",
+    "crwv-q3-26-opinc",
+    "crwv-q3-26-netloss",
+    "crwv-q3-26-interest",
+    "crwv-backlog",
+    "crwv-total-debt",
+    "crwv-avg-cost",
+    "crwv-cash",
+    "crwv-capex-guide",
+    "crwv-customer-a",
+    "crwv-customer-b",
+    "crwv-share-price"
+   ],
+   "no_verified_deals": false
+  },
+  {
+   "id": "nebius",
+   "name": "Nebius",
+   "layer": "neocloud",
+   "ticker": "NBIS",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/neoclouds.html"
+   },
+   "extra_node": false,
+   "facts": [
+    "nebius-rpo"
+   ],
+   "no_verified_deals": false
+  },
+  {
+   "id": "iren",
+   "name": "IREN",
+   "layer": "neocloud",
+   "ticker": "IREN",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/neoclouds.html"
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "lambda",
+   "name": "Lambda",
+   "layer": "neocloud",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/neoclouds.html"
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "crusoe",
+   "name": "Crusoe",
+   "layer": "neocloud",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/neoclouds.html"
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": true
+  },
+  {
+   "id": "nscale",
+   "name": "Nscale",
+   "layer": "neocloud",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/neoclouds.html"
+   },
+   "extra_node": false,
+   "facts": [
+    "nscale-backlog"
+   ],
+   "no_verified_deals": false
+  },
+  {
+   "id": "fluidstack",
+   "name": "Fluidstack",
+   "layer": "neocloud",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/neoclouds.html"
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "terawulf",
+   "name": "TeraWulf",
+   "layer": "neocloud",
+   "ticker": "WULF",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/neocloud-contagion.html"
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "cipher",
+   "name": "Cipher Mining",
+   "layer": "neocloud",
+   "ticker": "CIFR",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/neocloud-contagion.html"
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "applied_digital",
+   "name": "Applied Digital",
+   "layer": "neocloud",
+   "ticker": "APLD",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/neocloud-contagion.html"
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "core_scientific",
+   "name": "Core Scientific",
+   "layer": "neocloud",
+   "ticker": "CORZ",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/neocloud-contagion.html"
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": true
+  },
+  {
+   "id": "galaxy",
+   "name": "Galaxy Digital",
+   "layer": "neocloud",
+   "ticker": "GLXY",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": "/neocloud-contagion.html"
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": true
+  },
+  {
+   "id": "microsoft",
+   "name": "Microsoft",
+   "layer": "hyperscaler",
+   "ticker": "MSFT",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [
+    "msft-ocf",
+    "msft-capex",
+    "msft-rpo"
+   ],
+   "no_verified_deals": false
+  },
+  {
+   "id": "google",
+   "name": "Google (Alphabet)",
+   "layer": "hyperscaler",
+   "ticker": "GOOGL",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [
+    "goog-ocf",
+    "goog-capex",
+    "goog-fcf",
+    "goog-guide"
+   ],
+   "no_verified_deals": false
+  },
+  {
+   "id": "amazon",
+   "name": "Amazon",
+   "layer": "hyperscaler",
+   "ticker": "AMZN",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [
+    "amzn-capex",
+    "amzn-guide",
+    "amzn-fcf"
+   ],
+   "no_verified_deals": false
+  },
+  {
+   "id": "meta",
+   "name": "Meta",
+   "layer": "hyperscaler",
+   "ticker": "META",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": 80.92,
+    "valuation_usd_b": null,
+    "as_of": "2026-09-30",
+    "status": "verified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": "verified",
+     "valuation_usd_b": null
+    },
+    "source_urls": [
+     "https://investor.atmeta.com/investor-news/press-release-details/2026/Meta-Reports-Third-Quarter-2026-Results/default.aspx"
+    ],
+    "source_ids": [
+     "s_bd67fb97"
+    ],
+    "note": "Long-term debt."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [
+    "meta-ocf",
+    "meta-capex",
+    "meta-guide",
+    "meta-debt"
+   ],
+   "no_verified_deals": false
+  },
+  {
+   "id": "oracle",
+   "name": "Oracle",
+   "layer": "hyperscaler",
+   "ticker": "ORCL",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": 125.0,
+    "valuation_usd_b": null,
+    "as_of": "2026-08-31",
+    "status": "reported",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": "reported",
+     "valuation_usd_b": null
+    },
+    "source_urls": [
+     "https://www.cnbc.com/2026/09/10/oracle-orcl-q1-earnings-report-2027.html"
+    ],
+    "source_ids": [
+     "s_61feaacc"
+    ],
+    "note": "Long-term/senior debt per CNBC."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [
+    "oracle-rpo",
+    "oracle-capex",
+    "oracle-fcf",
+    "oracle-ocf",
+    "oracle-debt",
+    "oracle-cds",
+    "oracle-rating"
+   ],
+   "no_verified_deals": false
+  },
+  {
+   "id": "openai",
+   "name": "OpenAI",
+   "layer": "lab",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": 852.0,
+    "as_of": "2026-03-31",
+    "status": "verified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": "verified"
+    },
+    "source_urls": [
+     "https://openai.com/index/accelerating-the-next-phase-ai/",
+     "https://www.bloomberg.com/news/articles/2026-03-31/openai-valued-at-852-billion-after-completing-122-billion-round"
+    ],
+    "source_ids": [
+     "s_62064f11",
+     "s_d5db79bd"
+    ],
+    "note": "Post-money valuation of the March 2026 round ($122B committed). A reported Nov 2026 round at $1.25T pre-money is unconfirmed."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [
+    "openai-runrate",
+    "openai-q3-rev",
+    "openai-2025-rev",
+    "openai-2025-burn",
+    "openai-burn-plan",
+    "openai-cash",
+    "openai-named-total",
+    "openai-yrs-named"
+   ],
+   "no_verified_deals": false
+  },
+  {
+   "id": "anthropic",
+   "name": "Anthropic",
+   "layer": "lab",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [
+    "anthropic-runrate",
+    "anthropic-runrate-late",
+    "anthropic-yrs"
+   ],
+   "no_verified_deals": false
+  },
+  {
+   "id": "xai",
+   "name": "xAI (now SpaceX)",
+   "layer": "lab",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "mistral",
+   "name": "Mistral AI",
+   "layer": "lab",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "softbank",
+   "name": "SoftBank",
+   "layer": "capital",
+   "ticker": "9984.T",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [
+    "softbank-arm-margin"
+   ],
+   "no_verified_deals": false
+  },
+  {
+   "id": "mgx",
+   "name": "MGX",
+   "layer": "capital",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "blue_owl",
+   "name": "Blue Owl",
+   "layer": "capital",
+   "ticker": "OWL",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "blackstone",
+   "name": "Blackstone",
+   "layer": "capital",
+   "ticker": "BX",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "apollo",
+   "name": "Apollo",
+   "layer": "capital",
+   "ticker": "APO",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "magnetar",
+   "name": "Magnetar",
+   "layer": "capital",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "pimco",
+   "name": "Pimco",
+   "layer": "capital",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "banks",
+   "name": "Banks (JPMorgan, MUFG, Morgan Stanley, Goldman, Citi)",
+   "layer": "capital",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": false,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "intel",
+   "name": "Intel",
+   "layer": "supply",
+   "ticker": "INTC",
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "cerebras",
+   "name": "Cerebras",
+   "layer": "supply",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "sb_energy",
+   "name": "SB Energy",
+   "layer": "capital",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "vantage",
+   "name": "Vantage Data Centers (Oracle tenant)",
+   "layer": "capital",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "macquarie",
+   "name": "Macquarie",
+   "layer": "capital",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "xai_spv",
+   "name": "xAI/SpaceX GPU-lease SPVs",
+   "layer": "capital",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "synopsys_nokia",
+   "name": "Synopsys / Nokia",
+   "layer": "supply",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "investors_other",
+   "name": "Other investors (a16z, Coatue, ASML, Samsung, retail, others)",
+   "layer": "capital",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "placement_buyers",
+   "name": "Anthropic placement buyers (Google, Nvidia, AMD, Broadcom, Micron, Microsoft, TSMC)",
+   "layer": "capital",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "financing_platforms",
+   "name": "Third-party AI infrastructure financing platforms (BlackRock, KKR, Brookfield and others)",
+   "layer": "capital",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "neocloud_group",
+   "name": "Neocloud providers (unnamed)",
+   "layer": "neocloud",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "cloud_dc_providers",
+   "name": "Cloud and data-center providers serving Nvidia's own R&D (unnamed)",
+   "layer": "supply",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  },
+  {
+   "id": "compute_providers_all",
+   "name": "All compute providers (aggregate)",
+   "layer": "lab",
+   "ticker": null,
+   "snapshot": {
+    "marketcap_usd_b": null,
+    "debt_usd_b": null,
+    "valuation_usd_b": null,
+    "as_of": null,
+    "status": "unverified",
+    "field_status": {
+     "marketcap_usd_b": null,
+     "debt_usd_b": null,
+     "valuation_usd_b": null
+    },
+    "source_urls": [],
+    "source_ids": [],
+    "note": "No snapshot figures are shown for this company."
+   },
+   "links": {
+    "site_path": null
+   },
+   "extra_node": true,
+   "facts": [],
+   "no_verified_deals": false
+  }
+ ]
+}

@@ -1,0 +1,59 @@
+<section id="ch06" class="chapter" data-chapter="06" aria-labelledby="ch06-title">
+  <header class="ch-head">
+    <div class="ch-num">06</div>
+    <div class="ch-q">Promises versus cash</div>
+    <h2 id="ch06-title">Promises vs. cash</h2>
+  </header>
+
+  <div class="prose">
+    <p class="hook">Say you sign a lease for a very nice apartment. Rent is $4,000 a month, five years, and you've never earned more than $2,000 a month. Is that a lie? No. You might be about to get a big promotion. You might also be about to get a roommate. The lease itself doesn't tell us which.</p>
+    <p>That's what a lot of the AI numbers look like right now. A <strong>backlog</strong> or <strong>RPO</strong> (remaining performance obligations) is a signed promise to buy something later. It's a real contract. It is not cash in a bank account. So let's put the promises on one side, the cash on the other, and see how far apart they are. We'll draw promises as dashed bars, and we'll never add them to cash.</p>
+  </div>
+
+  <div class="ch06-block panel">
+    <h3>Promises and cash, same scale (billions of dollars)</h3>
+    <p class="ch06-lead">OpenAI first. Solid bars are money that exists or arrives each year. Dashed bars are promises it has made to pay.</p>
+    <div data-bars-openai class="ch06-bars"></div>
+    <p class="ch06-note" data-noadd></p>
+  </div>
+
+  <div class="ch06-block panel">
+    <h3>Years of today's revenue needed to pay the commitments</h3>
+    <p class="ch06-lead">Take what a lab has promised and divide by what it earns in a year. It's a crude yardstick, because revenue isn't profit and the promises are spread over many years. But it shows scale. Then drag the slider and let the lab grow.</p>
+    <div class="ch06-slider">
+      <label for="ch06-g">If the lab's revenue grows <output data-gout>0%</output> a year</label>
+      <input type="range" id="ch06-g" min="0" max="300" step="5" value="0" data-ch06-growth>
+      <p class="ch06-note" data-gnote></p>
+    </div>
+    <div class="ch06-labs" data-labs></div>
+  </div>
+
+  <div class="ch06-block panel">
+    <h3>Who is holding promises, and who is holding cash</h3>
+    <p class="ch06-lead">Backlogs at the companies that build and rent the compute (neoclouds are newer companies that rent out racks of AI chips), next to Nvidia's own commitments. Many of these backlogs trace back to the same few labs, so be careful about adding them up.</p>
+    <div data-bars-holders class="ch06-bars"></div>
+  </div>
+
+  <div class="ch06-rb">
+    <section class="ch06-read bull" aria-labelledby="ch06-bull-h">
+      <h3 id="ch06-bull-h">Bull reading</h3>
+      <ul data-bull></ul>
+    </section>
+    <section class="ch06-read bear" aria-labelledby="ch06-bear-h">
+      <h3 id="ch06-bear-h">Bear reading</h3>
+      <ul data-bear></ul>
+    </section>
+  </div>
+
+  <aside class="ch06-explain panel">
+    <h3>Take-or-pay versus flexible</h3>
+    <p><strong>Take-or-pay</strong> means you pay whether or not you use the capacity, like a gym membership you can't cancel. <strong>Flexible</strong> means you can scale back, like a month-to-month rental. A take-or-pay backlog is firmer for the seller. A flexible one is firmer for the buyer. When you read a big backlog number, the first question is which kind it is. Most of the headlines don't say.</p>
+  </aside>
+
+  <div class="ch06-legend" data-legend></div>
+
+  <div class="takeaway">
+    <h3>What this means</h3>
+    <p data-means></p>
+  </div>
+</section>

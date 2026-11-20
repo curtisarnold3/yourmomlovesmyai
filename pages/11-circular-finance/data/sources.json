@@ -1,0 +1,1780 @@
+{
+ "as_of": "2026-11-20",
+ "sources": [
+  {
+   "id": "s_94f544ef",
+   "title": "247wallst.com article, Aug 13, 2026",
+   "title_is_derived": false,
+   "publisher": "247wallst.com",
+   "url": "https://247wallst.com/investing/2026/08/13/michael-burry-sounds-the-alarm-again-ai-is-a-circular-financing-web-with-nvidia-in-the-middle/",
+   "type": "press",
+   "date": "2026-08-13",
+   "original_title": "Michael burry sounds the alarm again ai is a circular financing web with nvidia in the",
+   "original_title_attribution": "Headline as published by 247wallst.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_2ce18ca2",
+   "title": "Big tech q3 capex deep dive 2027",
+   "title_is_derived": false,
+   "publisher": "456xresearch.substack.com",
+   "url": "https://456xresearch.substack.com/p/big-tech-q3-capex-deep-dive-2027",
+   "type": "press",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "s_2622278a",
+   "title": "Defaults",
+   "title_is_derived": false,
+   "publisher": "AM Compute",
+   "url": "https://www.amcompute.com/gpu-risk/defaults",
+   "type": "press",
+   "date": "2026-10"
+  },
+  {
+   "id": "s_b57dd639",
+   "title": "Amazon open ai strategic partnership investment",
+   "title_is_derived": false,
+   "publisher": "Amazon",
+   "url": "https://www.aboutamazon.com/news/aws/amazon-open-ai-strategic-partnership-investment",
+   "type": "primary",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_909b7579",
+   "title": "Anthropic prices initial public offering",
+   "title_is_derived": false,
+   "publisher": "Anthropic",
+   "url": "https://www.anthropic.com/news/anthropic-prices-initial-public-offering",
+   "type": "primary",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_63b83b32",
+   "title": "Google broadcom partnership compute",
+   "title_is_derived": false,
+   "publisher": "Anthropic",
+   "url": "https://www.anthropic.com/news/google-broadcom-partnership-compute",
+   "type": "primary",
+   "date": "2026-04"
+  },
+  {
+   "id": "s_5377d948",
+   "title": "Applied digital reports fiscal second quarter 2026 results",
+   "title_is_derived": false,
+   "publisher": "Applied Digital IR",
+   "url": "https://ir.applieddigital.com/news-events/press-releases/detail/142/applied-digital-reports-fiscal-second-quarter-2026-results",
+   "type": "primary",
+   "date": "2025-06"
+  },
+  {
+   "id": "s_f3c25820",
+   "title": "Nvidia openai financing ai jensen huang ssi",
+   "title_is_derived": false,
+   "publisher": "Axios",
+   "url": "https://www.axios.com/2026/07/27/nvidia-openai-financing-ai-jensen-huang-ssi",
+   "type": "press",
+   "date": "2026-07-27"
+  },
+  {
+   "id": "s_9940eb5c",
+   "title": "Openai nvidia ohio data center sb energy",
+   "title_is_derived": false,
+   "publisher": "Axios",
+   "url": "https://www.axios.com/2026/08/17/openai-nvidia-ohio-data-center-sb-energy",
+   "type": "press",
+   "date": "2026-08-17"
+  },
+  {
+   "id": "s_bb03465b",
+   "title": "Benzinga article",
+   "title_is_derived": false,
+   "publisher": "Benzinga",
+   "url": "https://www.benzinga.com/markets/earnings/26/08/61486426/michael-burry-points-to-nvidias-105b-openai-guarantee-as-circular-financing-red-flag-whistling-past-the-graveyard",
+   "type": "press",
+   "date": null,
+   "original_title": "Michael burry points to nvidias 105b openai guarantee as circular financing red flag",
+   "original_title_attribution": "Headline as published by Benzinga; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_d5db79bd",
+   "title": "Openai valued at 852 billion after completing 122 billion round",
+   "title_is_derived": false,
+   "publisher": "Bloomberg",
+   "url": "https://www.bloomberg.com/news/articles/2026-03-31/openai-valued-at-852-billion-after-completing-122-billion-round",
+   "type": "press",
+   "date": "2026-03-31"
+  },
+  {
+   "id": "s_e1ecaaf0",
+   "title": "Openai partners with broadcom custom ai chips alongside nvidia amd",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2025/10/13/openai-partners-with-broadcom-custom-ai-chips-alongside-nvidia-amd.html",
+   "type": "press",
+   "date": "2025-10-13"
+  },
+  {
+   "id": "s_a992b524",
+   "title": "Open ai hyperscaler broadcom chips",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2025/10/14/open-ai-hyperscaler-broadcom-chips.html",
+   "type": "press",
+   "date": "2025-10-14"
+  },
+  {
+   "id": "s_d985a4d8",
+   "title": "CNBC article, Nov 11, 2025",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2025/11/11/big-short-investor-michael-burry-accuses-ai-hyperscalers-of-artificially-boosting-earnings.html",
+   "type": "press",
+   "date": "2025-11-11",
+   "original_title": "Big short investor michael burry accuses ai hyperscalers of artificially boosting earnings",
+   "original_title_attribution": "Headline as published by CNBC; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_2779b8ca",
+   "title": "Anthropic ai data centers texas new york",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2025/11/12/anthropic-ai-data-centers-texas-new-york.html",
+   "type": "press",
+   "date": "2025-11-12"
+  },
+  {
+   "id": "s_1bcb0178",
+   "title": "Openai chip deal with cerebras adds to roster of nvidia amd broadcom",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/01/16/openai-chip-deal-with-cerebras-adds-to-roster-of-nvidia-amd-broadcom.html",
+   "type": "press",
+   "date": "2026-01-16"
+  },
+  {
+   "id": "s_efcbdc97",
+   "title": "3coreweave nvidia stock ai data centers",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/01/26/3coreweave-nvidia-stock-ai-data-centers.html",
+   "type": "press",
+   "date": "2026-01-26"
+  },
+  {
+   "id": "s_02497684",
+   "title": "Nvidia is in talks to invest up to 30 billion in openai source says",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/02/19/nvidia-is-in-talks-to-invest-up-to-30-billion-in-openai-source-says.html",
+   "type": "press",
+   "date": "2026-02-19"
+  },
+  {
+   "id": "s_0fc221ed",
+   "title": "Openai resets spend expectations targets around 600 billion by 2030",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/02/20/openai-resets-spend-expectations-targets-around-600-billion-by-2030.html",
+   "type": "press",
+   "date": "2026-02-20"
+  },
+  {
+   "id": "s_a58d6858",
+   "title": "Coreweave crwv q4 earnings report 2025",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/02/26/coreweave-crwv-q4-earnings-report-2025.html",
+   "type": "press",
+   "date": "2026-02-26"
+  },
+  {
+   "id": "s_eff51b81",
+   "title": "Amazon open ai cloud jassy altman",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/02/27/amazon-open-ai-cloud-jassy-altman.html",
+   "type": "press",
+   "date": "2026-02-27"
+  },
+  {
+   "id": "s_cd655029",
+   "title": "Nvidia embraces ai investor topping 40 billion in equity bets 2026",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/05/09/nvidia-embraces-ai-investor-topping-40-billion-in-equity-bets-2026.html",
+   "type": "press",
+   "date": "2026-05-09"
+  },
+  {
+   "id": "s_b60346b3",
+   "title": "Nvidia discloses 21 billion stake in spacex at end of second quarter",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/08/14/nvidia-discloses-21-billion-stake-in-spacex-at-end-of-second-quarter.html",
+   "type": "press",
+   "date": "2026-08-14"
+  },
+  {
+   "id": "s_61feaacc",
+   "title": "Oracle orcl q1 earnings report 2027",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/09/10/oracle-orcl-q1-earnings-report-2027.html",
+   "type": "press",
+   "date": "2026-09-10"
+  },
+  {
+   "id": "s_9e05bbeb",
+   "title": "Oracle data center force majeure",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/09/24/oracle-data-center-force-majeure.html",
+   "type": "press",
+   "date": "2026-09-24"
+  },
+  {
+   "id": "s_b31346dd",
+   "title": "Oracle debt faces an ai stress test why some investors arent worried",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/10/19/oracle-debt-faces-an-ai-stress-test-why-some-investors-arent-worried-.html",
+   "type": "press",
+   "date": "2026-10-19"
+  },
+  {
+   "id": "s_83526201",
+   "title": "Openai funding round uae investors",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/10/22/openai-funding-round-uae-investors.html",
+   "type": "press",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "s_d39324bb",
+   "title": "Amazon amzn q3 earnings report 2026",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/10/29/amazon-amzn-q3-earnings-report-2026.html",
+   "type": "press",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "s_885b04d7",
+   "title": "Oracle files to sell 20 billion in new stock bonds to finance ai buildout",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/02/oracle-files-to-sell-20-billion-in-new-stock-bonds-to-finance-ai-buildout.html",
+   "type": "press",
+   "date": "2026-11-02"
+  },
+  {
+   "id": "s_9c5da62b",
+   "title": "Coreweave bond yield tops 16percent as ai credit stress rises",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/06/coreweave-bond-yield-tops-16percent-as-ai-credit-stress-rises.html",
+   "type": "press",
+   "date": "2026-11-06"
+  },
+  {
+   "id": "s_b913f5db",
+   "title": "Coreweave crwv q3 earnings report 2026",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/10/coreweave-crwv-q3-earnings-report-2026.html",
+   "type": "press",
+   "date": "2026-11-10"
+  },
+  {
+   "id": "s_d3684041",
+   "title": "Coreweave earnings preview debt capex",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/10/coreweave-earnings-preview-debt-capex.html",
+   "type": "press",
+   "date": "2026-11-10"
+  },
+  {
+   "id": "s_731890df",
+   "title": "Nvidia earnings investor china jensen",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/17/nvidia-earnings-investor-china-jensen.html",
+   "type": "press",
+   "date": "2026-11-17"
+  },
+  {
+   "id": "s_07dff4c7",
+   "title": "AI credit default swaps coreweave debt",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/18/ai-credit-default-swaps-coreweave-debt.html",
+   "type": "press",
+   "date": "2026-11-18"
+  },
+  {
+   "id": "s_3a261481",
+   "title": "Fed minutes october 2026",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/18/fed-minutes-october-2026.html",
+   "type": "press",
+   "date": "2026-11-18"
+  },
+  {
+   "id": "s_ef28fb89",
+   "title": "Nvidia stock earnings",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/18/nvidia-stock-earnings.html",
+   "type": "press",
+   "date": "2026-11-18"
+  },
+  {
+   "id": "s_95c693fe",
+   "title": "Nvidias earnings report had something for the bulls bears and everyone in between",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/investingclub/2026/11/18/nvidias-earnings-report-had-something-for-the-bulls-bears-and-everyone-in-between.html",
+   "type": "press",
+   "date": "2026-11-18"
+  },
+  {
+   "id": "s_023a2e94",
+   "title": "CoreWeave Closes Landmark 8 5 Billion Financing Facility Achieving First Investment Grade",
+   "title_is_derived": false,
+   "publisher": "CoreWeave Investor Relations",
+   "url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Closes-Landmark-8-5-Billion-Financing-Facility-Achieving-First-Investment-Grade-Rated-GPU-backed-Financing/default.aspx",
+   "type": "primary",
+   "date": "2026-03"
+  },
+  {
+   "id": "s_5871c43d",
+   "title": "CoreWeave Reports Strong Third Quarter 2026 Results",
+   "title_is_derived": false,
+   "publisher": "CoreWeave Investor Relations",
+   "url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Third-Quarter-2026-Results/",
+   "type": "primary",
+   "date": "2025"
+  },
+  {
+   "id": "s_87c39615",
+   "title": "Applied digital secures first tranche of 5bn funding from macquarie",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/applied-digital-secures-first-tranche-of-5bn-funding-from-macquarie/",
+   "type": "press",
+   "date": "2025-06"
+  },
+  {
+   "id": "s_d7791d32",
+   "title": "Cipher mining plans 2bn senior secured notes offering for amazon leased black pearl data",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/cipher-mining-plans-2bn-senior-secured-notes-offering-for-amazon-leased-black-pearl-data-center-site-in-texas/",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_25dc79e1",
+   "title": "Coreweave q3 earnings show revenue backlog doubled to 556bn",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/coreweave-q3-earnings-show-revenue-backlog-doubled-to-556bn/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_d655ed4e",
+   "title": "Fluidstack signs additional 39mw lease with cipher mining in texas backed by google",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/fluidstack-signs-additional-39mw-lease-with-cipher-mining-in-texas-backed-by-google/",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_299739f8",
+   "title": "Meta signs 142bn with coreweave",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/meta-signs-142bn-with-coreweave/",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_af4391db",
+   "title": "Microsoft signs multi billion dollar cloud capacity deal with lambda",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/microsoft-signs-multi-billion-dollar-cloud-capacity-deal-with-lambda/",
+   "type": "press",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_9096b278",
+   "title": "Nebius signs 3bn deal with meta says current available capacity is sold out as it targets",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/nebius-signs-3bn-deal-with-meta-says-current-available-capacity-is-sold-out-as-it-targets-25gw-by-end-of-2026/",
+   "type": "press",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_a7ff783e",
+   "title": "Nvidia invests another 2bn in coreweave",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/nvidia-invests-another-2bn-in-coreweave/",
+   "type": "press",
+   "date": "2026-01"
+  },
+  {
+   "id": "s_32f4a9f9",
+   "title": "Nvidia signs 15bn deal to lease its gpus back from lambda report",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/nvidia-signs-15bn-deal-to-lease-its-gpus-back-from-lambda-report/",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_9807762f",
+   "title": "Oracle denies openai data center delays",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/oracle-denies-openai-data-center-delays/",
+   "type": "press",
+   "date": "2026-10"
+  },
+  {
+   "id": "s_d9416c84",
+   "title": "Oracle set to receive 38bn debt package for data center projects report",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/oracle-set-to-receive-38bn-debt-package-for-data-center-projects-report/",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_0c4cfe15",
+   "title": "Nvidia backs openai s ohio data center buildout with 105b guarantee",
+   "title_is_derived": false,
+   "publisher": "Data Center Knowledge",
+   "url": "https://www.datacenterknowledge.com/data-center-construction/nvidia-backs-openai-s-ohio-data-center-buildout-with-105b-guarantee",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_c4fb2b10",
+   "title": "Nvidia invests 2b more in coreweave for 5 gw data center push",
+   "title_is_derived": false,
+   "publisher": "Data Center Knowledge",
+   "url": "https://www.datacenterknowledge.com/investing/nvidia-invests-2b-more-in-coreweave-for-5-gw-data-center-push",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_f36b5f88",
+   "title": "Fluidstack selected by anthropic to deliver custom data centers in the us",
+   "title_is_derived": false,
+   "publisher": "Fluidstack",
+   "url": "https://fluidstack.io/blog/fluidstack-selected-by-anthropic-to-deliver-custom-data-centers-in-the-us",
+   "type": "primary",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_bfd348a6",
+   "title": "AI apollo ceo calls nvidia ais bank with 108 5b guarantees",
+   "title_is_derived": false,
+   "publisher": "FourWeekMBA",
+   "url": "https://fourweekmba.com/ai-apollo-ceo-calls-nvidia-ais-bank-with-108-5b-guarantees/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_95f0c6bf",
+   "title": "AI gpu debt about 6 with microsoft or meta rent 9 without",
+   "title_is_derived": false,
+   "publisher": "FourWeekMBA",
+   "url": "https://fourweekmba.com/ai-gpu-debt-about-6-with-microsoft-or-meta-rent-9-without/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_b654f0d9",
+   "title": "AI hyperions 27 3b bond pays 6 581 above every meta note",
+   "title_is_derived": false,
+   "publisher": "FourWeekMBA",
+   "url": "https://fourweekmba.com/ai-hyperions-27-3b-bond-pays-6-581-above-every-meta-note/",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_0d6cd3da",
+   "title": "AI microsoft booked 10b from openai 11 of quarterly sales",
+   "title_is_derived": false,
+   "publisher": "FourWeekMBA",
+   "url": "https://fourweekmba.com/ai-microsoft-booked-10b-from-openai-11-of-quarterly-sales/",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_91a042b1",
+   "title": "AI nvidias 5b nscale guarantee in flux 1 4x its cloud book",
+   "title_is_derived": false,
+   "publisher": "FourWeekMBA",
+   "url": "https://fourweekmba.com/ai-nvidias-5b-nscale-guarantee-in-flux-1-4x-its-cloud-book/",
+   "type": "press",
+   "date": "2026"
+  },
+  {
+   "id": "s_33801be8",
+   "title": "IREN investor presentation, June 2026",
+   "title_is_derived": false,
+   "publisher": "IREN IR",
+   "url": "https://iren.gcs-web.com/static-files/56eec258-62fb-4929-9e93-02c816693da2",
+   "type": "primary",
+   "date": "2026-06",
+   "original_title": "56eec258 62fb 4929 9e93 02c816693da2",
+   "original_title_attribution": "Headline as published by IREN IR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_bd67fb97",
+   "title": "Meta Reports Third Quarter 2026 Results",
+   "title_is_derived": false,
+   "publisher": "Meta IR",
+   "url": "https://investor.atmeta.com/investor-news/press-release-details/2026/Meta-Reports-Third-Quarter-2026-Results/default.aspx",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_5381f866",
+   "title": "The next chapter of the microsoft openai partnership",
+   "title_is_derived": false,
+   "publisher": "Microsoft Blog",
+   "url": "https://blogs.microsoft.com/blog/2025/10/28/the-next-chapter-of-the-microsoft-openai-partnership/",
+   "type": "primary",
+   "date": "2025-10-28"
+  },
+  {
+   "id": "s_b9ae0481",
+   "title": "Microsoft nvidia and anthropic announce strategic partnerships",
+   "title_is_derived": false,
+   "publisher": "Microsoft Blog",
+   "url": "https://blogs.microsoft.com/blog/2025/11/18/microsoft-nvidia-and-anthropic-announce-strategic-partnerships/",
+   "type": "primary",
+   "date": "2025-11-18"
+  },
+  {
+   "id": "s_b35b26f1",
+   "title": "Mistral ai raises 1 7 b to accelerate technological progress with ai",
+   "title_is_derived": false,
+   "publisher": "Mistral AI",
+   "url": "https://mistral.ai/news/mistral-ai-raises-1-7-b-to-accelerate-technological-progress-with-ai/",
+   "type": "primary",
+   "date": "2026-09"
+  },
+  {
+   "id": "s_95d752a7",
+   "title": "Fed hiked rates ai stocks feel it amzn nvda",
+   "title_is_derived": false,
+   "publisher": "Motley Fool",
+   "url": "https://www.fool.com/investing/2026/09/21/fed-hiked-rates-ai-stocks-feel-it-amzn-nvda/",
+   "type": "press",
+   "date": "2026-09-21"
+  },
+  {
+   "id": "s_a2c138ef",
+   "title": "Nvidia to provide up to 105bn guarantee for openai s ohio data center",
+   "title_is_derived": false,
+   "publisher": "Nikkei Asia",
+   "url": "https://asia.nikkei.com/business/technology/artificial-intelligence/nvidia-to-provide-up-to-105bn-guarantee-for-openai-s-ohio-data-center",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_c429436a",
+   "title": "Nvidia Q3 FY27 CFO commentary (company statement, hosted copy)",
+   "title_is_derived": false,
+   "publisher": "Nvidia (company statement)",
+   "url": "https://www.marketscreener.com/news/nvidia-third-quarter-2027-cfo-commentary-ce785edcdc81f420",
+   "type": "primary",
+   "date": "2026-11-17"
+  },
+  {
+   "id": "s_e6a97dfb",
+   "title": "Microsoft nvidia anthropic announce partnership",
+   "title_is_derived": false,
+   "publisher": "Nvidia Blog",
+   "url": "https://blogs.nvidia.com/blog/microsoft-nvidia-anthropic-announce-partnership",
+   "type": "primary",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_5ddd1b7b",
+   "title": "NVIDIA Announces Financial Results for Third Quarter Fiscal 2027",
+   "title_is_derived": false,
+   "publisher": "Nvidia Investor Relations",
+   "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_f68f74b0",
+   "title": "Nvidia and nebius partner to scale full stack ai cloud",
+   "title_is_derived": false,
+   "publisher": "Nvidia Newsroom",
+   "url": "https://nvidianews.nvidia.com/news/nvidia-and-nebius-partner-to-scale-full-stack-ai-cloud",
+   "type": "primary",
+   "date": "2026-03"
+  },
+  {
+   "id": "s_4faa980a",
+   "title": "Nvidia announces financial results for third quarter fiscal 2027",
+   "title_is_derived": false,
+   "publisher": "Nvidia Newsroom",
+   "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2027",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_62064f11",
+   "title": "Accelerating the next phase ai",
+   "title_is_derived": false,
+   "publisher": "OpenAI",
+   "url": "https://openai.com/index/accelerating-the-next-phase-ai/",
+   "type": "primary",
+   "date": "2026-03"
+  },
+  {
+   "id": "s_1b81bc56",
+   "title": "Amazon partnership",
+   "title_is_derived": false,
+   "publisher": "OpenAI",
+   "url": "https://openai.com/index/amazon-partnership/",
+   "type": "primary",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_61519e46",
+   "title": "Lucent in depth report",
+   "title_is_derived": false,
+   "publisher": "RBC Power Analysis",
+   "url": "https://www.rbcpa.com/commentary-archive/lucent-in-depth-report/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_735ca3e2",
+   "title": "Wolman",
+   "title_is_derived": false,
+   "publisher": "Richmond Fed",
+   "url": "https://www.richmondfed.org/~/media/richmondfedorg/publications/research/economic_quarterly/2003/fall/pdf/wolman.pdf",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_b26dd69b",
+   "title": "T26083ke10 k405.txt",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0000072911/000095014401003499/t26083ke10-k405.txt",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_971d55fd",
+   "title": "Microsoft quarterly report (10-Q), quarter ended Sep 30, 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0000789019/000119312526436133/msft-20260930.htm",
+   "type": "primary",
+   "date": "2026-09-30",
+   "original_title": "Msft 20260930",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_dd7bbfbb",
+   "title": "Ex13",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001006240/000095011702003045/ex13.htm",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_7c4c573c",
+   "title": "Nvidia quarterly report (10-Q), quarter ended Jul 26, 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000075/nvda-20260726.htm",
+   "type": "primary",
+   "date": "2026-07-26",
+   "original_title": "Nvda 20260726",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_1934d6ee",
+   "title": "Nvidia 8-K: CEO transition announcement, Nov 12, 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvidiaannouncesceotransiti.htm",
+   "type": "primary",
+   "date": "2026-11-12",
+   "original_title": "Nvidiaannouncesceotransiti",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_49f826d5",
+   "title": "T26081ke10 k405.txt",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001119664/000095014401003502/t26081ke10-k405.txt",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_e9e965eb",
+   "title": "Nebius SEC filing exhibit, Mar 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001513845/000110465926064092/nbis-20260331xex99d2.htm",
+   "type": "primary",
+   "date": "2026-03",
+   "original_title": "Nbis 20260331xex99d2",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_dba15037",
+   "title": "Nbis ex99d2",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001513845/000110465926126238/nbis-ex99d2.htm",
+   "type": "primary",
+   "date": "2026-08"
+  },
+  {
+   "id": "s_feee75f4",
+   "title": "Googexhibit991q32026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000080/googexhibit991q32026.htm",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_f30d204e",
+   "title": "Coreweave3q26earningspress",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001769628/000176962826000461/coreweave3q26earningspress.htm",
+   "type": "primary",
+   "date": "2025"
+  },
+  {
+   "id": "s_80ea2f53",
+   "title": "CoreWeave quarterly report (10-Q), quarter ended Sep 30, 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001769628/000176962826000465/crwv-20260930.htm",
+   "type": "primary",
+   "date": "2026-09-30",
+   "original_title": "Crwv 20260930",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_c5631b95",
+   "title": "IREN annual report (10-K), year ended Jun 30, 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001878848/000187884826000052/iren-20260630.htm",
+   "type": "primary",
+   "date": "2026-06-30",
+   "original_title": "Iren 20260630",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_efa4cded",
+   "title": "IREN quarterly report (10-Q), quarter ended Sep 30, 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001878848/000187884826000066/iren-20260930.htm",
+   "type": "primary",
+   "date": "2026-09-30",
+   "original_title": "Iren 20260930",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_50ab85ec",
+   "title": "Lucent Technologies annual report (10-K405), fiscal 2000",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/1006240/000095012300011855/y43690e10-k405.txt",
+   "type": "primary",
+   "date": null,
+   "original_title": "Y43690e10 k405.txt",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_55e7265b",
+   "title": "Q3fy27pr",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000088/q3fy27pr.htm",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_10438831",
+   "title": "Seeking Alpha: Microsoft, Nvidia and Anthropic announce partnership",
+   "title_is_derived": false,
+   "publisher": "Seeking Alpha",
+   "url": "https://seekingalpha.com/news/4523396-microsoft-nvidia-anthropic-announce-major-partnership-microsoft-nvidia-to-invest-in-anthropic",
+   "type": "press",
+   "date": "2025-11",
+   "original_title": "4523396 microsoft nvidia anthropic announce major partnership microsoft nvidia to invest",
+   "original_title_attribution": "Headline as published by Seeking Alpha; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_ea17972c",
+   "title": "Neocloud operator nscales ipo plans could be at risk after microsoft pulls the plug on u",
+   "title_is_derived": false,
+   "publisher": "SiliconANGLE",
+   "url": "https://siliconangle.com/2026/10/18/neocloud-operator-nscales-ipo-plans-could-be-at-risk-after-microsoft-pulls-the-plug-on-u-k-data-center-project/",
+   "type": "press",
+   "date": "2026-10-18"
+  },
+  {
+   "id": "s_55ed6102",
+   "title": "What we learned from nvidias first earnings call without jensen huang",
+   "title_is_derived": false,
+   "publisher": "SiliconANGLE",
+   "url": "https://siliconangle.com/2026/11/19/what-we-learned-from-nvidias-first-earnings-call-without-jensen-huang/",
+   "type": "press",
+   "date": "2026-11-19"
+  },
+  {
+   "id": "s_0803cabc",
+   "title": "Nvidia openai investment shrinks 100b 30b compute lock war continues",
+   "title_is_derived": false,
+   "publisher": "Tech Times",
+   "url": "https://www.techtimes.com/articles/317839/20260605/nvidia-openai-investment-shrinks-100b-30b-compute-lock-war-continues.htm",
+   "type": "press",
+   "date": "2026-06-05"
+  },
+  {
+   "id": "s_0da8a262",
+   "title": "Nvidia stock slides after earnings extra week makes 130b guidance 4 growth not 12",
+   "title_is_derived": false,
+   "publisher": "Tech Times",
+   "url": "https://www.techtimes.com/articles/331079/20261119/nvidia-stock-slides-after-earnings-extra-week-makes-130b-guidance-4-growth-not-12.htm",
+   "type": "press",
+   "date": "2026-11-19"
+  },
+  {
+   "id": "s_57d9461c",
+   "title": "Oracle sends force majeure notice on its new mexico stargate data center",
+   "title_is_derived": false,
+   "publisher": "TechCrunch",
+   "url": "https://techcrunch.com/2026/09/24/oracle-sends-force-majeure-notice-on-its-new-mexico-stargate-data-center/",
+   "type": "press",
+   "date": "2026-09-24"
+  },
+  {
+   "id": "s_b78d0e91",
+   "title": "Terawulf signs 200 mw 10 year ai hosting agreements with fluidstack",
+   "title_is_derived": false,
+   "publisher": "TeraWulf IR",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/112/terawulf-signs-200-mw-10-year-ai-hosting-agreements-with-fluidstack",
+   "type": "primary",
+   "date": "2025-08"
+  },
+  {
+   "id": "s_816870f9",
+   "title": "Jensen huang senate banking committee lutnick tim scott",
+   "title_is_derived": false,
+   "publisher": "The Next Web",
+   "url": "https://thenextweb.com/news/jensen-huang-senate-banking-committee-lutnick-tim-scott",
+   "type": "press",
+   "date": "2026-12-03"
+  },
+  {
+   "id": "s_abf9c44e",
+   "title": "Nebius q3 2026 shares fall data centre delays outlook",
+   "title_is_derived": false,
+   "publisher": "The Next Web",
+   "url": "https://thenextweb.com/news/nebius-q3-2026-shares-fall-data-centre-delays-outlook",
+   "type": "press",
+   "date": "2026-11-12"
+  },
+  {
+   "id": "s_04ccc8f4",
+   "title": "Openai 856bn compute vs 600bn reset burn improved",
+   "title_is_derived": false,
+   "publisher": "The Next Web",
+   "url": "https://thenextweb.com/news/openai-856bn-compute-vs-600bn-reset-burn-improved",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_74523d92",
+   "title": "Oracle data centre 16 billion financing stargate",
+   "title_is_derived": false,
+   "publisher": "The Next Web",
+   "url": "https://thenextweb.com/news/oracle-data-centre-16-billion-financing-stargate",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_eabf379e",
+   "title": "Oracle sp downgrade ai spending junk risk",
+   "title_is_derived": false,
+   "publisher": "The Next Web",
+   "url": "https://thenextweb.com/news/oracle-sp-downgrade-ai-spending-junk-risk",
+   "type": "press",
+   "date": "2026-07-09"
+  },
+  {
+   "id": "s_c121715f",
+   "title": "Nvidia nortel vendor financing comparison",
+   "title_is_derived": false,
+   "publisher": "Tomasz Tunguz",
+   "url": "https://tomtunguz.com/nvidia_nortel_vendor_financing_comparison/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_ab665f2e",
+   "title": "Hyperion Data Center",
+   "title_is_derived": false,
+   "publisher": "Wikipedia",
+   "url": "https://en.wikipedia.org/wiki/Hyperion_Data_Center",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_0f3a5f9d",
+   "title": "Status",
+   "title_is_derived": false,
+   "publisher": "X (The Information post)",
+   "url": "https://x.com/theinformation/status/1978966707843567936",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_726e9a94",
+   "title": "Nvidia openai oracles 745b financing",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/economy/policy/articles/nvidia-openai-oracles-745b-financing-135702453.html",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_0f15fcc0",
+   "title": "Banks rework oracle data center",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/banks-rework-oracle-data-center-141848656.html",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_e9ca65b0",
+   "title": "Yahoo Finance article",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/jensen-huang-mocks-nvidia-circular-141958748.html",
+   "type": "press",
+   "date": null,
+   "original_title": "Jensen huang mocks nvidia circular 141958748",
+   "original_title_attribution": "Headline as published by Yahoo Finance; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_c42d8f63",
+   "title": "Yahoo Finance article, Nov 19, 2026",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/tech-bear-market-20-tech-224039016.html",
+   "type": "press",
+   "date": "2026-11-19",
+   "original_title": "Tech bear market 20 tech 224039016",
+   "original_title_attribution": "Headline as published by Yahoo Finance; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_c823b607",
+   "title": "Terawulf fluidstack joint venture plans",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/news/terawulf-fluidstack-joint-venture-plans-143846626.html",
+   "type": "press",
+   "date": "2025-08"
+  },
+  {
+   "id": "s_a4a1ac4a",
+   "title": "Yahoo Finance article, Nov 19, 2026",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/technology/ai/articles/coreweave-oracle-nebius-plunge-nvidia-192652785.html",
+   "type": "press",
+   "date": "2026-11-19",
+   "original_title": "Coreweave oracle nebius plunge nvidia 192652785",
+   "original_title_attribution": "Headline as published by Yahoo Finance; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_00f8966c",
+   "title": "Nvidia corporation nvda space exploration",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-corporation-nvda-space-exploration-005825605.html",
+   "type": "press",
+   "date": "2026-01"
+  },
+  {
+   "id": "s_2e55e321",
+   "title": "Nvidia nvda 105b ohio bet",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-nvda-105b-ohio-bet-124755581.html",
+   "type": "press",
+   "date": "2026-08"
+  },
+  {
+   "id": "s_9c88ae90",
+   "title": "Softbank raises arm margin loan",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/technology/ai/articles/softbank-raises-arm-margin-loan-054546224.html",
+   "type": "press",
+   "date": "2026-03"
+  },
+  {
+   "id": "s_43f66fdc",
+   "title": "Spacex seeks 40 billion debt",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/technology/ai/articles/spacex-seeks-40-billion-debt-114434062.html",
+   "type": "press",
+   "date": "2026-10"
+  },
+  {
+   "id": "s_3c1e62d5",
+   "title": "Openai cfo q3 was a blockbuster quarter revenue jumped 50",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/technology/article/openai-cfo-q3-was-a-blockbuster-quarter-revenue-jumped-50-225023234.html",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_0c926a74",
+   "title": "Musk xai pursuing 20 billion",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance UK",
+   "url": "https://uk.finance.yahoo.com/news/musk-xai-pursuing-20-billion-180609978.html",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_2c3dba23",
+   "title": "Meta blue owl capital develop hyperion data center",
+   "title_is_derived": false,
+   "publisher": "about.fb.com",
+   "url": "https://about.fb.com/news/2025/10/meta-blue-owl-capital-develop-hyperion-data-center/",
+   "type": "primary",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_caabcded",
+   "title": "Nvidia 2b coreweave investment 87 20 share 5gw ai data centers",
+   "title_is_derived": false,
+   "publisher": "aibusinessweekly.net",
+   "url": "https://aibusinessweekly.net/p/nvidia-2b-coreweave-investment-87-20-share-5gw-ai-data-centers",
+   "type": "press",
+   "date": "2026-01"
+  },
+  {
+   "id": "s_a377af0b",
+   "title": "The financialization of the gpu",
+   "title_is_derived": false,
+   "publisher": "ainfrastructure.substack.com",
+   "url": "https://ainfrastructure.substack.com/p/the-financialization-of-the-gpu",
+   "type": "press",
+   "date": "2023-08"
+  },
+  {
+   "id": "s_8247ea32",
+   "title": "Lambda taps 917m leveraged loan to fund nvidia chip lease",
+   "title_is_derived": false,
+   "publisher": "aiweekly.co",
+   "url": "https://aiweekly.co/alerts/lambda-taps-917m-leveraged-loan-to-fund-nvidia-chip-lease",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_aa502b17",
+   "title": "Nvidias huang lutnick summoned to testify to us senate",
+   "title_is_derived": false,
+   "publisher": "aljazeera.com",
+   "url": "https://www.aljazeera.com/news/2026/11/13/nvidias-huang-lutnick-summoned-to-testify-to-us-senate",
+   "type": "press",
+   "date": "2026-11-13"
+  },
+  {
+   "id": "s_c99f5cbf",
+   "title": "Gpu financing",
+   "title_is_derived": false,
+   "publisher": "altstreet.investments",
+   "url": "https://altstreet.investments/guides/gpu-financing",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_1845a257",
+   "title": "Coreweave gpu backed loans",
+   "title_is_derived": false,
+   "publisher": "bankingjudgmentlab.com",
+   "url": "https://www.bankingjudgmentlab.com/the-wire/coreweave-gpu-backed-loans",
+   "type": "press",
+   "date": "2026-03"
+  },
+  {
+   "id": "s_a2a5e41b",
+   "title": "Cipher mining signs 3 billion ai hosting deal with fluidstack google to backstop 1 4",
+   "title_is_derived": false,
+   "publisher": "blockspace.media",
+   "url": "https://blockspace.media/insight/cipher-mining-signs-3-billion-ai-hosting-deal-with-fluidstack-google-to-backstop-1-4-billion/",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_ce070267",
+   "title": "10.7312 ohal19284 014",
+   "title_is_derived": false,
+   "publisher": "business.columbia.edu",
+   "url": "https://business.columbia.edu/sites/default/files-efs/citation_file_upload/10.7312_ohal19284-014.pdf",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_e9bb40e0",
+   "title": "Coreweave lands 14 2bn deal with meta",
+   "title_is_derived": false,
+   "publisher": "capacityglobal.com",
+   "url": "https://capacityglobal.com/news/coreweave-lands-14-2bn-deal-with-meta/",
+   "type": "press",
+   "date": "2025"
+  },
+  {
+   "id": "s_bc38fb96",
+   "title": "Key dates in nortel networks history 1.",
+   "title_is_derived": false,
+   "publisher": "cbc.ca",
+   "url": "https://www.cbc.ca/news/business/key-dates-in-nortel-networks-history-1.802117",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_531d4c9c",
+   "title": "H100 gpu cost",
+   "title_is_derived": false,
+   "publisher": "cloudzero.com",
+   "url": "https://www.cloudzero.com/blog/h100-gpu-cost/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_3889c229",
+   "title": "Wall street is losing its appetite for oracles data center debt",
+   "title_is_derived": false,
+   "publisher": "cncbnews.com",
+   "url": "https://cncbnews.com/article/2026/01/wall-street-is-losing-its-appetite-for-oracles-data-center-debt",
+   "type": "press",
+   "date": "2026-01"
+  },
+  {
+   "id": "s_d034479a",
+   "title": "Microsoft exits nscale deal ipo at risk",
+   "title_is_derived": false,
+   "publisher": "computing.co.uk",
+   "url": "https://computing.co.uk/news/2026/ai/microsoft-exits-nscale-deal-ipo-at-risk",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_fe552d63",
+   "title": "Coreweave q3 2026 earnings financing nvidia backlog",
+   "title_is_derived": false,
+   "publisher": "convergedigest.com",
+   "url": "https://convergedigest.com/coreweave-q3-2026-earnings-financing-nvidia-backlog/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_1bd92e27",
+   "title": "Nvidia reportedly invests up to 2b in xai to power colossus 2",
+   "title_is_derived": false,
+   "publisher": "convergedigest.com",
+   "url": "https://convergedigest.com/nvidia-reportedly-invests-up-to-2b-in-xai-to-power-colossus-2/",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_27ee4781",
+   "title": "CREFC Data Center Primer Second Edition Nov2026",
+   "title_is_derived": false,
+   "publisher": "crefc.org",
+   "url": "https://www.crefc.org/common/uploaded%20files/Research/CREFC_Data_Center_Primer_Second_Edition_Nov2026.pdf",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_88c6a89e",
+   "title": "CREFC CMBS ACMBS New Issue Weekly 11 02 26",
+   "title_is_derived": false,
+   "publisher": "crefc.org",
+   "url": "https://www.crefc.org/cre/content/News/Items/Research_and_Data/2026/CREFC_CMBS_ACMBS_New_Issue_Weekly_11_02_26.aspx",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_3a858efa",
+   "title": "cryptobriefing.com article",
+   "title_is_derived": false,
+   "publisher": "cryptobriefing.com",
+   "url": "https://cryptobriefing.com/nvidia-huang-counters-burry-bear-case/",
+   "type": "press",
+   "date": null,
+   "original_title": "Nvidia huang counters burry bear case",
+   "original_title_attribution": "Headline as published by cryptobriefing.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_1eb0facb",
+   "title": "cycledesk.substack.com article",
+   "title_is_derived": false,
+   "publisher": "cycledesk.substack.com",
+   "url": "https://cycledesk.substack.com/p/internet-bubble-vs-todays-ai-buildout",
+   "type": "press",
+   "date": null,
+   "original_title": "Internet bubble vs todays ai buildout",
+   "original_title_attribution": "Headline as published by cycledesk.substack.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_64951745",
+   "title": "Gpu cloud price comparison",
+   "title_is_derived": false,
+   "publisher": "data.ornn.com",
+   "url": "https://data.ornn.com/gpu-cloud-price-comparison",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_f824f9bb",
+   "title": "Hyperscaler capex trends",
+   "title_is_derived": false,
+   "publisher": "datacentres.com",
+   "url": "https://www.datacentres.com/guides/hyperscaler-capex-trends",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_ab10e09d",
+   "title": "News",
+   "title_is_derived": false,
+   "publisher": "en.fnnews.com",
+   "url": "https://en.fnnews.com/news/202611141730429438",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_e7af17b4",
+   "title": "Nvidia weighs pullback from 100 billion ai investment push",
+   "title_is_derived": false,
+   "publisher": "en.sedaily.com",
+   "url": "https://en.sedaily.com/world/2026/11/20/nvidia-weighs-pullback-from-100-billion-ai-investment-push",
+   "type": "press",
+   "date": "2026-11-20"
+  },
+  {
+   "id": "s_5ef2c8dd",
+   "title": "En.wowtale.net",
+   "title_is_derived": false,
+   "publisher": "en.wowtale.net",
+   "url": "https://en.wowtale.net/2026/11/19/236083/",
+   "type": "press",
+   "date": "2026-11-19"
+  },
+  {
+   "id": "s_f9dd3574",
+   "title": "Lessons from history the rise and",
+   "title_is_derived": false,
+   "publisher": "fabricatedknowledge.com",
+   "url": "https://www.fabricatedknowledge.com/p/lessons-from-history-the-rise-and",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_3385bbb4",
+   "title": "Terawulf announces fluidstack expansion with 160 mw cb 5 lease at lake mariner",
+   "title_is_derived": false,
+   "publisher": "finviz.com",
+   "url": "https://finviz.com/news/142964/terawulf-announces-fluidstack-expansion-with-160-mw-cb-5-lease-at-lake-mariner",
+   "type": "press",
+   "date": "2025-08"
+  },
+  {
+   "id": "s_af132f62",
+   "title": "Anthropics s1 ipo reveals the inner workings of its fast evolving compute strategy",
+   "title_is_derived": false,
+   "publisher": "fortune.com",
+   "url": "https://fortune.com/2026/10/26/anthropics-s1-ipo-reveals-the-inner-workings-of-its-fast-evolving-compute-strategy/",
+   "type": "press",
+   "date": "2026-10-26"
+  },
+  {
+   "id": "s_164d6821",
+   "title": "Senate banking committee nvidia jensen huang howard lutnick",
+   "title_is_derived": false,
+   "publisher": "fortune.com",
+   "url": "https://fortune.com/2026/11/13/senate-banking-committee-nvidia-jensen-huang-howard-lutnick/",
+   "type": "press",
+   "date": "2026-11-13"
+  },
+  {
+   "id": "s_d5786986",
+   "title": "Anthropics deal with elon musks spacexai is even bigger than we knew ipo filing shows",
+   "title_is_derived": false,
+   "publisher": "gizmodo.com",
+   "url": "https://gizmodo.com/anthropics-deal-with-elon-musks-spacexai-is-even-bigger-than-we-knew-ipo-filing-shows-2000830618",
+   "type": "press",
+   "date": "2026-10"
+  },
+  {
+   "id": "s_434e4c11",
+   "title": "Timeline nortel the rise and fall of a telecom giant",
+   "title_is_derived": false,
+   "publisher": "globalnews.ca",
+   "url": "https://globalnews.ca/news/200009/timeline-nortel-the-rise-and-fall-of-a-telecom-giant/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_089c9fa3",
+   "title": "Spacex raises 32 billion for nvidia chips at 826 yield as ai debt risks grow",
+   "title_is_derived": false,
+   "publisher": "gurufocus.com",
+   "url": "https://www.gurufocus.com/news/9212122/spacex-raises-32-billion-for-nvidia-chips-at-826-yield-as-ai-debt-risks-grow?r=caf6fe0e0db70d936033da5461e60141",
+   "type": "press",
+   "date": "2026-10"
+  },
+  {
+   "id": "s_fedfe2d2",
+   "title": "Openai secures 11 billion funding at 1 25 trillion valuation bloomberg news reports",
+   "title_is_derived": false,
+   "publisher": "gvwire.com",
+   "url": "https://gvwire.com/2026/11/06/openai-secures-11-billion-funding-at-1-25-trillion-valuation-bloomberg-news-reports/",
+   "type": "press",
+   "date": "2026-11-06"
+  },
+  {
+   "id": "s_57515134",
+   "title": "ifre.com article, Oct 2025",
+   "title_is_derived": false,
+   "publisher": "ifre.com",
+   "url": "https://www.ifre.com/ifr-awards/2340435/the-metablue-owl-deal-broken-down-off-balance-sheet-gymnastics-24-years-after-enron",
+   "type": "press",
+   "date": "2025-10",
+   "original_title": "The metablue owl deal broken down off balance sheet gymnastics 24 years after enron",
+   "original_title_attribution": "Headline as published by ifre.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_61796817",
+   "title": "Wells fargo reiterates overweight on coreweave stock 115 target",
+   "title_is_derived": false,
+   "publisher": "investing.com",
+   "url": "https://www.investing.com/news/analyst-ratings/wells-fargo-reiterates-overweight-on-coreweave-stock-115-target-93CH-5041170",
+   "type": "press",
+   "date": null,
+   "original_title": "Wells fargo reiterates overweight on coreweave stock 115 target 93CH 5041170",
+   "original_title_attribution": "Headline as published by investing.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_df0ec69a",
+   "title": "AI circular financing crosses 1 trillion imf chief flags global economy risks",
+   "title_is_derived": false,
+   "publisher": "invezz.com",
+   "url": "https://invezz.com/news/2026/11/16/ai-circular-financing-crosses-1-trillion-imf-chief-flags-global-economy-risks/",
+   "type": "press",
+   "date": "2026-11-16"
+  },
+  {
+   "id": "s_16558856",
+   "title": "Kfgo.com",
+   "title_is_derived": false,
+   "publisher": "kfgo.com",
+   "url": "https://kfgo.com/?p=1373843",
+   "type": "press",
+   "date": "2026-11-12"
+  },
+  {
+   "id": "s_49e80084",
+   "title": "Openai reportedly closes 11 billion first portion of round a",
+   "title_is_derived": false,
+   "publisher": "letsdatascience.com",
+   "url": "https://letsdatascience.com/news/openai-reportedly-closes-11-billion-first-portion-of-round-a-43b7bec2",
+   "type": "press",
+   "date": "2026-10",
+   "original_title": "Openai reportedly closes 11 billion first portion of round a 43b7bec2",
+   "original_title_attribution": "Headline as published by letsdatascience.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_a8b4ce58",
+   "title": "Oracle raises massive debt for ai infrastructure",
+   "title_is_derived": false,
+   "publisher": "letsdatascience.com",
+   "url": "https://letsdatascience.com/news/oracle-raises-massive-debt-for-ai-infrastructure-29a877c1",
+   "type": "press",
+   "date": null,
+   "original_title": "Oracle raises massive debt for ai infrastructure 29a877c1",
+   "original_title_attribution": "Headline as published by letsdatascience.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_9ec969ce",
+   "title": "Are ai chips useful lives creating useless earnings",
+   "title_is_derived": false,
+   "publisher": "levelheadedinvesting.com",
+   "url": "https://www.levelheadedinvesting.com/p/are-ai-chips-useful-lives-creating-useless-earnings",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_41de767f",
+   "title": "Nvidia to invest 15 billion in sb energy under openai data center deal",
+   "title_is_derived": false,
+   "publisher": "m.investing.com",
+   "url": "https://m.investing.com/news/stock-market-news/nvidia-to-invest-15-billion-in-sb-energy-under-openai-data-center-deal-4863156?ampMode=1",
+   "type": "press",
+   "date": "2026-08-17"
+  },
+  {
+   "id": "s_9f9a3192",
+   "title": "Lazonick march lucent final",
+   "title_is_derived": false,
+   "publisher": "mpra.ub.uni-muenchen.de",
+   "url": "https://mpra.ub.uni-muenchen.de/22012/1/lazonick-march_lucent_final_20100410.pdf",
+   "type": "press",
+   "date": "2010-04-10"
+  },
+  {
+   "id": "s_67caa9cc",
+   "title": "Nvidia circular financing coreweave backstop",
+   "title_is_derived": false,
+   "publisher": "mycroftproject.substack.com",
+   "url": "https://mycroftproject.substack.com/p/nvidia-circular-financing-coreweave-backstop",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_bf19b524",
+   "title": "Oracle risks falling behind in ai race as spending binge bites",
+   "title_is_derived": false,
+   "publisher": "news.bloomberglaw.com",
+   "url": "https://news.bloomberglaw.com/capital-markets/oracle-risks-falling-behind-in-ai-race-as-spending-binge-bites",
+   "type": "press",
+   "date": "2026-07-09"
+  },
+  {
+   "id": "s_e16a1610",
+   "title": "Project jupiter faces delays and contract dispute in southern new mexico",
+   "title_is_derived": false,
+   "publisher": "newsradiokkob.com",
+   "url": "https://newsradiokkob.com/2026/11/18/project-jupiter-faces-delays-and-contract-dispute-in-southern-new-mexico",
+   "type": "press",
+   "date": "2026-11-18"
+  },
+  {
+   "id": "s_1de1e192",
+   "title": "S p cuts oracle to bbb as ai buildout widens cash deficit to 42bn",
+   "title_is_derived": false,
+   "publisher": "ppc.land",
+   "url": "https://ppc.land/s-p-cuts-oracle-to-bbb-as-ai-buildout-widens-cash-deficit-to-42bn/",
+   "type": "press",
+   "date": "2026-07-09"
+  },
+  {
+   "id": "s_7297b7ff",
+   "title": "Openai compute commitments tracker 2026",
+   "title_is_derived": false,
+   "publisher": "presenc.ai",
+   "url": "https://presenc.ai/research/openai-compute-commitments-tracker-2026",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_e6854691",
+   "title": "Meta hyperion 27bn off balance sheet",
+   "title_is_derived": false,
+   "publisher": "privatecreditprep.com",
+   "url": "https://privatecreditprep.com/deals/meta-hyperion-27bn-off-balance-sheet",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_ebbe015d",
+   "title": "AI hyperscaler coreweave signs 14 billion dollar deal with meta",
+   "title_is_derived": false,
+   "publisher": "pymnts.com",
+   "url": "https://www.pymnts.com/news/artificial-intelligence/2025/ai-hyperscaler-coreweave-signs-14-billion-dollar-deal-with-meta",
+   "type": "press",
+   "date": "2023-01"
+  },
+  {
+   "id": "s_31463fd6",
+   "title": "Nebius q3 2026 prepaid demand late",
+   "title_is_derived": false,
+   "publisher": "renstocks.substack.com",
+   "url": "https://renstocks.substack.com/p/nebius-q3-2026-prepaid-demand-late",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_b07e4564",
+   "title": "Nvidias huang says no backstop needed for coreweave as ai debt fears mount 10 15 2026",
+   "title_is_derived": false,
+   "publisher": "roic.ai",
+   "url": "https://www.roic.ai/news/nvidias-huang-says-no-backstop-needed-for-coreweave-as-ai-debt-fears-mount-10-15-2026",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_138113f9",
+   "title": "Xai pursues 20 billion lease to own deal for nvidia gpus through spv structure 10 16 2025",
+   "title_is_derived": false,
+   "publisher": "roic.ai",
+   "url": "https://www.roic.ai/news/xai-pursues-20-billion-lease-to-own-deal-for-nvidia-gpus-through-spv-structure-10-16-2025",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_af5ae7a3",
+   "title": "Openai 278b cash burn 1 2t valuation",
+   "title_is_derived": false,
+   "publisher": "runtimewire.com",
+   "url": "https://runtimewire.com/article/openai-278b-cash-burn-1-2t-valuation",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_6f68d40c",
+   "title": "Anthropic",
+   "title_is_derived": false,
+   "publisher": "sacra.com",
+   "url": "https://sacra.com/c/anthropic/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_a0aac226",
+   "title": "Nscale",
+   "title_is_derived": false,
+   "publisher": "sacra.com",
+   "url": "https://sacra.com/c/nscale/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_68be9dfb",
+   "title": "Oracle cds record 288 basis points ai debt",
+   "title_is_derived": false,
+   "publisher": "securitasglobal.com",
+   "url": "https://www.securitasglobal.com/risk-perspectives/oracle-cds-record-288-basis-points-ai-debt/",
+   "type": "press",
+   "date": "2026-11-06"
+  },
+  {
+   "id": "s_57e5128d",
+   "title": "Nov13 2002 CapEx QoS Final",
+   "title_is_derived": false,
+   "publisher": "standards.tiaonline.org",
+   "url": "https://standards.tiaonline.org/gov_affairs/fcc_filings/documents/Nov13-2002_CapEx_QoS_Final.pdf",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_ffc9c8f8",
+   "title": "Banks are now trying to offload the ai data center debt they just underwrote",
+   "title_is_derived": false,
+   "publisher": "startupfortune.com",
+   "url": "https://startupfortune.com/banks-are-now-trying-to-offload-the-ai-data-center-debt-they-just-underwrote/",
+   "type": "press",
+   "date": "2026-10"
+  },
+  {
+   "id": "s_a132216d",
+   "title": "Nebius q3 2026 earnings",
+   "title_is_derived": false,
+   "publisher": "stockanalysis.com",
+   "url": "https://stockanalysis.com/news/nebius-q3-2026-earnings/",
+   "type": "press",
+   "date": "2026-11-12"
+  },
+  {
+   "id": "s_9678f0b6",
+   "title": "Nvidia announces financial results for third quarter fiscal fpx9dw5egxqa",
+   "title_is_derived": false,
+   "publisher": "stocktitan.net",
+   "url": "https://www.stocktitan.net/news/NVDA/nvidia-announces-financial-results-for-third-quarter-fiscal-fpx9dw5egxqa.html",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_ebff69f0",
+   "title": "CoreWeave 8-K (StockTitan copy)",
+   "title_is_derived": false,
+   "publisher": "stocktitan.net",
+   "url": "https://www.stocktitan.net/sec-filings/CRWV/8-k-core-weave-inc-reports-material-event-52eed2a9d09b.html",
+   "type": "press",
+   "date": "2025-09",
+   "original_title": "8 k core weave inc reports material event 52eed2a9d09b",
+   "original_title_attribution": "Headline as published by stocktitan.net; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_6ab19cce",
+   "title": "SFA Research Corner How Data Center ABS and CMBS Fit in a Broader Financing Ecosystem",
+   "title_is_derived": false,
+   "publisher": "structuredfinance.org",
+   "url": "https://structuredfinance.org/wp-content/uploads/2026/07/SFA-Research-Corner_How-Data-Center-ABS-and-CMBS-Fit-in-a-Broader-Financing-Ecosystem.pdf",
+   "type": "press",
+   "date": "2026-07"
+  },
+  {
+   "id": "s_ce7a0aa2",
+   "title": "Nebius signs 3 billion meta ai infrastructure deal over five years",
+   "title_is_derived": false,
+   "publisher": "techinformed.com",
+   "url": "https://techinformed.com/nebius-signs-3-billion-meta-ai-infrastructure-deal-over-five-years/",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_23d50fc4",
+   "title": "2026 08 17 iren delivers first four ai cloud deployments microsoft under 9 7 billion deal",
+   "title_is_derived": false,
+   "publisher": "theblock.co",
+   "url": "https://www.theblock.co/news/business/2026-08-17-iren-delivers-first-four-ai-cloud-deployments-microsoft-under-9-7-billion-deal-412016",
+   "type": "press",
+   "date": "2026-08-17"
+  },
+  {
+   "id": "s_7a3eee8e",
+   "title": "Nvidias investment playbook how it is",
+   "title_is_derived": false,
+   "publisher": "thecodew.com",
+   "url": "https://www.thecodew.com/2026/09/nvidias-investment-playbook-how-it-is.html",
+   "type": "press",
+   "date": "2026-09"
+  },
+  {
+   "id": "s_beb980f7",
+   "title": "The Globe and Mail, Nortel customers warn on finances",
+   "title_is_derived": false,
+   "publisher": "theglobeandmail.com",
+   "url": "https://www.theglobeandmail.com/report-on-business/nortel-clients-give-warning-of-finances/article20454748/",
+   "type": "press",
+   "date": null,
+   "original_title": "Article20454748",
+   "original_title_attribution": "Headline as published by theglobeandmail.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_913ae360",
+   "title": "Microsoft earnings q1 26 openai loss",
+   "title_is_derived": false,
+   "publisher": "theregister.com",
+   "url": "https://www.theregister.com/2025/10/29/microsoft_earnings_q1_26_openai_loss/",
+   "type": "press",
+   "date": "2025-10-29"
+  },
+  {
+   "id": "s_17c38983",
+   "title": "TokenPost news report",
+   "title_is_derived": false,
+   "publisher": "tokenpost.com",
+   "url": "https://www.tokenpost.com/news/business/61712",
+   "type": "press",
+   "date": "2026-11-19",
+   "original_title": "Business",
+   "original_title_attribution": "Headline as published by tokenpost.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_0899fc76",
+   "title": "Gpu rental prices",
+   "title_is_derived": false,
+   "publisher": "tools.finitizer.com",
+   "url": "https://tools.finitizer.com/gpu-rental-prices",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_aa87e947",
+   "title": "how nvidia is funding the ai boom with billions in global startups",
+   "title_is_derived": false,
+   "publisher": "tradingview.com",
+   "url": "https://www.tradingview.com/news/invezz:de2fce0f4094b:0-how-nvidia-is-funding-the-ai-boom-with-billions-in-global-startups/",
+   "type": "press",
+   "date": "2026-03",
+   "original_title": "Invezz:de2fce0f4094b:0 how nvidia is funding the ai boom with billions in global startups",
+   "original_title_attribution": "Headline as published by tradingview.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_d6db1d4b",
+   "title": "can coreweave s 133b backlog sustain its next growth phase",
+   "title_is_derived": false,
+   "publisher": "tradingview.com",
+   "url": "https://www.tradingview.com/news/zacks:c018d6f26094b:0-can-coreweave-s-133b-backlog-sustain-its-next-growth-phase/",
+   "type": "press",
+   "date": "2026-11-10",
+   "original_title": "Zacks:c018d6f26094b:0 can coreweave s 133b backlog sustain its next growth phase",
+   "original_title_attribution": "Headline as published by tradingview.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_e6f8df6f",
+   "title": "Gpu depreciation debate behind this weeks ai dip",
+   "title_is_derived": false,
+   "publisher": "valuethemarkets.com",
+   "url": "https://www.valuethemarkets.com/analysis/gpu-depreciation-debate-behind-this-weeks-ai-dip",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_7235e1b3",
+   "title": "vantagemarkets.com article",
+   "title_is_derived": false,
+   "publisher": "vantagemarkets.com",
+   "url": "https://www.vantagemarkets.com/en/market-analysis/ai-financing-bubble-nvidia-openai-circular-deals-explained/",
+   "type": "press",
+   "date": null,
+   "original_title": "Ai financing bubble nvidia openai circular deals explained",
+   "original_title_attribution": "Headline as published by vantagemarkets.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_a75beee5",
+   "title": "Anthropic lines up 26b from nvidia google and 5 other tech firms alongside ipo",
+   "title_is_derived": false,
+   "publisher": "vktr.com",
+   "url": "https://www.vktr.com/ai-market/anthropic-lines-up-26b-from-nvidia-google-and-5-other-tech-firms-alongside-ipo/",
+   "type": "press",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_f2e2430a",
+   "title": "Iren closes usd 3 65bn financing for microsoft ai infrastructure deal",
+   "title_is_derived": false,
+   "publisher": "w.media",
+   "url": "https://w.media/iren-closes-usd-3-65bn-financing-for-microsoft-ai-infrastructure-deal/",
+   "type": "press",
+   "date": null
+  }
+ ]
+}

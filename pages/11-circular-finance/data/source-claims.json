@@ -1,0 +1,2239 @@
+{
+ "as_of": "2026-11-20",
+ "note": "Skeleton: fact id -> source ids for every fact the page surfaces. Fill in claim text/quote anchors as the page copy is written.",
+ "facts": {
+  "q3-revenue": {
+   "label": "Q3 FY27 revenue",
+   "value": 115.8,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_4faa980a"
+   ],
+   "quote_anchor": null
+  },
+  "q3-yoy": {
+   "label": "Revenue growth YoY",
+   "value": 103,
+   "unit": "%",
+   "status": "verified",
+   "source_ids": [
+    "s_4faa980a"
+   ],
+   "quote_anchor": null
+  },
+  "q3-dc-revenue": {
+   "label": "Data Center revenue",
+   "value": 107.6,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_4faa980a"
+   ],
+   "quote_anchor": null
+  },
+  "q3-gm": {
+   "label": "GAAP gross margin",
+   "value": 74.8,
+   "unit": "%",
+   "status": "verified",
+   "source_ids": [
+    "s_4faa980a"
+   ],
+   "quote_anchor": null
+  },
+  "q4-guide": {
+   "label": "Q4 FY27 revenue guidance (+/-3%)",
+   "value": 130,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_9678f0b6"
+   ],
+   "quote_anchor": null
+  },
+  "q3-fcf": {
+   "label": "Free cash flow",
+   "value": 43.8,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a"
+   ],
+   "quote_anchor": null
+  },
+  "q3-ocf": {
+   "label": "Operating cash flow",
+   "value": 48.3,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_55e7265b"
+   ],
+   "quote_anchor": null
+  },
+  "cash-mkt": {
+   "label": "Cash + marketable debt securities",
+   "value": 53.5,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_55e7265b"
+   ],
+   "quote_anchor": null
+  },
+  "mkt-equity": {
+   "label": "Marketable equity securities",
+   "value": 44.2,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_55e7265b"
+   ],
+   "quote_anchor": null
+  },
+  "nonmkt-equity": {
+   "label": "Non-marketable securities (balance sheet)",
+   "value": 65.5,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_55e7265b",
+    "s_7c4c573c"
+   ],
+   "quote_anchor": null
+  },
+  "equity-purchases-9m": {
+   "label": "Purchases of equity securities, nine months",
+   "value": 58.1,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_55e7265b"
+   ],
+   "quote_anchor": null
+  },
+  "equity-gains-9m": {
+   "label": "Net gains from equity securities (excluded from non-GAAP)",
+   "value": 25.5,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_55e7265b",
+    "s_c429436a"
+   ],
+   "quote_anchor": null
+  },
+  "equity-commitments": {
+   "label": "Future equity investment commitments",
+   "value": 20,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a",
+    "s_7c4c573c"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-guarantee-total": {
+   "label": "Nvidia total maximum guarantee exposure at Oct 25, 2026 (company statement: $3.5B land/power/shell for neoclouds + $105.0B SB Energy credit support + $9.5B power and systems credit support; was $108.5B at Jul 26)",
+   "value": 118.0,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a",
+    "s_7c4c573c"
+   ],
+   "quote_anchor": null,
+   "attribution": "Company statement (Nvidia CFO commentary, Nov 17, 2026)."
+  },
+  "supply-commitments": {
+   "label": "Supply and capacity commitments",
+   "value": 390,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a"
+   ],
+   "quote_anchor": null,
+   "attribution": "Company statement (Nvidia CFO commentary, Nov 17, 2026)."
+  },
+  "neocloud-contingent": {
+   "label": "Neocloud agreements: future commitments that take effect only after neoclouds secure financing, deployment and acceptance (company statement)",
+   "value": 32,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a"
+   ],
+   "quote_anchor": null,
+   "attribution": "Company statement (Nvidia CFO commentary, Nov 17, 2026)."
+  },
+  "buyback": {
+   "label": "Share repurchases",
+   "value": 22,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_95c693fe",
+    "s_c429436a"
+   ],
+   "quote_anchor": null
+  },
+  "jpm-ocf-share": {
+   "label": "Share of operating cash flow spent on equity investments and M&A (JPMorgan AM)",
+   "value": 58,
+   "unit": "%",
+   "status": "reported",
+   "source_ids": [
+    "s_731890df"
+   ],
+   "quote_anchor": null
+  },
+  "investment-share-rev": {
+   "label": "Nine-month equity purchases as share of nine-month revenue (derived: 58.1 / ~ 9M revenue)",
+   "value": null,
+   "unit": "%",
+   "status": "calculated",
+   "source_ids": [],
+   "quote_anchor": null
+  },
+  "portfolio-drawdown": {
+   "label": "Market-value loss of 8 listed portfolio companies since Oct 6 high (WSJ)",
+   "value": 820,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_e7af17b4"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-guarantee-total-jul": {
+   "label": "Nvidia total maximum guarantee exposure at Jul 26, 2026 (10-Q): $3.5B land/power/shell for AI clouds + $105B SB Energy",
+   "value": 108.5,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_7c4c573c"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-guar-land-power-shell": {
+   "label": "Guarantees: land, power and shell for neoclouds (company statement)",
+   "value": 3.5,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a"
+   ],
+   "quote_anchor": null,
+   "attribution": "Company statement (Nvidia CFO commentary, Nov 17, 2026)."
+  },
+  "nvda-guar-sbenergy": {
+   "label": "Guarantees: SB Energy credit support on the land, power and shell buildout for about 4.25 GW (maximum, company statement)",
+   "value": 105.0,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a",
+    "s_7c4c573c"
+   ],
+   "quote_anchor": null,
+   "attribution": "Company statement (Nvidia CFO commentary, Nov 17, 2026)."
+  },
+  "nvda-guar-power-systems": {
+   "label": "Guarantees: power and systems credit support (company statement; the document gives no further description)",
+   "value": 9.5,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a"
+   ],
+   "quote_anchor": null,
+   "attribution": "Company statement (Nvidia CFO commentary, Nov 17, 2026)."
+  },
+  "nvda-own-rd-commitments": {
+   "label": "Nvidia's own R&D cloud service agreements ($28B) plus data-center leases not yet commenced ($74B), per Nvidia these power its own research and development",
+   "value": 102.0,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a",
+    "s_7c4c573c"
+   ],
+   "quote_anchor": null,
+   "attribution": "Company statement (Nvidia CFO commentary, Nov 17, 2026)."
+  },
+  "openai-runrate": {
+   "label": "OpenAI annualized revenue",
+   "value": 50,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_3c1e62d5",
+    "s_83526201"
+   ],
+   "quote_anchor": null
+  },
+  "openai-q3-rev": {
+   "label": "OpenAI Q3 2026 revenue (CFO statement)",
+   "value": 10,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_3c1e62d5"
+   ],
+   "quote_anchor": null
+  },
+  "openai-2025-rev": {
+   "label": "OpenAI 2025 revenue",
+   "value": 13.1,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_0fc221ed"
+   ],
+   "quote_anchor": null
+  },
+  "openai-2025-burn": {
+   "label": "OpenAI 2025 cash burn",
+   "value": 8,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_0fc221ed"
+   ],
+   "quote_anchor": null
+  },
+  "openai-burn-plan": {
+   "label": "OpenAI projected 2026-2030 negative FCF (FT-reported plan)",
+   "value": 278,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_af5ae7a3"
+   ],
+   "quote_anchor": null
+  },
+  "openai-cash": {
+   "label": "OpenAI cash after Q1 2026 (secondary; no later figure found)",
+   "value": 73,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_7297b7ff"
+   ],
+   "quote_anchor": null
+  },
+  "openai-yrs-600": {
+   "label": "Years of current run-rate revenue to equal $600B target",
+   "value": 12,
+   "unit": "years",
+   "status": "reported",
+   "source_ids": [
+    "s_0fc221ed"
+   ],
+   "quote_anchor": null
+  },
+  "openai-yrs-1400": {
+   "label": "Years of current run-rate to equal $1.4T headline",
+   "value": 28,
+   "unit": "years",
+   "status": "reported",
+   "source_ids": [
+    "s_0fc221ed"
+   ],
+   "quote_anchor": null
+  },
+  "openai-named-total": {
+   "label": "Sum of named priced contracts (Oracle 300, Azure 250, AWS 138, Cerebras 10, CoreWeave 22.4)",
+   "value": 720.4,
+   "unit": "USD B",
+   "status": "calculated",
+   "source_ids": [],
+   "quote_anchor": null
+  },
+  "openai-yrs-named": {
+   "label": "Years of current run-rate to equal named priced contracts",
+   "value": 14.4,
+   "unit": "years",
+   "status": "calculated",
+   "source_ids": [],
+   "quote_anchor": null
+  },
+  "anthropic-runrate": {
+   "label": "Anthropic run-rate revenue (company statement)",
+   "value": 30,
+   "unit": "USD B (surpassed)",
+   "status": "verified",
+   "source_ids": [
+    "s_63b83b32"
+   ],
+   "quote_anchor": null
+  },
+  "anthropic-runrate-late": {
+   "label": "Anthropic reported run-rate incl. partner sales (gross)",
+   "value": 65,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_6f68d40c"
+   ],
+   "quote_anchor": null
+  },
+  "anthropic-yrs": {
+   "label": "Disclosed dollar commitments (Azure 30 + infra 50) vs $30B run-rate; TPU deal unpriced so understated",
+   "value": 2.7,
+   "unit": "years",
+   "status": "reported",
+   "source_ids": [
+    "s_b9ae0481"
+   ],
+   "quote_anchor": null
+  },
+  "oracle-rpo": {
+   "label": "Oracle RPO",
+   "value": 664,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_61feaacc"
+   ],
+   "quote_anchor": null
+  },
+  "oracle-capex": {
+   "label": "Oracle quarterly capex",
+   "value": 28.5,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_61feaacc"
+   ],
+   "quote_anchor": null
+  },
+  "oracle-fcf": {
+   "label": "Oracle quarterly free cash flow",
+   "value": -5.4,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_61feaacc"
+   ],
+   "quote_anchor": null
+  },
+  "oracle-ocf": {
+   "label": "Oracle quarterly operating cash flow",
+   "value": 23,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_a8b4ce58"
+   ],
+   "quote_anchor": null
+  },
+  "oracle-debt": {
+   "label": "Oracle long-term/senior debt",
+   "value": 125,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_61feaacc"
+   ],
+   "quote_anchor": null
+  },
+  "oracle-cds": {
+   "label": "Oracle 5-yr CDS",
+   "value": 295,
+   "unit": "bp",
+   "status": "reported",
+   "source_ids": [
+    "s_b31346dd",
+    "s_885b04d7"
+   ],
+   "quote_anchor": null
+  },
+  "oracle-raise": {
+   "label": "Oracle Nov 2026 raise: $10B notes + $10B stock",
+   "value": 20,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_885b04d7"
+   ],
+   "quote_anchor": null
+  },
+  "oracle-rating": {
+   "label": "S&P rating BBB- (one notch above junk), downgraded Jul 2026",
+   "value": null,
+   "unit": "rating",
+   "status": "reported",
+   "source_ids": [
+    "s_b31346dd"
+   ],
+   "quote_anchor": null
+  },
+  "msft-ocf": {
+   "label": "Microsoft operating cash flow",
+   "value": 58.0,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_971d55fd"
+   ],
+   "quote_anchor": null
+  },
+  "msft-capex": {
+   "label": "Microsoft additions to PP&E (excl. finance leases)",
+   "value": 39.4,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_971d55fd"
+   ],
+   "quote_anchor": null
+  },
+  "msft-rpo": {
+   "label": "Microsoft commercial RPO (+73% y/y)",
+   "value": 677,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_971d55fd"
+   ],
+   "quote_anchor": null
+  },
+  "goog-ocf": {
+   "label": "Alphabet operating cash flow",
+   "value": 42.3,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_feee75f4"
+   ],
+   "quote_anchor": null
+  },
+  "goog-capex": {
+   "label": "Alphabet capex",
+   "value": 51.4,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_feee75f4"
+   ],
+   "quote_anchor": null
+  },
+  "goog-fcf": {
+   "label": "Alphabet free cash flow",
+   "value": -9.1,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_feee75f4"
+   ],
+   "quote_anchor": null
+  },
+  "meta-ocf": {
+   "label": "Meta cash from operations",
+   "value": 32.79,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_bd67fb97"
+   ],
+   "quote_anchor": null
+  },
+  "meta-capex": {
+   "label": "Meta capex incl. finance lease principal",
+   "value": 34.91,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_bd67fb97"
+   ],
+   "quote_anchor": null
+  },
+  "meta-guide": {
+   "label": "Meta 2026 capex outlook midpoint (range 135-145)",
+   "value": 140,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_bd67fb97"
+   ],
+   "quote_anchor": null
+  },
+  "meta-debt": {
+   "label": "Meta long-term debt (58.74 at Dec 2025)",
+   "value": 80.92,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_bd67fb97"
+   ],
+   "quote_anchor": null
+  },
+  "amzn-capex": {
+   "label": "Amazon Q3 capex",
+   "value": 77.3,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_d39324bb"
+   ],
+   "quote_anchor": null
+  },
+  "amzn-guide": {
+   "label": "Amazon 2026 capex guidance",
+   "value": 220,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_d39324bb"
+   ],
+   "quote_anchor": null
+  },
+  "amzn-fcf": {
+   "label": "Amazon trailing-12-month free cash flow",
+   "value": -42.4,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_d39324bb"
+   ],
+   "quote_anchor": null
+  },
+  "goog-guide": {
+   "label": "Alphabet 2026 capex guidance (range 195-205, secondary trackers)",
+   "value": 200,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_f824f9bb"
+   ],
+   "quote_anchor": null
+  },
+  "big4-total": {
+   "label": "Approx combined 2026 capex of MSFT/GOOGL/AMZN/META (trackers ~720-745)",
+   "value": 730,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_f824f9bb"
+   ],
+   "quote_anchor": null
+  },
+  "coreweave-backlog": {
+   "label": "CoreWeave revenue backlog",
+   "value": 132.5,
+   "unit": "USD B",
+   "status": "verified",
+   "source_ids": [
+    "s_5871c43d"
+   ],
+   "quote_anchor": null
+  },
+  "coreweave-debt": {
+   "label": "CoreWeave debt (approx)",
+   "value": 47,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_5871c43d"
+   ],
+   "quote_anchor": null
+  },
+  "softbank-arm-margin": {
+   "label": "SoftBank Arm-backed margin loan",
+   "value": 25,
+   "unit": "USD B",
+   "status": "reported",
+   "source_ids": [
+    "s_9c88ae90"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-q3-26-revenue": {
+   "label": "CoreWeave Q3 2026 revenue",
+   "value": 3661,
+   "unit": "USD millions",
+   "status": "verified",
+   "source_ids": [
+    "s_f30d204e"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-q3-25-revenue": {
+   "label": "CoreWeave Q3 2025 revenue",
+   "value": 1365,
+   "unit": "USD millions",
+   "status": "verified",
+   "source_ids": [
+    "s_f30d204e"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-q3-26-opinc": {
+   "label": "CoreWeave Q3 2026 operating income",
+   "value": 207,
+   "unit": "USD millions",
+   "status": "verified",
+   "source_ids": [
+    "s_f30d204e"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-q3-26-netloss": {
+   "label": "CoreWeave Q3 2026 net loss",
+   "value": -709,
+   "unit": "USD millions",
+   "status": "verified",
+   "source_ids": [
+    "s_f30d204e"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-q3-26-interest": {
+   "label": "CoreWeave Q3 2026 net interest expense (vs ~$310M Q3 2025)",
+   "value": 846,
+   "unit": "USD millions",
+   "status": "verified",
+   "source_ids": [
+    "s_f30d204e",
+    "s_80ea2f53"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-q4-26-interest-guide": {
+   "label": "CoreWeave Q4 2026 interest expense guidance (midpoint of $1.05-1.15B)",
+   "value": 1100,
+   "unit": "USD millions",
+   "status": "verified",
+   "source_ids": [
+    "s_f30d204e"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-backlog": {
+   "label": "CoreWeave revenue backlog (RPO $132.3B per 10-Q)",
+   "value": 132.5,
+   "unit": "USD billions",
+   "status": "verified",
+   "source_ids": [
+    "s_f30d204e",
+    "s_80ea2f53"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-backlog-history": {
+   "label": "CoreWeave backlog: $30.1B (Q2 2025), $55.6B (Q3 2025), $66.8B (Q4 2025), ~$104B (Q2 2026)",
+   "value": 55.6,
+   "unit": "USD billions (Q3 2025 shown)",
+   "status": "reported",
+   "source_ids": [
+    "s_25dc79e1",
+    "s_a58d6858"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-rpo-timing": {
+   "label": "Share of CoreWeave RPO recognized within 24 months of 9/30/26",
+   "value": 36,
+   "unit": "percent",
+   "status": "verified",
+   "source_ids": [
+    "s_80ea2f53"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-total-debt": {
+   "label": "CoreWeave total debt (recourse $41.6B + non-recourse $5.3B; computed from balance sheet, excl. finance leases)",
+   "value": 46.9,
+   "unit": "USD billions",
+   "status": "calculated",
+   "source_ids": [
+    "s_f30d204e",
+    "s_80ea2f53"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-debt-ye25": {
+   "label": "CoreWeave total debt end of 2025 (secondary)",
+   "value": 21.4,
+   "unit": "USD billions",
+   "status": "reported",
+   "source_ids": [
+    "s_fe552d63"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-avg-cost": {
+   "label": "CoreWeave weighted-average borrowing cost (management, per press)",
+   "value": 7.9,
+   "unit": "percent",
+   "status": "reported",
+   "source_ids": [
+    "s_fe552d63"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-cash": {
+   "label": "CoreWeave cash and equivalents (excl. $2.3B restricted)",
+   "value": 4.122,
+   "unit": "USD billions",
+   "status": "verified",
+   "source_ids": [
+    "s_f30d204e"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-capex-guide": {
+   "label": "CoreWeave FY2026 capex guidance (low end $37B, high $39B); Q3 capex $14.5B",
+   "value": 38,
+   "unit": "USD billions (midpoint)",
+   "status": "verified",
+   "source_ids": [
+    "s_f30d204e"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-rev-guide": {
+   "label": "CoreWeave FY2026 revenue guidance $13.0-13.3B",
+   "value": 13.15,
+   "unit": "USD billions (midpoint)",
+   "status": "verified",
+   "source_ids": [
+    "s_f30d204e"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-customer-a": {
+   "label": "CoreWeave 'Customer A' share of revenue: 24% in Q3 2026 and 67% in Q3 2025 (the letter may not refer to the same customer in both periods)",
+   "value": 24,
+   "unit": "percent",
+   "status": "verified",
+   "source_ids": [
+    "s_80ea2f53"
+   ],
+   "quote_anchor": null,
+   "comparable_across_periods": false,
+   "comparability_caveat": "CoreWeave's 10-Q (Note 2) warns that the customer letters A through D may refer to different customers than in a previous period. So 'Customer A' at 67% in Q3 2025 and 24% in Q3 2026 is not a like-for-like comparison for one customer.",
+   "prior_period_value": 67,
+   "prior_period": "Q3 2025"
+  },
+  "crwv-customer-b": {
+   "label": "CoreWeave 'Customer B' share of revenue",
+   "value": 30,
+   "unit": "percent",
+   "status": "verified",
+   "source_ids": [
+    "s_80ea2f53"
+   ],
+   "quote_anchor": null,
+   "comparable_across_periods": false,
+   "comparability_caveat": "CoreWeave's 10-Q (Note 2) warns that the customer letters A through D may refer to different customers than in a previous period. So 'Customer A' at 67% in Q3 2025 and 24% in Q3 2026 is not a like-for-like comparison for one customer."
+  },
+  "crwv-vie-commit": {
+   "label": "CoreWeave funding commitments to unconsolidated data-center VIEs ($859M funded)",
+   "value": 1.9,
+   "unit": "USD billions",
+   "status": "verified",
+   "source_ids": [
+    "s_80ea2f53"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-share-price": {
+   "label": "CoreWeave (CRWV) share price: closed $44.91 on Nov 19, 2026 (Nvidia paid $87.20 in Jan 2026)",
+   "value": 44.91,
+   "unit": "USD per share",
+   "status": "reported",
+   "source_ids": [
+    "s_61796817"
+   ],
+   "quote_anchor": null
+  },
+  "crwv-spread-ladder": {
+   "label": "CoreWeave DDTL spread ladder: DDTL1 ~SOFR+9.6% (2023); DDTL2 SOFR+6-13% (2024); DDTL3 SOFR+4.0% (Jul 2025); DDTL4 SOFR+2.25% / ~5.9% fixed (Mar 2026); DDTL5.0/5.5 SOFR+4.5%/5.5% (2026)",
+   "value": 2.25,
+   "unit": "percent over SOFR (DDTL 4.0 shown)",
+   "status": "reported",
+   "source_ids": [
+    "s_1845a257",
+    "s_023a2e94"
+   ],
+   "quote_anchor": null
+  },
+  "ltc-iren": {
+   "label": "IREN debt-to-GPU-capex: $3.65B debt on $5.81B contract capex (about 63%); with Microsoft prepayment about 96% funded",
+   "value": 63,
+   "unit": "percent loan-to-cost (computed)",
+   "status": "reported",
+   "source_ids": [
+    "s_f2e2430a",
+    "s_33801be8"
+   ],
+   "quote_anchor": null
+  },
+  "ltc-xai": {
+   "label": "xAI SPV debt share of capital: $12.5B of $20B",
+   "value": 62.5,
+   "unit": "percent (computed)",
+   "status": "reported",
+   "source_ids": [
+    "s_0c926a74"
+   ],
+   "quote_anchor": null
+  },
+  "advance-rate-generic": {
+   "label": "Generic market range for senior-secured GPU loan advance rates (appraised value; not filing-based; one blog reports ~70% on first Magnetar/Blackstone loan)",
+   "value": 60,
+   "unit": "percent (midpoint of 50-70 range)",
+   "status": "reported",
+   "source_ids": [
+    "s_c99f5cbf",
+    "s_1845a257"
+   ],
+   "quote_anchor": null
+  },
+  "gpu-debt-rate-contracted": {
+   "label": "GPU debt cost with investment-grade tenant contract about 6% vs about 9% without (commentary)",
+   "value": 6,
+   "unit": "percent",
+   "status": "reported",
+   "source_ids": [
+    "s_95f0c6bf"
+   ],
+   "quote_anchor": null
+  },
+  "h100-rental": {
+   "label": "H100 SXM rental index (Ornn $3.06/hr 15 Nov 2026; Silicon Data $3.01 on 9 Nov 2026 vs $2.00 on 9 Dec 2025)",
+   "value": 3.06,
+   "unit": "USD per GPU-hour",
+   "status": "reported",
+   "source_ids": [
+    "s_64951745",
+    "s_0899fc76"
+   ],
+   "quote_anchor": null
+  },
+  "b200-rental": {
+   "label": "B200 rental index (Ornn $9.66/hr; other indexes $6.4-8.2 median)",
+   "value": 9.66,
+   "unit": "USD per GPU-hour",
+   "status": "reported",
+   "source_ids": [
+    "s_64951745"
+   ],
+   "quote_anchor": null
+  },
+  "h100-long-trend": {
+   "label": "H100 cloud rates about $8/hr early 2023 to $1.80-3.50 in Q2 2026",
+   "value": 8,
+   "unit": "USD per GPU-hour (early 2023)",
+   "status": "reported",
+   "source_ids": [
+    "s_531d4c9c"
+   ],
+   "quote_anchor": null
+  },
+  "dep-coreweave": {
+   "label": "CoreWeave GPU depreciation life (not re-verified in 2026 filings)",
+   "value": 6,
+   "unit": "years",
+   "status": "reported",
+   "source_ids": [
+    "s_9ec969ce"
+   ],
+   "quote_anchor": null
+  },
+  "dep-hyperscalers": {
+   "label": "Hyperscaler server useful lives: 5 to 6 years; Meta 5.5 years (2025, lowered expense $2.3B over 9M 2025)",
+   "value": 5.5,
+   "unit": "years",
+   "status": "reported",
+   "source_ids": [
+    "s_d985a4d8",
+    "s_e6f8df6f"
+   ],
+   "quote_anchor": null
+  },
+  "burry-claim": {
+   "label": "Burry critique: economic life 2-3 years; about $176B understated depreciation 2026-28",
+   "value": 176,
+   "unit": "USD billions",
+   "status": "reported",
+   "source_ids": [
+    "s_d985a4d8"
+   ],
+   "quote_anchor": null
+  },
+  "dc-abs-cmbs-ytd": {
+   "label": "Data-center ABS+CMBS issuance YTD 2026 (ABS $15.3B, CMBS $6.6B); another CREFC weekly shows YTD behind 2025, sources disagree",
+   "value": 21.9,
+   "unit": "USD billions",
+   "status": "reported",
+   "source_ids": [
+    "s_27ee4781",
+    "s_88c6a89e"
+   ],
+   "quote_anchor": null
+  },
+  "dc-securitized-outstanding": {
+   "label": "Data-center securitization outstanding (Barclays via SFA): $4B (2020) to $61B YTD 2026",
+   "value": 61,
+   "unit": "USD billions",
+   "status": "reported",
+   "source_ids": [
+    "s_6ab19cce"
+   ],
+   "quote_anchor": null
+  },
+  "nebius-rpo": {
+   "label": "Nebius remaining performance obligations (Substack analysis)",
+   "value": 38.7,
+   "unit": "USD billions",
+   "status": "reported",
+   "source_ids": [
+    "s_31463fd6"
+   ],
+   "quote_anchor": null
+  },
+  "nscale-backlog": {
+   "label": "Nscale total contract value per IPO filing coverage (Microsoft and Anthropic about 85%; the Anthropic part depends on Nscale obtaining financing)",
+   "value": 103.4,
+   "unit": "USD billions",
+   "status": "reported",
+   "source_ids": [
+    "s_a0aac226",
+    "s_d034479a"
+   ],
+   "quote_anchor": null
+  },
+  "hyperion-bond-coupon": {
+   "label": "Hyperion/Beignet bond coupon",
+   "value": 6.581,
+   "unit": "percent",
+   "status": "reported",
+   "source_ids": [
+    "s_b654f0d9"
+   ],
+   "quote_anchor": null
+  },
+  "lu-fy99-commit": {
+   "label": "Customer credit extension commitments (loans)",
+   "value": 7.1,
+   "unit": "USD billion",
+   "status": "reported",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "quote_anchor": null
+  },
+  "lu-fy99-adv": {
+   "label": "Credit advanced and outstanding",
+   "value": 1.6,
+   "unit": "USD billion",
+   "status": "reported",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "quote_anchor": null
+  },
+  "lu-fy00-commit": {
+   "label": "Customer credit extension commitments (loans)",
+   "value": 6.7,
+   "unit": "USD billion",
+   "status": "verified",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "quote_anchor": null
+  },
+  "lu-fy00-adv": {
+   "label": "Credit advanced and outstanding",
+   "value": 1.3,
+   "unit": "USD billion",
+   "status": "verified",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "quote_anchor": null
+  },
+  "lu-fy00-guar": {
+   "label": "Customer debt guarantees (aggregate up to / outstanding ~$0.77B)",
+   "value": 1.4,
+   "unit": "USD billion",
+   "status": "verified",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "quote_anchor": null
+  },
+  "lu-fy00-total": {
+   "label": "Total customer financing commitments (loans plus guarantees)",
+   "value": 8.1,
+   "unit": "USD billion",
+   "status": "verified",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "quote_anchor": null
+  },
+  "lu-fy01-total": {
+   "label": "Total customer financing commitments (loans $4.6B, guarantees $0.7B); drawn $3.0B; reserves $2.1B",
+   "value": 5.3,
+   "unit": "USD billion",
+   "status": "verified",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "quote_anchor": null
+  },
+  "lu-fy02-total": {
+   "label": "Total customer financing commitments (loans $1.1B, guarantees $0.2B); drawn $1.1B; reserves $1.0B",
+   "value": 1.3,
+   "unit": "USD billion",
+   "status": "verified",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "quote_anchor": null
+  },
+  "lu-rev-restated": {
+   "label": "Revenue as restated in FY2002 10-K (continuing-operations basis): FY2000 $28.904B; FY2001 $21.294B (-26%); FY2002 $12.321B (-42%)",
+   "value": 28.904,
+   "unit": "USD billion (FY2000)",
+   "status": "verified",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "quote_anchor": null
+  },
+  "lu-commit-share": {
+   "label": "Lucent commitments as share of revenue: $8.1B / $33.813B (revenue as originally reported in the FY2000 10-K405) is about 24%; on the restated $28.904B basis it is about 28%",
+   "value": 24,
+   "unit": "percent (approx, restated basis)",
+   "status": "calculated",
+   "source_ids": [
+    "s_50ab85ec",
+    "s_dd7bbfbb"
+   ],
+   "quote_anchor": null
+  },
+  "lu-bad-debt": {
+   "label": "Provisions for bad debts and customer financings: FY2000 $505M; FY2001 $2,249M; FY2002 $1,253M",
+   "value": 2249,
+   "unit": "USD million (FY2001)",
+   "status": "verified",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "quote_anchor": null
+  },
+  "lu-defaults": {
+   "label": "Named customer failures: Winstar Chapter 11 (Apr 18, 2001); One.Tel administration (late May 2001); 10-K also notes customers declared insolvent and a customer financing default in FY2002",
+   "value": "2 named in 10-K excerpt",
+   "unit": "events",
+   "status": "verified",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "quote_anchor": null
+  },
+  "lu-winstar": {
+   "label": "Winstar: ~$2B vendor financing committed; ~$700M write-off (secondary source)",
+   "value": 2,
+   "unit": "USD billion committed",
+   "status": "unverified",
+   "source_ids": [
+    "s_c121715f"
+   ],
+   "quote_anchor": null
+  },
+  "lu-concentration": {
+   "label": "Top customers: Verizon about 13% and AT&T about 10% of FY2000 revenue",
+   "value": 23,
+   "unit": "percent of revenue (combined)",
+   "status": "calculated",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "quote_anchor": null
+  },
+  "lu-clec-share": {
+   "label": "Share of revenue from CLECs/startups",
+   "value": null,
+   "unit": "percent",
+   "status": "unverified",
+   "source_ids": [
+    "s_61519e46"
+   ],
+   "quote_anchor": null
+  },
+  "lu-stock": {
+   "label": "Stock fell about 98.5% from Dec 1999 peak to Oct 2002 (price at 1.5% of peak)",
+   "value": 98.5,
+   "unit": "percent decline",
+   "status": "reported",
+   "source_ids": [
+    "s_9f9a3192"
+   ],
+   "quote_anchor": null
+  },
+  "lu-sec-fraud": {
+   "label": "SEC action over FY2000 revenue recognition: $1.148B revenue, $470M pre-tax income improperly recognized; $25M fine (secondary source)",
+   "value": 1.148,
+   "unit": "USD billion",
+   "status": "unverified",
+   "source_ids": [
+    "s_c121715f"
+   ],
+   "quote_anchor": null
+  },
+  "no-undrawn": {
+   "label": "Undrawn customer financing commitments, up to approximately",
+   "value": 4.1,
+   "unit": "USD billion",
+   "status": "verified",
+   "source_ids": [
+    "s_b26dd69b",
+    "s_49f826d5"
+   ],
+   "quote_anchor": null
+  },
+  "no-rev": {
+   "label": "Total revenues (US GAAP, as filed)",
+   "value": 30.275,
+   "unit": "USD billion",
+   "status": "verified",
+   "source_ids": [
+    "s_b26dd69b"
+   ],
+   "quote_anchor": null
+  },
+  "no-drawn": {
+   "label": "Customer financing drawn/outstanding: about $1.08B net of $433M provisions (press citing SEC filing); Globe and Mail separately gives $1.6B. Not found directly in the 10-K text read.",
+   "value": 1.08,
+   "unit": "USD billion",
+   "status": "unverified",
+   "source_ids": [
+    "s_beb980f7"
+   ],
+   "quote_anchor": null
+  },
+  "no-stock": {
+   "label": "Stock peaked $124.50 (Jul 26, 2000); about $0.67 on TSX in Oct 2002, over 99% decline",
+   "value": 99.4,
+   "unit": "percent decline",
+   "status": "reported",
+   "source_ids": [
+    "s_bc38fb96",
+    "s_434e4c11"
+   ],
+   "quote_anchor": null
+  },
+  "tel-capex": {
+   "label": "US facilities-based carrier capex: about $42.5B (1996) rising to about $113B (2000), $92.6B (2001); sum about $440B 1996-2001 (definitions vary; BEA-based figure about $569B for comms equipment)",
+   "value": 113,
+   "unit": "USD billion (2000 peak)",
+   "status": "reported",
+   "source_ids": [
+    "s_57e5128d",
+    "s_1eb0facb"
+   ],
+   "quote_anchor": null
+  },
+  "tel-debt": {
+   "label": "Telecom borrowing: >$500B US bonds 1996-2001 (one source) / >$320B borrowed 1999-2001 (another); different measures",
+   "value": 500,
+   "unit": "USD billion (approx)",
+   "status": "unverified",
+   "source_ids": [
+    "s_ce070267",
+    "s_f9dd3574"
+   ],
+   "quote_anchor": null
+  },
+  "tel-clec-mcap": {
+   "label": "CLEC market cap fell from $86.4B (1999) to $3.77B (Feb 2002); S&P 500 telecom services added about $500B 1996-1999 (per the Richmond Fed, as relayed by a news summary)",
+   "value": 3.77,
+   "unit": "USD billion",
+   "status": "reported",
+   "source_ids": [
+    "s_735ca3e2"
+   ],
+   "quote_anchor": null
+  },
+  "tel-fiber": {
+   "label": "Widely cited '2.7% of fiber used' is disputed: originated as a June 2001 analyst estimate for lit capacity; lit fiber about 2-5% per FDIC (2002). Fiber is a long-lived asset (decades) vs GPU useful life, which is disputed (Burry argues depreciation schedules are too long; no figure verified here).",
+   "value": null,
+   "unit": "qualitative",
+   "status": "unverified",
+   "source_ids": [
+    "s_f9dd3574",
+    "s_bb03465b"
+   ],
+   "quote_anchor": null
+  },
+  "nv-guar": {
+   "label": "Nvidia guarantee of OpenAI Ohio lease payments (SB Energy credit support), conditional ceiling; not drawn, and Nvidia says it has paid nothing (Nvidia CFO commentary, Oct 25, 2026)",
+   "value": 105,
+   "unit": "USD billion",
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a",
+    "s_a2c138ef",
+    "s_0c4cfe15"
+   ],
+   "quote_anchor": null
+  },
+  "nv-invest-assets": {
+   "label": "Investment assets: marketable equity securities plus non-marketable securities (our sum of two Nvidia balance-sheet lines); long-term debt $32.4B is a separate line",
+   "value": 109.7,
+   "unit": "USD billion",
+   "status": "calculated",
+   "source_ids": [
+    "s_5ddd1b7b"
+   ],
+   "quote_anchor": null
+  },
+  "nv-rev": {
+   "label": "Q3 FY27 revenue (quarter); NVDA trailing-12-month revenue not computed because earlier quarters are not shown here",
+   "value": 115.8,
+   "unit": "USD billion (one quarter)",
+   "status": "verified",
+   "source_ids": [
+    "s_5ddd1b7b"
+   ],
+   "quote_anchor": null
+  },
+  "nv-corp-exposure": {
+   "label": "Per a Korean news report: $99B investment assets at end-Q2 2026, $25B further investment commitments, $36B cloud service commitments, $30B OpenAI equity (Feb 2026), 10-13% CoreWeave stake and $6.3B unsold-capacity purchase commitment; Bloomberg estimate of at least $750B of announced/discussed deals. Needs 10-Q verification.",
+   "value": 750,
+   "unit": "USD billion (Bloomberg-estimated, announced or discussed)",
+   "status": "unverified",
+   "source_ids": [
+    "s_ab10e09d"
+   ],
+   "quote_anchor": null
+  },
+  "nv-ubs": {
+   "label": "UBS estimate: OpenAI-Nvidia arrangement up to 13% of Nvidia projected 2026 revenue (secondary)",
+   "value": 13,
+   "unit": "percent",
+   "status": "unverified",
+   "source_ids": [
+    "s_7235e1b3"
+   ],
+   "quote_anchor": null
+  },
+  "nv-cds": {
+   "label": "Nvidia 5-yr CDS about 139 bp vs Oracle about 298 bp vs CoreWeave about 1,100 to 1,150 bp (Nov 6, 2026; CoreWeave peaked near 1,280 bp on Nov 5)",
+   "value": 139,
+   "unit": "basis points",
+   "status": "reported",
+   "source_ids": [
+    "s_9c5da62b"
+   ],
+   "quote_anchor": null
+  },
+  "lu-rev-original": {
+   "label": "Revenue as originally reported, FY2000 (10-K405)",
+   "value": 33.813,
+   "unit": "USD billion",
+   "status": "verified",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "quote_anchor": null
+  },
+  "lu-rev-chg-fy01": {
+   "label": "Restated revenue change FY2001 vs FY2000",
+   "value": -26.3,
+   "unit": "percent",
+   "status": "calculated",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "quote_anchor": null
+  },
+  "lu-rev-chg-fy02": {
+   "label": "Restated revenue change FY2002 vs FY2001",
+   "value": -42.1,
+   "unit": "percent",
+   "status": "calculated",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "quote_anchor": null
+  }
+ },
+ "deals": {
+  "nvda-openai-loi": {
+   "status": "reported",
+   "source_ids": [
+    "s_02497684",
+    "s_0803cabc"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-openai-equity": {
+   "status": "reported",
+   "source_ids": [
+    "s_02497684",
+    "s_cd655029",
+    "s_0fc221ed",
+    "s_7c4c573c"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-sbenergy-ohio-guarantee": {
+   "status": "verified",
+   "source_ids": [
+    "s_7c4c573c",
+    "s_c429436a",
+    "s_9940eb5c",
+    "s_95c693fe"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-financing-consortium": {
+   "status": "reported",
+   "source_ids": [
+    "s_2e55e321",
+    "s_55ed6102"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-anthropic-equity": {
+   "status": "reported",
+   "source_ids": [
+    "s_a75beee5",
+    "s_10438831",
+    "s_e7af17b4",
+    "s_909b7579"
+   ],
+   "quote_anchor": null
+  },
+  "anthropic-ipo-placement": {
+   "status": "reported",
+   "source_ids": [
+    "s_a75beee5",
+    "s_e7af17b4",
+    "s_909b7579"
+   ],
+   "quote_anchor": null
+  },
+  "anthropic-azure-compute": {
+   "status": "verified",
+   "source_ids": [
+    "s_10438831",
+    "s_b9ae0481",
+    "s_e6a97dfb"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-coreweave-equity": {
+   "status": "reported",
+   "source_ids": [
+    "s_efcbdc97",
+    "s_a7ff783e",
+    "s_caabcded"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-coreweave-capacity-backstop": {
+   "status": "reported",
+   "source_ids": [
+    "s_67caa9cc",
+    "s_b07e4564",
+    "s_c4fb2b10"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-xai-equity": {
+   "status": "reported",
+   "source_ids": [
+    "s_b60346b3",
+    "s_00f8966c"
+   ],
+   "quote_anchor": null
+  },
+  "xai-gpu-spv": {
+   "status": "unverified",
+   "source_ids": [
+    "s_138113f9",
+    "s_0f3a5f9d",
+    "s_1bd92e27",
+    "s_0c926a74"
+   ],
+   "quote_anchor": null
+  },
+  "spacex-xai-chip-spv": {
+   "status": "unverified",
+   "source_ids": [
+    "s_43f66fdc",
+    "s_089c9fa3"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-lambda-leaseback": {
+   "status": "reported",
+   "source_ids": [
+    "s_32f4a9f9",
+    "s_8247ea32"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-intel": {
+   "status": "reported",
+   "source_ids": [
+    "s_b60346b3",
+    "s_7a3eee8e"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-nebius": {
+   "status": "verified",
+   "source_ids": [
+    "s_aa87e947",
+    "s_f68f74b0"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-synopsys-nokia": {
+   "status": "unverified",
+   "source_ids": [
+    "s_aa87e947"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-nscale": {
+   "status": "unverified",
+   "source_ids": [
+    "s_91a042b1"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-sbenergy-equity": {
+   "status": "reported",
+   "source_ids": [
+    "s_2e55e321"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-cloud-commitments": {
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a",
+    "s_7c4c573c"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-neocloud-agreements": {
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a",
+    "s_7c4c573c"
+   ],
+   "quote_anchor": null
+  },
+  "nvda-mistral-reflection-tml": {
+   "status": "unverified",
+   "source_ids": [
+    "s_5ef2c8dd"
+   ],
+   "quote_anchor": null
+  },
+  "openai-oracle-compute": {
+   "status": "reported",
+   "source_ids": [
+    "s_61feaacc",
+    "s_b31346dd"
+   ],
+   "quote_anchor": null
+  },
+  "openai-azure-compute": {
+   "status": "verified",
+   "source_ids": [
+    "s_5381f866",
+    "s_971d55fd"
+   ],
+   "quote_anchor": null
+  },
+  "microsoft-openai-equity": {
+   "status": "reported",
+   "source_ids": [
+    "s_5381f866",
+    "s_913ae360",
+    "s_0d6cd3da"
+   ],
+   "quote_anchor": null
+  },
+  "openai-aws-compute": {
+   "status": "calculated",
+   "source_ids": [
+    "s_b57dd639",
+    "s_1b81bc56"
+   ],
+   "quote_anchor": null
+  },
+  "amazon-openai-equity": {
+   "status": "verified",
+   "source_ids": [
+    "s_b57dd639",
+    "s_eff51b81"
+   ],
+   "quote_anchor": null
+  },
+  "openai-amd-warrant": {
+   "status": "reported",
+   "source_ids": [
+    "s_a992b524"
+   ],
+   "quote_anchor": null
+  },
+  "openai-broadcom-chips": {
+   "status": "reported",
+   "source_ids": [
+    "s_e1ecaaf0"
+   ],
+   "quote_anchor": null
+  },
+  "openai-cerebras": {
+   "status": "reported",
+   "source_ids": [
+    "s_1bcb0178"
+   ],
+   "quote_anchor": null
+  },
+  "openai-coreweave-compute": {
+   "status": "reported",
+   "source_ids": [
+    "s_5871c43d",
+    "s_e9bb40e0",
+    "s_f30d204e"
+   ],
+   "quote_anchor": null
+  },
+  "openai-compute-total-revised": {
+   "status": "reported",
+   "source_ids": [
+    "s_0fc221ed"
+   ],
+   "quote_anchor": null
+  },
+  "openai-round-mar2026": {
+   "status": "verified",
+   "source_ids": [
+    "s_62064f11",
+    "s_d5db79bd"
+   ],
+   "quote_anchor": null
+  },
+  "openai-round-nov2026": {
+   "status": "reported",
+   "source_ids": [
+    "s_83526201",
+    "s_fedfe2d2",
+    "s_49e80084"
+   ],
+   "quote_anchor": null
+  },
+  "softbank-openai-equity": {
+   "status": "reported",
+   "source_ids": [
+    "s_62064f11",
+    "s_9c88ae90"
+   ],
+   "quote_anchor": null
+  },
+  "anthropic-google-tpu": {
+   "status": "verified",
+   "source_ids": [
+    "s_63b83b32"
+   ],
+   "quote_anchor": null
+  },
+  "anthropic-fluidstack-50b": {
+   "status": "reported",
+   "source_ids": [
+    "s_63b83b32",
+    "s_f36b5f88",
+    "s_2779b8ca"
+   ],
+   "quote_anchor": null
+  },
+  "mistral-funding": {
+   "status": "reported",
+   "source_ids": [
+    "s_b35b26f1"
+   ],
+   "quote_anchor": null
+  },
+  "msft-coreweave-compute": {
+   "status": "reported",
+   "source_ids": [
+    "s_80ea2f53",
+    "s_ebbe015d"
+   ],
+   "quote_anchor": null
+  },
+  "meta-coreweave-compute": {
+   "status": "reported",
+   "source_ids": [
+    "s_ebff69f0",
+    "s_299739f8"
+   ],
+   "quote_anchor": null
+  },
+  "msft-nebius-compute": {
+   "status": "reported",
+   "source_ids": [
+    "s_ce7a0aa2",
+    "s_31463fd6"
+   ],
+   "quote_anchor": null
+  },
+  "meta-nebius-compute-1": {
+   "status": "reported",
+   "source_ids": [
+    "s_9096b278"
+   ],
+   "quote_anchor": null
+  },
+  "meta-nebius-compute-2": {
+   "status": "reported",
+   "source_ids": [
+    "s_e9e965eb"
+   ],
+   "quote_anchor": null
+  },
+  "nebius-financing-2026": {
+   "status": "reported",
+   "source_ids": [
+    "s_31463fd6",
+    "s_dba15037"
+   ],
+   "quote_anchor": null
+  },
+  "msft-iren-compute": {
+   "status": "reported",
+   "source_ids": [
+    "s_23d50fc4",
+    "s_c5631b95"
+   ],
+   "quote_anchor": null
+  },
+  "iren-gpu-financing": {
+   "status": "reported",
+   "source_ids": [
+    "s_33801be8",
+    "s_efa4cded"
+   ],
+   "quote_anchor": null
+  },
+  "msft-nscale-compute": {
+   "status": "reported",
+   "source_ids": [
+    "s_ea17972c",
+    "s_d034479a"
+   ],
+   "quote_anchor": null
+  },
+  "msft-lambda-compute": {
+   "status": "reported",
+   "source_ids": [
+    "s_af4391db"
+   ],
+   "quote_anchor": null
+  },
+  "google-fluidstack-terawulf-backstop": {
+   "status": "reported",
+   "source_ids": [
+    "s_b78d0e91",
+    "s_3385bbb4",
+    "s_c823b607"
+   ],
+   "quote_anchor": null
+  },
+  "google-fluidstack-cipher-backstop": {
+   "status": "reported",
+   "source_ids": [
+    "s_a2a5e41b",
+    "s_d655ed4e",
+    "s_d7791d32"
+   ],
+   "quote_anchor": null
+  },
+  "coreweave-applied-digital-lease": {
+   "status": "reported",
+   "source_ids": [
+    "s_5377d948",
+    "s_87c39615"
+   ],
+   "quote_anchor": null
+  },
+  "macquarie-applied-digital-pref": {
+   "status": "reported",
+   "source_ids": [
+    "s_5377d948",
+    "s_87c39615"
+   ],
+   "quote_anchor": null
+  },
+  "coreweave-ddtl-4": {
+   "status": "verified",
+   "source_ids": [
+    "s_023a2e94",
+    "s_1845a257"
+   ],
+   "quote_anchor": null
+  },
+  "coreweave-ddtl-5-5-and-converts": {
+   "status": "verified",
+   "source_ids": [
+    "s_f30d204e"
+   ],
+   "quote_anchor": null
+  },
+  "blackstone-magnetar-coreweave": {
+   "status": "reported",
+   "source_ids": [
+    "s_1845a257",
+    "s_a377af0b"
+   ],
+   "quote_anchor": null
+  },
+  "meta-hyperion-beignet": {
+   "status": "reported",
+   "source_ids": [
+    "s_b654f0d9",
+    "s_e6854691",
+    "s_57515134",
+    "s_ab665f2e",
+    "s_2c3dba23"
+   ],
+   "quote_anchor": null
+  },
+  "oracle-vantage-stargate-loans": {
+   "status": "reported",
+   "source_ids": [
+    "s_d9416c84",
+    "s_74523d92",
+    "s_3889c229",
+    "s_0f15fcc0"
+   ],
+   "quote_anchor": null
+  },
+  "pimco-oracle-michigan-bond": {
+   "status": "reported",
+   "source_ids": [
+    "s_74523d92"
+   ],
+   "quote_anchor": null
+  },
+  "blue-owl-abilene-spv": {
+   "status": "reported",
+   "source_ids": [
+    "s_74523d92",
+    "s_0f15fcc0"
+   ],
+   "quote_anchor": null
+  },
+  "openai-round-nov2026-remainder": {
+   "status": "reported",
+   "source_ids": [
+    "s_fedfe2d2",
+    "s_83526201"
+   ],
+   "quote_anchor": null
+  },
+  "meta-hyperion-bond": {
+   "status": "reported",
+   "source_ids": [
+    "s_2c3dba23",
+    "s_b654f0d9"
+   ],
+   "quote_anchor": null
+  },
+  "anthropic-spacexai-compute": {
+   "status": "reported",
+   "source_ids": [
+    "s_d5786986",
+    "s_af132f62"
+   ],
+   "quote_anchor": null
+  }
+ },
+ "events": {
+  "ev-sp-oracle-bbb-minus": {
+   "status": "reported",
+   "source_ids": [
+    "s_eabf379e",
+    "s_1de1e192",
+    "s_bf19b524"
+   ],
+   "quote_anchor": null
+  },
+  "ev-nvda-openai-guarantee-weighed": {
+   "status": "reported",
+   "source_ids": [
+    "s_f3c25820"
+   ],
+   "quote_anchor": null
+  },
+  "ev-nvda-105b-guarantee": {
+   "status": "reported",
+   "source_ids": [
+    "s_41de767f",
+    "s_a2c138ef",
+    "s_0c4cfe15",
+    "s_bb03465b",
+    "s_c429436a"
+   ],
+   "quote_anchor": null
+  },
+  "ev-fed-hike": {
+   "status": "reported",
+   "source_ids": [
+    "s_95d752a7",
+    "s_3a261481"
+   ],
+   "quote_anchor": null
+  },
+  "ev-oracle-jupiter-force-majeure": {
+   "status": "reported",
+   "source_ids": [
+    "s_9e05bbeb",
+    "s_57d9461c",
+    "s_e16a1610"
+   ],
+   "quote_anchor": null
+  },
+  "ev-oracle-cds-record": {
+   "status": "reported",
+   "source_ids": [
+    "s_68be9dfb",
+    "s_9c5da62b",
+    "s_07dff4c7"
+   ],
+   "quote_anchor": null
+  },
+  "ev-banks-38b-oracle-debt": {
+   "status": "unverified",
+   "source_ids": [
+    "s_ffc9c8f8"
+   ],
+   "quote_anchor": null
+  },
+  "ev-hyperscaler-q3-capex": {
+   "status": "reported",
+   "source_ids": [
+    "s_2ce18ca2",
+    "s_9c5da62b"
+   ],
+   "quote_anchor": null
+  },
+  "ev-ai-bond-wave-cds-spike": {
+   "status": "reported",
+   "source_ids": [
+    "s_9c5da62b",
+    "s_07dff4c7",
+    "s_d3684041"
+   ],
+   "quote_anchor": null
+  },
+  "ev-coreweave-q3": {
+   "status": "reported",
+   "source_ids": [
+    "s_b913f5db",
+    "s_d6db1d4b",
+    "s_07dff4c7"
+   ],
+   "quote_anchor": null
+  },
+  "ev-huang-resigns": {
+   "status": "verified",
+   "source_ids": [
+    "s_1934d6ee"
+   ],
+   "quote_anchor": null
+  },
+  "ev-congress-huang-hearings": {
+   "status": "reported",
+   "source_ids": [
+    "s_816870f9",
+    "s_164d6821",
+    "s_aa502b17"
+   ],
+   "quote_anchor": null
+  },
+  "ev-nebius-outlook-cut": {
+   "status": "reported",
+   "source_ids": [
+    "s_abf9c44e",
+    "s_a132216d",
+    "s_16558856"
+   ],
+   "quote_anchor": null
+  },
+  "ev-imf-1t": {
+   "status": "unverified",
+   "source_ids": [
+    "s_df0ec69a"
+   ],
+   "quote_anchor": null
+  },
+  "ev-nvda-q3fy27": {
+   "status": "verified",
+   "source_ids": [
+    "s_5ddd1b7b",
+    "s_55e7265b",
+    "s_ef28fb89",
+    "s_0da8a262"
+   ],
+   "quote_anchor": null
+  },
+  "ev-fed-minutes-circular": {
+   "status": "reported",
+   "source_ids": [
+    "s_3a261481"
+   ],
+   "quote_anchor": null
+  },
+  "ev-cds-etf-filings": {
+   "status": "reported",
+   "source_ids": [
+    "s_07dff4c7"
+   ],
+   "quote_anchor": null
+  },
+  "ev-neocloud-drawdowns": {
+   "status": "reported",
+   "source_ids": [
+    "s_17c38983",
+    "s_a4a1ac4a",
+    "s_c42d8f63"
+   ],
+   "quote_anchor": null
+  },
+  "ev-no-defaults": {
+   "status": "reported",
+   "source_ids": [
+    "s_2622278a",
+    "s_9807762f"
+   ],
+   "quote_anchor": null
+  },
+  "ev-anthropic-ipo-priced": {
+   "status": "verified",
+   "source_ids": [
+    "s_909b7579"
+   ],
+   "quote_anchor": null
+  }
+ },
+ "params": {
+  "seed_usd": {
+   "status": "calculated",
+   "source_ids": []
+  },
+  "loan_to_cost": {
+   "status": "reported",
+   "source_ids": [
+    "s_f2e2430a",
+    "s_33801be8",
+    "s_0c926a74"
+   ]
+  },
+  "nvidia_share_of_build_cost": {
+   "status": "hypothetical",
+   "source_ids": []
+  },
+  "nvidia_gross_margin": {
+   "status": "verified",
+   "source_ids": [
+    "s_4faa980a"
+   ]
+  },
+  "gross_to_net_conversion": {
+   "status": "calculated",
+   "source_ids": [
+    "s_4faa980a",
+    "s_55e7265b"
+   ]
+  },
+  "recurring_revenue_share": {
+   "status": "hypothetical",
+   "source_ids": []
+  },
+  "valuation_multiple": {
+   "status": "hypothetical",
+   "source_ids": []
+  },
+  "reinvest_fraction": {
+   "status": "calculated",
+   "source_ids": [
+    "s_55e7265b",
+    "s_4faa980a",
+    "s_731890df"
+   ]
+  },
+  "contract_value_to_build_cost": {
+   "status": "calculated",
+   "source_ids": [
+    "s_23d50fc4",
+    "s_c5631b95"
+   ]
+  },
+  "contract_years": {
+   "status": "reported",
+   "source_ids": [
+    "s_23d50fc4",
+    "s_ce7a0aa2"
+   ]
+  },
+  "contract_prepayment_share": {
+   "status": "reported",
+   "source_ids": [
+    "s_23d50fc4"
+   ]
+  },
+  "lab_outside_revenue_share": {
+   "status": "hypothetical",
+   "source_ids": [
+    "s_0fc221ed",
+    "s_af5ae7a3"
+   ]
+  },
+  "lab_funding_mix": {
+   "status": "hypothetical",
+   "source_ids": [
+    "s_62064f11",
+    "s_b57dd639"
+   ]
+  },
+  "nvidia_share_of_vendor_funding": {
+   "status": "calculated",
+   "source_ids": [
+    "s_02497684",
+    "s_b57dd639"
+   ]
+  },
+  "neocloud_opex_share": {
+   "status": "hypothetical",
+   "source_ids": []
+  },
+  "backstop_share_of_capacity": {
+   "status": "hypothetical",
+   "source_ids": [
+    "s_67caa9cc",
+    "s_f30d204e"
+   ]
+  },
+  "backstop_trigger_shortfall": {
+   "status": "hypothetical",
+   "source_ids": []
+  },
+  "credit_fund_back_leverage_ratio": {
+   "status": "hypothetical",
+   "source_ids": []
+  },
+  "mezz_ratio": {
+   "status": "hypothetical",
+   "source_ids": [
+    "s_f30d204e",
+    "s_31463fd6"
+   ]
+  },
+  "margin_loan_share": {
+   "status": "hypothetical",
+   "source_ids": [
+    "s_9c88ae90"
+   ]
+  },
+  "neocloud_equity_mark": {
+   "status": "hypothetical",
+   "source_ids": [
+    "s_efcbdc97",
+    "s_17c38983"
+   ]
+  },
+  "gpu_useful_life_years": {
+   "status": "reported",
+   "source_ids": [
+    "s_9ec969ce",
+    "s_d985a4d8"
+   ]
+  },
+  "gpu_rental_decline_per_year": {
+   "status": "hypothetical",
+   "source_ids": [
+    "s_531d4c9c",
+    "s_64951745"
+   ]
+  },
+  "base_rate": {
+   "status": "reported",
+   "source_ids": [
+    "s_95d752a7",
+    "s_3a261481"
+   ]
+  },
+  "credit_spread": {
+   "status": "reported",
+   "source_ids": [
+    "s_1845a257",
+    "s_fe552d63"
+   ]
+  },
+  "debt_term_years": {
+   "status": "hypothetical",
+   "source_ids": [
+    "s_023a2e94"
+   ]
+  },
+  "floating_share": {
+   "status": "hypothetical",
+   "source_ids": [
+    "s_33801be8"
+   ]
+  }
+ },
+ "entity_snapshots": {
+  "nvidia": {
+   "status": "verified",
+   "source_ids": [
+    "s_55e7265b",
+    "s_5ddd1b7b"
+   ]
+  },
+  "coreweave": {
+   "status": "verified",
+   "source_ids": [
+    "s_f30d204e",
+    "s_80ea2f53"
+   ]
+  },
+  "meta": {
+   "status": "verified",
+   "source_ids": [
+    "s_bd67fb97"
+   ]
+  },
+  "oracle": {
+   "status": "reported",
+   "source_ids": [
+    "s_61feaacc"
+   ]
+  },
+  "openai": {
+   "status": "verified",
+   "source_ids": [
+    "s_62064f11",
+    "s_d5db79bd"
+   ]
+  }
+ }
+}

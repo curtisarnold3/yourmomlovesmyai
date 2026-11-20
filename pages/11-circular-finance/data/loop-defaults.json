@@ -1,0 +1,702 @@
+{
+ "as_of": "2026-11-20",
+ "model_version": "1.0.0",
+ "note": "Single source of truth for model parameters; the same definitions are embedded in src/loop-model.js between GENERATED markers. Default values are chosen from reported figures where possible; hypothetical ones are labelled and explained. Per $100 of seed cash.",
+ "status_ordering": "verified < reported < calculated < hypothetical < unverified; an output takes the weakest status of its inputs and is never better than calculated. Any parameter value changed away from its default is treated as hypothetical.",
+ "status_set": [
+  "verified",
+  "reported",
+  "calculated",
+  "hypothetical",
+  "unverified"
+ ],
+ "money_kinds": {
+  "external": "Cash that comes from outside the loop: lenders, outside investors, end customers. It is still not free money: lenders and investors must be repaid or earn a return from future end-user spending.",
+  "recycled": "Cash that started with a loop participant and returns to that participant or its customers, for example Nvidia equity in a customer that buys Nvidia systems.",
+  "promise": "Contracts, backlog, RPO, backstops, guarantees, warrants, leases, letters of intent, and equity purchases that only close on a condition (for example an IPO closing). NOT cash moved. Never added into cash totals.",
+  "mixed": "An aggregate round that contains both vendor money (recycled) and outside money (external). See money_split for the parts. Excluded from sums because the component edges are charted separately.",
+  "outside_loop_investment": "Nvidia's own cash invested in a company that is not a customer in the AI-demand loop (for example Intel, Synopsys, Nokia). It is neither outside money entering the loop nor recycled customer money. Excluded from loop totals; shown on the Nvidia node as a separate line."
+ },
+ "params": [
+  {
+   "id": "seed_usd",
+   "group": "scale",
+   "label": "Seed: Nvidia cash put in at lap 1",
+   "value": 100,
+   "min": 10,
+   "max": 1000,
+   "step": 10,
+   "unit": "USD",
+   "status": "calculated",
+   "scale": true,
+   "rationale": "A display unit only. Everything is shown per $100 of starting cash unless you change this; the ratios do not depend on it.",
+   "source_ids": [],
+   "reader_note": "A display unit only. Everything is shown per $100 of starting cash unless you change this; the ratios do not depend on it."
+  },
+  {
+   "id": "loan_to_cost",
+   "group": "spv",
+   "label": "Loan-to-cost (debt as share of GPU build cost)",
+   "value": 0.625,
+   "min": 0.3,
+   "max": 0.8,
+   "step": 0.005,
+   "unit": "fraction",
+   "status": "reported",
+   "rationale": "We chose 62.5% because two real deals are close to it: IREN's debt is about 63% of the cost of its GPUs, and a reported xAI vehicle was 62.5% debt. Market advance rates are often quoted at 50 to 70%.",
+   "source_ids": [
+    "s_f2e2430a",
+    "s_33801be8",
+    "s_0c926a74"
+   ],
+   "reader_note": "We chose 62.5% because two real deals are close to it: IREN's debt is about 63% of the cost of its GPUs, and a reported xAI vehicle was 62.5% debt. Market advance rates are often quoted at 50 to 70%."
+  },
+  {
+   "id": "nvidia_share_of_build_cost",
+   "group": "spv",
+   "label": "Nvidia's share of the SPV's build cost (revenue it books)",
+   "value": 0.6,
+   "min": 0.3,
+   "max": 0.85,
+   "step": 0.01,
+   "unit": "fraction",
+   "status": "hypothetical",
+   "rationale": "We chose 60% because the servers in a cluster are mostly Nvidia GPUs and networking, with other vendors taking a share; no source gives the exact number. The building, power and cooling are financed separately and are left out.",
+   "source_ids": [],
+   "reader_note": "We chose 60% because the servers in a cluster are mostly Nvidia GPUs and networking, with other vendors taking a share; no source gives the exact number. The building, power and cooling are financed separately and are left out."
+  },
+  {
+   "id": "nvidia_gross_margin",
+   "group": "nvidia",
+   "label": "Nvidia gross margin on that revenue",
+   "value": 0.748,
+   "min": 0.5,
+   "max": 0.85,
+   "step": 0.001,
+   "unit": "fraction",
+   "status": "verified",
+   "rationale": "Nvidia reported a 74.8% gross margin in its third quarter. It guided to 71 to 72% next quarter, so the forward margin may be lower. We apply the company-wide margin to this slice as a simplification.",
+   "alt_values": [
+    {
+     "label": "Q4 FY27 guide midpoint",
+     "value": 0.715,
+     "status": "verified"
+    }
+   ],
+   "source_ids": [
+    "s_4faa980a"
+   ],
+   "reader_note": "Nvidia reported a 74.8% gross margin in its third quarter. It guided to 71 to 72% next quarter, so the forward margin may be lower. We apply the company-wide margin to this slice as a simplification."
+  },
+  {
+   "id": "gross_to_net_conversion",
+   "group": "nvidia",
+   "label": "Net profit as share of gross profit",
+   "value": 0.75,
+   "min": 0.3,
+   "max": 0.95,
+   "step": 0.01,
+   "unit": "fraction",
+   "status": "calculated",
+   "rationale": "Calculated from Nvidia's reported quarter: net income of $65.3B on $86.6B of gross profit is about 75%. Net income includes investment gains, so this is slightly generous.",
+   "source_ids": [
+    "s_4faa980a",
+    "s_55e7265b"
+   ],
+   "reader_note": "Calculated from Nvidia's reported quarter: net income of $65.3B on $86.6B of gross profit is about 75%. Net income includes investment gains, so this is slightly generous."
+  },
+  {
+   "id": "recurring_revenue_share",
+   "group": "nvidia",
+   "label": "Share of the new profit the market treats as recurring",
+   "value": 0.5,
+   "min": 0.0,
+   "max": 1.0,
+   "step": 0.05,
+   "unit": "fraction",
+   "status": "hypothetical",
+   "rationale": "We chose 50% as a middle setting because a one-time build order only repeats if the next lap happens; no source gives a number. At 100% every dollar is valued as if it repeats forever, at 0% there is no paper value.",
+   "source_ids": [],
+   "reader_note": "We chose 50% as a middle setting because a one-time build order only repeats if the next lap happens; no source gives a number. At 100% every dollar is valued as if it repeats forever, at 0% there is no paper value."
+  },
+  {
+   "id": "valuation_multiple",
+   "group": "nvidia",
+   "label": "Valuation multiple on net profit (P/E)",
+   "value": 12,
+   "min": 3,
+   "max": 40,
+   "step": 0.5,
+   "unit": "x",
+   "status": "hypothetical",
+   "rationale": "We chose 12 times profit as a round, cautious setting. No source gives the multiple we would need, so this is not a statement about what Nvidia's stock trades at.",
+   "source_ids": [],
+   "reader_note": "We chose 12 times profit as a round, cautious setting. No source gives the multiple we would need, so this is not a statement about what Nvidia's stock trades at."
+  },
+  {
+   "id": "reinvest_fraction",
+   "group": "loop",
+   "label": "Share of Nvidia's gross profit reinvested as next lap's seed",
+   "value": 0.18,
+   "min": 0.0,
+   "max": 0.9,
+   "step": 0.01,
+   "unit": "fraction",
+   "status": "calculated",
+   "rationale": "Calculated from Nvidia's third quarter: $15.7B of equity purchases against $86.6B of gross profit is about 18%. Over nine months Nvidia spent about 47% of operating cash flow on equity purchases, and an outside estimate for investments and acquisitions is 58%. The figure includes holdings that are not part of the loop, such as Intel.",
+   "source_ids": [
+    "s_55e7265b",
+    "s_4faa980a",
+    "s_731890df"
+   ],
+   "reader_note": "Calculated from Nvidia's third quarter: $15.7B of equity purchases against $86.6B of gross profit is about 18%. Over nine months Nvidia spent about 47% of operating cash flow on equity purchases, and an outside estimate for investments and acquisitions is 58%. The figure includes holdings that are not part of the loop, such as Intel."
+  },
+  {
+   "id": "contract_value_to_build_cost",
+   "group": "contract",
+   "label": "Compute contract value as a multiple of build cost",
+   "value": 1.67,
+   "min": 1.0,
+   "max": 3.0,
+   "step": 0.01,
+   "unit": "x",
+   "status": "calculated",
+   "rationale": "Calculated from IREN's Microsoft deal: a $9.7B five-year contract against $5.81B of GPU cost is 1.67 times. The contract also pays for power and site, so this overstates what covers the GPUs alone.",
+   "source_ids": [
+    "s_23d50fc4",
+    "s_c5631b95"
+   ],
+   "reader_note": "Calculated from IREN's Microsoft deal: a $9.7B five-year contract against $5.81B of GPU cost is 1.67 times. The contract also pays for power and site, so this overstates what covers the GPUs alone."
+  },
+  {
+   "id": "contract_years",
+   "group": "contract",
+   "label": "Contract length (years)",
+   "value": 5,
+   "min": 1,
+   "max": 10,
+   "step": 0.5,
+   "unit": "years",
+   "status": "reported",
+   "rationale": "Five years, because the IREN-Microsoft and Nebius contracts run five years. CoreWeave-Meta runs to 2031 and OpenAI-Oracle about five years from 2027.",
+   "source_ids": [
+    "s_23d50fc4",
+    "s_ce7a0aa2"
+   ],
+   "reader_note": "Five years, because the IREN-Microsoft and Nebius contracts run five years. CoreWeave-Meta runs to 2031 and OpenAI-Oracle about five years from 2027."
+  },
+  {
+   "id": "contract_prepayment_share",
+   "group": "contract",
+   "label": "Prepayment share of contract value",
+   "value": 0.2,
+   "min": 0.0,
+   "max": 0.5,
+   "step": 0.01,
+   "unit": "fraction",
+   "status": "reported",
+   "rationale": "20%, from IREN's contract with Microsoft. It is the size of the customer's claim in the claims stack.",
+   "source_ids": [
+    "s_23d50fc4"
+   ],
+   "reader_note": "20%, from IREN's contract with Microsoft. It is the size of the customer's claim in the claims stack."
+  },
+  {
+   "id": "lab_outside_revenue_share",
+   "group": "lab",
+   "label": "Share of lab payments funded by outside (end-user) revenue",
+   "value": 0.5,
+   "min": 0.1,
+   "max": 0.95,
+   "step": 0.05,
+   "unit": "fraction",
+   "status": "hypothetical",
+   "rationale": "We chose 50% because we don't have a source for how much of an AI lab's spending is covered by real customers. As a guide, OpenAI's 2025 revenue of $13.1B covered about 62% of its spending, and its named contracts of about $720B equal 14 years of today's $50B revenue rate.",
+   "source_ids": [
+    "s_0fc221ed",
+    "s_af5ae7a3"
+   ],
+   "reader_note": "We chose 50% because we don't have a source for how much of an AI lab's spending is covered by real customers. As a guide, OpenAI's 2025 revenue of $13.1B covered about 62% of its spending, and its named contracts of about $720B equal 14 years of today's $50B revenue rate."
+  },
+  {
+   "id": "lab_funding_mix",
+   "group": "lab",
+   "label": "Share of the lab's raised capital that is recycled (from vendors)",
+   "value": 0.5,
+   "min": 0.0,
+   "max": 0.9,
+   "step": 0.05,
+   "unit": "fraction",
+   "status": "hypothetical",
+   "rationale": "We chose 50% because the 2026 OpenAI round brackets it: counting Amazon's full $50B and Nvidia's $30B as vendor money gives 66%; counting only Amazon's first $15B gives about 52%. SoftBank's $30B is outside money, though borrowed.",
+   "source_ids": [
+    "s_62064f11",
+    "s_b57dd639"
+   ],
+   "reader_note": "We chose 50% because the 2026 OpenAI round brackets it: counting Amazon's full $50B and Nvidia's $30B as vendor money gives 66%; counting only Amazon's first $15B gives about 52%. SoftBank's $30B is outside money, though borrowed."
+  },
+  {
+   "id": "nvidia_share_of_vendor_funding",
+   "group": "lab",
+   "label": "Nvidia's share of vendor-sourced lab capital",
+   "value": 0.375,
+   "min": 0.0,
+   "max": 1.0,
+   "step": 0.005,
+   "unit": "fraction",
+   "status": "calculated",
+   "rationale": "Calculated: Nvidia's $30B out of $80B of vendor money (Nvidia plus Amazon's headline $50B) is 37.5%. It only decides who holds one of the claims.",
+   "source_ids": [
+    "s_02497684",
+    "s_b57dd639"
+   ],
+   "reader_note": "Calculated: Nvidia's $30B out of $80B of vendor money (Nvidia plus Amazon's headline $50B) is 37.5%. It only decides who holds one of the claims."
+  },
+  {
+   "id": "neocloud_opex_share",
+   "group": "neocloud",
+   "label": "Neocloud operating cost as share of contract revenue",
+   "value": 0.35,
+   "min": 0.1,
+   "max": 0.7,
+   "step": 0.01,
+   "unit": "fraction",
+   "status": "hypothetical",
+   "rationale": "We chose 35% because CoreWeave reports revenue and operating income but not cash running costs; no source gives a number. It is used only in the stress test.",
+   "source_ids": [],
+   "reader_note": "We chose 35% because CoreWeave reports revenue and operating income but not cash running costs; no source gives a number. It is used only in the stress test."
+  },
+  {
+   "id": "backstop_share_of_capacity",
+   "group": "backstop",
+   "label": "Nvidia backstop cap as share of the cluster's build cost",
+   "value": 0.15,
+   "min": 0.0,
+   "max": 0.5,
+   "step": 0.01,
+   "unit": "fraction",
+   "status": "hypothetical",
+   "rationale": "We chose 15% from one example: Nvidia's up-to-$6.3B purchase promise is about 17% of CoreWeave's planned capital spending. Not every neocloud has one, and Oracle-type sites report none, so you can set it to 0.",
+   "source_ids": [
+    "s_67caa9cc",
+    "s_f30d204e"
+   ],
+   "reader_note": "We chose 15% from one example: Nvidia's up-to-$6.3B purchase promise is about 17% of CoreWeave's planned capital spending. Not every neocloud has one, and Oracle-type sites report none, so you can set it to 0."
+  },
+  {
+   "id": "backstop_trigger_shortfall",
+   "group": "backstop",
+   "label": "Backstop is called when lab payments fall short by at least",
+   "value": 0.2,
+   "min": 0.0,
+   "max": 0.9,
+   "step": 0.05,
+   "unit": "fraction",
+   "status": "hypothetical",
+   "rationale": "We chose 20% because the real trigger terms are not public. Nvidia says its guarantees apply only after financing, deployment and acceptance, and that nothing has been paid.",
+   "source_ids": [],
+   "reader_note": "We chose 20% because the real trigger terms are not public. Nvidia says its guarantees apply only after financing, deployment and acceptance, and that nothing has been paid."
+  },
+  {
+   "id": "credit_fund_back_leverage_ratio",
+   "group": "capital",
+   "label": "Credit-fund back-leverage (bank debt per $1 of LP equity)",
+   "value": 0.5,
+   "min": 0.0,
+   "max": 2.0,
+   "step": 0.05,
+   "unit": "x",
+   "status": "hypothetical",
+   "rationale": "We chose 0.5 because banks often lend to private-credit funds against their loans, but the terms of the loans in this story are not disclosed. At 0.5 the bank funds a third of the loan and the fund's investors two-thirds. Set 0 for a fund with no bank borrowing.",
+   "source_ids": [],
+   "reader_note": "We chose 0.5 because banks often lend to private-credit funds against their loans, but the terms of the loans in this story are not disclosed. At 0.5 the bank funds a third of the loan and the fund's investors two-thirds. Set 0 for a fund with no bank borrowing."
+  },
+  {
+   "id": "mezz_ratio",
+   "group": "capital",
+   "label": "Neocloud parent bonds/converts per $1 of Nvidia equity",
+   "value": 0.5,
+   "min": 0.0,
+   "max": 2.0,
+   "step": 0.05,
+   "unit": "x",
+   "status": "hypothetical",
+   "rationale": "We chose 50% as an illustration. Real examples include about $4.2B of CoreWeave convertible notes in the third quarter and $5.75B at Nebius. We only show the claim, not where the proceeds go.",
+   "source_ids": [
+    "s_f30d204e",
+    "s_31463fd6"
+   ],
+   "reader_note": "We chose 50% as an illustration. Real examples include about $4.2B of CoreWeave convertible notes in the third quarter and $5.75B at Nebius. We only show the claim, not where the proceeds go."
+  },
+  {
+   "id": "margin_loan_share",
+   "group": "capital",
+   "label": "Share of neocloud stock held on margin",
+   "value": 0.2,
+   "min": 0.0,
+   "max": 0.7,
+   "step": 0.05,
+   "unit": "fraction",
+   "status": "hypothetical",
+   "rationale": "We chose 20% because margin lending is documented at the SoftBank level (a $25B loan against Arm shares) but we have no figure for neocloud shareholders.",
+   "source_ids": [
+    "s_9c88ae90"
+   ],
+   "reader_note": "We chose 20% because margin lending is documented at the SoftBank level (a $25B loan against Arm shares) but we have no figure for neocloud shareholders."
+  },
+  {
+   "id": "neocloud_equity_mark",
+   "group": "capital",
+   "label": "Market value of Nvidia's neocloud stake vs cost (1.0 = at cost)",
+   "value": 1.0,
+   "min": 0.2,
+   "max": 3.0,
+   "step": 0.05,
+   "unit": "x",
+   "status": "hypothetical",
+   "rationale": "1.0 means shares are valued at what Nvidia paid, so the baseline shows no gain or loss. For reference, Nvidia paid $87.20 per CoreWeave share and the stock closed at $44.91 on November 19, 2026, a mark of about 0.5.",
+   "source_ids": [
+    "s_efcbdc97",
+    "s_17c38983"
+   ],
+   "reader_note": "1.0 means shares are valued at what Nvidia paid, so the baseline shows no gain or loss. For reference, Nvidia paid $87.20 per CoreWeave share and the stock closed at $44.91 on November 19, 2026, a mark of about 0.5."
+  },
+  {
+   "id": "gpu_useful_life_years",
+   "group": "asset",
+   "label": "GPU useful life (years)",
+   "value": 5,
+   "min": 3,
+   "max": 6,
+   "step": 0.5,
+   "unit": "years",
+   "status": "reported",
+   "rationale": "Five years, in the middle of the range. CoreWeave depreciates GPUs over six years, large cloud companies use five to six, and one critic argues the real life is two to three. Presets cover three to six.",
+   "presets": [
+    {
+     "label": "Burry-style short life",
+     "value": 3
+    },
+    {
+     "label": "4 years",
+     "value": 4
+    },
+    {
+     "label": "Default 5",
+     "value": 5
+    },
+    {
+     "label": "CoreWeave 6",
+     "value": 6
+    }
+   ],
+   "source_ids": [
+    "s_9ec969ce",
+    "s_d985a4d8"
+   ],
+   "reader_note": "Five years, in the middle of the range. CoreWeave depreciates GPUs over six years, large cloud companies use five to six, and one critic argues the real life is two to three. Presets cover three to six."
+  },
+  {
+   "id": "gpu_rental_decline_per_year",
+   "group": "asset",
+   "label": "Annual decline in rental value of the GPUs",
+   "value": 0.1,
+   "min": 0.0,
+   "max": 0.4,
+   "step": 0.01,
+   "unit": "per year",
+   "status": "hypothetical",
+   "rationale": "We chose 10% a year because the data point both ways: H100 rental fell from about $8 an hour in early 2023 to $1.80 to $3.50 in 2026 (about 28% a year), while one index rose from $2.00 in December 2025 to $3.01 in November 2026.",
+   "source_ids": [
+    "s_531d4c9c",
+    "s_64951745"
+   ],
+   "reader_note": "We chose 10% a year because the data point both ways: H100 rental fell from about $8 an hour in early 2023 to $1.80 to $3.50 in 2026 (about 28% a year), while one index rose from $2.00 in December 2025 to $3.01 in November 2026."
+  },
+  {
+   "id": "base_rate",
+   "group": "rates",
+   "label": "Base rate (SOFR proxy)",
+   "value": 0.03875,
+   "min": 0.0,
+   "max": 0.08,
+   "step": 0.00125,
+   "unit": "per year",
+   "status": "reported",
+   "rationale": "The middle of the Fed's target range of 3.75% to 4.00% (3.875%), after the September 2026 hike. We use it as a stand-in for the SOFR bank rate, which we do not have a figure for.",
+   "source_ids": [
+    "s_95d752a7",
+    "s_3a261481"
+   ],
+   "reader_note": "The middle of the Fed's target range of 3.75% to 4.00% (3.875%), after the September 2026 hike. We use it as a stand-in for the SOFR bank rate, which we do not have a figure for."
+  },
+  {
+   "id": "credit_spread",
+   "group": "rates",
+   "label": "Credit spread over base rate",
+   "value": 0.04,
+   "min": 0.01,
+   "max": 0.1,
+   "step": 0.0005,
+   "unit": "per year",
+   "status": "reported",
+   "rationale": "CoreWeave's best loan (rated A3) priced 2.25 points over SOFR, earlier loans 4.0, and lower-rated customers 4.5 to 5.5. Our 3.875% + 4.0% = 7.9% matches the weighted average borrowing cost CoreWeave reports.",
+   "source_ids": [
+    "s_1845a257",
+    "s_fe552d63"
+   ],
+   "reader_note": "CoreWeave's best loan (rated A3) priced 2.25 points over SOFR, earlier loans 4.0, and lower-rated customers 4.5 to 5.5. Our 3.875% + 4.0% = 7.9% matches the weighted average borrowing cost CoreWeave reports."
+  },
+  {
+   "id": "debt_term_years",
+   "group": "rates",
+   "label": "Debt amortization term (years)",
+   "value": 5,
+   "min": 2,
+   "max": 10,
+   "step": 0.5,
+   "unit": "years",
+   "status": "hypothetical",
+   "rationale": "We chose five years to match the contract and the GPUs' assumed life. CoreWeave's best loan runs about six years, to March 2032.",
+   "source_ids": [
+    "s_023a2e94"
+   ],
+   "reader_note": "We chose five years to match the contract and the GPUs' assumed life. CoreWeave's best loan runs about six years, to March 2032."
+  },
+  {
+   "id": "floating_share",
+   "group": "rates",
+   "label": "Share of debt that floats with the base rate",
+   "value": 0.5,
+   "min": 0.0,
+   "max": 1.0,
+   "step": 0.05,
+   "unit": "fraction",
+   "status": "hypothetical",
+   "rationale": "We chose 50% because real deals mix both: IREN combined a fixed-rate placement with a floating loan, and CoreWeave's best loan has floating and fixed parts. It only matters for the rate-shock stress.",
+   "source_ids": [
+    "s_33801be8"
+   ],
+   "reader_note": "We chose 50% because real deals mix both: IREN combined a fixed-rate placement with a floating loan, and CoreWeave's best loan has floating and fixed parts. It only matters for the rate-shock stress."
+  }
+ ],
+ "presets": [
+  {
+   "id": "coreweave_like",
+   "label": "CoreWeave-like",
+   "description": "Neocloud with GPU-backed delayed-draw loans, hyperscaler/OpenAI customers, a long depreciation life and an Nvidia equity stake and unsold-capacity purchase.",
+   "params": {
+    "loan_to_cost": 0.65,
+    "gpu_useful_life_years": 6,
+    "backstop_share_of_capacity": 0.17,
+    "lab_outside_revenue_share": 0.7,
+    "neocloud_equity_mark": 0.5,
+    "credit_spread": 0.04
+   },
+   "overrides": {
+    "loan_to_cost": {
+     "value": 0.65,
+     "status": "hypothetical",
+     "rationale": "No advance rate is disclosed in CoreWeave releases. Generic market range 50-70%; one blog reports about 70% on the first Magnetar/Blackstone loan."
+    },
+    "gpu_useful_life_years": {
+     "value": 6,
+     "status": "reported",
+     "rationale": "CoreWeave depreciation life of 6 years (reported; not confirmed in 2026 filings)."
+    },
+    "backstop_share_of_capacity": {
+     "value": 0.17,
+     "status": "hypothetical",
+     "rationale": "Nvidia up-to-$6.3B unsold-capacity purchase vs FY2026 capex guidance of about $38B = 17% (calculated from reported and verified figures)."
+    },
+    "lab_outside_revenue_share": {
+     "value": 0.7,
+     "status": "hypothetical",
+     "rationale": "Customers are hyperscalers and OpenAI, which fund more of their payments from their own revenue than a pure lab does. Customer A 24% and B 30% of Q3 2026 revenue (verified, anonymized)."
+    },
+    "neocloud_equity_mark": {
+     "value": 0.5,
+     "status": "hypothetical",
+     "rationale": "Nvidia paid $87.20 per share (Jan 2026); CRWV closed $44.91 on Nov 19, 2026 (reported): a mark of about 0.5."
+    },
+    "credit_spread": {
+     "value": 0.04,
+     "status": "reported",
+     "rationale": "Weighted average borrowing cost 7.9% (reported) = 3.875% base + 4.0%."
+    }
+   },
+   "status_note": "Preset values are illustrative analogues of the named structure, not that company's actual parameters. Outputs inherit hypothetical unless every override is reported/verified."
+  },
+  {
+   "id": "oracle_like",
+   "label": "Oracle-like",
+   "description": "Investment-grade-adjacent tenant leasing project-financed sites for one very large AI customer; no Nvidia backstop; shell and power financed by developers so Nvidia captures a smaller share of the bill.",
+   "params": {
+    "loan_to_cost": 0.75,
+    "nvidia_share_of_build_cost": 0.45,
+    "backstop_share_of_capacity": 0.0,
+    "lab_outside_revenue_share": 0.45,
+    "contract_value_to_build_cost": 2.0,
+    "credit_spread": 0.03
+   },
+   "overrides": {
+    "loan_to_cost": {
+     "value": 0.75,
+     "status": "hypothetical",
+     "rationale": "Construction debt packages for Vantage sites ($38B) are reported but advance rates are not disclosed. Project finance is typically higher-leveraged than GPU loans."
+    },
+    "nvidia_share_of_build_cost": {
+     "value": 0.45,
+     "status": "hypothetical",
+     "rationale": "Vantage and Blue Owl campuses are shells, power and cooling; servers are a smaller part of the bill that the SPV finances."
+    },
+    "backstop_share_of_capacity": {
+     "value": 0.0,
+     "status": "hypothetical",
+     "rationale": "No Nvidia backstop for Oracle sites is reported. Nvidia's $105B guarantee is for the SB Energy Ohio campus (verified)."
+    },
+    "lab_outside_revenue_share": {
+     "value": 0.45,
+     "status": "hypothetical",
+     "rationale": "OpenAI: reported revenue run-rate $50B vs about $720B of named priced contracts (14 years of revenue); 2025 revenue covered about 62% of spending."
+    },
+    "contract_value_to_build_cost": {
+     "value": 2.0,
+     "status": "hypothetical",
+     "rationale": "Long-dated take-or-pay leases with large RPO ($664B at 31 Aug 2026, reported) relative to build cost."
+    },
+    "credit_spread": {
+     "value": 0.03,
+     "status": "hypothetical",
+     "rationale": "Oracle is BBB- (S&P) with 5-year CDS near 295bp (reported); about 3% over base."
+    }
+   },
+   "status_note": "Preset values are illustrative analogues of the named structure, not that company's actual parameters. Outputs inherit hypothetical unless every override is reported/verified."
+  },
+  {
+   "id": "xai_spv_like",
+   "label": "xAI SPV-like",
+   "description": "Off-balance-sheet SPV leases Nvidia GPUs to xAI/SpaceX; bonds sold to investors; no Nvidia backstop reported; no credit-fund back-leverage.",
+   "params": {
+    "loan_to_cost": 0.625,
+    "backstop_share_of_capacity": 0.0,
+    "contract_value_to_build_cost": 1.3,
+    "lab_outside_revenue_share": 0.3,
+    "lab_funding_mix": 0.4,
+    "credit_spread": 0.044,
+    "credit_fund_back_leverage_ratio": 0.0,
+    "mezz_ratio": 0.0
+   },
+   "overrides": {
+    "loan_to_cost": {
+     "value": 0.625,
+     "status": "reported",
+     "rationale": "$12.5B debt of a $20B SPV = 62.5% (reported, closing not confirmed)."
+    },
+    "backstop_share_of_capacity": {
+     "value": 0.0,
+     "status": "hypothetical",
+     "rationale": "No Nvidia capacity backstop reported for the xAI SPV; Nvidia up to $2B equity is a different mechanism."
+    },
+    "contract_value_to_build_cost": {
+     "value": 1.3,
+     "status": "hypothetical",
+     "rationale": "Five-year lease with purchase option: repays cost plus financing cost, no extra site services."
+    },
+    "lab_outside_revenue_share": {
+     "value": 0.3,
+     "status": "hypothetical",
+     "rationale": "xAI/SpaceX AI services are nascent; most payments depend on capital raised (SpaceX IPO, bonds)."
+    },
+    "lab_funding_mix": {
+     "value": 0.4,
+     "status": "hypothetical",
+     "rationale": "Nvidia put $10B into xAI, but SpaceX public equity and bonds supply the rest."
+    },
+    "credit_spread": {
+     "value": 0.044,
+     "status": "hypothetical",
+     "rationale": "Illustrative: a slightly higher spread than the default for a less seasoned borrower. A figure of 8.26% on SpaceX SPV bonds circulated but could not be confirmed, so it is not used as evidence."
+    },
+    "credit_fund_back_leverage_ratio": {
+     "value": 0.0,
+     "status": "hypothetical",
+     "rationale": "Bonds sold to investors, no private-credit fund back-leverage reported."
+    },
+    "mezz_ratio": {
+     "value": 0.0,
+     "status": "hypothetical",
+     "rationale": "No parent-level converts in the structure reported."
+    }
+   },
+   "status_note": "Preset values are illustrative analogues of the named structure, not that company's actual parameters. Outputs inherit hypothetical unless every override is reported/verified."
+  }
+ ],
+ "default_run": {
+  "checks": {
+   "build_cost_equals_equity_plus_debt": true,
+   "revenue_split_adds_up": true,
+   "cash_split_adds_to_100pct": true,
+   "end_user_plus_capital_equals_external": true,
+   "promises_not_in_cash": true
+  },
+  "lap1": {
+   "seed_equity": 100,
+   "debt_created": 166.66666666666666,
+   "revenue_booked_total": 159.99999999999997,
+   "revenue_external": 99.99999999999997,
+   "revenue_recycled": 59.99999999999999,
+   "revenue_counted_times": 1.5999999999999996,
+   "market_value_paper": 538.56,
+   "cash_created": 233.46666666666664,
+   "external_cash": 233.46666666666664,
+   "external_end_user": 44.533333333333324,
+   "external_capital": 188.9333333333333,
+   "recycled_cash": 122.26666666666667,
+   "cash_moved": 355.7333333333333,
+   "external_share": 0.6562968515742129,
+   "recycled_share": 0.34370314842578714,
+   "promises_outstanding": 396.2666666666666,
+   "claims_count": 9,
+   "claimants_count": 8
+  },
+  "ratio": 0.21542399999999995,
+  "limit_factor": 1.2745737825271228,
+  "leverage": {
+   "seed": 100,
+   "debt": 166.66666666666666,
+   "build_cost": 266.66666666666663,
+   "revenue": 159.99999999999997,
+   "gross_profit": 119.67999999999998,
+   "paper_value": 538.56,
+   "leverage_multiplier": 2.666666666666666,
+   "debt_multiplier": 1.6666666666666665,
+   "revenue_multiplier": 1.5999999999999996,
+   "paper_multiplier": 5.385599999999999,
+   "sentence": "$100 of seed cash -> $166.7 of debt -> $160 of Nvidia revenue -> about $538.6 of paper market value (paper value is not cash)."
+  },
+  "claims": {
+   "claims_count": 9,
+   "claimants_count": 8,
+   "per_asset": 1,
+   "per_asset_cash": 1,
+   "per_debt": 2.9416
+  },
+  "external_share": {
+   "low": 0.4126686656671664,
+   "base": 0.6562968515742129,
+   "high": 0.7874812593703149,
+   "joint_low": 0.29000000000000004,
+   "joint_high": 0.9500000000000001
+  },
+  "end_user_share": {
+   "note": "TOY-MODEL RESULT, not a measurement of Nvidia or any company. With the lab covering 50% of its rent from end-user revenue (a deliberately cautious setting; the reported 2025 figure for OpenAI is nearer 62%), about 12.5% of the cash in one lap comes from end users (range 2.5-31.3% moving one setting at a time). Move the setting and this changes.",
+   "low": 0.02503748125937031,
+   "base": 0.12518740629685157,
+   "high": 0.3127340823970037,
+   "joint_low": 0.009090909090909092,
+   "joint_high": 0.7125
+  },
+  "seeds_status": "hypothetical"
+ }
+}

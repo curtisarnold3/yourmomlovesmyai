@@ -1,0 +1,4257 @@
+{
+ "as_of": "2026-11-20",
+ "money_kinds": {
+  "external": "Cash that comes from outside the loop: lenders, outside investors, end customers. It is still not free money: lenders and investors must be repaid or earn a return from future end-user spending.",
+  "recycled": "Cash that started with a loop participant and returns to that participant or its customers, for example Nvidia equity in a customer that buys Nvidia systems.",
+  "promise": "Contracts, backlog, RPO, backstops, guarantees, warrants, leases, letters of intent, and equity purchases that only close on a condition (for example an IPO closing). NOT cash moved. Never added into cash totals.",
+  "mixed": "An aggregate round that contains both vendor money (recycled) and outside money (external). See money_split for the parts. Excluded from sums because the component edges are charted separately.",
+  "outside_loop_investment": "Nvidia's own cash invested in a company that is not a customer in the AI-demand loop (for example Intel, Synopsys, Nokia). It is neither outside money entering the loop nor recycled customer money. Excluded from loop totals; shown on the Nvidia node as a separate line."
+ },
+ "money_kind_labels": {
+  "external": {
+   "label": "Outside cash",
+   "reader_text": "Cash that comes from outside the loop: lenders, outside investors, end customers. It is still not free money: lenders and investors must be repaid or earn a return from future end-user spending."
+  },
+  "recycled": {
+   "label": "Recycled cash",
+   "reader_text": "Cash that started with a loop participant and returns to that participant or its customers, for example Nvidia equity in a customer that buys Nvidia systems."
+  },
+  "promise": {
+   "label": "Promise (not cash)",
+   "reader_text": "Contracts, backlog, RPO, backstops, guarantees, warrants, leases, letters of intent, and equity purchases that only close on a condition (for example an IPO closing). NOT cash moved. Never added into cash totals."
+  },
+  "mixed": {
+   "label": "Mixed round",
+   "reader_text": "An aggregate round that contains both vendor money (recycled) and outside money (external). See money_split for the parts. Excluded from sums because the component edges are charted separately. Chapters should show the money_split parts (for example vendor money and other investors) and never the bare word \"mixed\"."
+  },
+  "outside_loop_investment": {
+   "label": "Stake outside the loop",
+   "reader_text": "Nvidia's own cash invested in a company that is not a customer in the AI-demand loop (for example Intel, Synopsys, Nokia). It is neither outside money entering the loop nor recycled customer money. Excluded from loop totals; shown on the Nvidia node as a separate line."
+  }
+ },
+ "status_set": [
+  "verified",
+  "reported",
+  "calculated",
+  "hypothetical",
+  "unverified"
+ ],
+ "direction_note": "Arrows point payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants.",
+ "headline_vs_actual_note": "headline_usd_b is the announced \"up to\" figure. actual_usd_b_low/high is the best-supported amount that has actually flowed or is firmly committed. For promises, actual means money that could realistically be paid if conditions are met. null means no supporting figure. amount_split, where present, separates cash that has moved from conditional or unfunded parts of the headline.",
+ "totals": {
+  "note": "Presentation tallies over loop edges that are not aggregates. Different dates and scopes are mixed; this is a scale indicator, not an economic measure. Promise totals are kept apart and are never part of cash_total.",
+  "external_cash": {
+   "n_deals": 13,
+   "headline_usd_b_sum": 160.75,
+   "actual_usd_b_low_sum": 103.5625,
+   "actual_usd_b_high_sum": 140.0,
+   "n_headline_unknown": 2,
+   "n_actual_unknown": 2
+  },
+  "recycled_cash": {
+   "n_deals": 8,
+   "headline_usd_b_sum": 108.5,
+   "actual_usd_b_low_sum": 64.1,
+   "actual_usd_b_high_sum": 108.5,
+   "n_headline_unknown": 1,
+   "n_actual_unknown": 1
+  },
+  "promises": {
+   "n_deals": 33,
+   "headline_usd_b_sum": 1383.6,
+   "actual_usd_b_low_sum": 166.46,
+   "actual_usd_b_high_sum": 616.65,
+   "n_headline_unknown": 6,
+   "n_actual_unknown": 11
+  },
+  "cash_total": {
+   "headline_usd_b_sum": 269.25,
+   "actual_usd_b_low_sum": 167.6625,
+   "actual_usd_b_high_sum": 248.5,
+   "n_deals": 21
+  },
+  "conditional_within_cash_headline_usd_b": 35,
+  "conditional_note": "Some cash-kind deals have a part that has not moved because it is conditional (for example $35B of Amazon's $50B in OpenAI). Their headline is still inside the cash headline sums; this number is the part that has not moved. See amount_split on each deal.",
+  "excluded_from_sums": [
+   {
+    "id": "nvda-financing-consortium",
+    "reason": "aggregate/duplicative"
+   },
+   {
+    "id": "anthropic-ipo-placement",
+    "reason": "aggregate/duplicative"
+   },
+   {
+    "id": "nvda-intel",
+    "reason": "not a customer-loop edge"
+   },
+   {
+    "id": "nvda-synopsys-nokia",
+    "reason": "not a customer-loop edge"
+   },
+   {
+    "id": "nvda-cloud-commitments",
+    "reason": "not a customer-loop edge"
+   },
+   {
+    "id": "openai-compute-total-revised",
+    "reason": "aggregate/duplicative"
+   },
+   {
+    "id": "openai-round-mar2026",
+    "reason": "aggregate/duplicative"
+   }
+  ]
+ },
+ "merge_log": [
+  {
+   "deal_id": "nvda-openai-equity",
+   "merged_from": [
+    "nvidia:nvda-openai-equity",
+    "labs:nvidia-openai-equity"
+   ],
+   "resolution": "Labs file carried the superseded $100B LOI figure as this deal headline; kept $30B here and the $100B on the separate LOI edge. Both files tag reported."
+  },
+  {
+   "deal_id": "nvda-sbenergy-ohio-guarantee",
+   "merged_from": [
+    "nvidia:nvda-openai-ohio-guarantee",
+    "labs:nvidia-sbenergy-guarantee"
+   ],
+   "resolution": "Two research files described the same $105B cap. Merged. Earlier $250B press figure is superseded. Nvidia total maximum guarantee exposure: $108.5B at Jul 26 (10-Q) and $118.0B at Oct 25 (Nvidia Q3 CFO commentary, a company statement)."
+  },
+  {
+   "deal_id": "anthropic-azure-compute",
+   "merged_from": [
+    "nvidia:nvda-anthropic-compute",
+    "labs:anthropic-msft-nvidia"
+   ],
+   "resolution": "Nvidia file tagged reported (secondary link only); labs file tagged verified (Microsoft and Nvidia announcement blogs, primary). Used verified because $30B and up to 1 GW are stated in the primary announcements."
+  },
+  {
+   "deal_id": "nvda-coreweave-equity",
+   "merged_from": [
+    "nvidia:nvda-coreweave-equity-2026",
+    "neoclouds:nvda-coreweave-equity"
+   ],
+   "resolution": "Same $2B Jan 2026 purchase at $87.20 in two files. Stake size sources conflict (9-11.5%, ~10% per WSJ)."
+  },
+  {
+   "deal_id": "nvda-coreweave-capacity-backstop",
+   "merged_from": [
+    "nvidia:nvda-coreweave-capacity",
+    "neoclouds:nvda-coreweave-capacity-backstop"
+   ],
+   "resolution": "Neocloud file gave actual 6.0-6.3 (amount conflict: up to $6.3B vs more than $6B). Actual set to 0-6.3 because the commitment is conditional: nothing is paid unless capacity goes unsold."
+  },
+  {
+   "deal_id": "xai-gpu-spv",
+   "merged_from": [
+    "nvidia:nvda-xai-gpu-spv",
+    "neoclouds:xai-gpu-spv"
+   ],
+   "resolution": "Nvidia file: unverified (could not confirm close). Neocloud file: reported (SPV $7.5B equity incl. Nvidia up to $2B + $12.5B debt). Took the weaker tag, unverified; actual left null."
+  },
+  {
+   "deal_id": "nvda-lambda-leaseback",
+   "merged_from": [
+    "nvidia:nvda-lambda-leaseback",
+    "neoclouds:nvda-lambda-leaseback"
+   ],
+   "resolution": "Direction differed between files (Lambda->Nvidia vs Nvidia->Lambda). Arrow follows the payer: Nvidia pays Lambda rent under the lease-back."
+  },
+  {
+   "deal_id": "amazon-openai-equity",
+   "merged_from": [
+    "labs:amazon-openai-equity"
+   ],
+   "resolution": "Research left actual null. Set low 15 (initial tranche) and high 50 (full, conditional) from the stated structure of $15B then $35B on conditions."
+  },
+  {
+   "deal_id": "openai-amd-warrant",
+   "merged_from": [
+    "labs:openai-amd"
+   ],
+   "resolution": "Research listed OpenAI->AMD. Arrow follows the grantor: AMD issues the warrant to OpenAI (chip vendor pays its customer in equity). The 6 GW chip purchase is the opposite direction and unpriced."
+  },
+  {
+   "deal_id": "openai-coreweave-compute",
+   "merged_from": [
+    "labs:openai-coreweave",
+    "neoclouds:openai-coreweave-compute"
+   ],
+   "resolution": "Labs file: unverified; neocloud file: reported (CoreWeave Q3 2026 release names OpenAI as expanded relationship, no new dollar figure). Two independent notes agree on $22.4B (press-sourced); kept reported."
+  },
+  {
+   "deal_id": "anthropic-fluidstack-50b",
+   "merged_from": [
+    "labs:anthropic-infra-50b",
+    "neoclouds:anthropic-fluidstack-dcs"
+   ],
+   "resolution": "Neocloud file: verified (Fluidstack and Anthropic statements, primary). Labs file: reported. The $50B is a company-stated plan, not a contractual payment; took the weaker tag, reported."
+  },
+  {
+   "deal_id": "nebius-financing-2026",
+   "merged_from": [
+    "neoclouds:nebius-financing-2026"
+   ],
+   "resolution": "Research left sizes null. Actual set to $5.75B converts + $3.5B Citi facility = $9.25B (calculated from the structure text; the 2025 $4.16B converts are excluded)."
+  },
+  {
+   "deal_id": "oracle-vantage-stargate-loans",
+   "merged_from": [
+    "neoclouds:oracle-vantage-stargate-loans"
+   ],
+   "resolution": "Research gave $38B (two packages, $23.25B and $14.75B) as the actual. Changed to a range: low = the smaller package, high = both as reported, because banks reportedly struggled to place the debt and syndication status is mixed."
+  }
+ ],
+ "deals": [
+  {
+   "id": "nvda-openai-loi",
+   "from": "nvidia",
+   "to": "openai",
+   "type": "loi",
+   "money_kind": "promise",
+   "headline_usd_b": 100,
+   "actual_usd_b_low": 0,
+   "actual_usd_b_high": 0,
+   "date": "2025-09",
+   "structure": "Non-binding letter of intent: up to $100B of Nvidia investment, progressively with each gigawatt deployed (about $10B per GW, 10 GW of Nvidia systems).",
+   "status": "reported",
+   "what_changed_since_announcement": "Never became a definitive agreement. Replaced in Feb 2026 by a $30B equity investment in OpenAI's funding round, not tied to deployment milestones. Reports in March 2026 quote Huang saying the full $100B was 'probably not in the cards'.",
+   "source_ids": [
+    "s_02497684",
+    "s_0803cabc"
+   ],
+   "internal_notes": "Original Sept 2025 press release not re-fetched in this pass; the post-announcement history comes from press. A Yahoo Finance piece describes a 'preliminary deal' for up to $100B more still lingering; unconfirmed. Non-binding LOI. Headline up to $100B vs actual $0: it never became a definitive agreement.",
+   "reader_note": "A September 2025 letter of intent: Nvidia said it intended to invest up to $100B in OpenAI as OpenAI deployed Nvidia systems. It was non-binding and never became a signed agreement, so no money moved under it.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "openai"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-openai-loi"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-openai-equity",
+   "from": "nvidia",
+   "to": "openai",
+   "type": "equity",
+   "money_kind": "recycled",
+   "headline_usd_b": 30,
+   "actual_usd_b_low": 30,
+   "actual_usd_b_high": 30,
+   "date": "2026-02",
+   "structure": "Equity stake in OpenAI's 2026 funding round (reported $110B announced Feb 27, later grown to ~$122B at ~$852B post-money, closed Mar 31). CNBC reported it was not tied to deployment milestones.",
+   "status": "reported",
+   "what_changed_since_announcement": "Initial reports (Feb 19) said 'up to $30B' and not final; later coverage describes it as completed, paid in late Feb. Nvidia's July 10-Q does not name OpenAI in its investment notes. | Original $100B LOI never finalized (per secondary reports); Nvidia 10-Q does not disclose OpenAI investment amount in the text retrieved.",
+   "source_ids": [
+    "s_02497684",
+    "s_cd655029",
+    "s_0fc221ed",
+    "s_7c4c573c"
+   ],
+   "internal_notes": "The 'tranches' lead was not supported; reports describe a single payment. Treat round-size details as press-sourced. $30B figure from press and OpenAI round reporting. OpenAI is also a buyer of Nvidia systems via cloud partners, so this equity is recycled cash. Merge note: Labs file carried the superseded $100B LOI figure as this deal headline; kept $30B here and the $100B on the separate LOI edge. Both files tag reported.",
+   "reader_note": "Nvidia put about $30B into OpenAI's 2026 funding round, as reported by the press. OpenAI also buys Nvidia systems through cloud partners, so we count this as recycled cash.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "openai"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-openai-equity",
+    "labs:nvidia-openai-equity"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-sbenergy-ohio-guarantee",
+   "from": "nvidia",
+   "to": "sb_energy",
+   "type": "backstop",
+   "money_kind": "promise",
+   "headline_usd_b": 105,
+   "actual_usd_b_low": 0,
+   "actual_usd_b_high": 105,
+   "date": "2026-08",
+   "structure": "Per Nvidia: credit support on the land, power and shell buildout for SB Energy to secure about 4.25 GW, up to a maximum of $105B. Site hosts Nvidia infrastructure under 20-year leases to an OpenAI-affiliated customer (PORTS campus, Pike County, Ohio). Each guarantee generally takes effect at lease commencement; first phase expected fiscal 2029.",
+   "status": "verified",
+   "what_changed_since_announcement": "Earlier WSJ-based reports said Nvidia was weighing about $250B; the signed figure was $105B. Nvidia total guarantee exposure rose from $108.5B (Jul 26) to $118.0B (Oct 25): $3.5B land, power and shell guarantees for neoclouds + $105.0B SB Energy + $9.5B power and systems credit support (Nvidia CFO commentary). Nvidia says no payments have been made under its guarantees.",
+   "source_ids": [
+    "s_7c4c573c",
+    "s_c429436a",
+    "s_9940eb5c",
+    "s_95c693fe"
+   ],
+   "internal_notes": "Cap on a contingent obligation, not a cash outlay. The $105B is one of three guarantee lines in Nvidia's $118.0B total; the $3.5B (neoclouds) and $9.5B (power and systems) lines are not charted as separate edges. Beneficiary: OpenAI-affiliated customer leasing at the SB Energy PORTS campus. Merge note: Two research files described the same $105B cap. Merged. Earlier $250B press figure is superseded. Nvidia total maximum guarantee exposure: $108.5B at Jul 26 (10-Q) and $118.0B at Oct 25 (Nvidia Q3 CFO commentary, a company statement).",
+   "reader_note": "Nvidia says it has agreed to back up to $105B of lease payments for a data-center campus in Ohio that is being built for an OpenAI-linked customer. It is a ceiling on a possible future payment, not money spent, and Nvidia says it has paid nothing under its guarantees.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "sb_energy"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-openai-ohio-guarantee",
+    "labs:nvidia-sbenergy-guarantee"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-financing-consortium",
+   "from": "nvidia",
+   "to": "financing_platforms",
+   "type": "loi",
+   "money_kind": "promise",
+   "headline_usd_b": 500,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2026-08",
+   "structure": "Nvidia partnered with BlackRock, Blackstone, KKR, Apollo, Brookfield and Goldman Sachs on financing platforms targeting more than $500B of third-party funding for AI infrastructure.",
+   "status": "reported",
+   "what_changed_since_announcement": "Nvidia's share of capital, if any, not disclosed in sources reviewed. On the Nov 17 call, press reports Kress cited these capital partners as a reason Nvidia could be more selective with its own balance sheet.",
+   "source_ids": [
+    "s_2e55e321",
+    "s_55ed6102"
+   ],
+   "internal_notes": "$500B is a target for third-party money, not Nvidia's commitment. $500B is a target for third-party money, not an Nvidia commitment. Excluded from sums. Platform partners also include BlackRock, KKR, Brookfield (not separate nodes).",
+   "reader_note": "Nvidia and large investment firms said they are setting up platforms aiming to raise more than $500B from other investors for AI infrastructure. The $500B is a target for other people's money, not an Nvidia commitment, so it is not added to any total.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "blackstone",
+    "apollo",
+    "banks"
+   ],
+   "loop_edge": true,
+   "sum_exclude": true,
+   "merged_from": [
+    "nvidia:nvda-financing-consortium"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-anthropic-equity",
+   "from": "nvidia",
+   "to": "anthropic",
+   "type": "equity",
+   "money_kind": "promise",
+   "headline_usd_b": 10,
+   "actual_usd_b_low": 0,
+   "actual_usd_b_high": 10,
+   "date": "2025-11",
+   "structure": "Nov 2025: Nvidia up to $10B and Microsoft up to $5B in Anthropic, alongside Anthropic's $30B Azure compute commitment. Oct-Nov 2026: per Anthropic's amended S-1, Nvidia agreed to buy about $10B of stock at the IPO price in a concurrent ~$26B private placement with Google, AMD, Broadcom, Micron, Microsoft and TSMC; placement closes only if IPO closes.",
+   "status": "reported",
+   "what_changed_since_announcement": "Reported (press, S-1/A coverage): Nvidia agreed to buy about $10B of stock at the IPO price in a concurrent private placement that closes only if the IPO closes and needs stockholder approval. The IPO priced Nov 18 at $83 (Anthropic announcement) with closing expected Nov 20; a headline on Anthropic's news page dated Nov 20 refers to the placement closing, which we have not read, so we still count it as a promise. Whether this is the same money as the Nov 2025 'up to $10B' commitment or a separate purchase is not stated, so a $20B total cannot be ruled out.",
+   "source_ids": [
+    "s_a75beee5",
+    "s_10438831",
+    "s_e7af17b4",
+    "s_909b7579"
+   ],
+   "internal_notes": "Nvidia's Q3 FY27 release says it expanded Anthropic's access to Grace Blackwell and Vera Rubin capacity through cloud providers, and mentions no equity. Primary S-1/A not read directly. Contingent, not cash moved: counted as a promise until the IPO closes. Nvidia's Q3 release mentions no Anthropic equity.",
+   "reader_note": "Nvidia has been reported to plan to buy about $10B of Anthropic stock at the IPO price. The purchase depends on the IPO closing, so we show it as a promise, not as cash that has moved.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "anthropic"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-anthropic-equity"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": true,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "anthropic-ipo-placement",
+   "from": "placement_buyers",
+   "to": "anthropic",
+   "type": "equity",
+   "money_kind": "promise",
+   "headline_usd_b": 26,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2026-11",
+   "structure": "Concurrent ~$26B private placement alongside the Anthropic IPO. Per the amended S-1: Google about $10B, Nvidia about $10B (the same $10B shown on the separate Nvidia line, not additional), AMD about $2.5B, Broadcom, Micron and Microsoft about $1B each, TSMC about $0.5B. It closes only if the IPO closes. The IPO priced Nov 18 at $83 and was expected to close Nov 20.",
+   "status": "reported",
+   "what_changed_since_announcement": "Reported in coverage of Anthropic's amended S-1. Microsoft's stake is reported at about $1B, not $5B. A Nov 20 headline on Anthropic's news page refers to the closing of the placement; we have not read it.",
+   "source_ids": [
+    "s_a75beee5",
+    "s_e7af17b4",
+    "s_909b7579"
+   ],
+   "internal_notes": "Aggregate that contains nvda-anthropic-equity; excluded from sums to avoid double counting. Chip and memory suppliers investing in a customer.",
+   "reader_note": "A private placement of about $26B of Anthropic stock, bought by seven technology companies alongside Anthropic's IPO: Google about $10B, Nvidia about $10B, AMD about $2.5B, Broadcom, Micron and Microsoft about $1B each, and TSMC about $0.5B. Nvidia's $10B is the same money as the separate Nvidia line, so this total is not added to anything. It depends on the IPO closing.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "google",
+    "amd",
+    "broadcom",
+    "tsmc",
+    "microsoft"
+   ],
+   "loop_edge": true,
+   "sum_exclude": true,
+   "merged_from": [],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": true,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "anthropic-azure-compute",
+   "from": "anthropic",
+   "to": "microsoft",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 30,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2025-11",
+   "structure": "Anthropic committed to purchase $30B of Azure compute capacity, with up to 1 GW on Nvidia Grace Blackwell / Vera Rubin systems.",
+   "status": "verified",
+   "what_changed_since_announcement": "No change found. | Later rounds: $30B Series G at $380B (Feb 2026), $65B Series H at $965B (May 2026) per secondary sources.",
+   "source_ids": [
+    "s_10438831",
+    "s_b9ae0481",
+    "s_e6a97dfb"
+   ],
+   "internal_notes": "Spend flows to Microsoft, then in part to Nvidia as chip supplier. Series G/H not confirmed from primary source by me. Spend flows to Microsoft, then in part to Nvidia as chip supplier. Merge note: Nvidia file tagged reported (secondary link only); labs file tagged verified (Microsoft and Nvidia announcement blogs, primary). Used verified because $30B and up to 1 GW are stated in the primary announcements.",
+   "reader_note": "Anthropic said it will buy $30B of Azure computing capacity from Microsoft, including up to 1 gigawatt on Nvidia systems. Part of that spending flows on to Nvidia as the chip supplier.",
+   "amount_split": null,
+   "parties": [
+    "anthropic",
+    "microsoft"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-anthropic-compute",
+    "labs:anthropic-msft-nvidia"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-coreweave-equity",
+   "from": "nvidia",
+   "to": "coreweave",
+   "type": "equity",
+   "money_kind": "recycled",
+   "headline_usd_b": 2,
+   "actual_usd_b_low": 2,
+   "actual_usd_b_high": 2,
+   "date": "2026-01",
+   "structure": "Nvidia bought $2B of CoreWeave Class A at $87.20/share to support buildout toward 5 GW by 2030. Earlier: pre-IPO stake and IPO purchase (2025). Stake reported ~9-11.5% (sources conflict); ~10% per WSJ via Seoul Economic Daily.",
+   "status": "reported",
+   "what_changed_since_announcement": "CoreWeave stock fell afterwards; Nvidia says CoreWeave needs no 'backstop or bailout' (Huang, per roic.ai summary). | Shares traded about $40-61 in Nov 2026, well below the $87.20 purchase price (price from press, not verified).",
+   "source_ids": [
+    "s_efcbdc97",
+    "s_a7ff783e",
+    "s_caabcded"
+   ],
+   "internal_notes": "Pre-IPO/IPO amounts not re-verified here. Nvidia is also a supplier and was reported to have committed up to about $6.3B to buy CoreWeave's unused capacity through 2032 (2025 arrangement; figure varies by report). Shares traded about $40-61 in Nov 2026 (CRWV closed $44.91 on Nov 19, reported) vs $87.20 paid. Merge note: Same $2B Jan 2026 purchase at $87.20 in two files. Stake size sources conflict (9-11.5%, ~10% per WSJ).",
+   "reader_note": "In January 2026 Nvidia bought $2B of CoreWeave stock at $87.20 a share. Nvidia is also a supplier to CoreWeave, so we count this as recycled cash. CoreWeave shares have traded well below that price since.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "coreweave"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-coreweave-equity-2026",
+    "neoclouds:nvda-coreweave-equity"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-coreweave-capacity-backstop",
+   "from": "nvidia",
+   "to": "coreweave",
+   "type": "backstop",
+   "money_kind": "promise",
+   "headline_usd_b": 6.3,
+   "actual_usd_b_low": 0,
+   "actual_usd_b_high": 6.3,
+   "date": "2025-09",
+   "structure": "Nvidia agreed to purchase CoreWeave's unsold cloud capacity, up to $6.3B, through April 13, 2032, subject to conditions (conditional capacity purchase, not a debt guarantee).",
+   "status": "reported",
+   "what_changed_since_announcement": "No payment evidence found; Huang disputed a 'backstop' framing. | Not updated in sources found.",
+   "source_ids": [
+    "s_67caa9cc",
+    "s_b07e4564",
+    "s_c4fb2b10"
+   ],
+   "internal_notes": "Figure traces to a CoreWeave SEC filing per search summary; filing itself not fetched. Upgrade to verified once read. Sources differ on exact amount ('up to $6.3B' vs 'more than $6B'). Conditional capacity purchase through April 13, 2032; Huang disputes the backstop framing. Merge note: Neocloud file gave actual 6.0-6.3 (amount conflict: up to $6.3B vs more than $6B). Actual set to 0-6.3 because the commitment is conditional: nothing is paid unless capacity goes unsold.",
+   "reader_note": "Nvidia agreed to buy CoreWeave's unsold cloud capacity, up to about $6.3B, through 2032. It only pays if capacity goes unsold. Nvidia has disputed calling it a backstop.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "coreweave"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-coreweave-capacity",
+    "neoclouds:nvda-coreweave-capacity-backstop"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-xai-equity",
+   "from": "nvidia",
+   "to": "xai",
+   "type": "equity",
+   "money_kind": "recycled",
+   "headline_usd_b": 10,
+   "actual_usd_b_low": 2,
+   "actual_usd_b_high": 10,
+   "date": "2026-01",
+   "structure": "Nvidia reportedly invested $10B in xAI's $20B January 2026 round; SpaceX acquired xAI in Feb 2026 (all-stock, $1.25T), converting the stake to SpaceX shares. Nvidia's 10-Q/13F: ~122.8M Class A shares worth ~$21B at June 30, ~$17.2B on Aug 14, ~130.5M shares ~$19.7B at Sep 30. SpaceX IPO'd in June; Musk said it will build AI services exclusively on Nvidia.",
+   "status": "reported",
+   "what_changed_since_announcement": "Private xAI equity became public SpaceX shares; carrying value moves with SpaceX stock.",
+   "source_ids": [
+    "s_b60346b3",
+    "s_00f8966c"
+   ],
+   "internal_notes": "The $10B check is from an unnamed source per CNBC. Amount unverified: the $10B comes from an unnamed source per CNBC, and Bloomberg reported Nvidia investing up to about $2B; xAI never disclosed amounts. Range 2-10 reflects that. Stake converted to SpaceX shares after the all-stock acquisition.",
+   "reader_note": "Nvidia was reported to invest in xAI's early-2026 funding round. The size is uncertain (press reports range from about $2B to $10B), and the stake later became SpaceX shares when SpaceX bought xAI.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "xai"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-xai-spacex"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "xai-gpu-spv",
+   "from": "xai",
+   "to": "xai_spv",
+   "type": "lease",
+   "money_kind": "promise",
+   "headline_usd_b": 20,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2025-10",
+   "structure": "SPV with $7.5B equity (Nvidia up to $2B) and $12.5B debt buys Nvidia GPUs and leases them to xAI for five years with purchase option; debt secured by the GPUs.",
+   "status": "unverified",
+   "what_changed_since_announcement": "We could not confirm that it closed as described; later reporting focuses on the $10B equity round. | No confirmation of final closing terms found.",
+   "source_ids": [
+    "s_138113f9",
+    "s_0f3a5f9d",
+    "s_1bd92e27",
+    "s_0c926a74"
+   ],
+   "internal_notes": "Do not chart as a completed deal. Implied debt share 62.5% of SPV capital. Implied debt share 62.5% of SPV capital ($12.5B/$20B), a loan-to-cost datapoint. SPV equity and debt are cash; the lease is the promise. Do not chart as a completed deal. Merge note: Nvidia file: unverified (could not confirm close). Neocloud file: reported (SPV $7.5B equity incl. Nvidia up to $2B + $12.5B debt). Took the weaker tag, unverified; actual left null.",
+   "reader_note": "A reported plan for a special-purpose company with $7.5B of equity and $12.5B of debt to buy Nvidia chips and lease them to xAI. We could not confirm that it closed as described, so no amount is counted.",
+   "amount_split": null,
+   "parties": [
+    "xai",
+    "nvidia",
+    "apollo"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-xai-gpu-spv",
+    "neoclouds:xai-gpu-spv"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "spacex-xai-chip-spv",
+   "from": "xai",
+   "to": "xai_spv",
+   "type": "lease",
+   "money_kind": "promise",
+   "headline_usd_b": 40,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2026-10",
+   "structure": "~$40B package to buy Nvidia chips via off-balance-sheet SPV leasing to SpaceX; reportedly $32B bonds sold at 8.26% (20 Nov 2026) plus bank loans.",
+   "status": "unverified",
+   "what_changed_since_announcement": "Earlier xAI arrangement reportedly failed sale-leaseback treatment, ~$13B debt recognized. SpaceX acquired xAI in all-stock deal Feb 2026.",
+   "source_ids": [
+    "s_43f66fdc",
+    "s_089c9fa3"
+   ],
+   "internal_notes": "Status of close conflicting across sources. Reports describe a package of about $40B (about $10B bank loans and $30B investment-grade bonds, Apollo-led). A claim of $32B of bonds sold at 8.26% appears in one headline we could not confirm, so it is unverified and not used as a rate datapoint. Close status conflicts across sources.",
+   "reader_note": "A reported chip-leasing package of about $40B for SpaceX, including bonds and bank loans. Reports disagree on what has closed, so no amount is counted.",
+   "amount_split": null,
+   "parties": [
+    "xai",
+    "apollo",
+    "banks"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:spacex-xai-chip-spv"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-lambda-leaseback",
+   "from": "nvidia",
+   "to": "lambda",
+   "type": "lease",
+   "money_kind": "promise",
+   "headline_usd_b": 1.5,
+   "actual_usd_b_low": 1.5,
+   "actual_usd_b_high": 1.5,
+   "date": "2025-09",
+   "structure": "Nvidia leases back about 18,000 GPUs from Lambda over four years (about $1.3B for 10,000 GPUs plus $200M for 8,000); Lambda funded purchases partly via a $917M Morgan Stanley-led leveraged loan.",
+   "status": "reported",
+   "what_changed_since_announcement": "No update found.",
+   "source_ids": [
+    "s_32f4a9f9",
+    "s_8247ea32"
+   ],
+   "internal_notes": "Nvidia is also a Lambda investor; amount not found. Based on The Information/Bloomberg reporting. Lambda funded the GPUs partly with a $917M leveraged loan; Nvidia is also a Lambda investor (amount not found). Merge note: Direction differed between files (Lambda->Nvidia vs Nvidia->Lambda). Arrow follows the payer: Nvidia pays Lambda rent under the lease-back.",
+   "reader_note": "Nvidia agreed to rent back about 18,000 GPUs from Lambda over four years, worth about $1.5B. Nvidia is also an investor in Lambda.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "lambda"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-lambda-leaseback",
+    "neoclouds:nvda-lambda-leaseback"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-intel",
+   "from": "nvidia",
+   "to": "intel",
+   "type": "equity",
+   "money_kind": "outside_loop_investment",
+   "headline_usd_b": 5,
+   "actual_usd_b_low": 5,
+   "actual_usd_b_high": 5,
+   "date": "2025-09",
+   "structure": "$5B Intel stock purchase (Sept 2025) alongside product collaboration. Value ~$30B at June 30, 2026, ~$22B in mid-Aug per CNBC; a 13F-based summary says ~$19.4B at Sep 30.",
+   "status": "reported",
+   "what_changed_since_announcement": "Stake appreciated strongly, then fell; one report says Nvidia trimmed it.",
+   "source_ids": [
+    "s_b60346b3",
+    "s_7a3eee8e"
+   ],
+   "internal_notes": "Intel is a supplier/partner, not a primary AI-lab customer; include as a different category. Not a customer-loop edge: Intel is a partner/supplier. Included for scale of Nvidia equity portfolio. Excluded from loop totals.",
+   "reader_note": "Nvidia bought $5B of Intel stock in September 2025. Intel is a partner, not an AI customer in this loop, so it is shown separately and left out of the loop totals.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "intel"
+   ],
+   "loop_edge": false,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-intel"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-nebius",
+   "from": "nvidia",
+   "to": "nebius",
+   "type": "equity",
+   "money_kind": "recycled",
+   "headline_usd_b": 2,
+   "actual_usd_b_low": 2,
+   "actual_usd_b_high": 2,
+   "date": "2026-03",
+   "structure": "$2B investment in Nebius announced Mar 11, 2026, via pre-funded warrants for 21,065,936 Class A shares (Nvidia release).",
+   "status": "verified",
+   "what_changed_since_announcement": "Nvidia's own release confirms the $2B. A ~$281M 13F figure is a different or partial holding and does not conflict.",
+   "source_ids": [
+    "s_aa87e947",
+    "s_f68f74b0"
+   ],
+   "internal_notes": "Upgraded from unverified: the amount is in Nvidia's own announcement.",
+   "reader_note": "Nvidia announced a $2B investment in Nebius in March 2026, made through pre-funded warrants (rights to buy shares at a nominal price).",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "nebius"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-nebius"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-synopsys-nokia",
+   "from": "nvidia",
+   "to": "synopsys_nokia",
+   "type": "equity",
+   "money_kind": "outside_loop_investment",
+   "headline_usd_b": 3,
+   "actual_usd_b_low": 2.7,
+   "actual_usd_b_high": 3,
+   "date": "2025-12",
+   "structure": "Synopsys ~$2B stake (13F ~ $1.9B); Nokia 13F ~ $0.74B after reported cut. Headline of Nokia $1B not confirmed.",
+   "status": "unverified",
+   "what_changed_since_announcement": "The announced investments were about $2B (Synopsys) and $1B (Nokia). The $2.7B is the value of the holdings in 13F summaries, so the true cash is between $2.7B and the announced $3B.",
+   "source_ids": [
+    "s_aa87e947"
+   ],
+   "internal_notes": "Secondary aggregator only; these are vendors/partners, not AI-demand circular loops. Vendors/partners, not an AI-demand loop edge. Secondary aggregator source only. Excluded from loop totals.",
+   "reader_note": "Nvidia's stakes in Synopsys and Nokia. The $2.7B is the value of the holdings in investor-filing summaries, not cash Nvidia paid; the announced investments were about $2B and $1B. They are partners, not AI customers in this loop, so they are shown separately.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "synopsys_nokia"
+   ],
+   "loop_edge": false,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-synopsys-nokia"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-nscale",
+   "from": "nvidia",
+   "to": "nscale",
+   "type": "warrant",
+   "money_kind": "promise",
+   "headline_usd_b": null,
+   "actual_usd_b_low": 0.06,
+   "actual_usd_b_high": 0.92,
+   "date": "2026",
+   "structure": "Single analysis: $60M cash for warrants plus $860M five-year rent guarantee (Texas site). Other sources cite GBP500M or $3.1B.",
+   "status": "unverified",
+   "what_changed_since_announcement": "Reported guarantee 'in flux' per FourWeekMBA headline.",
+   "source_ids": [
+    "s_91a042b1"
+   ],
+   "internal_notes": "Conflicting figures; keep as low-confidence. Single analysis: about $60M cash for warrants plus an $860M five-year rent guarantee. Other sources cite GBP500M or $3.1B. Low confidence.",
+   "reader_note": "A reported arrangement with Nscale involving warrants and a rent guarantee. Reports give very different figures ($60M to $860M and more), so treat this as a low-confidence line.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "nscale"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-nscale"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-sbenergy-equity",
+   "from": "nvidia",
+   "to": "sb_energy",
+   "type": "equity",
+   "money_kind": "recycled",
+   "headline_usd_b": 1.5,
+   "actual_usd_b_low": 1.5,
+   "actual_usd_b_high": 1.5,
+   "date": "2026-08",
+   "structure": "Reported $1.5B Nvidia investment in SB Energy alongside the Ohio guarantee and exclusive-supply terms.",
+   "status": "reported",
+   "what_changed_since_announcement": "None.",
+   "source_ids": [
+    "s_2e55e321"
+   ],
+   "internal_notes": "",
+   "reader_note": "Nvidia was reported to invest about $1.5B in SB Energy alongside the Ohio guarantee. SB Energy builds the campus and leases it to an OpenAI-linked customer.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "sb_energy"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-sbenergy-equity"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-cloud-commitments",
+   "from": "nvidia",
+   "to": "cloud_dc_providers",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 102,
+   "actual_usd_b_low": 28,
+   "actual_usd_b_high": 102,
+   "date": "2026-10",
+   "structure": "Nvidia's own R&D cloud and data-center commitments at Oct 25, 2026: cloud service agreements $28B plus data-center leases not yet commenced $74B = $102B (from $74B at Jul 26). Per Nvidia these provide the infrastructure that powers its research and development (chips, networking, systems engineering, open models); leases run up to 20 years, and Nvidia says it may assign some leases to third parties.",
+   "status": "verified",
+   "what_changed_since_announcement": "Rose in the quarter. This is Nvidia buying compute and space for itself, not financing a neocloud customer. The separate neocloud agreements are the $32B line.",
+   "source_ids": [
+    "s_c429436a",
+    "s_7c4c573c"
+   ],
+   "internal_notes": "NOT a neocloud-loop edge (reclassified after audit): shown as a fact only and excluded from loop totals. Counterparties are not named. Company statement (Nvidia CFO commentary).",
+   "reader_note": "Nvidia's own commitments for cloud services ($28B) and data-center leases not yet started ($74B), which Nvidia says support its own research and development. This is Nvidia buying for itself, not financing a customer, so it is not part of the loop totals.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "cloud_dc_providers"
+   ],
+   "loop_edge": false,
+   "sum_exclude": true,
+   "merged_from": [
+    "nvidia:nvda-cloud-commitments"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-neocloud-agreements",
+   "from": "nvidia",
+   "to": "neocloud_group",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 32,
+   "actual_usd_b_low": 0,
+   "actual_usd_b_high": 32,
+   "date": "2026-10",
+   "structure": "Nvidia future commitments to neoclouds of $32B (about $6B in 2028 and $8B in 2032 and after), described by Nvidia as enabling broader access to its AI infrastructure for AI startups, model builders and enterprises. They take effect only if the neoclouds secure financing for the data-center infrastructure, and deployment and acceptance follow. At Jul 26 this line was $36B (\"AI cloud agreements\").",
+   "status": "verified",
+   "what_changed_since_announcement": "Fell from $36B to $32B in the quarter. Contingent: nothing is owed unless partners finance, deploy and Nvidia accepts.",
+   "source_ids": [
+    "s_c429436a",
+    "s_7c4c573c"
+   ],
+   "internal_notes": "Company statement (Nvidia CFO commentary). Counterparties are not named. A promise, not cash.",
+   "reader_note": "Nvidia reports $32B of future commitments to neocloud companies. They take effect only if those companies secure financing and deliver, and Nvidia says nothing is owed until then.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "neocloud_group"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nvda-mistral-reflection-tml",
+   "from": "nvidia",
+   "to": "mistral",
+   "type": "equity",
+   "money_kind": "recycled",
+   "headline_usd_b": null,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2025-2026",
+   "structure": "Participation in rounds; Nvidia's own check sizes not found. Mistral EUR1.7B Series C (Sept 2025, ASML-led) included Nvidia; a TML $2.5B figure is described as in progress.",
+   "status": "unverified",
+   "what_changed_since_announcement": "n/a",
+   "source_ids": [
+    "s_5ef2c8dd"
+   ],
+   "internal_notes": "Wowtale notes amounts are often round totals, not Nvidia's checks. Also covers Reflection AI and Thinking Machines, which are not separate nodes. Nvidia check sizes not found.",
+   "reader_note": "Nvidia took part in funding rounds for Mistral and other AI start-ups. The size of Nvidia's own checks was not disclosed.",
+   "amount_split": null,
+   "parties": [
+    "nvidia",
+    "mistral"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "nvidia:nvda-mistral-reflection-tml"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "openai-oracle-compute",
+   "from": "openai",
+   "to": "oracle",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 300,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2025-09",
+   "structure": "Multi-year cloud capacity (Stargate sites) widely reported at ~$300B over ~5 years starting 2027.",
+   "status": "reported",
+   "what_changed_since_announcement": "Oracle RPO reached $664B at 31 Aug 2026 (company-reported); OpenAI share is analyst estimate, not company-disclosed. Reported scale-back: planned 600 MW Abilene expansion cancelled, capping Abilene at 1.2 GW.",
+   "source_ids": [
+    "s_61feaacc",
+    "s_b31346dd"
+   ],
+   "internal_notes": "Oracle has not itself named OpenAI's contract value in the sources retrieved; $300B is press-reported. Nvidia 10-Q separately notes a $105B guarantee cap for an OpenAI affiliate leasing at an SB Energy campus (see nvidia-sbenergy-guarantee). $300B is press-reported, not company-disclosed. Oracle discloses RPO ($664B at 31 Aug 2026), not per-customer value.",
+   "reader_note": "OpenAI's cloud capacity deal with Oracle for Stargate sites, widely reported at about $300B over five years starting in 2027. Neither company has confirmed the figure; Oracle reports only its total backlog.",
+   "amount_split": null,
+   "parties": [
+    "openai",
+    "oracle"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:openai-oracle-compute"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "openai-azure-compute",
+   "from": "openai",
+   "to": "microsoft",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 250,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2025-10",
+   "structure": "Incremental $250B Azure commitment; Microsoft gave up right of first refusal as compute provider.",
+   "status": "verified",
+   "what_changed_since_announcement": "Part of Oct 2025 recapitalization. Microsoft FY27 Q1 10-Q headline: commercial RPO +73% to $677B (the OpenAI share is not separated out).",
+   "source_ids": [
+    "s_5381f866",
+    "s_971d55fd"
+   ],
+   "internal_notes": "Multi-year, no stated end date in retrieved text. Time frame unverified.",
+   "reader_note": "As part of the October 2025 restructuring, OpenAI committed to buy an extra $250B of Azure cloud services from Microsoft. Microsoft gave up its right of first refusal as OpenAI's compute provider.",
+   "amount_split": null,
+   "parties": [
+    "openai",
+    "microsoft"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:openai-microsoft-azure"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "microsoft-openai-equity",
+   "from": "microsoft",
+   "to": "openai",
+   "type": "equity",
+   "money_kind": "recycled",
+   "headline_usd_b": 13,
+   "actual_usd_b_low": 11.6,
+   "actual_usd_b_high": 13,
+   "date": "2025-10",
+   "structure": "Microsoft's filings put its total funding commitment to OpenAI at $13B; about $11.6B had been funded at Sep 30, 2025 (as quoted by The Register from the filing). Separately, Microsoft's Oct 28, 2025 blog says it holds about 27% of OpenAI as-converted (previously 32.5%), valued at about $135B, with IP rights through 2032 and revenue share continuing until an expert panel verifies AGI.",
+   "status": "reported",
+   "what_changed_since_announcement": "The stake has probably been diluted further by 2026 funding rounds, but no filing says by how much.",
+   "source_ids": [
+    "s_5381f866",
+    "s_913ae360",
+    "s_0d6cd3da"
+   ],
+   "internal_notes": "Headline 13 is Microsoft's earlier funding commitments (10-Q), not the stake value. The $13B is the total funding commitment from Microsoft filings (via press quotes); the Microsoft blog cited gives the stake and its value, not the $13B. $135B is the stake value, a separate figure.",
+   "reader_note": "Microsoft holds roughly 27% of OpenAI after the October 2025 restructuring, worth about $135B at the time. Microsoft's filings put its total funding commitment at $13B, of which about $11.6B had been funded at September 2025. Microsoft is also OpenAI's cloud provider.",
+   "amount_split": {
+    "cash_moved_usd_b": 11.6,
+    "conditional_usd_b": 0,
+    "not_yet_funded_usd_b": 1.4,
+    "label": "$11.6B funded at Sep 30, 2025; about $1.4B of the $13B commitment not yet funded (later reports say about $12B funded; not checked against the filing)"
+   },
+   "parties": [
+    "microsoft",
+    "openai"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:microsoft-openai-stake"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "openai-aws-compute",
+   "from": "openai",
+   "to": "amazon",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 138,
+   "actual_usd_b_low": 38,
+   "actual_usd_b_high": 138,
+   "date": "2025-11",
+   "structure": "Original $38B multi-year deal (Nov 2025) expanded Feb 2026 by $100B over 8 years incl. ~2 GW Trainium capacity.",
+   "status": "calculated",
+   "what_changed_since_announcement": "Expanded in Feb 2026 together with Amazon's equity investment.",
+   "source_ids": [
+    "s_b57dd639",
+    "s_1b81bc56"
+   ],
+   "internal_notes": "Record both: $38B original, +$100B incremental over 8 years (total $138B per press arithmetic). Neither source states a $138B total; it is our sum of the $38B original deal and the $100B expansion, so the total is tagged calculated and each part keeps its own tag.",
+   "reader_note": "OpenAI's cloud deal with Amazon: $38B signed in November 2025, then expanded by $100B over eight years in February 2026. The $138B total is our sum of the two parts, not a figure either company states.",
+   "amount_split": null,
+   "parties": [
+    "openai",
+    "amazon"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:openai-aws"
+   ],
+   "money_split": null,
+   "components": [
+    {
+     "label": "Original deal, Nov 2025",
+     "usd_b": 38,
+     "status": "verified",
+     "source_ids": [
+      "s_b57dd639",
+      "s_1b81bc56"
+     ]
+    },
+    {
+     "label": "Expansion over 8 years, Feb 2026",
+     "usd_b": 100,
+     "status": "verified",
+     "source_ids": [
+      "s_b57dd639",
+      "s_1b81bc56"
+     ]
+    }
+   ],
+   "formula_text": "$38B + $100B expansion",
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "amazon-openai-equity",
+   "from": "amazon",
+   "to": "openai",
+   "type": "equity",
+   "money_kind": "recycled",
+   "headline_usd_b": 50,
+   "actual_usd_b_low": 15,
+   "actual_usd_b_high": 50,
+   "date": "2026-02",
+   "structure": "$15B initial then $35B later on conditions; part of the 2026 round. Press (secondary) reports conditions tied to IPO/AGI, not confirmed by companies.",
+   "status": "verified",
+   "what_changed_since_announcement": "Secondary report says the investment was fully funded by Q3 2026; not confirmed in a filing.",
+   "source_ids": [
+    "s_b57dd639",
+    "s_eff51b81"
+   ],
+   "internal_notes": "Circularity: investor is also a $138B cloud vendor to OpenAI. Investor is also a $138B cloud vendor to OpenAI. Conditions reported (IPO/AGI) by secondary press only. Merge note: Research left actual null. Set low 15 (initial tranche) and high 50 (full, conditional) from the stated structure of $15B then $35B on conditions.",
+   "reader_note": "Amazon said it would invest $50B in OpenAI: $15B at the start, and another $35B later if certain conditions are met. We show the $15B and the $35B separately, because the $35B has not moved. Amazon is also a large cloud vendor to OpenAI.",
+   "amount_split": {
+    "cash_moved_usd_b": 15,
+    "conditional_usd_b": 35,
+    "not_yet_funded_usd_b": 0,
+    "label": "$15B initial investment; a further $35B only if certain conditions are met (Amazon). The $35B has not moved."
+   },
+   "parties": [
+    "amazon",
+    "openai"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:amazon-openai-equity"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "openai-amd-warrant",
+   "from": "amd",
+   "to": "openai",
+   "type": "warrant",
+   "money_kind": "promise",
+   "headline_usd_b": null,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2025-10",
+   "structure": "6 GW Instinct GPUs; AMD issued OpenAI warrant for up to 160M shares at $0.01 vesting with deployment/price milestones.",
+   "status": "reported",
+   "what_changed_since_announcement": "First 1 GW slated H2 2026; no 2026 status update verified.",
+   "source_ids": [
+    "s_a992b524"
+   ],
+   "internal_notes": "Dollar value not disclosed by companies; press estimates vary. Warrant means chip vendor pays OpenAI in equity. Merge note: Research listed OpenAI->AMD. Arrow follows the grantor: AMD issues the warrant to OpenAI (chip vendor pays its customer in equity). The 6 GW chip purchase is the opposite direction and unpriced.",
+   "reader_note": "AMD gave OpenAI a warrant to buy up to 160 million AMD shares at a nominal price as OpenAI deploys AMD chips. In effect a chip maker pays its customer in equity. The dollar value is not disclosed.",
+   "amount_split": null,
+   "parties": [
+    "amd",
+    "openai"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:openai-amd"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "openai-broadcom-chips",
+   "from": "openai",
+   "to": "broadcom",
+   "type": "chip_purchase",
+   "money_kind": "promise",
+   "headline_usd_b": null,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2025-10",
+   "structure": "10 GW custom accelerators + Ethernet, deployment H2 2026 through 2029; financial terms undisclosed.",
+   "status": "reported",
+   "what_changed_since_announcement": "Broadcom CEO reportedly expects little OpenAI revenue in 2026.",
+   "source_ids": [
+    "s_e1ecaaf0"
+   ],
+   "internal_notes": "No dollar headline from the companies.",
+   "reader_note": "OpenAI plans to deploy 10 gigawatts of custom chips and networking from Broadcom through 2029. The companies have not published financial terms.",
+   "amount_split": null,
+   "parties": [
+    "openai",
+    "broadcom"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:openai-broadcom"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "openai-cerebras",
+   "from": "openai",
+   "to": "cerebras",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 10,
+   "actual_usd_b_low": 10,
+   "actual_usd_b_high": null,
+   "date": "2026-01",
+   "structure": "750 MW across tranches through 2028; reported >$10B.",
+   "status": "reported",
+   "what_changed_since_announcement": "No progress update found.",
+   "source_ids": [
+    "s_1bcb0178"
+   ],
+   "internal_notes": "",
+   "reader_note": "A reported OpenAI agreement for 750 megawatts of Cerebras computing capacity through 2028, reported at more than $10B.",
+   "amount_split": null,
+   "parties": [
+    "openai",
+    "cerebras"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:openai-cerebras"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "openai-coreweave-compute",
+   "from": "openai",
+   "to": "coreweave",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 22.4,
+   "actual_usd_b_low": 22.4,
+   "actual_usd_b_high": 22.4,
+   "date": "2025",
+   "structure": "About $22.4B across contracts, as reported in 2025; CoreWeave Q3 2026 backlog $132.5B total, customer split not retrieved.",
+   "status": "reported",
+   "what_changed_since_announcement": "CoreWeave's Q3 2026 release lists OpenAI among expanded relationships; no new dollar figure confirmed.",
+   "source_ids": [
+    "s_5871c43d",
+    "s_e9bb40e0",
+    "s_f30d204e"
+   ],
+   "internal_notes": "CoreWeave stock held by OpenAI not re-verified. Merge note: Labs file: unverified; neocloud file: reported (CoreWeave Q3 2026 release names OpenAI as expanded relationship, no new dollar figure). Two independent notes agree on $22.4B (press-sourced); kept reported.",
+   "reader_note": "OpenAI's cloud contracts with CoreWeave, reported at about $22.4B across several agreements. CoreWeave lists OpenAI among its expanded customers but has given no new dollar figure.",
+   "amount_split": null,
+   "parties": [
+    "openai",
+    "coreweave"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:openai-coreweave",
+    "neoclouds:openai-coreweave-compute"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "openai-compute-total-revised",
+   "from": "openai",
+   "to": "compute_providers_all",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 1400,
+   "actual_usd_b_low": 600,
+   "actual_usd_b_high": 1400,
+   "date": "2026-02",
+   "structure": "Altman cited ~$1.4T over ~8 years (Nov 2025). OpenAI reportedly told investors in Feb 2026 it targets ~$600B total compute spend by 2030.",
+   "status": "reported",
+   "what_changed_since_announcement": "Reported target was about $600B (CNBC, Feb 2026, anonymous sources) versus about $856B in a July presentation reported by the FT in Sept 2026 (scope may differ); neither is an official statement.",
+   "source_ids": [
+    "s_0fc221ed"
+   ],
+   "internal_notes": "Record both. Distinguishes contractual commitments from spend targets; the two are not identical. Aggregate: Altman ~$1.4T (Nov 2025) vs reported ~$600B by 2030 target (Feb 2026; the FT in Sept 2026 reports about $856B). Contains other edges; excluded from sums. Commitments and spend targets are not identical.",
+   "reader_note": "OpenAI's total computing plans. The CEO cited about $1.4T over eight years (Nov 2025). Reported spend targets differ: about $600B by 2030 (CNBC, Feb 2026) versus about $856B in a July presentation (FT, Sept 2026, scope may be wider). Commitment and target are different things. Summarises other lines, so not added to totals.",
+   "amount_split": null,
+   "parties": [
+    "openai",
+    "compute_providers_all"
+   ],
+   "loop_edge": true,
+   "sum_exclude": true,
+   "merged_from": [
+    "labs:openai-compute-total-revised"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": [
+    {
+     "label": "CNBC, Feb 2026: about $600B compute spend target by 2030",
+     "usd_b": 600,
+     "status": "reported",
+     "source_ids": [
+      "s_0fc221ed"
+     ]
+    },
+    {
+     "label": "FT, Sept 2026, citing a July company presentation: about $856B of compute and infrastructure spend, 2026-2030 (scope may be wider than compute)",
+     "usd_b": 856,
+     "status": "reported",
+     "source_ids": [
+      "s_04ccc8f4"
+     ]
+    }
+   ],
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "openai-round-mar2026",
+   "from": "investors_other",
+   "to": "openai",
+   "type": "equity",
+   "money_kind": "mixed",
+   "headline_usd_b": 122,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2026-03",
+   "structure": "$122B committed capital at $852B post-money; includes ~$3B from retail investors via banks.",
+   "status": "verified",
+   "what_changed_since_announcement": "Grew from $110B announced Feb 2026 at $730B pre-money.",
+   "source_ids": [
+    "s_62064f11",
+    "s_d5db79bd"
+   ],
+   "internal_notes": "'Committed' not all funded at close; tranches conditional (e.g., Amazon). Aggregate round containing the Amazon, Nvidia and SoftBank edges; excluded from sums. Mix: Amazon + Nvidia headline $80B of $122B (about two-thirds) come from vendors; SoftBank from borrowed money. Retail ~$3B via banks.",
+   "reader_note": "OpenAI's 2026 funding round: $122B committed at a $852B valuation. About two-thirds comes from vendors (Amazon and Nvidia), and SoftBank's share was funded with borrowed money. The Amazon, Nvidia and SoftBank lines are shown separately, so this round is not added again to totals.",
+   "amount_split": null,
+   "parties": [
+    "amazon",
+    "nvidia",
+    "softbank",
+    "investors_other"
+   ],
+   "loop_edge": true,
+   "sum_exclude": true,
+   "merged_from": [
+    "labs:openai-round-mar2026"
+   ],
+   "money_split": [
+    {
+     "kind": "recycled",
+     "usd_b": 80,
+     "label": "Vendor money: Amazon $50B (only $15B initial, rest conditional) + Nvidia $30B, on headline figures"
+    },
+    {
+     "kind": "external",
+     "usd_b": 42,
+     "label": "Other investors: SoftBank $30B (itself borrowed), others and about $3B retail via banks"
+    }
+   ],
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "openai-round-nov2026",
+   "from": "investors_other",
+   "to": "openai",
+   "type": "equity",
+   "money_kind": "external",
+   "headline_usd_b": 11,
+   "actual_usd_b_low": 11,
+   "actual_usd_b_high": 11,
+   "date": "2026-10",
+   "structure": "Bloomberg reported on Nov 6, citing people familiar, that OpenAI closed about $11B as the first portion of a new round at a $1.25T valuation, with the money wired as of that Friday. OpenAI declined to comment, so we show it as reported, not confirmed. One report names SoftBank and MGX among the investors; no vendor money is reported in this portion.",
+   "status": "reported",
+   "what_changed_since_announcement": "Earlier talk was a round of $30B or more at about $1.4T; Bloomberg now says the round may reach about $20B.",
+   "source_ids": [
+    "s_83526201",
+    "s_fedfe2d2",
+    "s_49e80084"
+   ],
+   "internal_notes": "Closed first portion per Bloomberg (anonymous sources, Nov 6): counted as reported external cash, tagged reported. The unclosed remainder is the separate promise line openai-round-nov2026-remainder.",
+   "reader_note": "Bloomberg reported on Nov 6, from anonymous sources, that about $11B of a new OpenAI round at a $1.25T valuation had closed as a first portion. OpenAI has not confirmed it, so it is tagged reported. We count it as outside cash; no vendor money is reported in this portion. The rest of the round is a separate promise line.",
+   "amount_split": null,
+   "parties": [
+    "softbank",
+    "mgx",
+    "investors_other"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:openai-round-nov2026"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "softbank-openai-equity",
+   "from": "softbank",
+   "to": "openai",
+   "type": "equity",
+   "money_kind": "external",
+   "headline_usd_b": 30,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2026-03",
+   "structure": "$30B in 2026 round; cumulative ~$54.6B-$64.6B reported depending on date; carried at ~$99.6B fair value at 30 Sep 2026.",
+   "status": "reported",
+   "what_changed_since_announcement": "Financed by $40B bridge loan (repaid by mid-Sep 2026 via term loan, bonds, Arm margin loan), Arm-backed margin loan upsized to $25B, OpenAI-share-backed ~$6-10B margin loan, record yen retail bond.",
+   "source_ids": [
+    "s_62064f11",
+    "s_9c88ae90"
+   ],
+   "internal_notes": "Sources conflict on cumulative figure and margin loan size; SoftBank reported first quarterly loss in ~2 years (~JPY1.12T) in Sep 2026 quarter driven by power-equipment write-off and Intel hedges. Funded by a $40B bridge (repaid by mid-Sep 2026), an Arm-backed margin loan (upsized to $25B) and an OpenAI-share-backed margin loan: external cash that is itself borrowed.",
+   "reader_note": "SoftBank put $30B into OpenAI's 2026 round. SoftBank paid for it with borrowing (a bridge loan and margin loans), so this is outside money that is itself borrowed.",
+   "amount_split": null,
+   "parties": [
+    "softbank",
+    "openai"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:softbank-openai"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "anthropic-google-tpu",
+   "from": "anthropic",
+   "to": "google",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": null,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2026-04",
+   "structure": "Multiple gigawatts of next-generation TPU capacity starting in 2027, building on the Oct 2025 deal of more than 1 GW (Anthropic announcement, Apr 6, 2026). A 3.5 GW figure through 2031 is reported from a Broadcom filing that has not been published in full.",
+   "status": "verified",
+   "what_changed_since_announcement": "Anthropic says run-rate >$30B (April 2026).",
+   "source_ids": [
+    "s_63b83b32"
+   ],
+   "internal_notes": "No dollar value disclosed; Broadcom said consumption depends on Anthropic's commercial success.",
+   "reader_note": "Anthropic announced it will use several gigawatts of Google's AI chips (TPUs) starting in 2027. No dollar value has been disclosed.",
+   "amount_split": null,
+   "parties": [
+    "anthropic",
+    "google",
+    "broadcom"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:anthropic-google-tpu"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "anthropic-fluidstack-50b",
+   "from": "anthropic",
+   "to": "fluidstack",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 50,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2025-11",
+   "structure": "Anthropic plans $50B of US data center investment starting with custom sites in Texas and New York, developed with Fluidstack; first sites 2026.",
+   "status": "reported",
+   "what_changed_since_announcement": "No later financing structure found in searches.",
+   "source_ids": [
+    "s_63b83b32",
+    "s_f36b5f88",
+    "s_2779b8ca"
+   ],
+   "internal_notes": "Backstop detail is press-reported only. Headline is a company-stated plan, not a contractual payment to Fluidstack; verified as a company statement only. Google reportedly backstops Fluidstack leases (press-only). Merge note: Neocloud file: verified (Fluidstack and Anthropic statements, primary). Labs file: reported. The $50B is a company-stated plan, not a contractual payment; took the weaker tag, reported.",
+   "reader_note": "Anthropic said it plans to invest $50B in US data centers, starting with sites built with Fluidstack. It is a company plan, not a signed payment to Fluidstack.",
+   "amount_split": null,
+   "parties": [
+    "anthropic",
+    "fluidstack"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:anthropic-infra-50b",
+    "neoclouds:anthropic-fluidstack-dcs"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "mistral-funding",
+   "from": "investors_other",
+   "to": "mistral",
+   "type": "equity",
+   "money_kind": "external",
+   "headline_usd_b": null,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2026-09",
+   "structure": "Series C EUR1.7B at EUR11.7B (Sep 2025, ASML-led); reported Series D EUR3B at >EUR20B (Sep 2026); ~$830M debt for Paris data center (Mar 2026).",
+   "status": "reported",
+   "what_changed_since_announcement": "",
+   "source_ids": [
+    "s_b35b26f1"
+   ],
+   "internal_notes": "Series D and debt from secondary sources only.",
+   "reader_note": "Mistral AI's funding: a 2025 round led by ASML and a reported larger round in 2026, plus debt for a Paris data center. Later figures come from press reports.",
+   "amount_split": null,
+   "parties": [
+    "investors_other",
+    "mistral"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "labs:mistral-funding"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "msft-coreweave-compute",
+   "from": "microsoft",
+   "to": "coreweave",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": null,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2023-01",
+   "structure": "Multi-year GPU cloud capacity; Microsoft was CoreWeave's dominant early customer. CoreWeave's 10-Q anonymizes customers as A-D.",
+   "status": "reported",
+   "what_changed_since_announcement": "Concentration has fallen. The 10-Q shows 'Customer A' at 67% of Q3 2025 revenue and 24% of Q3 2026 revenue (33% of nine-month 2026). 'Customer B' was 30% of Q3 2026 revenue. Customers are not named in the filing; press attributed 71% of H1 2025 revenue to Microsoft.",
+   "source_ids": [
+    "s_80ea2f53",
+    "s_ebbe015d"
+   ],
+   "internal_notes": "Identification of Customer A as Microsoft is an inference, not stated in the filing excerpt we read.",
+   "reader_note": "Microsoft was CoreWeave's largest early customer, under multi-year capacity contracts. CoreWeave's quarterly filing does not name its customers, so any match between a letter in the filing and a company is our inference.",
+   "amount_split": null,
+   "parties": [
+    "microsoft",
+    "coreweave"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:msft-coreweave-compute"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "meta-coreweave-compute",
+   "from": "meta",
+   "to": "coreweave",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 14.2,
+   "actual_usd_b_low": 14.2,
+   "actual_usd_b_high": 14.2,
+   "date": "2025-09",
+   "structure": "Order form under an existing master services agreement; up to about $14.2B of cloud capacity through Dec 14, 2031, with an option to extend to 2032. Subject to delivery/availability requirements and termination rights.",
+   "status": "reported",
+   "what_changed_since_announcement": "No expansion found in searches. Meta may be 'Customer B' in the 10-Q, but this is not stated.",
+   "source_ids": [
+    "s_ebff69f0",
+    "s_299739f8"
+   ],
+   "internal_notes": "Underlying 8-K summarized via a secondary site; fetch SEC original before publishing as 'verified'.",
+   "reader_note": "Meta agreed to buy up to about $14.2B of cloud capacity from CoreWeave through 2031, subject to delivery and termination terms.",
+   "amount_split": null,
+   "parties": [
+    "meta",
+    "coreweave"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:meta-coreweave-compute"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "msft-nebius-compute",
+   "from": "microsoft",
+   "to": "nebius",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 17.4,
+   "actual_usd_b_low": 17.4,
+   "actual_usd_b_high": 19.4,
+   "date": "2025-09",
+   "structure": "Five-year GPU infrastructure (GB300) contract; $17.4B base, up to about $19.4B with additional services.",
+   "status": "reported",
+   "what_changed_since_announcement": "Nebius RPO reportedly $38.7B at Q3 2026 (+3% q/q) despite $12B+ of new signings; power delays flagged by one analyst.",
+   "source_ids": [
+    "s_ce7a0aa2",
+    "s_31463fd6"
+   ],
+   "internal_notes": "Fetch the Sept 2025 Nebius 6-K to upgrade to verified.",
+   "reader_note": "A five-year GPU cloud contract between Microsoft and Nebius worth $17.4B, rising to about $19.4B with extra services.",
+   "amount_split": null,
+   "parties": [
+    "microsoft",
+    "nebius"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:msft-nebius-compute"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "meta-nebius-compute-1",
+   "from": "meta",
+   "to": "nebius",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 3.0,
+   "actual_usd_b_low": 3.0,
+   "actual_usd_b_high": 3.0,
+   "date": "2025-11",
+   "structure": "Five-year AI infrastructure agreement, about $3B.",
+   "status": "reported",
+   "what_changed_since_announcement": "Superseded in scale by the March 2026 agreement.",
+   "source_ids": [
+    "s_9096b278"
+   ],
+   "internal_notes": "Superseded in scale by the March 2026 agreement; both kept.",
+   "reader_note": "A five-year, roughly $3B AI infrastructure agreement between Meta and Nebius, later overtaken in size by the March 2026 agreement. Both are shown.",
+   "amount_split": null,
+   "parties": [
+    "meta",
+    "nebius"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:meta-nebius-compute-1"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "meta-nebius-compute-2",
+   "from": "meta",
+   "to": "nebius",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 27.0,
+   "actual_usd_b_low": 12.0,
+   "actual_usd_b_high": 27.0,
+   "date": "2026-03",
+   "structure": "'Second Meta Agreement' signed Mar 13, 2026: $12B dedicated capacity firm; Meta may buy more up to $15B further over five years (up to about $27B).",
+   "status": "reported",
+   "what_changed_since_announcement": "$12B is firm; the remainder is optional.",
+   "source_ids": [
+    "s_e9e965eb"
+   ],
+   "internal_notes": "Description from search summary of SEC 6-K; verify the exhibit text. $12B firm; the rest up to $27B is an option.",
+   "reader_note": "A March 2026 Meta-Nebius agreement: $12B of capacity is firm, and Meta may buy up to $15B more, for up to about $27B over five years.",
+   "amount_split": null,
+   "parties": [
+    "meta",
+    "nebius"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:meta-nebius-compute-2"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "nebius-financing-2026",
+   "from": "banks",
+   "to": "nebius",
+   "type": "debt",
+   "money_kind": "external",
+   "headline_usd_b": null,
+   "actual_usd_b_low": 9.25,
+   "actual_usd_b_high": 9.25,
+   "date": "2026-08",
+   "structure": "Converts: Aug 2026 $3.45B 0.50% 2030 notes and $2.3B 4.50% 2034 notes ($5.75B); earlier $4.16B converts (2025). $3.5B secured facility with Citi (Oct 2026).",
+   "status": "reported",
+   "what_changed_since_announcement": "n/a",
+   "source_ids": [
+    "s_31463fd6",
+    "s_dba15037"
+   ],
+   "internal_notes": "Coupons/principal quoted from a Substack citing the 6-K. Merge note: Research left sizes null. Actual set to $5.75B converts + $3.5B Citi facility = $9.25B (calculated from the structure text; the 2025 $4.16B converts are excluded).",
+   "reader_note": "Nebius raised money in 2026 through $5.75B of convertible notes (bonds that can turn into shares) and a $3.5B secured loan from Citi, about $9.25B in total, from banks and bond investors.",
+   "amount_split": null,
+   "parties": [
+    "banks"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:nebius-financing-2026"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "msft-iren-compute",
+   "from": "microsoft",
+   "to": "iren",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 9.7,
+   "actual_usd_b_low": 9.7,
+   "actual_usd_b_high": 9.7,
+   "date": "2025-11",
+   "structure": "Five-year GB300 GPU cloud contract, 20% prepayment, 200 MW IT across four 50 MW phases at Childress TX; about $1.94B annualized revenue at full run-rate.",
+   "status": "reported",
+   "what_changed_since_announcement": "Horizon 1 (50 MW) delivered Aug 2026; Horizons 2-4 expected later in 2026. $3.65B investment-grade financing closed June 2026.",
+   "source_ids": [
+    "s_23d50fc4",
+    "s_c5631b95"
+   ],
+   "internal_notes": "10-K also lists a separate ~$3.4B five-year cloud contract with Nvidia and ~$2.8B of July 2026 deals (Prometheus, Perplexity, Together AI), per search summary. Contract $9.7B vs $5.81B GPU capex gives a contract-to-cost ratio of 1.67; 20% prepayment.",
+   "reader_note": "A five-year, $9.7B contract for Microsoft to rent GPU capacity from IREN, with 20% paid up front. IREN is building the capacity in Texas in phases.",
+   "amount_split": null,
+   "parties": [
+    "microsoft",
+    "iren"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:msft-iren-compute"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "iren-gpu-financing",
+   "from": "banks",
+   "to": "iren",
+   "type": "debt",
+   "money_kind": "external",
+   "headline_usd_b": 3.65,
+   "actual_usd_b_low": 3.65,
+   "actual_usd_b_high": 3.65,
+   "date": "2026-06",
+   "structure": "$3.65B GPU financing (closed Jun 2026): a $2.1B private placement plus a $1.55B delayed-draw term loan (SOFR+2.25%), secured by GPUs and the Microsoft contract. IREN reports a 6.00% blended cost; one source gives 5.96% fixed for the placement, which does not appear in the filing.",
+   "status": "reported",
+   "what_changed_since_announcement": "As of Sep 30, 2026: $413M of term loan drawn and $1,575M notes issued.",
+   "source_ids": [
+    "s_33801be8",
+    "s_efa4cded"
+   ],
+   "internal_notes": "Debt alone is about 63% of capex ($3.65B/$5.81B); '96%' includes the prepayment. Useful loan-to-cost datapoint. Debt alone = 63% of capex ($3.65B/$5.81B): the loan-to-cost datapoint. With Microsoft prepayments about 96% funded.",
+   "reader_note": "IREN closed $3.65B of financing in June 2026 against its Microsoft contract: $2.1B of notes and a $1.55B term loan. The debt is about 63% of the cost of the GPUs it pays for.",
+   "amount_split": null,
+   "parties": [
+    "banks",
+    "iren"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:iren-gpu-financing"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "msft-nscale-compute",
+   "from": "microsoft",
+   "to": "nscale",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 24.0,
+   "actual_usd_b_low": 24.0,
+   "actual_usd_b_high": 43.8,
+   "date": "2025-10",
+   "structure": "About 200,000 GB300 GPUs across Texas, Portugal, UK, Norway. Dollar value not disclosed by Nscale; press says up to $24B; other outlets cite $43.8B of Microsoft statements of work.",
+   "status": "reported",
+   "what_changed_since_announcement": "Oct 2026: Microsoft terminated the UK Loughton site (grid delay) and declined an option to expand Texas; Nscale says other contracts unaffected. IPO filing cites $103B contracted take-or-pay, with Microsoft and Anthropic about 85% of contract value.",
+   "source_ids": [
+    "s_ea17972c",
+    "s_d034479a"
+   ],
+   "internal_notes": "Values conflict; dollar figures are not company-confirmed. Oct 2026: Microsoft terminated the UK Loughton site and declined a Texas expansion option. Dollar figures conflict and are not company-confirmed.",
+   "reader_note": "Microsoft contracts with Nscale for about 200,000 Nvidia GPUs. Dollar figures differ by source (up to $24B to $43.8B). In October 2026 Microsoft ended one UK site and declined to expand a Texas option.",
+   "amount_split": null,
+   "parties": [
+    "microsoft",
+    "nscale"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:msft-nscale-compute"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "msft-lambda-compute",
+   "from": "microsoft",
+   "to": "lambda",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": null,
+   "actual_usd_b_low": null,
+   "actual_usd_b_high": null,
+   "date": "2025-11",
+   "structure": "'Multi-billion-dollar' GPU capacity agreement; value undisclosed.",
+   "status": "reported",
+   "what_changed_since_announcement": "IPO reportedly targeted H2 2026; completion not confirmed.",
+   "source_ids": [
+    "s_af4391db"
+   ],
+   "internal_notes": "",
+   "reader_note": "A multi-billion-dollar Microsoft agreement for Lambda GPU capacity. The value has not been disclosed.",
+   "amount_split": null,
+   "parties": [
+    "microsoft",
+    "lambda"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:msft-lambda-compute"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "google-fluidstack-terawulf-backstop",
+   "from": "google",
+   "to": "terawulf",
+   "type": "backstop",
+   "money_kind": "promise",
+   "headline_usd_b": 3.2,
+   "actual_usd_b_low": 1.8,
+   "actual_usd_b_high": 3.2,
+   "date": "2025-08",
+   "structure": "Google backstops Fluidstack's lease obligations at Lake Mariner: $1.8B initially, raised to about $3.2B with the CB-5 expansion, in exchange for warrants (about 14% pro forma stake after expansion). Separate Abernathy JV: Google backs about $1.3B of Fluidstack lease obligations with no TeraWulf warrants.",
+   "status": "reported",
+   "what_changed_since_announcement": "Backstop raised from $1.8B to $3.2B; TeraWulf/Fluidstack JV planned $1.275B secured notes due 2030.",
+   "source_ids": [
+    "s_b78d0e91",
+    "s_3385bbb4",
+    "s_c823b607"
+   ],
+   "internal_notes": "Company press releases exist at these links but we read only search summaries; warrant counts differ across secondary sources (41M vs 73.5M); check filings. Google receives TeraWulf warrants (about 14% pro forma). Beneficiary is the lessor (TeraWulf) of Fluidstack leases.",
+   "reader_note": "Google agreed to cover Fluidstack's lease payments at TeraWulf's Lake Mariner site, $1.8B at first and about $3.2B after an expansion, and received warrants for about 14% of TeraWulf.",
+   "amount_split": null,
+   "parties": [
+    "google",
+    "fluidstack",
+    "terawulf"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:google-fluidstack-terawulf"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "google-fluidstack-cipher-backstop",
+   "from": "google",
+   "to": "cipher",
+   "type": "backstop",
+   "money_kind": "promise",
+   "headline_usd_b": 1.4,
+   "actual_usd_b_low": 1.4,
+   "actual_usd_b_high": 1.73,
+   "date": "2025-09",
+   "structure": "Google backstops $1.4B of Fluidstack lease obligations at Barber Lake TX; warrants for about 24M Cipher shares (about 5.4% pro forma). Further $333M backstop added for a 39 MW lease. Cipher sold $1.7B 7.125% notes (Nov 2025) plus $333M add-on.",
+   "status": "reported",
+   "what_changed_since_announcement": "Backstop grew by $333M; Cipher also financed an AWS-leased site ($2B 6.125% notes due 2031, Feb 2026), showing lower pricing when tenant is a hyperscaler directly.",
+   "source_ids": [
+    "s_a2a5e41b",
+    "s_d655ed4e",
+    "s_d7791d32"
+   ],
+   "internal_notes": "Cipher 8-Ks on sec.gov are the primary documents. Google receives Cipher warrants (about 5.4% pro forma).",
+   "reader_note": "Google agreed to cover $1.4B of Fluidstack's lease payments at Cipher's Texas site, later $333M more, and received warrants for about 5.4% of Cipher.",
+   "amount_split": null,
+   "parties": [
+    "google",
+    "fluidstack",
+    "cipher"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:google-fluidstack-cipher"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "coreweave-applied-digital-lease",
+   "from": "coreweave",
+   "to": "applied_digital",
+   "type": "lease",
+   "money_kind": "promise",
+   "headline_usd_b": 11.0,
+   "actual_usd_b_low": 11.0,
+   "actual_usd_b_high": 11.0,
+   "date": "2025-06",
+   "structure": "15-year take-or-pay lease of all 400 MW at Polaris Forge 1 (ND), about $11B over base term. Macquarie committed up to $5B preferred equity for the campus program.",
+   "status": "reported",
+   "what_changed_since_announcement": "Macquarie draws of $112.5M, $562.5M, $337.5M reported; separate 200 MW Polaris Forge 2 lease with an investment-grade hyperscaler.",
+   "source_ids": [
+    "s_5377d948",
+    "s_87c39615"
+   ],
+   "internal_notes": "Core Scientific, Galaxy, Crusoe not verified; see dropped_leads/open_questions.",
+   "reader_note": "CoreWeave signed a 15-year lease for all 400 megawatts of Applied Digital's Polaris Forge 1 campus, worth about $11B over the base term.",
+   "amount_split": null,
+   "parties": [
+    "coreweave",
+    "applied_digital"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:applied-digital-coreweave-lease"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "macquarie-applied-digital-pref",
+   "from": "macquarie",
+   "to": "applied_digital",
+   "type": "equity",
+   "money_kind": "external",
+   "headline_usd_b": 5,
+   "actual_usd_b_low": 1.0125,
+   "actual_usd_b_high": 5,
+   "date": "2025-06",
+   "structure": "Macquarie committed up to $5B of preferred equity for the Applied Digital campus program; reported draws of $112.5M, $562.5M and $337.5M ($1.0125B).",
+   "status": "reported",
+   "what_changed_since_announcement": "Draws reported; programme continues.",
+   "source_ids": [
+    "s_5377d948",
+    "s_87c39615"
+   ],
+   "internal_notes": "Low = sum of reported draws (calculated). Macquarie is an extra node, not in the requested list.",
+   "reader_note": "Macquarie committed up to $5B of preferred equity (equity paid ahead of ordinary shares) for Applied Digital's campuses. About $1.0B had been drawn, according to reports.",
+   "amount_split": null,
+   "parties": [
+    "macquarie",
+    "applied_digital"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "coreweave-ddtl-4",
+   "from": "banks",
+   "to": "coreweave",
+   "type": "debt",
+   "money_kind": "external",
+   "headline_usd_b": 8.5,
+   "actual_usd_b_low": 7.5,
+   "actual_usd_b_high": 8.5,
+   "date": "2026-03",
+   "structure": "DDTL 4.0: non-recourse delayed-draw term loan, matures Mar 2032, rated A3 (Moody's) / A (low) DBRS; floating tranche SOFR+2.25%, fixed tranche about 5.9%; secured by assets of a CoreWeave SPV and an unnamed AI enterprise's cloud contract.",
+   "status": "verified",
+   "what_changed_since_announcement": "Later DDTL 5.0/5.5 for lower-rated customers priced at 4.50%/5.50% over SOFR (secondary source).",
+   "source_ids": [
+    "s_023a2e94",
+    "s_1845a257"
+   ],
+   "internal_notes": "Press release gives no advance rate/LTV. Non-recourse, rated A3/A(low); SOFR+2.25%. First investment-grade-rated GPU-backed financing; press release gives no advance rate.",
+   "reader_note": "CoreWeave's $8.5B delayed-draw term loan (money borrowed in stages), rated A3 by Moody's, priced at about 2.25 points over the SOFR bank rate. It was the first investment-grade rated GPU-backed loan.",
+   "amount_split": null,
+   "parties": [
+    "banks",
+    "blackstone"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:coreweave-ddtl-4"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "coreweave-ddtl-5-5-and-converts",
+   "from": "banks",
+   "to": "coreweave",
+   "type": "debt",
+   "money_kind": "external",
+   "headline_usd_b": 6.8,
+   "actual_usd_b_low": 6.8,
+   "actual_usd_b_high": 6.8,
+   "date": "2026-09",
+   "structure": "Q3 2026: $2.6B DDTL 5.5 facility (shorter-duration customer contracts) plus about $4.2B convertible senior notes; new ATM program for up to 35M shares.",
+   "status": "verified",
+   "what_changed_since_announcement": "n/a",
+   "source_ids": [
+    "s_f30d204e"
+   ],
+   "internal_notes": "Convert coupon not captured.",
+   "reader_note": "In the third quarter of 2026 CoreWeave arranged a $2.6B term loan and about $4.2B of convertible notes. The loan comes from banks and lenders; the convertible notes were sold to investors.",
+   "amount_split": null,
+   "parties": [
+    "banks",
+    "coreweave"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:coreweave-ddtl-5-5-and-converts"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "blackstone-magnetar-coreweave",
+   "from": "blackstone",
+   "to": "coreweave",
+   "type": "debt",
+   "money_kind": "external",
+   "headline_usd_b": 7.5,
+   "actual_usd_b_low": 2.3,
+   "actual_usd_b_high": 7.5,
+   "date": "2023-08",
+   "structure": "GPU-collateralized DDTL 1.0 (2023, $2.3B, Magnetar/Blackstone) and DDTL 2.0 (2024, $7.5B, Blackstone/Magnetar led), secured by GPUs and customer contracts; spreads far above later facilities (about SOFR+9.6% 2023; 6.0-13.0% in 2024 depending on customer credit).",
+   "status": "reported",
+   "what_changed_since_announcement": "Pricing fell to SOFR+4.0% (DDTL 3.0, Jul 2025) and SOFR+2.25% (DDTL 4.0, 2026).",
+   "source_ids": [
+    "s_1845a257",
+    "s_a377af0b"
+   ],
+   "internal_notes": "Dollar sizes of DDTL 1.0/2.0 are from memory and not confirmed in this pass; CoreWeave S-1 is the primary source. Facility sizes (DDTL 1.0 $2.3B, DDTL 2.0 $7.5B) are from memory in the research and unconfirmed against the CoreWeave S-1; headline shows the larger one only. Spread fell from about SOFR+9.6% (2023) to SOFR+2.25% (2026).",
+   "reader_note": "CoreWeave's early GPU-backed loans from Blackstone, Magnetar and others. The 2023 and 2024 facilities are widely reported at about $2.3B and $7.5B, and priced far higher than later loans (about 9.6 points over SOFR in 2023, against 2.25 in 2026).",
+   "amount_split": null,
+   "parties": [
+    "blackstone",
+    "magnetar"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:blackstone-magnetar-coreweave"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "meta-hyperion-beignet",
+   "from": "meta",
+   "to": "blue_owl",
+   "type": "guarantee",
+   "money_kind": "promise",
+   "headline_usd_b": 28,
+   "actual_usd_b_low": 0,
+   "actual_usd_b_high": 28,
+   "date": "2025-10",
+   "structure": "Meta provides a residual value guarantee to the Hyperion venture covering the first 16 years of operations (Meta's announcement); the cap is reported at about $28B and decreases over time (secondary reading of Meta's annual report). Meta carries no liability for it. Later filings show a larger combined guarantee total ($41.5B at Sep 30, 2026) that includes a second venture; the split by campus is not given.",
+   "status": "reported",
+   "what_changed_since_announcement": "Meta's combined maximum guarantee rose from about $28.1B at end-2025 to about $41.5B at Sep 30, 2026, which one analysis attributes to a second, Texas venture.",
+   "source_ids": [
+    "s_b654f0d9",
+    "s_e6854691",
+    "s_57515134",
+    "s_ab665f2e",
+    "s_2c3dba23"
+   ],
+   "internal_notes": "Interpretations of how the guarantee works differ across sources; check Meta 10-K/10-Q and 144A materials. Accounting treatment is debated, not alleged improper. Edge amount is the reported guarantee cap (about $28B), not the $27.3B bond size; the bond is a separate line (meta-hyperion-bond). Accounting treatment is debated, not alleged improper.",
+   "reader_note": "Meta gave the Hyperion data-center venture a residual value guarantee covering the first 16 years: if the campus is worth less than agreed, Meta pays the shortfall. The cap is reported at about $28B and Meta carries no liability for it. The $27.3B bond that financed the campus is shown as its own line.",
+   "amount_split": null,
+   "parties": [
+    "meta",
+    "blue_owl",
+    "pimco"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:meta-hyperion-beignet"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "oracle-vantage-stargate-loans",
+   "from": "banks",
+   "to": "vantage",
+   "type": "debt",
+   "money_kind": "external",
+   "headline_usd_b": 38.0,
+   "actual_usd_b_low": 14.75,
+   "actual_usd_b_high": 38,
+   "date": "2025-10",
+   "structure": "Construction debt in two packages ($23.25B and $14.75B) for Vantage campuses in Texas (Frontier) and Wisconsin, leased to Oracle for OpenAI.",
+   "status": "reported",
+   "what_changed_since_announcement": "Early 2026 reports of waning bank appetite and syndication to other investors; by May 2026 banks distributing and de-risking. Michigan (Saline Twp): Pimco reportedly anchored $10B of a record $16.3B bond after banks pulled back. Abilene: about $13B from Blue Owl/JPMorgan SPV ($10B debt).",
+   "source_ids": [
+    "s_d9416c84",
+    "s_74523d92",
+    "s_3889c229",
+    "s_0f15fcc0"
+   ],
+   "internal_notes": "Reports of $72B total partner debt vary; sources inconsistent on details. Two packages ($23.25B and $14.75B). Banks later syndicated to other investors. Sources inconsistent on totals ($72B partner debt in some reports). Merge note: Research gave $38B (two packages, $23.25B and $14.75B) as the actual. Changed to a range: low = the smaller package, high = both as reported, because banks reportedly struggled to place the debt and syndication status is mixed.",
+   "reader_note": "Construction loans of up to $38B in two packages ($23.25B and $14.75B) for Vantage data centers leased to Oracle for OpenAI. Reports say banks had trouble placing the debt and sold parts to other investors, so we show a range.",
+   "amount_split": null,
+   "parties": [
+    "banks",
+    "oracle"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [
+    "neoclouds:oracle-vantage-stargate-loans"
+   ],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "pimco-oracle-michigan-bond",
+   "from": "pimco",
+   "to": "vantage",
+   "type": "debt",
+   "money_kind": "external",
+   "headline_usd_b": 10,
+   "actual_usd_b_low": 10,
+   "actual_usd_b_high": 10,
+   "date": "2026",
+   "structure": "Michigan (Saline Twp) Stargate site: Pimco reportedly anchored about $10B of roughly $14B of bonds in a financing of about $16B; reports differ on why banks stepped back.",
+   "status": "reported",
+   "what_changed_since_announcement": "Banks reportedly pulled back; a bond replaced bank construction debt.",
+   "source_ids": [
+    "s_74523d92"
+   ],
+   "internal_notes": "Headline for this edge is the $10B Pimco anchor, not the roughly $14B of bonds or the about $16B financing.",
+   "reader_note": "Pimco was reported to anchor about $10B of roughly $14B of bonds in a financing of about $16B for an Oracle-leased Michigan data center; reports differ on why banks stepped back.",
+   "amount_split": null,
+   "parties": [
+    "pimco",
+    "vantage"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "blue-owl-abilene-spv",
+   "from": "blue_owl",
+   "to": "oracle",
+   "type": "debt",
+   "money_kind": "external",
+   "headline_usd_b": 13,
+   "actual_usd_b_low": 10,
+   "actual_usd_b_high": 13,
+   "date": "2025-2026",
+   "structure": "Abilene: about $13B from a Blue Owl/JPMorgan SPV ($10B of it debt), leased to Oracle for OpenAI.",
+   "status": "reported",
+   "what_changed_since_announcement": "Reported planned 600 MW Abilene expansion cancelled (cap 1.2 GW).",
+   "source_ids": [
+    "s_74523d92",
+    "s_0f15fcc0"
+   ],
+   "internal_notes": "Low = the $10B debt portion; high = whole SPV.",
+   "reader_note": "About $13B for the Abilene data center from a Blue Owl and JPMorgan vehicle, of which about $10B is debt, leased to Oracle for OpenAI.",
+   "amount_split": null,
+   "parties": [
+    "blue_owl",
+    "banks"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "openai-round-nov2026-remainder",
+   "from": "investors_other",
+   "to": "openai",
+   "type": "equity",
+   "money_kind": "promise",
+   "headline_usd_b": 9,
+   "actual_usd_b_low": 0,
+   "actual_usd_b_high": 9,
+   "date": "2026-11",
+   "structure": "The rest of the same round has not been reported as closed. Bloomberg says the round could grow to about $20B in total, so up to about $9B more is expected in the coming weeks, if it happens. Earlier reports of a $30B round are out of date.",
+   "status": "reported",
+   "what_changed_since_announcement": "Bloomberg (Nov 6) said the round was scaled back from the earlier $30B-or-more target.",
+   "source_ids": [
+    "s_fedfe2d2",
+    "s_83526201"
+   ],
+   "internal_notes": "Not closed: promise, range $0 to about $9B, never counted as cash moved.",
+   "reader_note": "The rest of the same round has not been reported as closed. Bloomberg says the round could reach about $20B, so up to about $9B more may follow in the coming weeks. It is a promise until it closes, and no cash is counted.",
+   "amount_split": null,
+   "parties": [
+    "investors_other",
+    "openai"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": true,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "meta-hyperion-bond",
+   "from": "investors_other",
+   "to": "blue_owl",
+   "type": "debt",
+   "money_kind": "external",
+   "headline_usd_b": 27.3,
+   "actual_usd_b_low": 27.3,
+   "actual_usd_b_high": 27.3,
+   "date": "2025-10",
+   "structure": "Beignet Investor LLC, the Hyperion venture (about 80% Blue Owl funds, 20% Meta), issued $27.3B of 6.581% A+ senior secured amortizing bonds due 2049 (Morgan Stanley). Meta leases the campus.",
+   "status": "reported",
+   "what_changed_since_announcement": "Reported that Meta later raised its planned Hyperion investment to more than $50B, so the bond covers part of the buildout.",
+   "source_ids": [
+    "s_2c3dba23",
+    "s_b654f0d9"
+   ],
+   "internal_notes": "External cash raised by the venture; repaid from Meta's rent. Split out of the guarantee line so the bond size is not shown as the guarantee.",
+   "reader_note": "The venture that owns Meta's Hyperion data center (about 80% Blue Owl funds, 20% Meta) sold $27.3B of bonds at 6.581%, rated A+. Meta leases the campus. This is outside investors' money, which is repaid from Meta's rent.",
+   "amount_split": null,
+   "parties": [
+    "investors_other",
+    "blue_owl",
+    "meta",
+    "pimco"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  },
+  {
+   "id": "anthropic-spacexai-compute",
+   "from": "anthropic",
+   "to": "xai",
+   "type": "compute_contract",
+   "money_kind": "promise",
+   "headline_usd_b": 120.5,
+   "actual_usd_b_low": 0,
+   "actual_usd_b_high": 120.5,
+   "date": "2026-10",
+   "structure": "Anthropic's public S-1 (filed Oct 26, 2026) says it agreed to spend up to $120.5B through 2029 on compute from SpaceX's AI unit (formerly xAI), about $3.1B a month once all capacity is delivered (expected December 2026). The initial periods end in Jan and Mar 2027; after that either side can end the agreement on 90 days' notice, so $120.5B is a ceiling.",
+   "status": "reported",
+   "what_changed_since_announcement": "Up from $84.5B reported from the confidential draft. SpaceX's own May filing described $1.25B a month through May 2029.",
+   "source_ids": [
+    "s_d5786986",
+    "s_af132f62"
+   ],
+   "internal_notes": "Reported through press coverage of the S-1; the filing itself was not read. Nvidia is also an investor in xAI.",
+   "reader_note": "Anthropic's public IPO filing says it agreed to pay SpaceX's AI unit (formerly xAI) up to $120.5B through 2029 for computing capacity, about $3.1B a month at full delivery. After early 2027 either side can end it on 90 days' notice, so $120.5B is a ceiling. Nvidia is an investor in xAI.",
+   "amount_split": null,
+   "parties": [
+    "anthropic",
+    "xai"
+   ],
+   "loop_edge": true,
+   "sum_exclude": false,
+   "merged_from": [],
+   "money_split": null,
+   "components": null,
+   "formula_text": null,
+   "alt_reports": null,
+   "contingent": false,
+   "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
+  }
+ ],
+ "sources": [
+  {
+   "id": "s_94f544ef",
+   "title": "247wallst.com article, Aug 13, 2026",
+   "title_is_derived": false,
+   "publisher": "247wallst.com",
+   "url": "https://247wallst.com/investing/2026/08/13/michael-burry-sounds-the-alarm-again-ai-is-a-circular-financing-web-with-nvidia-in-the-middle/",
+   "type": "press",
+   "date": "2026-08-13",
+   "original_title": "Michael burry sounds the alarm again ai is a circular financing web with nvidia in the",
+   "original_title_attribution": "Headline as published by 247wallst.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_2ce18ca2",
+   "title": "Big tech q3 capex deep dive 2027",
+   "title_is_derived": false,
+   "publisher": "456xresearch.substack.com",
+   "url": "https://456xresearch.substack.com/p/big-tech-q3-capex-deep-dive-2027",
+   "type": "press",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "s_2622278a",
+   "title": "Defaults",
+   "title_is_derived": false,
+   "publisher": "AM Compute",
+   "url": "https://www.amcompute.com/gpu-risk/defaults",
+   "type": "press",
+   "date": "2026-10"
+  },
+  {
+   "id": "s_b57dd639",
+   "title": "Amazon open ai strategic partnership investment",
+   "title_is_derived": false,
+   "publisher": "Amazon",
+   "url": "https://www.aboutamazon.com/news/aws/amazon-open-ai-strategic-partnership-investment",
+   "type": "primary",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_909b7579",
+   "title": "Anthropic prices initial public offering",
+   "title_is_derived": false,
+   "publisher": "Anthropic",
+   "url": "https://www.anthropic.com/news/anthropic-prices-initial-public-offering",
+   "type": "primary",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_63b83b32",
+   "title": "Google broadcom partnership compute",
+   "title_is_derived": false,
+   "publisher": "Anthropic",
+   "url": "https://www.anthropic.com/news/google-broadcom-partnership-compute",
+   "type": "primary",
+   "date": "2026-04"
+  },
+  {
+   "id": "s_5377d948",
+   "title": "Applied digital reports fiscal second quarter 2026 results",
+   "title_is_derived": false,
+   "publisher": "Applied Digital IR",
+   "url": "https://ir.applieddigital.com/news-events/press-releases/detail/142/applied-digital-reports-fiscal-second-quarter-2026-results",
+   "type": "primary",
+   "date": "2025-06"
+  },
+  {
+   "id": "s_f3c25820",
+   "title": "Nvidia openai financing ai jensen huang ssi",
+   "title_is_derived": false,
+   "publisher": "Axios",
+   "url": "https://www.axios.com/2026/07/27/nvidia-openai-financing-ai-jensen-huang-ssi",
+   "type": "press",
+   "date": "2026-07-27"
+  },
+  {
+   "id": "s_9940eb5c",
+   "title": "Openai nvidia ohio data center sb energy",
+   "title_is_derived": false,
+   "publisher": "Axios",
+   "url": "https://www.axios.com/2026/08/17/openai-nvidia-ohio-data-center-sb-energy",
+   "type": "press",
+   "date": "2026-08-17"
+  },
+  {
+   "id": "s_bb03465b",
+   "title": "Benzinga article",
+   "title_is_derived": false,
+   "publisher": "Benzinga",
+   "url": "https://www.benzinga.com/markets/earnings/26/08/61486426/michael-burry-points-to-nvidias-105b-openai-guarantee-as-circular-financing-red-flag-whistling-past-the-graveyard",
+   "type": "press",
+   "date": null,
+   "original_title": "Michael burry points to nvidias 105b openai guarantee as circular financing red flag",
+   "original_title_attribution": "Headline as published by Benzinga; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_d5db79bd",
+   "title": "Openai valued at 852 billion after completing 122 billion round",
+   "title_is_derived": false,
+   "publisher": "Bloomberg",
+   "url": "https://www.bloomberg.com/news/articles/2026-03-31/openai-valued-at-852-billion-after-completing-122-billion-round",
+   "type": "press",
+   "date": "2026-03-31"
+  },
+  {
+   "id": "s_e1ecaaf0",
+   "title": "Openai partners with broadcom custom ai chips alongside nvidia amd",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2025/10/13/openai-partners-with-broadcom-custom-ai-chips-alongside-nvidia-amd.html",
+   "type": "press",
+   "date": "2025-10-13"
+  },
+  {
+   "id": "s_a992b524",
+   "title": "Open ai hyperscaler broadcom chips",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2025/10/14/open-ai-hyperscaler-broadcom-chips.html",
+   "type": "press",
+   "date": "2025-10-14"
+  },
+  {
+   "id": "s_d985a4d8",
+   "title": "CNBC article, Nov 11, 2025",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2025/11/11/big-short-investor-michael-burry-accuses-ai-hyperscalers-of-artificially-boosting-earnings.html",
+   "type": "press",
+   "date": "2025-11-11",
+   "original_title": "Big short investor michael burry accuses ai hyperscalers of artificially boosting earnings",
+   "original_title_attribution": "Headline as published by CNBC; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_2779b8ca",
+   "title": "Anthropic ai data centers texas new york",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2025/11/12/anthropic-ai-data-centers-texas-new-york.html",
+   "type": "press",
+   "date": "2025-11-12"
+  },
+  {
+   "id": "s_1bcb0178",
+   "title": "Openai chip deal with cerebras adds to roster of nvidia amd broadcom",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/01/16/openai-chip-deal-with-cerebras-adds-to-roster-of-nvidia-amd-broadcom.html",
+   "type": "press",
+   "date": "2026-01-16"
+  },
+  {
+   "id": "s_efcbdc97",
+   "title": "3coreweave nvidia stock ai data centers",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/01/26/3coreweave-nvidia-stock-ai-data-centers.html",
+   "type": "press",
+   "date": "2026-01-26"
+  },
+  {
+   "id": "s_02497684",
+   "title": "Nvidia is in talks to invest up to 30 billion in openai source says",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/02/19/nvidia-is-in-talks-to-invest-up-to-30-billion-in-openai-source-says.html",
+   "type": "press",
+   "date": "2026-02-19"
+  },
+  {
+   "id": "s_0fc221ed",
+   "title": "Openai resets spend expectations targets around 600 billion by 2030",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/02/20/openai-resets-spend-expectations-targets-around-600-billion-by-2030.html",
+   "type": "press",
+   "date": "2026-02-20"
+  },
+  {
+   "id": "s_a58d6858",
+   "title": "Coreweave crwv q4 earnings report 2025",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/02/26/coreweave-crwv-q4-earnings-report-2025.html",
+   "type": "press",
+   "date": "2026-02-26"
+  },
+  {
+   "id": "s_eff51b81",
+   "title": "Amazon open ai cloud jassy altman",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/02/27/amazon-open-ai-cloud-jassy-altman.html",
+   "type": "press",
+   "date": "2026-02-27"
+  },
+  {
+   "id": "s_cd655029",
+   "title": "Nvidia embraces ai investor topping 40 billion in equity bets 2026",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/05/09/nvidia-embraces-ai-investor-topping-40-billion-in-equity-bets-2026.html",
+   "type": "press",
+   "date": "2026-05-09"
+  },
+  {
+   "id": "s_b60346b3",
+   "title": "Nvidia discloses 21 billion stake in spacex at end of second quarter",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/08/14/nvidia-discloses-21-billion-stake-in-spacex-at-end-of-second-quarter.html",
+   "type": "press",
+   "date": "2026-08-14"
+  },
+  {
+   "id": "s_61feaacc",
+   "title": "Oracle orcl q1 earnings report 2027",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/09/10/oracle-orcl-q1-earnings-report-2027.html",
+   "type": "press",
+   "date": "2026-09-10"
+  },
+  {
+   "id": "s_9e05bbeb",
+   "title": "Oracle data center force majeure",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/09/24/oracle-data-center-force-majeure.html",
+   "type": "press",
+   "date": "2026-09-24"
+  },
+  {
+   "id": "s_b31346dd",
+   "title": "Oracle debt faces an ai stress test why some investors arent worried",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/10/19/oracle-debt-faces-an-ai-stress-test-why-some-investors-arent-worried-.html",
+   "type": "press",
+   "date": "2026-10-19"
+  },
+  {
+   "id": "s_83526201",
+   "title": "Openai funding round uae investors",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/10/22/openai-funding-round-uae-investors.html",
+   "type": "press",
+   "date": "2026-10-22"
+  },
+  {
+   "id": "s_d39324bb",
+   "title": "Amazon amzn q3 earnings report 2026",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/10/29/amazon-amzn-q3-earnings-report-2026.html",
+   "type": "press",
+   "date": "2026-10-29"
+  },
+  {
+   "id": "s_885b04d7",
+   "title": "Oracle files to sell 20 billion in new stock bonds to finance ai buildout",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/02/oracle-files-to-sell-20-billion-in-new-stock-bonds-to-finance-ai-buildout.html",
+   "type": "press",
+   "date": "2026-11-02"
+  },
+  {
+   "id": "s_9c5da62b",
+   "title": "Coreweave bond yield tops 16percent as ai credit stress rises",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/06/coreweave-bond-yield-tops-16percent-as-ai-credit-stress-rises.html",
+   "type": "press",
+   "date": "2026-11-06"
+  },
+  {
+   "id": "s_b913f5db",
+   "title": "Coreweave crwv q3 earnings report 2026",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/10/coreweave-crwv-q3-earnings-report-2026.html",
+   "type": "press",
+   "date": "2026-11-10"
+  },
+  {
+   "id": "s_d3684041",
+   "title": "Coreweave earnings preview debt capex",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/10/coreweave-earnings-preview-debt-capex.html",
+   "type": "press",
+   "date": "2026-11-10"
+  },
+  {
+   "id": "s_731890df",
+   "title": "Nvidia earnings investor china jensen",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/17/nvidia-earnings-investor-china-jensen.html",
+   "type": "press",
+   "date": "2026-11-17"
+  },
+  {
+   "id": "s_07dff4c7",
+   "title": "AI credit default swaps coreweave debt",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/18/ai-credit-default-swaps-coreweave-debt.html",
+   "type": "press",
+   "date": "2026-11-18"
+  },
+  {
+   "id": "s_3a261481",
+   "title": "Fed minutes october 2026",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/18/fed-minutes-october-2026.html",
+   "type": "press",
+   "date": "2026-11-18"
+  },
+  {
+   "id": "s_ef28fb89",
+   "title": "Nvidia stock earnings",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/2026/11/18/nvidia-stock-earnings.html",
+   "type": "press",
+   "date": "2026-11-18"
+  },
+  {
+   "id": "s_95c693fe",
+   "title": "Nvidias earnings report had something for the bulls bears and everyone in between",
+   "title_is_derived": false,
+   "publisher": "CNBC",
+   "url": "https://www.cnbc.com/investingclub/2026/11/18/nvidias-earnings-report-had-something-for-the-bulls-bears-and-everyone-in-between.html",
+   "type": "press",
+   "date": "2026-11-18"
+  },
+  {
+   "id": "s_023a2e94",
+   "title": "CoreWeave Closes Landmark 8 5 Billion Financing Facility Achieving First Investment Grade",
+   "title_is_derived": false,
+   "publisher": "CoreWeave Investor Relations",
+   "url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Closes-Landmark-8-5-Billion-Financing-Facility-Achieving-First-Investment-Grade-Rated-GPU-backed-Financing/default.aspx",
+   "type": "primary",
+   "date": "2026-03"
+  },
+  {
+   "id": "s_5871c43d",
+   "title": "CoreWeave Reports Strong Third Quarter 2026 Results",
+   "title_is_derived": false,
+   "publisher": "CoreWeave Investor Relations",
+   "url": "https://investors.coreweave.com/news/news-details/2026/CoreWeave-Reports-Strong-Third-Quarter-2026-Results/",
+   "type": "primary",
+   "date": "2025"
+  },
+  {
+   "id": "s_87c39615",
+   "title": "Applied digital secures first tranche of 5bn funding from macquarie",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/applied-digital-secures-first-tranche-of-5bn-funding-from-macquarie/",
+   "type": "press",
+   "date": "2025-06"
+  },
+  {
+   "id": "s_d7791d32",
+   "title": "Cipher mining plans 2bn senior secured notes offering for amazon leased black pearl data",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/cipher-mining-plans-2bn-senior-secured-notes-offering-for-amazon-leased-black-pearl-data-center-site-in-texas/",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_25dc79e1",
+   "title": "Coreweave q3 earnings show revenue backlog doubled to 556bn",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/coreweave-q3-earnings-show-revenue-backlog-doubled-to-556bn/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_d655ed4e",
+   "title": "Fluidstack signs additional 39mw lease with cipher mining in texas backed by google",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/fluidstack-signs-additional-39mw-lease-with-cipher-mining-in-texas-backed-by-google/",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_299739f8",
+   "title": "Meta signs 142bn with coreweave",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/meta-signs-142bn-with-coreweave/",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_af4391db",
+   "title": "Microsoft signs multi billion dollar cloud capacity deal with lambda",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/microsoft-signs-multi-billion-dollar-cloud-capacity-deal-with-lambda/",
+   "type": "press",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_9096b278",
+   "title": "Nebius signs 3bn deal with meta says current available capacity is sold out as it targets",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/nebius-signs-3bn-deal-with-meta-says-current-available-capacity-is-sold-out-as-it-targets-25gw-by-end-of-2026/",
+   "type": "press",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_a7ff783e",
+   "title": "Nvidia invests another 2bn in coreweave",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/nvidia-invests-another-2bn-in-coreweave/",
+   "type": "press",
+   "date": "2026-01"
+  },
+  {
+   "id": "s_32f4a9f9",
+   "title": "Nvidia signs 15bn deal to lease its gpus back from lambda report",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/nvidia-signs-15bn-deal-to-lease-its-gpus-back-from-lambda-report/",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_9807762f",
+   "title": "Oracle denies openai data center delays",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/oracle-denies-openai-data-center-delays/",
+   "type": "press",
+   "date": "2026-10"
+  },
+  {
+   "id": "s_d9416c84",
+   "title": "Oracle set to receive 38bn debt package for data center projects report",
+   "title_is_derived": false,
+   "publisher": "Data Center Dynamics",
+   "url": "https://www.datacenterdynamics.com/en/news/oracle-set-to-receive-38bn-debt-package-for-data-center-projects-report/",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_0c4cfe15",
+   "title": "Nvidia backs openai s ohio data center buildout with 105b guarantee",
+   "title_is_derived": false,
+   "publisher": "Data Center Knowledge",
+   "url": "https://www.datacenterknowledge.com/data-center-construction/nvidia-backs-openai-s-ohio-data-center-buildout-with-105b-guarantee",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_c4fb2b10",
+   "title": "Nvidia invests 2b more in coreweave for 5 gw data center push",
+   "title_is_derived": false,
+   "publisher": "Data Center Knowledge",
+   "url": "https://www.datacenterknowledge.com/investing/nvidia-invests-2b-more-in-coreweave-for-5-gw-data-center-push",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_f36b5f88",
+   "title": "Fluidstack selected by anthropic to deliver custom data centers in the us",
+   "title_is_derived": false,
+   "publisher": "Fluidstack",
+   "url": "https://fluidstack.io/blog/fluidstack-selected-by-anthropic-to-deliver-custom-data-centers-in-the-us",
+   "type": "primary",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_bfd348a6",
+   "title": "AI apollo ceo calls nvidia ais bank with 108 5b guarantees",
+   "title_is_derived": false,
+   "publisher": "FourWeekMBA",
+   "url": "https://fourweekmba.com/ai-apollo-ceo-calls-nvidia-ais-bank-with-108-5b-guarantees/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_95f0c6bf",
+   "title": "AI gpu debt about 6 with microsoft or meta rent 9 without",
+   "title_is_derived": false,
+   "publisher": "FourWeekMBA",
+   "url": "https://fourweekmba.com/ai-gpu-debt-about-6-with-microsoft-or-meta-rent-9-without/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_b654f0d9",
+   "title": "AI hyperions 27 3b bond pays 6 581 above every meta note",
+   "title_is_derived": false,
+   "publisher": "FourWeekMBA",
+   "url": "https://fourweekmba.com/ai-hyperions-27-3b-bond-pays-6-581-above-every-meta-note/",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_0d6cd3da",
+   "title": "AI microsoft booked 10b from openai 11 of quarterly sales",
+   "title_is_derived": false,
+   "publisher": "FourWeekMBA",
+   "url": "https://fourweekmba.com/ai-microsoft-booked-10b-from-openai-11-of-quarterly-sales/",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_91a042b1",
+   "title": "AI nvidias 5b nscale guarantee in flux 1 4x its cloud book",
+   "title_is_derived": false,
+   "publisher": "FourWeekMBA",
+   "url": "https://fourweekmba.com/ai-nvidias-5b-nscale-guarantee-in-flux-1-4x-its-cloud-book/",
+   "type": "press",
+   "date": "2026"
+  },
+  {
+   "id": "s_33801be8",
+   "title": "IREN investor presentation, June 2026",
+   "title_is_derived": false,
+   "publisher": "IREN IR",
+   "url": "https://iren.gcs-web.com/static-files/56eec258-62fb-4929-9e93-02c816693da2",
+   "type": "primary",
+   "date": "2026-06",
+   "original_title": "56eec258 62fb 4929 9e93 02c816693da2",
+   "original_title_attribution": "Headline as published by IREN IR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_bd67fb97",
+   "title": "Meta Reports Third Quarter 2026 Results",
+   "title_is_derived": false,
+   "publisher": "Meta IR",
+   "url": "https://investor.atmeta.com/investor-news/press-release-details/2026/Meta-Reports-Third-Quarter-2026-Results/default.aspx",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_5381f866",
+   "title": "The next chapter of the microsoft openai partnership",
+   "title_is_derived": false,
+   "publisher": "Microsoft Blog",
+   "url": "https://blogs.microsoft.com/blog/2025/10/28/the-next-chapter-of-the-microsoft-openai-partnership/",
+   "type": "primary",
+   "date": "2025-10-28"
+  },
+  {
+   "id": "s_b9ae0481",
+   "title": "Microsoft nvidia and anthropic announce strategic partnerships",
+   "title_is_derived": false,
+   "publisher": "Microsoft Blog",
+   "url": "https://blogs.microsoft.com/blog/2025/11/18/microsoft-nvidia-and-anthropic-announce-strategic-partnerships/",
+   "type": "primary",
+   "date": "2025-11-18"
+  },
+  {
+   "id": "s_b35b26f1",
+   "title": "Mistral ai raises 1 7 b to accelerate technological progress with ai",
+   "title_is_derived": false,
+   "publisher": "Mistral AI",
+   "url": "https://mistral.ai/news/mistral-ai-raises-1-7-b-to-accelerate-technological-progress-with-ai/",
+   "type": "primary",
+   "date": "2026-09"
+  },
+  {
+   "id": "s_95d752a7",
+   "title": "Fed hiked rates ai stocks feel it amzn nvda",
+   "title_is_derived": false,
+   "publisher": "Motley Fool",
+   "url": "https://www.fool.com/investing/2026/09/21/fed-hiked-rates-ai-stocks-feel-it-amzn-nvda/",
+   "type": "press",
+   "date": "2026-09-21"
+  },
+  {
+   "id": "s_a2c138ef",
+   "title": "Nvidia to provide up to 105bn guarantee for openai s ohio data center",
+   "title_is_derived": false,
+   "publisher": "Nikkei Asia",
+   "url": "https://asia.nikkei.com/business/technology/artificial-intelligence/nvidia-to-provide-up-to-105bn-guarantee-for-openai-s-ohio-data-center",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_c429436a",
+   "title": "Nvidia Q3 FY27 CFO commentary (company statement, hosted copy)",
+   "title_is_derived": false,
+   "publisher": "Nvidia (company statement)",
+   "url": "https://www.marketscreener.com/news/nvidia-third-quarter-2027-cfo-commentary-ce785edcdc81f420",
+   "type": "primary",
+   "date": "2026-11-17"
+  },
+  {
+   "id": "s_e6a97dfb",
+   "title": "Microsoft nvidia anthropic announce partnership",
+   "title_is_derived": false,
+   "publisher": "Nvidia Blog",
+   "url": "https://blogs.nvidia.com/blog/microsoft-nvidia-anthropic-announce-partnership",
+   "type": "primary",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_5ddd1b7b",
+   "title": "NVIDIA Announces Financial Results for Third Quarter Fiscal 2027",
+   "title_is_derived": false,
+   "publisher": "Nvidia Investor Relations",
+   "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-Third-Quarter-Fiscal-2027/",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_f68f74b0",
+   "title": "Nvidia and nebius partner to scale full stack ai cloud",
+   "title_is_derived": false,
+   "publisher": "Nvidia Newsroom",
+   "url": "https://nvidianews.nvidia.com/news/nvidia-and-nebius-partner-to-scale-full-stack-ai-cloud",
+   "type": "primary",
+   "date": "2026-03"
+  },
+  {
+   "id": "s_4faa980a",
+   "title": "Nvidia announces financial results for third quarter fiscal 2027",
+   "title_is_derived": false,
+   "publisher": "Nvidia Newsroom",
+   "url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2027",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_62064f11",
+   "title": "Accelerating the next phase ai",
+   "title_is_derived": false,
+   "publisher": "OpenAI",
+   "url": "https://openai.com/index/accelerating-the-next-phase-ai/",
+   "type": "primary",
+   "date": "2026-03"
+  },
+  {
+   "id": "s_1b81bc56",
+   "title": "Amazon partnership",
+   "title_is_derived": false,
+   "publisher": "OpenAI",
+   "url": "https://openai.com/index/amazon-partnership/",
+   "type": "primary",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_61519e46",
+   "title": "Lucent in depth report",
+   "title_is_derived": false,
+   "publisher": "RBC Power Analysis",
+   "url": "https://www.rbcpa.com/commentary-archive/lucent-in-depth-report/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_735ca3e2",
+   "title": "Wolman",
+   "title_is_derived": false,
+   "publisher": "Richmond Fed",
+   "url": "https://www.richmondfed.org/~/media/richmondfedorg/publications/research/economic_quarterly/2003/fall/pdf/wolman.pdf",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_b26dd69b",
+   "title": "T26083ke10 k405.txt",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0000072911/000095014401003499/t26083ke10-k405.txt",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_971d55fd",
+   "title": "Microsoft quarterly report (10-Q), quarter ended Sep 30, 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0000789019/000119312526436133/msft-20260930.htm",
+   "type": "primary",
+   "date": "2026-09-30",
+   "original_title": "Msft 20260930",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_dd7bbfbb",
+   "title": "Ex13",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001006240/000095011702003045/ex13.htm",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_7c4c573c",
+   "title": "Nvidia quarterly report (10-Q), quarter ended Jul 26, 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000075/nvda-20260726.htm",
+   "type": "primary",
+   "date": "2026-07-26",
+   "original_title": "Nvda 20260726",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_1934d6ee",
+   "title": "Nvidia 8-K: CEO transition announcement, Nov 12, 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvidiaannouncesceotransiti.htm",
+   "type": "primary",
+   "date": "2026-11-12",
+   "original_title": "Nvidiaannouncesceotransiti",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_49f826d5",
+   "title": "T26081ke10 k405.txt",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001119664/000095014401003502/t26081ke10-k405.txt",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_e9e965eb",
+   "title": "Nebius SEC filing exhibit, Mar 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001513845/000110465926064092/nbis-20260331xex99d2.htm",
+   "type": "primary",
+   "date": "2026-03",
+   "original_title": "Nbis 20260331xex99d2",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_dba15037",
+   "title": "Nbis ex99d2",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001513845/000110465926126238/nbis-ex99d2.htm",
+   "type": "primary",
+   "date": "2026-08"
+  },
+  {
+   "id": "s_feee75f4",
+   "title": "Googexhibit991q32026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001652044/000165204426000080/googexhibit991q32026.htm",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_f30d204e",
+   "title": "Coreweave3q26earningspress",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001769628/000176962826000461/coreweave3q26earningspress.htm",
+   "type": "primary",
+   "date": "2025"
+  },
+  {
+   "id": "s_80ea2f53",
+   "title": "CoreWeave quarterly report (10-Q), quarter ended Sep 30, 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001769628/000176962826000465/crwv-20260930.htm",
+   "type": "primary",
+   "date": "2026-09-30",
+   "original_title": "Crwv 20260930",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_c5631b95",
+   "title": "IREN annual report (10-K), year ended Jun 30, 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001878848/000187884826000052/iren-20260630.htm",
+   "type": "primary",
+   "date": "2026-06-30",
+   "original_title": "Iren 20260630",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_efa4cded",
+   "title": "IREN quarterly report (10-Q), quarter ended Sep 30, 2026",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001878848/000187884826000066/iren-20260930.htm",
+   "type": "primary",
+   "date": "2026-09-30",
+   "original_title": "Iren 20260930",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_50ab85ec",
+   "title": "Lucent Technologies annual report (10-K405), fiscal 2000",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/1006240/000095012300011855/y43690e10-k405.txt",
+   "type": "primary",
+   "date": null,
+   "original_title": "Y43690e10 k405.txt",
+   "original_title_attribution": "Headline as published by SEC EDGAR; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_55e7265b",
+   "title": "Q3fy27pr",
+   "title_is_derived": false,
+   "publisher": "SEC EDGAR",
+   "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000088/q3fy27pr.htm",
+   "type": "primary",
+   "date": null
+  },
+  {
+   "id": "s_10438831",
+   "title": "Seeking Alpha: Microsoft, Nvidia and Anthropic announce partnership",
+   "title_is_derived": false,
+   "publisher": "Seeking Alpha",
+   "url": "https://seekingalpha.com/news/4523396-microsoft-nvidia-anthropic-announce-major-partnership-microsoft-nvidia-to-invest-in-anthropic",
+   "type": "press",
+   "date": "2025-11",
+   "original_title": "4523396 microsoft nvidia anthropic announce major partnership microsoft nvidia to invest",
+   "original_title_attribution": "Headline as published by Seeking Alpha; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_ea17972c",
+   "title": "Neocloud operator nscales ipo plans could be at risk after microsoft pulls the plug on u",
+   "title_is_derived": false,
+   "publisher": "SiliconANGLE",
+   "url": "https://siliconangle.com/2026/10/18/neocloud-operator-nscales-ipo-plans-could-be-at-risk-after-microsoft-pulls-the-plug-on-u-k-data-center-project/",
+   "type": "press",
+   "date": "2026-10-18"
+  },
+  {
+   "id": "s_55ed6102",
+   "title": "What we learned from nvidias first earnings call without jensen huang",
+   "title_is_derived": false,
+   "publisher": "SiliconANGLE",
+   "url": "https://siliconangle.com/2026/11/19/what-we-learned-from-nvidias-first-earnings-call-without-jensen-huang/",
+   "type": "press",
+   "date": "2026-11-19"
+  },
+  {
+   "id": "s_0803cabc",
+   "title": "Nvidia openai investment shrinks 100b 30b compute lock war continues",
+   "title_is_derived": false,
+   "publisher": "Tech Times",
+   "url": "https://www.techtimes.com/articles/317839/20260605/nvidia-openai-investment-shrinks-100b-30b-compute-lock-war-continues.htm",
+   "type": "press",
+   "date": "2026-06-05"
+  },
+  {
+   "id": "s_0da8a262",
+   "title": "Nvidia stock slides after earnings extra week makes 130b guidance 4 growth not 12",
+   "title_is_derived": false,
+   "publisher": "Tech Times",
+   "url": "https://www.techtimes.com/articles/331079/20261119/nvidia-stock-slides-after-earnings-extra-week-makes-130b-guidance-4-growth-not-12.htm",
+   "type": "press",
+   "date": "2026-11-19"
+  },
+  {
+   "id": "s_57d9461c",
+   "title": "Oracle sends force majeure notice on its new mexico stargate data center",
+   "title_is_derived": false,
+   "publisher": "TechCrunch",
+   "url": "https://techcrunch.com/2026/09/24/oracle-sends-force-majeure-notice-on-its-new-mexico-stargate-data-center/",
+   "type": "press",
+   "date": "2026-09-24"
+  },
+  {
+   "id": "s_b78d0e91",
+   "title": "Terawulf signs 200 mw 10 year ai hosting agreements with fluidstack",
+   "title_is_derived": false,
+   "publisher": "TeraWulf IR",
+   "url": "https://investors.terawulf.com/news-events/press-releases/detail/112/terawulf-signs-200-mw-10-year-ai-hosting-agreements-with-fluidstack",
+   "type": "primary",
+   "date": "2025-08"
+  },
+  {
+   "id": "s_816870f9",
+   "title": "Jensen huang senate banking committee lutnick tim scott",
+   "title_is_derived": false,
+   "publisher": "The Next Web",
+   "url": "https://thenextweb.com/news/jensen-huang-senate-banking-committee-lutnick-tim-scott",
+   "type": "press",
+   "date": "2026-12-03"
+  },
+  {
+   "id": "s_abf9c44e",
+   "title": "Nebius q3 2026 shares fall data centre delays outlook",
+   "title_is_derived": false,
+   "publisher": "The Next Web",
+   "url": "https://thenextweb.com/news/nebius-q3-2026-shares-fall-data-centre-delays-outlook",
+   "type": "press",
+   "date": "2026-11-12"
+  },
+  {
+   "id": "s_04ccc8f4",
+   "title": "Openai 856bn compute vs 600bn reset burn improved",
+   "title_is_derived": false,
+   "publisher": "The Next Web",
+   "url": "https://thenextweb.com/news/openai-856bn-compute-vs-600bn-reset-burn-improved",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_74523d92",
+   "title": "Oracle data centre 16 billion financing stargate",
+   "title_is_derived": false,
+   "publisher": "The Next Web",
+   "url": "https://thenextweb.com/news/oracle-data-centre-16-billion-financing-stargate",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_eabf379e",
+   "title": "Oracle sp downgrade ai spending junk risk",
+   "title_is_derived": false,
+   "publisher": "The Next Web",
+   "url": "https://thenextweb.com/news/oracle-sp-downgrade-ai-spending-junk-risk",
+   "type": "press",
+   "date": "2026-07-09"
+  },
+  {
+   "id": "s_c121715f",
+   "title": "Nvidia nortel vendor financing comparison",
+   "title_is_derived": false,
+   "publisher": "Tomasz Tunguz",
+   "url": "https://tomtunguz.com/nvidia_nortel_vendor_financing_comparison/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_ab665f2e",
+   "title": "Hyperion Data Center",
+   "title_is_derived": false,
+   "publisher": "Wikipedia",
+   "url": "https://en.wikipedia.org/wiki/Hyperion_Data_Center",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_0f3a5f9d",
+   "title": "Status",
+   "title_is_derived": false,
+   "publisher": "X (The Information post)",
+   "url": "https://x.com/theinformation/status/1978966707843567936",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_726e9a94",
+   "title": "Nvidia openai oracles 745b financing",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/economy/policy/articles/nvidia-openai-oracles-745b-financing-135702453.html",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_0f15fcc0",
+   "title": "Banks rework oracle data center",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/banks-rework-oracle-data-center-141848656.html",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_e9ca65b0",
+   "title": "Yahoo Finance article",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/jensen-huang-mocks-nvidia-circular-141958748.html",
+   "type": "press",
+   "date": null,
+   "original_title": "Jensen huang mocks nvidia circular 141958748",
+   "original_title_attribution": "Headline as published by Yahoo Finance; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_c42d8f63",
+   "title": "Yahoo Finance article, Nov 19, 2026",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/markets/stocks/articles/tech-bear-market-20-tech-224039016.html",
+   "type": "press",
+   "date": "2026-11-19",
+   "original_title": "Tech bear market 20 tech 224039016",
+   "original_title_attribution": "Headline as published by Yahoo Finance; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_c823b607",
+   "title": "Terawulf fluidstack joint venture plans",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/news/terawulf-fluidstack-joint-venture-plans-143846626.html",
+   "type": "press",
+   "date": "2025-08"
+  },
+  {
+   "id": "s_a4a1ac4a",
+   "title": "Yahoo Finance article, Nov 19, 2026",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/technology/ai/articles/coreweave-oracle-nebius-plunge-nvidia-192652785.html",
+   "type": "press",
+   "date": "2026-11-19",
+   "original_title": "Coreweave oracle nebius plunge nvidia 192652785",
+   "original_title_attribution": "Headline as published by Yahoo Finance; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_00f8966c",
+   "title": "Nvidia corporation nvda space exploration",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-corporation-nvda-space-exploration-005825605.html",
+   "type": "press",
+   "date": "2026-01"
+  },
+  {
+   "id": "s_2e55e321",
+   "title": "Nvidia nvda 105b ohio bet",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-nvda-105b-ohio-bet-124755581.html",
+   "type": "press",
+   "date": "2026-08"
+  },
+  {
+   "id": "s_9c88ae90",
+   "title": "Softbank raises arm margin loan",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/technology/ai/articles/softbank-raises-arm-margin-loan-054546224.html",
+   "type": "press",
+   "date": "2026-03"
+  },
+  {
+   "id": "s_43f66fdc",
+   "title": "Spacex seeks 40 billion debt",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/technology/ai/articles/spacex-seeks-40-billion-debt-114434062.html",
+   "type": "press",
+   "date": "2026-10"
+  },
+  {
+   "id": "s_3c1e62d5",
+   "title": "Openai cfo q3 was a blockbuster quarter revenue jumped 50",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance",
+   "url": "https://finance.yahoo.com/technology/article/openai-cfo-q3-was-a-blockbuster-quarter-revenue-jumped-50-225023234.html",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_0c926a74",
+   "title": "Musk xai pursuing 20 billion",
+   "title_is_derived": false,
+   "publisher": "Yahoo Finance UK",
+   "url": "https://uk.finance.yahoo.com/news/musk-xai-pursuing-20-billion-180609978.html",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_2c3dba23",
+   "title": "Meta blue owl capital develop hyperion data center",
+   "title_is_derived": false,
+   "publisher": "about.fb.com",
+   "url": "https://about.fb.com/news/2025/10/meta-blue-owl-capital-develop-hyperion-data-center/",
+   "type": "primary",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_caabcded",
+   "title": "Nvidia 2b coreweave investment 87 20 share 5gw ai data centers",
+   "title_is_derived": false,
+   "publisher": "aibusinessweekly.net",
+   "url": "https://aibusinessweekly.net/p/nvidia-2b-coreweave-investment-87-20-share-5gw-ai-data-centers",
+   "type": "press",
+   "date": "2026-01"
+  },
+  {
+   "id": "s_a377af0b",
+   "title": "The financialization of the gpu",
+   "title_is_derived": false,
+   "publisher": "ainfrastructure.substack.com",
+   "url": "https://ainfrastructure.substack.com/p/the-financialization-of-the-gpu",
+   "type": "press",
+   "date": "2023-08"
+  },
+  {
+   "id": "s_8247ea32",
+   "title": "Lambda taps 917m leveraged loan to fund nvidia chip lease",
+   "title_is_derived": false,
+   "publisher": "aiweekly.co",
+   "url": "https://aiweekly.co/alerts/lambda-taps-917m-leveraged-loan-to-fund-nvidia-chip-lease",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_aa502b17",
+   "title": "Nvidias huang lutnick summoned to testify to us senate",
+   "title_is_derived": false,
+   "publisher": "aljazeera.com",
+   "url": "https://www.aljazeera.com/news/2026/11/13/nvidias-huang-lutnick-summoned-to-testify-to-us-senate",
+   "type": "press",
+   "date": "2026-11-13"
+  },
+  {
+   "id": "s_c99f5cbf",
+   "title": "Gpu financing",
+   "title_is_derived": false,
+   "publisher": "altstreet.investments",
+   "url": "https://altstreet.investments/guides/gpu-financing",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_1845a257",
+   "title": "Coreweave gpu backed loans",
+   "title_is_derived": false,
+   "publisher": "bankingjudgmentlab.com",
+   "url": "https://www.bankingjudgmentlab.com/the-wire/coreweave-gpu-backed-loans",
+   "type": "press",
+   "date": "2026-03"
+  },
+  {
+   "id": "s_a2a5e41b",
+   "title": "Cipher mining signs 3 billion ai hosting deal with fluidstack google to backstop 1 4",
+   "title_is_derived": false,
+   "publisher": "blockspace.media",
+   "url": "https://blockspace.media/insight/cipher-mining-signs-3-billion-ai-hosting-deal-with-fluidstack-google-to-backstop-1-4-billion/",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_ce070267",
+   "title": "10.7312 ohal19284 014",
+   "title_is_derived": false,
+   "publisher": "business.columbia.edu",
+   "url": "https://business.columbia.edu/sites/default/files-efs/citation_file_upload/10.7312_ohal19284-014.pdf",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_e9bb40e0",
+   "title": "Coreweave lands 14 2bn deal with meta",
+   "title_is_derived": false,
+   "publisher": "capacityglobal.com",
+   "url": "https://capacityglobal.com/news/coreweave-lands-14-2bn-deal-with-meta/",
+   "type": "press",
+   "date": "2025"
+  },
+  {
+   "id": "s_bc38fb96",
+   "title": "Key dates in nortel networks history 1.",
+   "title_is_derived": false,
+   "publisher": "cbc.ca",
+   "url": "https://www.cbc.ca/news/business/key-dates-in-nortel-networks-history-1.802117",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_531d4c9c",
+   "title": "H100 gpu cost",
+   "title_is_derived": false,
+   "publisher": "cloudzero.com",
+   "url": "https://www.cloudzero.com/blog/h100-gpu-cost/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_3889c229",
+   "title": "Wall street is losing its appetite for oracles data center debt",
+   "title_is_derived": false,
+   "publisher": "cncbnews.com",
+   "url": "https://cncbnews.com/article/2026/01/wall-street-is-losing-its-appetite-for-oracles-data-center-debt",
+   "type": "press",
+   "date": "2026-01"
+  },
+  {
+   "id": "s_d034479a",
+   "title": "Microsoft exits nscale deal ipo at risk",
+   "title_is_derived": false,
+   "publisher": "computing.co.uk",
+   "url": "https://computing.co.uk/news/2026/ai/microsoft-exits-nscale-deal-ipo-at-risk",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_fe552d63",
+   "title": "Coreweave q3 2026 earnings financing nvidia backlog",
+   "title_is_derived": false,
+   "publisher": "convergedigest.com",
+   "url": "https://convergedigest.com/coreweave-q3-2026-earnings-financing-nvidia-backlog/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_1bd92e27",
+   "title": "Nvidia reportedly invests up to 2b in xai to power colossus 2",
+   "title_is_derived": false,
+   "publisher": "convergedigest.com",
+   "url": "https://convergedigest.com/nvidia-reportedly-invests-up-to-2b-in-xai-to-power-colossus-2/",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_27ee4781",
+   "title": "CREFC Data Center Primer Second Edition Nov2026",
+   "title_is_derived": false,
+   "publisher": "crefc.org",
+   "url": "https://www.crefc.org/common/uploaded%20files/Research/CREFC_Data_Center_Primer_Second_Edition_Nov2026.pdf",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_88c6a89e",
+   "title": "CREFC CMBS ACMBS New Issue Weekly 11 02 26",
+   "title_is_derived": false,
+   "publisher": "crefc.org",
+   "url": "https://www.crefc.org/cre/content/News/Items/Research_and_Data/2026/CREFC_CMBS_ACMBS_New_Issue_Weekly_11_02_26.aspx",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_3a858efa",
+   "title": "cryptobriefing.com article",
+   "title_is_derived": false,
+   "publisher": "cryptobriefing.com",
+   "url": "https://cryptobriefing.com/nvidia-huang-counters-burry-bear-case/",
+   "type": "press",
+   "date": null,
+   "original_title": "Nvidia huang counters burry bear case",
+   "original_title_attribution": "Headline as published by cryptobriefing.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_1eb0facb",
+   "title": "cycledesk.substack.com article",
+   "title_is_derived": false,
+   "publisher": "cycledesk.substack.com",
+   "url": "https://cycledesk.substack.com/p/internet-bubble-vs-todays-ai-buildout",
+   "type": "press",
+   "date": null,
+   "original_title": "Internet bubble vs todays ai buildout",
+   "original_title_attribution": "Headline as published by cycledesk.substack.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_64951745",
+   "title": "Gpu cloud price comparison",
+   "title_is_derived": false,
+   "publisher": "data.ornn.com",
+   "url": "https://data.ornn.com/gpu-cloud-price-comparison",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_f824f9bb",
+   "title": "Hyperscaler capex trends",
+   "title_is_derived": false,
+   "publisher": "datacentres.com",
+   "url": "https://www.datacentres.com/guides/hyperscaler-capex-trends",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_ab10e09d",
+   "title": "News",
+   "title_is_derived": false,
+   "publisher": "en.fnnews.com",
+   "url": "https://en.fnnews.com/news/202611141730429438",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_e7af17b4",
+   "title": "Nvidia weighs pullback from 100 billion ai investment push",
+   "title_is_derived": false,
+   "publisher": "en.sedaily.com",
+   "url": "https://en.sedaily.com/world/2026/11/20/nvidia-weighs-pullback-from-100-billion-ai-investment-push",
+   "type": "press",
+   "date": "2026-11-20"
+  },
+  {
+   "id": "s_5ef2c8dd",
+   "title": "En.wowtale.net",
+   "title_is_derived": false,
+   "publisher": "en.wowtale.net",
+   "url": "https://en.wowtale.net/2026/11/19/236083/",
+   "type": "press",
+   "date": "2026-11-19"
+  },
+  {
+   "id": "s_f9dd3574",
+   "title": "Lessons from history the rise and",
+   "title_is_derived": false,
+   "publisher": "fabricatedknowledge.com",
+   "url": "https://www.fabricatedknowledge.com/p/lessons-from-history-the-rise-and",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_3385bbb4",
+   "title": "Terawulf announces fluidstack expansion with 160 mw cb 5 lease at lake mariner",
+   "title_is_derived": false,
+   "publisher": "finviz.com",
+   "url": "https://finviz.com/news/142964/terawulf-announces-fluidstack-expansion-with-160-mw-cb-5-lease-at-lake-mariner",
+   "type": "press",
+   "date": "2025-08"
+  },
+  {
+   "id": "s_af132f62",
+   "title": "Anthropics s1 ipo reveals the inner workings of its fast evolving compute strategy",
+   "title_is_derived": false,
+   "publisher": "fortune.com",
+   "url": "https://fortune.com/2026/10/26/anthropics-s1-ipo-reveals-the-inner-workings-of-its-fast-evolving-compute-strategy/",
+   "type": "press",
+   "date": "2026-10-26"
+  },
+  {
+   "id": "s_164d6821",
+   "title": "Senate banking committee nvidia jensen huang howard lutnick",
+   "title_is_derived": false,
+   "publisher": "fortune.com",
+   "url": "https://fortune.com/2026/11/13/senate-banking-committee-nvidia-jensen-huang-howard-lutnick/",
+   "type": "press",
+   "date": "2026-11-13"
+  },
+  {
+   "id": "s_d5786986",
+   "title": "Anthropics deal with elon musks spacexai is even bigger than we knew ipo filing shows",
+   "title_is_derived": false,
+   "publisher": "gizmodo.com",
+   "url": "https://gizmodo.com/anthropics-deal-with-elon-musks-spacexai-is-even-bigger-than-we-knew-ipo-filing-shows-2000830618",
+   "type": "press",
+   "date": "2026-10"
+  },
+  {
+   "id": "s_434e4c11",
+   "title": "Timeline nortel the rise and fall of a telecom giant",
+   "title_is_derived": false,
+   "publisher": "globalnews.ca",
+   "url": "https://globalnews.ca/news/200009/timeline-nortel-the-rise-and-fall-of-a-telecom-giant/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_089c9fa3",
+   "title": "Spacex raises 32 billion for nvidia chips at 826 yield as ai debt risks grow",
+   "title_is_derived": false,
+   "publisher": "gurufocus.com",
+   "url": "https://www.gurufocus.com/news/9212122/spacex-raises-32-billion-for-nvidia-chips-at-826-yield-as-ai-debt-risks-grow?r=caf6fe0e0db70d936033da5461e60141",
+   "type": "press",
+   "date": "2026-10"
+  },
+  {
+   "id": "s_fedfe2d2",
+   "title": "Openai secures 11 billion funding at 1 25 trillion valuation bloomberg news reports",
+   "title_is_derived": false,
+   "publisher": "gvwire.com",
+   "url": "https://gvwire.com/2026/11/06/openai-secures-11-billion-funding-at-1-25-trillion-valuation-bloomberg-news-reports/",
+   "type": "press",
+   "date": "2026-11-06"
+  },
+  {
+   "id": "s_57515134",
+   "title": "ifre.com article, Oct 2025",
+   "title_is_derived": false,
+   "publisher": "ifre.com",
+   "url": "https://www.ifre.com/ifr-awards/2340435/the-metablue-owl-deal-broken-down-off-balance-sheet-gymnastics-24-years-after-enron",
+   "type": "press",
+   "date": "2025-10",
+   "original_title": "The metablue owl deal broken down off balance sheet gymnastics 24 years after enron",
+   "original_title_attribution": "Headline as published by ifre.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_61796817",
+   "title": "Wells fargo reiterates overweight on coreweave stock 115 target",
+   "title_is_derived": false,
+   "publisher": "investing.com",
+   "url": "https://www.investing.com/news/analyst-ratings/wells-fargo-reiterates-overweight-on-coreweave-stock-115-target-93CH-5041170",
+   "type": "press",
+   "date": null,
+   "original_title": "Wells fargo reiterates overweight on coreweave stock 115 target 93CH 5041170",
+   "original_title_attribution": "Headline as published by investing.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_df0ec69a",
+   "title": "AI circular financing crosses 1 trillion imf chief flags global economy risks",
+   "title_is_derived": false,
+   "publisher": "invezz.com",
+   "url": "https://invezz.com/news/2026/11/16/ai-circular-financing-crosses-1-trillion-imf-chief-flags-global-economy-risks/",
+   "type": "press",
+   "date": "2026-11-16"
+  },
+  {
+   "id": "s_16558856",
+   "title": "Kfgo.com",
+   "title_is_derived": false,
+   "publisher": "kfgo.com",
+   "url": "https://kfgo.com/?p=1373843",
+   "type": "press",
+   "date": "2026-11-12"
+  },
+  {
+   "id": "s_49e80084",
+   "title": "Openai reportedly closes 11 billion first portion of round a",
+   "title_is_derived": false,
+   "publisher": "letsdatascience.com",
+   "url": "https://letsdatascience.com/news/openai-reportedly-closes-11-billion-first-portion-of-round-a-43b7bec2",
+   "type": "press",
+   "date": "2026-10",
+   "original_title": "Openai reportedly closes 11 billion first portion of round a 43b7bec2",
+   "original_title_attribution": "Headline as published by letsdatascience.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_a8b4ce58",
+   "title": "Oracle raises massive debt for ai infrastructure",
+   "title_is_derived": false,
+   "publisher": "letsdatascience.com",
+   "url": "https://letsdatascience.com/news/oracle-raises-massive-debt-for-ai-infrastructure-29a877c1",
+   "type": "press",
+   "date": null,
+   "original_title": "Oracle raises massive debt for ai infrastructure 29a877c1",
+   "original_title_attribution": "Headline as published by letsdatascience.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_9ec969ce",
+   "title": "Are ai chips useful lives creating useless earnings",
+   "title_is_derived": false,
+   "publisher": "levelheadedinvesting.com",
+   "url": "https://www.levelheadedinvesting.com/p/are-ai-chips-useful-lives-creating-useless-earnings",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_41de767f",
+   "title": "Nvidia to invest 15 billion in sb energy under openai data center deal",
+   "title_is_derived": false,
+   "publisher": "m.investing.com",
+   "url": "https://m.investing.com/news/stock-market-news/nvidia-to-invest-15-billion-in-sb-energy-under-openai-data-center-deal-4863156?ampMode=1",
+   "type": "press",
+   "date": "2026-08-17"
+  },
+  {
+   "id": "s_9f9a3192",
+   "title": "Lazonick march lucent final",
+   "title_is_derived": false,
+   "publisher": "mpra.ub.uni-muenchen.de",
+   "url": "https://mpra.ub.uni-muenchen.de/22012/1/lazonick-march_lucent_final_20100410.pdf",
+   "type": "press",
+   "date": "2010-04-10"
+  },
+  {
+   "id": "s_67caa9cc",
+   "title": "Nvidia circular financing coreweave backstop",
+   "title_is_derived": false,
+   "publisher": "mycroftproject.substack.com",
+   "url": "https://mycroftproject.substack.com/p/nvidia-circular-financing-coreweave-backstop",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_bf19b524",
+   "title": "Oracle risks falling behind in ai race as spending binge bites",
+   "title_is_derived": false,
+   "publisher": "news.bloomberglaw.com",
+   "url": "https://news.bloomberglaw.com/capital-markets/oracle-risks-falling-behind-in-ai-race-as-spending-binge-bites",
+   "type": "press",
+   "date": "2026-07-09"
+  },
+  {
+   "id": "s_e16a1610",
+   "title": "Project jupiter faces delays and contract dispute in southern new mexico",
+   "title_is_derived": false,
+   "publisher": "newsradiokkob.com",
+   "url": "https://newsradiokkob.com/2026/11/18/project-jupiter-faces-delays-and-contract-dispute-in-southern-new-mexico",
+   "type": "press",
+   "date": "2026-11-18"
+  },
+  {
+   "id": "s_1de1e192",
+   "title": "S p cuts oracle to bbb as ai buildout widens cash deficit to 42bn",
+   "title_is_derived": false,
+   "publisher": "ppc.land",
+   "url": "https://ppc.land/s-p-cuts-oracle-to-bbb-as-ai-buildout-widens-cash-deficit-to-42bn/",
+   "type": "press",
+   "date": "2026-07-09"
+  },
+  {
+   "id": "s_7297b7ff",
+   "title": "Openai compute commitments tracker 2026",
+   "title_is_derived": false,
+   "publisher": "presenc.ai",
+   "url": "https://presenc.ai/research/openai-compute-commitments-tracker-2026",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_e6854691",
+   "title": "Meta hyperion 27bn off balance sheet",
+   "title_is_derived": false,
+   "publisher": "privatecreditprep.com",
+   "url": "https://privatecreditprep.com/deals/meta-hyperion-27bn-off-balance-sheet",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_ebbe015d",
+   "title": "AI hyperscaler coreweave signs 14 billion dollar deal with meta",
+   "title_is_derived": false,
+   "publisher": "pymnts.com",
+   "url": "https://www.pymnts.com/news/artificial-intelligence/2025/ai-hyperscaler-coreweave-signs-14-billion-dollar-deal-with-meta",
+   "type": "press",
+   "date": "2023-01"
+  },
+  {
+   "id": "s_31463fd6",
+   "title": "Nebius q3 2026 prepaid demand late",
+   "title_is_derived": false,
+   "publisher": "renstocks.substack.com",
+   "url": "https://renstocks.substack.com/p/nebius-q3-2026-prepaid-demand-late",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_b07e4564",
+   "title": "Nvidias huang says no backstop needed for coreweave as ai debt fears mount 10 15 2026",
+   "title_is_derived": false,
+   "publisher": "roic.ai",
+   "url": "https://www.roic.ai/news/nvidias-huang-says-no-backstop-needed-for-coreweave-as-ai-debt-fears-mount-10-15-2026",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_138113f9",
+   "title": "Xai pursues 20 billion lease to own deal for nvidia gpus through spv structure 10 16 2025",
+   "title_is_derived": false,
+   "publisher": "roic.ai",
+   "url": "https://www.roic.ai/news/xai-pursues-20-billion-lease-to-own-deal-for-nvidia-gpus-through-spv-structure-10-16-2025",
+   "type": "press",
+   "date": "2025-10"
+  },
+  {
+   "id": "s_af5ae7a3",
+   "title": "Openai 278b cash burn 1 2t valuation",
+   "title_is_derived": false,
+   "publisher": "runtimewire.com",
+   "url": "https://runtimewire.com/article/openai-278b-cash-burn-1-2t-valuation",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_6f68d40c",
+   "title": "Anthropic",
+   "title_is_derived": false,
+   "publisher": "sacra.com",
+   "url": "https://sacra.com/c/anthropic/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_a0aac226",
+   "title": "Nscale",
+   "title_is_derived": false,
+   "publisher": "sacra.com",
+   "url": "https://sacra.com/c/nscale/",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_68be9dfb",
+   "title": "Oracle cds record 288 basis points ai debt",
+   "title_is_derived": false,
+   "publisher": "securitasglobal.com",
+   "url": "https://www.securitasglobal.com/risk-perspectives/oracle-cds-record-288-basis-points-ai-debt/",
+   "type": "press",
+   "date": "2026-11-06"
+  },
+  {
+   "id": "s_57e5128d",
+   "title": "Nov13 2002 CapEx QoS Final",
+   "title_is_derived": false,
+   "publisher": "standards.tiaonline.org",
+   "url": "https://standards.tiaonline.org/gov_affairs/fcc_filings/documents/Nov13-2002_CapEx_QoS_Final.pdf",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_ffc9c8f8",
+   "title": "Banks are now trying to offload the ai data center debt they just underwrote",
+   "title_is_derived": false,
+   "publisher": "startupfortune.com",
+   "url": "https://startupfortune.com/banks-are-now-trying-to-offload-the-ai-data-center-debt-they-just-underwrote/",
+   "type": "press",
+   "date": "2026-10"
+  },
+  {
+   "id": "s_a132216d",
+   "title": "Nebius q3 2026 earnings",
+   "title_is_derived": false,
+   "publisher": "stockanalysis.com",
+   "url": "https://stockanalysis.com/news/nebius-q3-2026-earnings/",
+   "type": "press",
+   "date": "2026-11-12"
+  },
+  {
+   "id": "s_9678f0b6",
+   "title": "Nvidia announces financial results for third quarter fiscal fpx9dw5egxqa",
+   "title_is_derived": false,
+   "publisher": "stocktitan.net",
+   "url": "https://www.stocktitan.net/news/NVDA/nvidia-announces-financial-results-for-third-quarter-fiscal-fpx9dw5egxqa.html",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_ebff69f0",
+   "title": "CoreWeave 8-K (StockTitan copy)",
+   "title_is_derived": false,
+   "publisher": "stocktitan.net",
+   "url": "https://www.stocktitan.net/sec-filings/CRWV/8-k-core-weave-inc-reports-material-event-52eed2a9d09b.html",
+   "type": "press",
+   "date": "2025-09",
+   "original_title": "8 k core weave inc reports material event 52eed2a9d09b",
+   "original_title_attribution": "Headline as published by stocktitan.net; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_6ab19cce",
+   "title": "SFA Research Corner How Data Center ABS and CMBS Fit in a Broader Financing Ecosystem",
+   "title_is_derived": false,
+   "publisher": "structuredfinance.org",
+   "url": "https://structuredfinance.org/wp-content/uploads/2026/07/SFA-Research-Corner_How-Data-Center-ABS-and-CMBS-Fit-in-a-Broader-Financing-Ecosystem.pdf",
+   "type": "press",
+   "date": "2026-07"
+  },
+  {
+   "id": "s_ce7a0aa2",
+   "title": "Nebius signs 3 billion meta ai infrastructure deal over five years",
+   "title_is_derived": false,
+   "publisher": "techinformed.com",
+   "url": "https://techinformed.com/nebius-signs-3-billion-meta-ai-infrastructure-deal-over-five-years/",
+   "type": "press",
+   "date": "2025-09"
+  },
+  {
+   "id": "s_23d50fc4",
+   "title": "2026 08 17 iren delivers first four ai cloud deployments microsoft under 9 7 billion deal",
+   "title_is_derived": false,
+   "publisher": "theblock.co",
+   "url": "https://www.theblock.co/news/business/2026-08-17-iren-delivers-first-four-ai-cloud-deployments-microsoft-under-9-7-billion-deal-412016",
+   "type": "press",
+   "date": "2026-08-17"
+  },
+  {
+   "id": "s_7a3eee8e",
+   "title": "Nvidias investment playbook how it is",
+   "title_is_derived": false,
+   "publisher": "thecodew.com",
+   "url": "https://www.thecodew.com/2026/09/nvidias-investment-playbook-how-it-is.html",
+   "type": "press",
+   "date": "2026-09"
+  },
+  {
+   "id": "s_beb980f7",
+   "title": "The Globe and Mail, Nortel customers warn on finances",
+   "title_is_derived": false,
+   "publisher": "theglobeandmail.com",
+   "url": "https://www.theglobeandmail.com/report-on-business/nortel-clients-give-warning-of-finances/article20454748/",
+   "type": "press",
+   "date": null,
+   "original_title": "Article20454748",
+   "original_title_attribution": "Headline as published by theglobeandmail.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_913ae360",
+   "title": "Microsoft earnings q1 26 openai loss",
+   "title_is_derived": false,
+   "publisher": "theregister.com",
+   "url": "https://www.theregister.com/2025/10/29/microsoft_earnings_q1_26_openai_loss/",
+   "type": "press",
+   "date": "2025-10-29"
+  },
+  {
+   "id": "s_17c38983",
+   "title": "TokenPost news report",
+   "title_is_derived": false,
+   "publisher": "tokenpost.com",
+   "url": "https://www.tokenpost.com/news/business/61712",
+   "type": "press",
+   "date": "2026-11-19",
+   "original_title": "Business",
+   "original_title_attribution": "Headline as published by tokenpost.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_0899fc76",
+   "title": "Gpu rental prices",
+   "title_is_derived": false,
+   "publisher": "tools.finitizer.com",
+   "url": "https://tools.finitizer.com/gpu-rental-prices",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_aa87e947",
+   "title": "how nvidia is funding the ai boom with billions in global startups",
+   "title_is_derived": false,
+   "publisher": "tradingview.com",
+   "url": "https://www.tradingview.com/news/invezz:de2fce0f4094b:0-how-nvidia-is-funding-the-ai-boom-with-billions-in-global-startups/",
+   "type": "press",
+   "date": "2026-03",
+   "original_title": "Invezz:de2fce0f4094b:0 how nvidia is funding the ai boom with billions in global startups",
+   "original_title_attribution": "Headline as published by tradingview.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_d6db1d4b",
+   "title": "can coreweave s 133b backlog sustain its next growth phase",
+   "title_is_derived": false,
+   "publisher": "tradingview.com",
+   "url": "https://www.tradingview.com/news/zacks:c018d6f26094b:0-can-coreweave-s-133b-backlog-sustain-its-next-growth-phase/",
+   "type": "press",
+   "date": "2026-11-10",
+   "original_title": "Zacks:c018d6f26094b:0 can coreweave s 133b backlog sustain its next growth phase",
+   "original_title_attribution": "Headline as published by tradingview.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_e6f8df6f",
+   "title": "Gpu depreciation debate behind this weeks ai dip",
+   "title_is_derived": false,
+   "publisher": "valuethemarkets.com",
+   "url": "https://www.valuethemarkets.com/analysis/gpu-depreciation-debate-behind-this-weeks-ai-dip",
+   "type": "press",
+   "date": null
+  },
+  {
+   "id": "s_7235e1b3",
+   "title": "vantagemarkets.com article",
+   "title_is_derived": false,
+   "publisher": "vantagemarkets.com",
+   "url": "https://www.vantagemarkets.com/en/market-analysis/ai-financing-bubble-nvidia-openai-circular-deals-explained/",
+   "type": "press",
+   "date": null,
+   "original_title": "Ai financing bubble nvidia openai circular deals explained",
+   "original_title_attribution": "Headline as published by vantagemarkets.com; shown for attribution only, not as our characterisation."
+  },
+  {
+   "id": "s_a75beee5",
+   "title": "Anthropic lines up 26b from nvidia google and 5 other tech firms alongside ipo",
+   "title_is_derived": false,
+   "publisher": "vktr.com",
+   "url": "https://www.vktr.com/ai-market/anthropic-lines-up-26b-from-nvidia-google-and-5-other-tech-firms-alongside-ipo/",
+   "type": "press",
+   "date": "2025-11"
+  },
+  {
+   "id": "s_f2e2430a",
+   "title": "Iren closes usd 3 65bn financing for microsoft ai infrastructure deal",
+   "title_is_derived": false,
+   "publisher": "w.media",
+   "url": "https://w.media/iren-closes-usd-3-65bn-financing-for-microsoft-ai-infrastructure-deal/",
+   "type": "press",
+   "date": null
+  }
+ ]
+}

@@ -1,0 +1,73 @@
+<section id="ch09" class="chapter" data-chapter="09" aria-labelledby="ch09-title">
+  <header class="chapter-head">
+    <p class="kicker">Chapter 9 &middot; The stress test</p>
+    <h2 id="ch09-title">What if payments slow down?</h2>
+  </header>
+
+  <p class="hook">Picture a row of dominoes where every domino is made of the same wood. Knock one over and you learn little. Knock them over in a different order and you learn who lands on whom. That's all this chapter does. We take one small cluster from our toy loop (a neocloud, meaning a newer company that rents out racks of AI chips, plus its lenders), squeeze it a few ways, and watch who still gets paid, who takes a haircut (the part of a payment they don't receive), and which promises get called. Then we follow the hit back to where the loop started: Nvidia's revenue.</p>
+
+  <p class="what-it-does"><strong>What this tool does.</strong> You squeeze one small cluster four ways (less customer revenue, cheaper GPU rentals, higher interest rates, a lower Nvidia stock price) and it shows who gets paid first, who takes a loss, and what comes back to Nvidia. It opens on a mild preset, not a base case. Press &ldquo;Reset to no stress&rdquo; to see the cluster with nothing going wrong.</p>
+
+  <div class="toy-banner" role="note">
+    <strong>TOY MODEL: not a forecast. Not investment advice.</strong>
+    <span>One year, one cluster, $100 of seed cash. Every number below is <em>hypothetical</em>: it comes from knobs you set, not from anyone's books.</span>
+  </div>
+
+  <div class="stress-grid">
+    <form class="panel controls" aria-label="Stress scenario controls" onsubmit="return false">
+      <h3>Pick a scenario</h3>
+      <div class="presets" role="group" aria-label="Preset scenarios"></div>
+      <div class="knobs"></div>
+      <button type="button" class="btn-reset">Reset to no stress</button>
+    </form>
+
+    <div class="panel viz">
+      <h3 class="viz-title">One year of payments, in order</h3>
+      <div class="svg-wrap"></div>
+      <div class="viz-legend"></div>
+      <p class="fine viz-note">Everything in this picture is <em>hypothetical</em>. Hover, tap or focus a shape for the status and the math. Dashed-outline shapes are promises, not cash. The three loop-back amounts are different kinds of effect, so we don't add them up.</p>
+    </div>
+  </div>
+
+  <div class="panel readout">
+    <h3>In plain words</h3>
+    <ul class="readout-list"></ul>
+    <details class="numbers">
+      <summary>All the numbers, with status tags</summary>
+      <table class="num-table">
+        <caption class="sr-only">Stress test outputs</caption>
+        <thead><tr><th scope="col">Item</th><th scope="col">Scheduled</th><th scope="col">Paid</th><th scope="col">Haircut</th><th scope="col">State</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </details>
+  </div>
+
+  <div class="two-readings">
+    <article class="panel reading bull">
+      <h3>Bull reading</h3>
+      <p class="reading-lead"></p>
+      <ul class="reading-list"></ul>
+    </article>
+    <article class="panel reading bear">
+      <h3>Bear reading</h3>
+      <p class="reading-lead"></p>
+      <ul class="reading-list"></ul>
+    </article>
+  </div>
+  <p class="fine even">Both readings use the same output. Neither is a verdict, and layered claims on one asset are an ordinary capital structure, not double pledging. The question is how much they all lean on the same future customer spending.</p>
+
+  <aside class="panel pricing" aria-labelledby="ch09-pricing-h">
+    <h3 id="ch09-pricing-h">What the market is saying right now, both ways</h3>
+    <p class="fine">Real recent events, shown for context only. They are not inputs to the toy model above and we draw no conclusion from them. CDS (credit default swap) is insurance against a company failing to repay its debt, so a higher price means more worry; bp means basis points, where 100 bp is one percentage point.</p>
+    <div class="ev-cols">
+      <section class="ev-col" aria-labelledby="ch09-ev-s"><h4 id="ch09-ev-s">Signs of financial stress</h4><ul class="events stress"></ul></section>
+      <section class="ev-col" aria-labelledby="ch09-ev-b"><h4 id="ch09-ev-b">Signs of continued demand and financing</h4><ul class="events strength"></ul></section>
+    </div>
+    <section class="ev-col ev-watch" aria-labelledby="ch09-ev-n"><h4 id="ch09-ev-n">Nvidia news in this period (dated; no conclusion drawn)</h4><ul class="events nvnews"></ul></section>
+    <section class="ev-col ev-watch" aria-labelledby="ch09-ev-w"><h4 id="ch09-ev-w">Commitments and cash flows to watch (two readings each)</h4><ul class="events watch"></ul></section>
+    <p class="fine">The first two lists use the same layout and the same rules for dates and status tags. We left out one report about banks struggling to sell some Oracle-linked debt because we couldn't confirm it.</p>
+    <p class="links-row"></p>
+  </aside>
+
+  <p class="means"><strong>What this means.</strong> <span class="means-text"></span></p>
+</section>

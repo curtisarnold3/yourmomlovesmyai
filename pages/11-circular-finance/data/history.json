@@ -1,0 +1,633 @@
+{
+ "as_of": "2026-11-20",
+ "note": "Lucent/Nortel vendor-financing history and the bull/bear case. Even-handed: neither side is a conclusion.",
+ "lucent_facts": [
+  {
+   "id": "lu-fy99-commit",
+   "label": "Customer credit extension commitments (loans)",
+   "value": 7.1,
+   "unit": "USD billion",
+   "period": "Sep 30, 1999",
+   "company": "Lucent",
+   "status": "reported",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-fy99-adv",
+   "label": "Credit advanced and outstanding",
+   "value": 1.6,
+   "unit": "USD billion",
+   "period": "Sep 30, 1999",
+   "company": "Lucent",
+   "status": "reported",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-fy00-commit",
+   "label": "Customer credit extension commitments (loans)",
+   "value": 6.7,
+   "unit": "USD billion",
+   "period": "Sep 30, 2000",
+   "company": "Lucent",
+   "status": "verified",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-fy00-adv",
+   "label": "Credit advanced and outstanding",
+   "value": 1.3,
+   "unit": "USD billion",
+   "period": "Sep 30, 2000",
+   "company": "Lucent",
+   "status": "verified",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-fy00-guar",
+   "label": "Customer debt guarantees (aggregate up to / outstanding ~$0.77B)",
+   "value": 1.4,
+   "unit": "USD billion",
+   "period": "Sep 30, 2000",
+   "company": "Lucent",
+   "status": "verified",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-fy00-total",
+   "label": "Total customer financing commitments (loans plus guarantees)",
+   "value": 8.1,
+   "unit": "USD billion",
+   "period": "Sep 30, 2000",
+   "company": "Lucent",
+   "status": "verified",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-fy01-total",
+   "label": "Total customer financing commitments (loans $4.6B, guarantees $0.7B); drawn $3.0B; reserves $2.1B",
+   "value": 5.3,
+   "unit": "USD billion",
+   "period": "Sep 30, 2001",
+   "company": "Lucent",
+   "status": "verified",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-fy02-total",
+   "label": "Total customer financing commitments (loans $1.1B, guarantees $0.2B); drawn $1.1B; reserves $1.0B",
+   "value": 1.3,
+   "unit": "USD billion",
+   "period": "Sep 30, 2002",
+   "company": "Lucent",
+   "status": "verified",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-rev-restated",
+   "label": "Revenue as restated in FY2002 10-K (continuing-operations basis): FY2000 $28.904B; FY2001 $21.294B (-26%); FY2002 $12.321B (-42%)",
+   "value": 28.904,
+   "unit": "USD billion (FY2000)",
+   "period": "FY2000",
+   "company": "Lucent",
+   "status": "verified",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-commit-share",
+   "label": "Lucent commitments as share of revenue: $8.1B / $33.813B (revenue as originally reported in the FY2000 10-K405) is about 24%; on the restated $28.904B basis it is about 28%",
+   "value": 24,
+   "unit": "percent (approx, restated basis)",
+   "period": "FY2000",
+   "company": "Lucent",
+   "status": "calculated",
+   "source_ids": [
+    "s_50ab85ec",
+    "s_dd7bbfbb"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-bad-debt",
+   "label": "Provisions for bad debts and customer financings: FY2000 $505M; FY2001 $2,249M; FY2002 $1,253M",
+   "value": 2249,
+   "unit": "USD million (FY2001)",
+   "period": "FY2000-FY2002",
+   "company": "Lucent",
+   "status": "verified",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-defaults",
+   "label": "Named customer failures: Winstar Chapter 11 (Apr 18, 2001); One.Tel administration (late May 2001); 10-K also notes customers declared insolvent and a customer financing default in FY2002",
+   "value": "2 named in 10-K excerpt",
+   "unit": "events",
+   "period": "2001-2002",
+   "company": "Lucent",
+   "status": "verified",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-winstar",
+   "label": "Winstar: ~$2B vendor financing committed; ~$700M write-off (secondary source)",
+   "value": 2,
+   "unit": "USD billion committed",
+   "period": "2001",
+   "company": "Lucent",
+   "status": "unverified",
+   "source_ids": [
+    "s_c121715f"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-concentration",
+   "label": "Top customers: Verizon about 13% and AT&T about 10% of FY2000 revenue",
+   "value": 23,
+   "unit": "percent of revenue (combined)",
+   "period": "FY2000",
+   "company": "Lucent",
+   "status": "calculated",
+   "formula_text": "13% + 10% (two rounded \"about\" figures from secondary sources)",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-clec-share",
+   "label": "Share of revenue from CLECs/startups",
+   "value": null,
+   "unit": "percent",
+   "period": "FY1999-2001",
+   "company": "Lucent",
+   "status": "unverified",
+   "source_ids": [
+    "s_61519e46"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-stock",
+   "label": "Stock fell about 98.5% from Dec 1999 peak to Oct 2002 (price at 1.5% of peak)",
+   "value": 98.5,
+   "unit": "percent decline",
+   "period": "Dec 1999 - Oct 2002",
+   "company": "Lucent",
+   "status": "reported",
+   "source_ids": [
+    "s_9f9a3192"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-sec-fraud",
+   "label": "SEC action over FY2000 revenue recognition: $1.148B revenue, $470M pre-tax income improperly recognized; $25M fine (secondary source)",
+   "value": 1.148,
+   "unit": "USD billion",
+   "period": "FY2000",
+   "company": "Lucent",
+   "status": "unverified",
+   "source_ids": [
+    "s_c121715f"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "no-undrawn",
+   "label": "Undrawn customer financing commitments, up to approximately",
+   "value": 4.1,
+   "unit": "USD billion",
+   "period": "Dec 31, 2000 (vs $2.4B at Dec 31, 1999)",
+   "company": "Nortel",
+   "status": "verified",
+   "source_ids": [
+    "s_b26dd69b",
+    "s_49f826d5"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "no-rev",
+   "label": "Total revenues (US GAAP, as filed)",
+   "value": 30.275,
+   "unit": "USD billion",
+   "period": "2000 (1999: $21.287B)",
+   "company": "Nortel",
+   "status": "verified",
+   "source_ids": [
+    "s_b26dd69b"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "no-drawn",
+   "label": "Customer financing drawn/outstanding: about $1.08B net of $433M provisions (press citing SEC filing); Globe and Mail separately gives $1.6B. Not found directly in the 10-K text read.",
+   "value": 1.08,
+   "unit": "USD billion",
+   "period": "Dec 31, 2000",
+   "company": "Nortel",
+   "status": "unverified",
+   "source_ids": [
+    "s_beb980f7"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "no-stock",
+   "label": "Stock peaked $124.50 (Jul 26, 2000); about $0.67 on TSX in Oct 2002, over 99% decline",
+   "value": 99.4,
+   "unit": "percent decline",
+   "period": "Jul 2000 - Oct 2002",
+   "company": "Nortel",
+   "status": "reported",
+   "source_ids": [
+    "s_bc38fb96",
+    "s_434e4c11"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "tel-capex",
+   "label": "US facilities-based carrier capex: about $42.5B (1996) rising to about $113B (2000), $92.6B (2001); sum about $440B 1996-2001 (definitions vary; BEA-based figure about $569B for comms equipment)",
+   "value": 113,
+   "unit": "USD billion (2000 peak)",
+   "period": "1996-2001",
+   "company": "US telecom industry",
+   "status": "reported",
+   "source_ids": [
+    "s_57e5128d",
+    "s_1eb0facb"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "tel-debt",
+   "label": "Telecom borrowing: >$500B US bonds 1996-2001 (one source) / >$320B borrowed 1999-2001 (another); different measures",
+   "value": 500,
+   "unit": "USD billion (approx)",
+   "period": "1996-2001",
+   "company": "US telecom industry",
+   "status": "unverified",
+   "source_ids": [
+    "s_ce070267",
+    "s_f9dd3574"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "tel-clec-mcap",
+   "label": "CLEC market cap fell from $86.4B (1999) to $3.77B (Feb 2002); S&P 500 telecom services added about $500B 1996-1999 (per the Richmond Fed, as relayed by a news summary)",
+   "value": 3.77,
+   "unit": "USD billion",
+   "period": "1999-2002",
+   "company": "CLEC sector",
+   "status": "reported",
+   "source_ids": [
+    "s_735ca3e2"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "tel-fiber",
+   "label": "Widely cited '2.7% of fiber used' is disputed: originated as a June 2001 analyst estimate for lit capacity; lit fiber about 2-5% per FDIC (2002). Fiber is a long-lived asset (decades) vs GPU useful life, which is disputed (Burry argues depreciation schedules are too long; no figure verified here).",
+   "value": null,
+   "unit": "qualitative",
+   "period": "2001-2002",
+   "company": "collateral life",
+   "status": "unverified",
+   "source_ids": [
+    "s_f9dd3574",
+    "s_bb03465b"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "nv-guar",
+   "label": "Nvidia guarantee of OpenAI Ohio lease payments (SB Energy credit support), conditional ceiling; not drawn, and Nvidia says it has paid nothing (Nvidia CFO commentary, Oct 25, 2026)",
+   "value": 105,
+   "unit": "USD billion",
+   "period": "Aug 2026",
+   "company": "Nvidia",
+   "status": "verified",
+   "source_ids": [
+    "s_c429436a",
+    "s_a2c138ef",
+    "s_0c4cfe15"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "nv-invest-assets",
+   "label": "Investment assets: marketable equity securities plus non-marketable securities (our sum of two Nvidia balance-sheet lines); long-term debt $32.4B is a separate line",
+   "value": 109.7,
+   "unit": "USD billion",
+   "period": "Oct 25, 2026",
+   "company": "Nvidia",
+   "status": "calculated",
+   "formula_text": "44.2 (marketable equity securities) + 65.5 (non-marketable securities) = 109.7, both from the Q3 FY27 balance sheet",
+   "source_ids": [
+    "s_5ddd1b7b"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "nv-rev",
+   "label": "Q3 FY27 revenue (quarter); NVDA trailing-12-month revenue not computed because earlier quarters are not shown here",
+   "value": 115.8,
+   "unit": "USD billion (one quarter)",
+   "period": "Q3 FY2027",
+   "company": "Nvidia",
+   "status": "verified",
+   "source_ids": [
+    "s_5ddd1b7b"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "nv-corp-exposure",
+   "label": "Per a Korean news report: $99B investment assets at end-Q2 2026, $25B further investment commitments, $36B cloud service commitments, $30B OpenAI equity (Feb 2026), 10-13% CoreWeave stake and $6.3B unsold-capacity purchase commitment; Bloomberg estimate of at least $750B of announced/discussed deals. Needs 10-Q verification.",
+   "value": 750,
+   "unit": "USD billion (Bloomberg-estimated, announced or discussed)",
+   "period": "2026",
+   "company": "Nvidia",
+   "status": "unverified",
+   "source_ids": [
+    "s_ab10e09d"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "nv-ubs",
+   "label": "UBS estimate: OpenAI-Nvidia arrangement up to 13% of Nvidia projected 2026 revenue (secondary)",
+   "value": 13,
+   "unit": "percent",
+   "period": "2026E",
+   "company": "Nvidia",
+   "status": "unverified",
+   "source_ids": [
+    "s_7235e1b3"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "nv-cds",
+   "label": "Nvidia 5-yr CDS about 139 bp vs Oracle about 298 bp vs CoreWeave about 1,100 to 1,150 bp (Nov 6, 2026; CoreWeave peaked near 1,280 bp on Nov 5)",
+   "value": 139,
+   "unit": "basis points",
+   "period": "Nov 6, 2026",
+   "company": "Nvidia",
+   "status": "reported",
+   "source_ids": [
+    "s_9c5da62b"
+   ],
+   "research_file": "lucent",
+   "status_adjusted_from": "verified",
+   "status_adjustment_reason": "Research tagged verified but cites only press/secondary sources; downgraded to reported."
+  },
+  {
+   "id": "lu-rev-original",
+   "label": "Revenue as originally reported, FY2000 (10-K405)",
+   "value": 33.813,
+   "unit": "USD billion",
+   "period": "FY2000",
+   "company": "Lucent",
+   "status": "verified",
+   "source_ids": [
+    "s_50ab85ec"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-rev-chg-fy01",
+   "label": "Restated revenue change FY2001 vs FY2000",
+   "value": -26.3,
+   "unit": "percent",
+   "period": "FY01",
+   "company": "Lucent",
+   "status": "calculated",
+   "formula_text": "(21,294 - 28,904) / 28,904, restated figures from the FY2002 10-K",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "research_file": "lucent"
+  },
+  {
+   "id": "lu-rev-chg-fy02",
+   "label": "Restated revenue change FY2002 vs FY2001",
+   "value": -42.1,
+   "unit": "percent",
+   "period": "FY02",
+   "company": "Lucent",
+   "status": "calculated",
+   "formula_text": "(12,321 - 21,294) / 21,294, restated figures from the FY2002 10-K",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ],
+   "research_file": "lucent"
+  }
+ ],
+ "derived": [
+  {
+   "id": "lu-commit-share-restated",
+   "label": "Lucent FY2000 customer financing commitments as share of revenue (restated basis)",
+   "value": 28.0,
+   "unit": "percent",
+   "status": "calculated",
+   "formula_text": "8.1 / 28.904 (both verified, FY2002 10-K)",
+   "basis": "restated continuing-operations revenue",
+   "source_ids": [
+    "s_dd7bbfbb"
+   ]
+  },
+  {
+   "id": "lu-commit-share-original",
+   "label": "Same ratio on originally reported revenue (FY2000 10-K405)",
+   "value": 24.0,
+   "unit": "percent",
+   "status": "calculated",
+   "formula_text": "8.1 / 33.813 (both verified: $8.1B total commitments; revenue as originally reported in the FY2000 10-K405)",
+   "basis": "originally reported revenue of $33.813B",
+   "source_ids": [
+    "s_50ab85ec",
+    "s_dd7bbfbb"
+   ]
+  }
+ ],
+ "caveats": [
+  {
+   "id": "lu-revenue-basis",
+   "text": "Lucent revenue basis: $8.1B total customer financing commitments (verified, FY2002 10-K) over FY2000 revenue of $28.904B as restated in that same 10-K (continuing-operations basis, verified) is about 28%. On revenue as originally reported in the FY2000 10-K405 ($33.813B, verified) the same ratio is about 24%. The page must name one basis; the default is the restated 28% and must be labelled as such.",
+   "status": "calculated"
+  },
+  {
+   "id": "lu-commit-sources",
+   "text": "Lucent FY2000 loan commitments ($6.7B), advances ($1.3B), guarantees ($1.4B) and the Verizon (13%) and AT&T (10%) customer shares are in the FY2000 10-K405. The FY1999 comparatives ($7.1B, $1.6B) are carried from the same filing but have not been checked line by line. Totals for later years are in the FY2002 10-K: $8.1B (FY2000), $5.3B (FY2001), $1.3B (FY2002).",
+   "status": "verified"
+  },
+  {
+   "id": "lu-secondary-claims",
+   "text": "Winstar ($2B committed, ~$700M write-off) and the SEC revenue-recognition matter ($1.148B revenue, $25M fine) are from a secondary source (Tunguz) and unverified. The SEC matter is specific to Lucent in 2000 and is not an allegation about any AI-era company.",
+   "status": "unverified"
+  },
+  {
+   "id": "nortel-drawn",
+   "text": "Nortel drawn customer financing at 31 Dec 2000 is unverified ($1.08B net per press citing the SEC filing vs $1.6B per another outlet). Undrawn commitments of about $4.1B are verified.",
+   "status": "unverified"
+  },
+  {
+   "id": "framing",
+   "text": "The Lucent/Nortel parallel is a framing used by commentators, not a tested conclusion. Differences: Nvidia generates tens of billions in quarterly free cash flow; buyers are among the richest companies; GPU useful life is disputed vs decades-long fiber life; Nvidia says no payments have been made under its guarantees.",
+   "status": "reported"
+  },
+  {
+   "id": "timing",
+   "text": "Lucent's customer defaults came in 2001, about a year after peak financing (Winstar Chapter 11 on April 18, 2001). No confirmed public default on a GPU-backed loan had been found as of October 2026.",
+   "status": "reported"
+  }
+ ],
+ "bull_arguments": [
+  {
+   "claim": "Nvidia's exposure is conditional and small relative to cash generation: guarantees are a ceiling tied to residual value, undrawn, and Nvidia has paid nothing; Q3 net income was $65.3B and FCF is large. Lucent financed customers from a far weaker cash position.",
+   "who": "Nvidia disclosures and analysts such as UBS (exposure up to ~13% of 2026E revenue); Data Center Knowledge on guarantee structure",
+   "source_ids": [
+    "s_0c4cfe15",
+    "s_7235e1b3",
+    "s_5ddd1b7b"
+   ]
+  },
+  {
+   "claim": "Demand is real and backlogged: Nvidia revenue +103% y/y with Rubin shipping; CoreWeave backlog ~$132.5B with 2026 guidance raised; interim CEO Kress says hyperscalers are looking for more compute; H100 rental rates rising (Huang, Sept).",
+   "who": "Nvidia (Colette Kress); CoreWeave management; Jensen Huang (Sept 2026)",
+   "source_ids": [
+    "s_ef28fb89",
+    "s_b913f5db",
+    "s_3a858efa"
+   ]
+  },
+  {
+   "claim": "Buyers are the richest firms on earth with operating cash flow, unlike dot-com startups; policymakers expect build-out to continue (NEC's Kevin Hassett); a 25-50 bp tightening alone would not end the build-out.",
+   "who": "Kevin Hassett (NEC); sell-side commentary summarized by Yahoo Finance",
+   "source_ids": [
+    "s_9c5da62b",
+    "s_726e9a94"
+   ]
+  },
+  {
+   "claim": "Rating and credit stress shows up in a small set of levered names; Nvidia's CDS (~139 bp) is far below Oracle's and CoreWeave's, and no public GPU-loan default has occurred.",
+   "who": "CNBC/Deutsche Bank spread data; AM Compute tracker",
+   "source_ids": [
+    "s_9c5da62b",
+    "s_2622278a"
+   ]
+  },
+  {
+   "claim": "Jensen Huang's public stance: 'circular financing' fears are overstated ('If that is, let's do more of that').",
+   "who": "Jensen Huang",
+   "source_ids": [
+    "s_e9ca65b0"
+   ]
+  },
+  {
+   "claim": "Hyperscaler spending is funded largely by operating cash flow and is still guided up: Microsoft reported $58.0B of operating cash flow against $39.4B of capital additions in its latest quarter, and Meta's 2026 capex outlook midpoint is about $140B.",
+   "who": "Microsoft 10-Q and Meta Q3 2026 results (company filings)",
+   "source_ids": [
+    "s_971d55fd",
+    "s_bd67fb97"
+   ]
+  }
+ ],
+ "bear_arguments": [
+  {
+   "claim": "Circular flows inflate reported demand: Nvidia funds or backstops customers (OpenAI guarantee up to $105B, equity stakes, unsold-capacity purchase commitments) who buy its chips, and the guarantee depends on an OpenAI lacking investment-grade credit.",
+   "who": "Michael Burry (Scion)",
+   "source_ids": [
+    "s_bb03465b",
+    "s_94f544ef"
+   ]
+  },
+  {
+   "claim": "Neoclouds depend on Nvidia as 'the bank'; if that support fades many would lose access to capital.",
+   "who": "Marc Rowan (Apollo CEO), Nov 17, 2026",
+   "source_ids": [
+    "s_07dff4c7",
+    "s_bfd348a6"
+   ]
+  },
+  {
+   "claim": "Fed staff: off-balance-sheet leasing and circular financing could amplify losses if AI returns disappoint; AI debt grew fast through opaque structures.",
+   "who": "Federal Reserve staff (October 2026 FOMC minutes)",
+   "source_ids": [
+    "s_3a261481"
+   ]
+  },
+  {
+   "claim": "The AI capex race will end when credit is withdrawn; hyperscaler FCF has turned negative and debt issuance is surging ($296B in 2026, $440B plus $300B projected).",
+   "who": "Christopher Wood (Jefferies); Goldman Sachs data",
+   "source_ids": [
+    "s_9c5da62b"
+   ]
+  },
+  {
+   "claim": "GPU useful lives are overstated in depreciation schedules (Burry estimate ~$176B understated depreciation 2026-2028), so collateral is shorter-lived than long-haul fiber was. Chanos questioned why chip owners do not rent chips out themselves.",
+   "who": "Michael Burry; Jim Chanos",
+   "source_ids": [
+    "s_3a858efa"
+   ]
+  },
+  {
+   "claim": "The Lucent/Nortel parallel: vendor lent to or guaranteed customers who later failed; concentrated customers and rising contingent commitments are the bear framing (framing, not a tested conclusion).",
+   "who": "Commentators such as Tomasz Tunguz; Bernstein's Stacy Rasgon on circular concerns",
+   "source_ids": [
+    "s_c121715f",
+    "s_7235e1b3"
+   ]
+  }
+ ],
+ "open_questions": [
+  "We couldn't confirm why Jensen Huang resigned. Nvidia's 8-K gives no reason, and only the facts in the filing are used here.",
+  "The $9.5B of 'power and systems' guarantees in Nvidia's CFO commentary has no further description, so we can't say who they protect.",
+  "We have not checked Nortel's drawn customer financing at the end of 2000 against the filing; reports range from $1.08B to $1.6B.",
+  "Lucent and Nortel don't disclose how much revenue came from CLECs and startups in the filings available to us.",
+  "Telecom totals for capex and debt depend on how each source defines them.",
+  "Oracle's credit-default-swap record varies by data provider (about 151, 288 and 300 bp in different reports), so we show the peak as reported and do not compare it with other dates.",
+  "CoreWeave's note maturity (2031 or 2032) and coupon (9.75% or 9.625%) differ between news stories and we have not checked the indenture.",
+  "Nvidia's drop from its October high is reported as 36% or 39%, and the exact peak is not confirmed.",
+  "Reports that banks struggled to place about $38B of Oracle-linked data-center debt come from one outlet, so treat them as unconfirmed.",
+  "Hyperscaler capex figures here come from summaries of the Q3 reports, not from the filings themselves.",
+  "The September Fed rate path comes from news coverage; the Fed's own pages are the place to check it."
+ ],
+ "huang_note": "On Nov 12 Nvidia filed an 8-K saying Jensen Huang had resigned as CEO, president and director, and that CFO Colette Kress would serve as interim CEO. The filing gave no reason. We don't know the reason and we won't guess."
+}

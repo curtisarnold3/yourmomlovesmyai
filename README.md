@@ -21,7 +21,7 @@ vercel.json                Clean URLs (/neoclouds/), cache headers
 
 URLs: `/sand-to-thought/`, `/who-makes-ai-chips/`, `/sector-pulse/`, `/nvidia-dollar/`,
 `/situational-awareness/` (coming soon), `/open-vs-closed/`, `/neoclouds/`,
-`/neocloud-contagion/`, `/ai-kill-switch/`, `/burry-depreciation/`, `/ai-cake-3d/`.
+`/neocloud-contagion/`, `/ai-kill-switch/`, `/burry-depreciation/`, `/ai-cake-3d/`, `/circular-finance/`.
 
 ## Why the episodes are framed instead of merged
 
@@ -45,6 +45,22 @@ For a new card thumbnail, save a 640×400 JPG to `assets/thumbs/<slug>.jpg`.
 `pages/10-ai-cake-3d/` is a three.js scene. three.js 0.160 is vendored in `vendor/` (MIT, license included),
 so the page has no CDN dependency. The dataset (nodes, links, sources) is the JSON inside
 `<script id="data">` in its `index.html`.
+
+## The Loop (episode 11)
+
+`pages/11-circular-finance/index.html` is one self-contained file (about 790 KB, works from `file://`).
+It is built, not hand-edited:
+
+```
+src/            shell, runtime, loop-model.js (pure UMD model), chapters/NN.{html,css,js}
+data/           deals.json, entities.json, loop-defaults.json, events.json, history.json, sources.json
+tools/          build_data.py (regenerates data and asserts the arithmetic), bundle.py (inlines everything)
+tests/          loop-model.test.js (node --test), browser_test.py (Playwright)
+```
+
+Rebuild: `python3 tools/build_data.py && python3 tools/bundle.py` inside that folder, then `python3 scripts/build.py`
+at the repo root. Every number on the page is rendered from the data files and carries a status tag
+(verified, reported, calculated, hypothetical, unverified). Dev-only folders are listed in `.vercelignore`.
 
 ## Live data
 

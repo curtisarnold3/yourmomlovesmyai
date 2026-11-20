@@ -1,0 +1,58 @@
+{
+ "as_of": "2026-11-20",
+ "note": "Counts derived from the data files by tools/build_data.py. Chapters must read these instead of typing numbers.",
+ "deal_count": 61,
+ "deal_count_by_money_kind": {
+  "external": 13,
+  "recycled": 8,
+  "promise": 37,
+  "mixed": 1,
+  "outside_loop_investment": 2
+ },
+ "cash_in_loop_count": 21,
+ "promise_count": 37,
+ "mixed_count": 1,
+ "outside_loop_count": 2,
+ "external_count": 13,
+ "recycled_count": 8,
+ "excluded_from_sums_count": 7,
+ "parties_with_deal_lines": 39,
+ "entity_count": 46,
+ "named_entity_count": 33,
+ "event_count": 20,
+ "fact_count": 133,
+ "source_count": 191,
+ "param_count": 27,
+ "bull_argument_count": 6,
+ "bear_argument_count": 6,
+ "hops": {
+  "stops": 11,
+  "first_index": 0,
+  "last_index": 10,
+  "moves": 10,
+  "wording": "The loop has 11 stops, numbered hop 0 to hop 10. Hop 0 is where the cash starts and hop 10 is where the loop closes, so the money makes ten moves."
+ },
+ "money_kind_labels": {
+  "external": {
+   "label": "Outside cash",
+   "reader_text": "Cash that comes from outside the loop: lenders, outside investors, end customers. It is still not free money: lenders and investors must be repaid or earn a return from future end-user spending."
+  },
+  "recycled": {
+   "label": "Recycled cash",
+   "reader_text": "Cash that started with a loop participant and returns to that participant or its customers, for example Nvidia equity in a customer that buys Nvidia systems."
+  },
+  "promise": {
+   "label": "Promise (not cash)",
+   "reader_text": "Contracts, backlog, RPO, backstops, guarantees, warrants, leases, letters of intent, and equity purchases that only close on a condition (for example an IPO closing). NOT cash moved. Never added into cash totals."
+  },
+  "mixed": {
+   "label": "Mixed round",
+   "reader_text": "An aggregate round that contains both vendor money (recycled) and outside money (external). See money_split for the parts. Excluded from sums because the component edges are charted separately. Chapters should show the money_split parts (for example vendor money and other investors) and never the bare word \"mixed\"."
+  },
+  "outside_loop_investment": {
+   "label": "Stake outside the loop",
+   "reader_text": "Nvidia's own cash invested in a company that is not a customer in the AI-demand loop (for example Intel, Synopsys, Nokia). It is neither outside money entering the loop nor recycled customer money. Excluded from loop totals; shown on the Nvidia node as a separate line."
+  }
+ },
+ "deal_line_sentence": "61 deal lines: 21 are cash inside the loop (equity or debt), 37 are promises, 1 is a mixed round holding both vendor and outside money, and 2 are stakes in companies outside the loop."
+}

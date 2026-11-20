@@ -2,3 +2,11 @@ scripts
 .github
 README.md
 DEPLOY_PROMPT.md
+pages/11-circular-finance/audits
+pages/11-circular-finance/src
+pages/11-circular-finance/tests
+pages/11-circular-finance/tools
+pages/11-circular-finance/dist
+pages/11-circular-finance/data/research
+pages/11-circular-finance/*.md
+pages/11-circular-finance/progress.html

@@ -101,5 +101,14 @@
     "dek": "Huang's five-layer cake as five glass planes: 122 companies and every sourced deal strung between energy, chips, infrastructure, models and apps.",
     "dir": "10-ai-cake-3d",
     "kind": "episode"
+  },
+  {
+    "slug": "circular-finance",
+    "num": "11",
+    "short": "The Loop",
+    "title": "The Loop: Follow $100 Around the AI Money Loop",
+    "dek": "Where one $100 goes as it circles through chips, clouds, labs and lenders: how big it gets, how many hands are on it, and how much of it is real new money.",
+    "dir": "11-circular-finance",
+    "kind": "episode"
   }
 ]

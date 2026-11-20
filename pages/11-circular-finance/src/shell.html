@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Loop: Follow $100 Around the AI Money Loop</title>
+<meta name="description" content="Episode 11 of the AI Stack series. An interactive toy model that follows $100 of seed cash around the AI financing loop, and counts who gets paid, with what, and from where.">
+<!--STYLES-->
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="6" height="6" fill="rgba(185,195,220,.10)"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#b9c3dc" stroke-width="2" stroke-opacity=".75"/>
+    </pattern>
+  </defs>
+</svg>
+<a class="skip" href="#main">Skip to the story</a>
+
+<header class="topbar" role="banner">
+  <div class="brand">The <b>Loop</b> <span style="color:var(--ink-4);font-weight:500">· Ep. 11</span></div>
+  <nav class="chapnav" id="chapnav" aria-label="Chapters"></nav>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+</header>
+
+<aside class="tallies" id="tallies" aria-label="Running tallies for the loop, per $100 of seed cash" data-open="false">
+  <div class="tallies-inner">
+    <button class="tallies-toggle" id="talliesToggle" type="button" aria-expanded="false" aria-controls="talliesGrid">
+      <span class="sum" id="talliesSum"></span><span class="chev" aria-hidden="true">&#9650;</span>
+    </button>
+    <div class="tallies-head" id="talliesHead">Tallies</div>
+    <div class="tallies-grid" id="talliesGrid" role="list"></div>
+    <div class="tallies-actions"><button class="btn small" id="talliesReset" type="button">Reset</button></div>
+  </div>
+  <div class="tallies-note" id="talliesNote"></div>
+</aside>
+
+<main id="main">
+<section class="hero" aria-labelledby="title">
+  <div class="hero-inner">
+    <div>
+      <div class="kicker">The AI Stack &middot; Episode 11</div>
+      <h1 id="title">The Loop: Follow <span class="d">$100</span> Around the AI Money Loop</h1>
+      <p class="sub">Who pays whom, with whose money, and how many times we count it.</p>
+      <p class="lede">Chipmakers invest in the cloud companies that buy their chips. Many of those are neoclouds, a neocloud being a newer company that rents out racks of AI chips. Neoclouds sign contracts with AI labs that the chipmakers also fund. It's not a scandal and it's not a free lunch. It's a loop, and the loop changes what "revenue" and "demand" mean. We follow one seed of cash around it, lap by lap, and tag every number with how much we trust it.</p>
+      <p class="teaser" id="heroTeaser" aria-live="polite"></p>
+      <div class="scrollcue">Toy model, per $100 of seed cash. Nothing here is a forecast, and none of it is investment advice. Promises are never counted as cash.</div>
+    </div>
+    <div class="hero-art" id="heroArt"></div>
+  </div>
+</section>
+
+<!--CHAPTER:01-->
+<!--CHAPTER:02-->
+<!--CHAPTER:03-->
+<!--CHAPTER:04-->
+<!--CHAPTER:05-->
+<!--CHAPTER:06-->
+<!--CHAPTER:07-->
+<!--CHAPTER:08-->
+<!--CHAPTER:09-->
+<!--CHAPTER:10-->
+<!--EPILOGUE-->
+</main>
+
+<footer class="foot" id="sources" aria-labelledby="foot-h">
+  <h2 id="foot-h">Sources and fine print</h2>
+  <div class="notes" id="footNotes"></div>
+  <details>
+    <summary id="srcSummary">Sources</summary>
+    <ol class="sources" id="srcList"></ol>
+  </details>
+</footer>
+
+<div class="popover" id="popover" role="tooltip" hidden></div>
+<!--DATA-->
+<!--SCRIPTS-->
+</body>
+</html>

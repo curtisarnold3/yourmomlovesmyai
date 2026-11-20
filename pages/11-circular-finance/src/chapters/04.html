@@ -1,0 +1,75 @@
+<section id="ch04" class="chapter" data-chapter="04" aria-labelledby="ch04-h">
+  <div class="ch-head">
+    <div class="ch-num">04</div>
+    <div class="ch-q">How much does borrowing change the picture?</div>
+    <h2 id="ch04-h">Leverage: how $100 becomes $X</h2>
+  </div>
+  <div class="prose c4-intro">
+    <p class="hook" id="c4-hook"></p>
+  </div>
+
+  <div class="c4-top">
+    <div class="controls c4-presets" role="group" aria-label="Presets and actions">
+      <span class="lbl">Start from an analogue</span>
+      <button class="btn" type="button" data-preset="coreweave_like" aria-pressed="false">CoreWeave-like</button>
+      <button class="btn" type="button" data-preset="oracle_like" aria-pressed="false">Oracle-like</button>
+      <button class="btn" type="button" data-preset="xai_spv_like" aria-pressed="false">xAI SPV-like</button>
+      <button class="btn" type="button" id="c4-reset">Reset to defaults</button>
+      <button class="btn" type="button" id="c4-copy">Copy share link</button>
+      <span class="c4-copied" id="c4-copied" role="status" aria-live="polite"></span>
+    </div>
+    <div class="explain c4-preset-note" id="c4-preset-note" aria-live="polite"></div>
+    <input class="c4-url" id="c4-url" type="text" readonly hidden aria-label="Share link">
+  </div>
+
+  <div class="c4-grid">
+    <div class="panel c4-knobs" id="c4-knobs">
+      <h3>The knobs</h3>
+      <div class="c4-mini" id="c4-mini" aria-hidden="true"></div>
+      <p class="c4-hint">Hover, focus or tap the <b>?</b> on a knob to see where its default comes from. Any value you move away from its default is marked hypothetical.</p>
+      <div id="c4-rows"></div>
+      <details class="c4-more">
+        <summary>Show advanced settings (rarely needed; collapsed by default)</summary>
+        <div id="c4-rows-more"></div>
+      </details>
+    </div>
+
+    <div class="c4-out">
+      <div class="panel c4-result">
+        <h3>What comes out</h3>
+        <p class="c4-headline" id="c4-headline" aria-live="polite"></p>
+        <div class="c4-mults" id="c4-mults"></div>
+        <div class="c4-changed" id="c4-changed" role="status"></div>
+        <svg id="c4-wf" role="img" aria-labelledby="c4-wf-t c4-wf-d" preserveAspectRatio="xMidYMid meet"></svg>
+        <div id="c4-wf-legend"></div>
+        <details class="numbers" id="c4-nums">
+          <summary>The numbers behind the chart</summary>
+          <div class="c4-tablewrap"><table><thead><tr><th>Step</th><th class="n">Amount</th><th class="n">Running total</th></tr></thead><tbody id="c4-tbody"></tbody></table></div>
+        </details>
+        <p class="c4-claims" id="c4-claims"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="c4-cols">
+    <div class="panel">
+      <h3>What each knob does</h3>
+      <dl class="c4-dl" id="c4-dl"></dl>
+    </div>
+    <div class="panel c4-bb">
+      <h3>Two ways to read the multiplier</h3>
+      <div class="c4-bbgrid">
+        <div class="c4-bull"><h4><span aria-hidden="true">&#9650;</span> Bull reading</h4><div id="c4-bull"></div></div>
+        <div class="c4-bear"><h4><span aria-hidden="true">&#9660;</span> Bear reading</h4><div id="c4-bear"></div></div>
+      </div>
+      <p class="c4-nv">Both readings use the same numbers. We don’t pick one.</p>
+    </div>
+  </div>
+
+  <p class="srcline c4-toy" id="c4-toy"></p>
+
+  <div class="takeaway" id="c4-take">
+    <h3>What this means</h3>
+    <p id="c4-take-p"></p>
+  </div>
+</section>

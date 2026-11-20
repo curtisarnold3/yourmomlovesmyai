@@ -1,0 +1,70 @@
+<section id="ch05" class="chapter" data-chapter="05" aria-labelledby="ch05-title">
+  <header class="ch-head">
+    <div class="ch-num">05</div>
+    <div class="ch-q">Who has a claim on one GPU?</div>
+    <h2 id="ch05-title">The claims stack</h2>
+  </header>
+
+  <div class="prose" data-hook>
+    <p class="hook">Picture one GPU sitting in a rack. Now count the people who think they have a claim on it.</p>
+    <p>A lender took it as collateral. A bank lent to the lender. Bond holders at the parent company are watching it too. The customer prepaid for its time. A big supplier promised to cover the rent if the customer walks. Somebody owns the equity, and somebody else owns a piece of the customer.</p>
+    <p>Same chip. Seven layers of paperwork (some of chapter 3's nine claims are grouped here, so you see seven). Let's stack them up and see what happens when the chip gets older. (Toy numbers throughout, per $100 of seed cash.)</p>
+  </div>
+
+  <aside class="callout" aria-label="Not double-pledging">
+    <h3>This is not double-pledging.</h3>
+    <p><strong>Double-pledging</strong> means promising the same thing to two different lenders without telling them. That is not what is happening here, and nothing on this page implies it. Layered claims are an ordinary capital structure. Your house can carry a mortgage, a home-equity line and a contractor's lien, and nobody calls that fraud. Each layer has its own place in line, and everyone can read where.</p>
+    <p>The question here is different. <strong>Nearly every layer gets paid from the same place: future spending by end users on AI.</strong> When claims all depend on one thing, they tend to wobble together. That's the point of this chapter, and it's a point about correlation, not wrongdoing.</p>
+  </aside>
+
+  <div class="ch05-grid">
+    <figure class="ch05-fig">
+      <p class="ch05-note ch05-readme" data-readme></p>
+      <p class="ch05-note"><strong>How to read the picture.</strong> Each slab is one claim on the GPU. A taller slab is a bigger claim. The number on a slab is its place in line to be paid (1 is paid first). Dashed slabs are claims paid by someone else, so they have no place in line for this chip. The dotted line is what the GPU is worth now. The red bracket is how far the ranked claims sit above that value.</p>
+      <div class="ch05-svgwrap" data-svg></div>
+      <figcaption data-figcap></figcaption>
+    </figure>
+
+    <div class="ch05-side">
+      <div class="ch05-controls panel" role="group" aria-label="Claims stack controls">
+        <div class="ch05-ctl">
+          <label for="ch05-year"><span data-yearlabel>Year</span></label>
+          <input type="range" id="ch05-year" min="0" max="5" step="0.25" value="0" data-year>
+        </div>
+        <div class="ch05-ctl">
+          <span class="ch05-lbl" id="ch05-life-lbl">GPU useful life</span>
+          <div class="ch05-btns" role="group" aria-labelledby="ch05-life-lbl" data-life></div>
+          <p class="ch05-note" data-burry></p>
+        </div>
+        <div class="ch05-ctl">
+          <span class="ch05-lbl" id="ch05-amort-lbl">Debt paydown from rent</span>
+          <div class="ch05-btns" role="group" aria-labelledby="ch05-amort-lbl">
+            <button type="button" class="btn" data-amort aria-pressed="true">Show debt paydown from rent</button>
+          </div>
+          <p class="ch05-note" data-amortnote></p>
+        </div>
+        <div class="ch05-ctl">
+          <span class="ch05-lbl" id="ch05-mode-lbl">Compare the claims to</span>
+          <div class="ch05-btns" role="group" aria-labelledby="ch05-mode-lbl" data-mode>
+            <button type="button" class="btn" data-m="asset" aria-pressed="true">The GPU's value (claims that rank against it)</button>
+            <button type="button" class="btn" data-m="debt" aria-pressed="false">The senior loan</button>
+          </div>
+        </div>
+      </div>
+      <div class="ch05-ratio panel" data-ratio aria-live="polite"></div>
+      <div class="ch05-detail panel" data-detail tabindex="-1" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <section class="ch05-list" aria-labelledby="ch05-list-h">
+    <h3 id="ch05-list-h">The same stack, as a list</h3>
+    <p class="ch05-note">Senior (paid first) at the top. Tap or press any row for details. <span data-listnote></span></p>
+    <ol data-list></ol>
+    <div data-legend></div>
+  </section>
+
+  <div class="takeaway" data-means>
+    <h3>What this means</h3>
+    <p data-means-p></p>
+  </div>
+</section>

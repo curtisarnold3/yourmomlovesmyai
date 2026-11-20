@@ -1,0 +1,258 @@
+{
+ "as_of": "2026-11-20",
+ "events": [
+  {
+   "id": "ev-sp-oracle-bbb-minus",
+   "date": "2026-07-09",
+   "title": "S&P cuts Oracle to BBB- (one notch above junk)",
+   "detail": "S&P lowered Oracle's long-term issuer rating to BBB- from BBB, citing AI data-center cash burn (FY ended May 31 free cash flow roughly -$24B; S&P sees deficit possibly widening to $42B; adjusted leverage above 4x). Moody's outlook negative per Bloomberg Tax; Fitch BBB per Reuters/Euronext. Shares fell nearly 6% that day. Oracle says holding investment grade is a top priority. Dates differ slightly across outlets (Bloomberg Law dated Jul 16).",
+   "why_it_matters": "A rating agency explicitly linking AI-capex funding to credit quality. Another notch would put Oracle bonds at risk of index exclusion.",
+   "status": "reported",
+   "source_ids": [
+    "s_eabf379e",
+    "s_1de1e192",
+    "s_bf19b524"
+   ]
+  },
+  {
+   "id": "ev-nvda-openai-guarantee-weighed",
+   "date": "2026-07-27",
+   "title": "Axios: Nvidia weighs financing guarantee for OpenAI Ohio campus, reigniting 'circular' concerns",
+   "detail": "Late-July reports said Nvidia was considering a guarantee for an OpenAI data-center campus in southern Ohio. Some outlets cited $250B; later reporting settled on $105B. Headline figure was inconsistent across sources. (Reported by Axios.)",
+   "why_it_matters": "Marks the shift from equity investment to contingent credit support by the chip supplier.",
+   "status": "reported",
+   "source_ids": [
+    "s_f3c25820"
+   ]
+  },
+  {
+   "id": "ev-nvda-105b-guarantee",
+   "date": "2026-08-17",
+   "title": "Nvidia agrees to guarantee up to $105B of OpenAI Ohio lease payments (SB Energy campus)",
+   "detail": "Reuters (via Investing.com/Nikkei) reported Nvidia would guarantee up to $105B in lease payments for an OpenAI data center being built by SoftBank-backed SB Energy, invest $1.5B in SB Energy, and secure up to 8 GW of capacity. Per Data Center Knowledge the guarantee is a conditional ceiling tied to residual value of leased infrastructure, not a cash outlay. Nvidia's own Q3 FY27 CFO commentary (Nov 17) states total maximum guarantee exposure of $118.0B at Oct 25 ($3.5B land, power and shell guarantees for neoclouds, $105.0B SB Energy credit support, $9.5B power and systems credit support), up from $108.5B at Jul 26, and says it has made no payments under its guarantees. Burry publicly called the Ohio guarantee a circular-financing red flag.",
+   "why_it_matters": "The largest contingent liability in the AI financing web sits with the chip supplier, backing a customer that lacks an investment-grade rating. Nvidia says it is conditional, tied to lease commencement, and unpaid so far.",
+   "status": "reported",
+   "status_note": "The $105B and the Burry quote are press-reported; the $118.0B total and \"no payments\" are Nvidia company statements.",
+   "source_ids": [
+    "s_41de767f",
+    "s_a2c138ef",
+    "s_0c4cfe15",
+    "s_bb03465b",
+    "s_c429436a"
+   ]
+  },
+  {
+   "id": "ev-fed-hike",
+   "date": "2026-09-16",
+   "title": "Fed raises rates 25 bp to 3.75%-4.00%, first hike since 2023",
+   "detail": "Per Yahoo/Motley Fool coverage. The October meeting held rates at 3.75%-4% on a 10-2 vote (Cook and Hammack dissenting for a hike); minutes show almost all participants see further hikes as likely appropriate.",
+   "why_it_matters": "Higher funding costs for debt-financed buildouts; rate backdrop turned from easing to tightening.",
+   "status": "reported",
+   "source_ids": [
+    "s_95d752a7",
+    "s_3a261481"
+   ]
+  },
+  {
+   "id": "ev-oracle-jupiter-force-majeure",
+   "date": "2026-09-24",
+   "title": "Oracle sends force majeure notice on Project Jupiter (New Mexico Stargate campus)",
+   "detail": "Oracle notified the developer (most outlets: a Blue Owl unit; one says STACK Infrastructure) that it reserves the right to delay payments if the site misses its 2028 target, amid air-permit and pipeline-reroute delays. Reports say Oracle is not exiting as tenant. Oracle stock fell ~3%. Reported that the project's $18B construction loan traded below 90 cents and county officials warned of possible breach of industrial revenue bond agreements (weakest-sourced part).",
+   "why_it_matters": "First prominent case of a hyperscaler tenant invoking a contract clause on an AI campus financed by project debt. Not a missed payment or cancellation.",
+   "status": "reported",
+   "source_ids": [
+    "s_9e05bbeb",
+    "s_57d9461c",
+    "s_e16a1610"
+   ]
+  },
+  {
+   "id": "ev-oracle-cds-record",
+   "date": "2026-11-06",
+   "title": "Oracle 5-yr CDS near 300 bp",
+   "detail": "CNBC (Nov 6 and Nov 18) puts Oracle's five-year credit-default-swap price near 298 bp on Nov 6 and above 300 bp on Nov 18, up from below 80 bp a year earlier. One source reported a record 288 bp on Oct 15; we could not confirm it, and levels differ by data provider and date. Record-high language from earlier in 2026 also appears in coverage.",
+   "why_it_matters": "Market pricing of Oracle credit risk is high while the company is still rated investment grade.",
+   "status": "reported",
+   "source_ids": [
+    "s_68be9dfb",
+    "s_9c5da62b",
+    "s_07dff4c7"
+   ]
+  },
+  {
+   "id": "ev-banks-38b-oracle-debt",
+   "date": "2026-10",
+   "title": "Banks struggle to distribute ~$38B of construction debt tied to Oracle-leased Texas/Wisconsin data centers",
+   "detail": "One report says a group including JPMorgan and MUFG spent more than six months trying to place the debt. Only seen in search-result summaries; primary article not fetched.",
+   "why_it_matters": "Signals limited investor appetite for project-level data-center debt.",
+   "status": "unverified",
+   "source_ids": [
+    "s_ffc9c8f8"
+   ]
+  },
+  {
+   "id": "ev-hyperscaler-q3-capex",
+   "date": "2026-10-29",
+   "title": "Hyperscaler Q3 earnings: combined free cash flow negative; no capex cuts",
+   "detail": "Alphabet reaffirmed 2026 capex $195-205B and said 2027 will rise significantly; Amazon held ~$220B for 2026 and signalled 'meaningfully more' in 2027; Meta narrowed 2026 to $135-145B; Microsoft trimmed calendar 2026 to ~$170B and stayed FCF-positive. Goldman: hyperscalers' Q3 FCF negative as capex exceeded operating cash flow. Figures come from summaries of the quarterly reports, not the filings themselves.",
+   "why_it_matters": "Demand-side capex guidance is the base of the whole chain; the only trim was Microsoft, others are rising and increasingly debt funded.",
+   "status": "reported",
+   "source_ids": [
+    "s_2ce18ca2",
+    "s_9c5da62b"
+   ]
+  },
+  {
+   "id": "ev-ai-bond-wave-cds-spike",
+   "date": "2026-11-05",
+   "title": "CoreWeave 5-yr CDS peaks at about 1,280 bp; bond yields exceed 16%",
+   "detail": "CNBC, citing Deutsche Bank data, reported CoreWeave's five-year credit-default-swap price above 1,289 bp on Nov 5 and about 1,155 bp on Nov 6; another report puts the peak close at about 1,278 bp. We show it as about 1,280 bp. On Nov 6 Nvidia was near 139 bp and Oracle near 298 bp. CoreWeave's high-yield bond yields were above 16% (CNBC).",
+   "why_it_matters": "Distress-level pricing on the most levered neocloud while issuance by hyperscalers is at record levels.",
+   "status": "reported",
+   "source_ids": [
+    "s_9c5da62b",
+    "s_07dff4c7",
+    "s_d3684041"
+   ],
+   "status_adjusted_from": "verified",
+   "status_adjustment_reason": "Research tagged verified but cites only press/secondary sources; downgraded to reported."
+  },
+  {
+   "id": "ev-coreweave-q3",
+   "date": "2026-11-10",
+   "title": "CoreWeave Q3: revenue +168%, backlog ~$132.5B, 2026 guidance raised; will avoid unsecured bonds at current yields",
+   "detail": "Revenue ~$3.66B; adjusted operating income $379M; GAAP net loss $709M; interest expense $846M vs $310M a year earlier; 2026 capex guided $37-39B; backlog ~$132.5B (about $104B in June). Management said it will not use the unsecured bond market at current yields and expects to finance via delayed-draw term loans tied to customer contracts. Co-founder Brian Venturo says he bought $30M of unsecured bonds (CNBC Nov 18).",
+   "why_it_matters": "Operating demand is strong (bull evidence) while financing cost and net losses are the stress point (bear evidence). Shut of unsecured market shifts reliance to contract-backed secured loans.",
+   "status": "reported",
+   "source_ids": [
+    "s_b913f5db",
+    "s_d6db1d4b",
+    "s_07dff4c7"
+   ]
+  },
+  {
+   "id": "ev-huang-resigns",
+   "date": "2026-11-12",
+   "title": "Jensen Huang resigns as Nvidia CEO, president and director; CFO Colette Kress named interim CEO",
+   "detail": "Nvidia's 8-K, filed Nov 12, says Jensen Huang resigned as CEO, president and a director with immediate effect, that CFO Colette Kress is interim CEO while remaining CFO, and that Harvey Jones is board chair. The filing does not state a reason, and the board is considering internal and external candidates.",
+   "why_it_matters": "Dated company news, shown for context. The filing gives no reason, and we draw no conclusion from it.",
+   "status": "verified",
+   "source_ids": [
+    "s_1934d6ee"
+   ]
+  },
+  {
+   "id": "ev-congress-huang-hearings",
+   "date": "2026-12-03",
+   "title": "Senate Banking hearing on Nvidia and Megaspeed tentatively Dec 3; House interviews Dec 1",
+   "detail": "Senate Banking Chair Tim Scott asked Jensen Huang to appear on Dec 3 (and Commerce Secretary Howard Lutnick on Dec 10); on Nov 18 his office said Huang had agreed to appear. The reports we found give no confirmed date, so Dec 3 is tentative. House committees plan to interview Huang on Dec 1. The Senate inquiry is about Nvidia's dealings with Megaspeed International and export controls, not about circular financing.",
+   "why_it_matters": "The inquiry is about Nvidia's dealings with Megaspeed International and export controls. Dated news for context; it is not about the financing loop.",
+   "status": "reported",
+   "source_ids": [
+    "s_816870f9",
+    "s_164d6821",
+    "s_aa502b17"
+   ]
+  },
+  {
+   "id": "ev-nebius-outlook-cut",
+   "date": "2026-11-12",
+   "title": "Nebius trims 2026 revenue outlook on capacity delays; capex to ~$27B",
+   "detail": "Revenue to low end of $3.0-3.4B range as third-party capacity slips to 1H27; 2026 capex ~$27B vs prior $20-25B; Q3 revenue $980.8M beat. Stock fell between ~12% and 22% depending on outlet and time of measurement.",
+   "why_it_matters": "Delivery/power delays hit neocloud revenue timing while capex rises, widening the financing gap.",
+   "status": "reported",
+   "source_ids": [
+    "s_abf9c44e",
+    "s_a132216d",
+    "s_16558856"
+   ]
+  },
+  {
+   "id": "ev-imf-1t",
+   "date": "2026-11-16",
+   "title": "IMF chief reportedly says AI circular financing exceeds $1 trillion",
+   "detail": "Invezz reports the IMF head said circular AI financing has crossed $1T, about two-thirds debt funded, and cites the IMF's October GFSR on 'wrong-way risk'. The IMF's own document has not been checked; a BIS warning is also mentioned in some coverage, but we have not found it in a primary source.",
+   "why_it_matters": "If accurate, a multilateral regulator is naming circular financing as a stability risk.",
+   "status": "unverified",
+   "source_ids": [
+    "s_df0ec69a"
+   ]
+  },
+  {
+   "id": "ev-nvda-q3fy27",
+   "date": "2026-11-17",
+   "title": "Nvidia Q3 FY2027: revenue $115.8B (+103% y/y); Q4 guide $130B; Rubin ships; stock falls",
+   "detail": "Quarter ended Oct 25, 2026. Data Center $107.6B; GAAP net income $65.3B; GAAP gross margin 74.8%; Q4 guide $130B +/-3% (includes an extra week; gross margin guide 71-72%) with no China data-center compute revenue assumed. Consensus ~$109.1B revenue and ~$125.1B guide (LSEG via CNBC). Balance sheet: non-marketable securities $65.5B (from $22.3B), marketable equity securities $44.2B (from $12.9B), long-term debt $32.4B (from $7.5B); new $150B buyback authorization; pending Hugging Face acquisition. Stock closed -2.89% at $150.96 on Nov 18 and is down >13% over the week; reported 36-39% below its October high (sources differ). CoreWeave -4.13%, Iren -3.61% on Nov 18.",
+   "why_it_matters": "Operating results are very strong, but Nvidia's own balance sheet shows rapid growth in equity stakes and debt, which is the heart of the circularity debate. The release gives no dollar figure for guarantees.",
+   "status": "verified",
+   "source_ids": [
+    "s_5ddd1b7b",
+    "s_55e7265b",
+    "s_ef28fb89",
+    "s_0da8a262"
+   ]
+  },
+  {
+   "id": "ev-fed-minutes-circular",
+   "date": "2026-11-18",
+   "title": "Fed October minutes: staff warn off-balance-sheet leasing and circular financing could amplify AI losses",
+   "detail": "Minutes (released Nov 18) say officials see AI demand as a material inflation risk and a possible source of financial instability; staff warned that 'off-balance-sheet leasing commitments and circular financing arrangements among AI-related firms could amplify losses' if returns disappoint; most participants noted rapid, opaque growth in AI-related debt.",
+   "why_it_matters": "First clear central-bank wording on circular financing in primary Fed communication (as relayed by CNBC).",
+   "status": "reported",
+   "source_ids": [
+    "s_3a261481"
+   ],
+   "status_adjusted_from": "verified",
+   "status_adjustment_reason": "Research tagged verified but cites only press/secondary sources; downgraded to reported."
+  },
+  {
+   "id": "ev-cds-etf-filings",
+   "date": "2026-11-18",
+   "title": "Defiance and Tuttle file for CDS-based ETFs on Oracle, CoreWeave, Meta and Mag 7",
+   "detail": "Funds need SEC approval; would pay CDS premiums and use leverage; not inverse-stock products. Same CNBC piece: Apollo CEO Marc Rowan (Nov 17) warned neoclouds could lose access to capital if Nvidia's role as funder fades.",
+   "why_it_matters": "Retail/institutional access to AI credit hedges is a sentiment indicator, not evidence of default.",
+   "status": "reported",
+   "source_ids": [
+    "s_07dff4c7"
+   ],
+   "status_adjusted_from": "verified",
+   "status_adjustment_reason": "Research tagged verified but cites only press/secondary sources; downgraded to reported."
+  },
+  {
+   "id": "ev-neocloud-drawdowns",
+   "date": "2026-11-19",
+   "title": "Neocloud and AI-credit equities deeply below peaks",
+   "detail": "CoreWeave closed $44.91 on Nov 19 (reported), about 76% below the $183.58 peak (Jun 2025), close to its $40 IPO price. A Kobeissi-based list puts Oracle ~68% below its high (unverified list). Nvidia reported 36-39% below its October high.",
+   "why_it_matters": "Equity and credit markets are pricing financing risk, though CoreWeave's operating metrics still grow.",
+   "status": "reported",
+   "source_ids": [
+    "s_17c38983",
+    "s_a4a1ac4a",
+    "s_c42d8f63"
+   ]
+  },
+  {
+   "id": "ev-no-defaults",
+   "date": "2026-10",
+   "title": "No confirmed public default on a GPU-backed loan found",
+   "detail": "A vendor tracker (AM Compute) says no neocloud had publicly defaulted on a GPU-backed loan as of October 2026. No source reports a confirmed missed payment, covenant breach disclosure or confirmed cancellation of the OpenAI-Oracle contract; Oracle has denied delays that would breach contractual commitments (earlier DCD report).",
+   "why_it_matters": "Stress so far is in prices and spreads, not realized credit losses (Lucent's defaults came in 2001, about a year after peak financing).",
+   "status": "reported",
+   "source_ids": [
+    "s_2622278a",
+    "s_9807762f"
+   ]
+  },
+  {
+   "id": "ev-anthropic-ipo-priced",
+   "date": "2026-11-18",
+   "title": "Anthropic prices its IPO at $83 a share, above the $70 to $78 range",
+   "detail": "Anthropic's announcement says the offering priced Nov 18 at $83.00 a share, with closing expected Nov 20. A headline on Anthropic's news page dated Nov 20 refers to the closing of the concurrent private placement; we have not read it, so we still show the Nvidia purchase as a promise, not as cash moved.",
+   "why_it_matters": "The Nvidia and other supplier purchases in the private placement were conditional on the IPO closing. Pricing is a step toward closing, not the close itself.",
+   "status": "verified",
+   "source_ids": [
+    "s_909b7579"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,69 @@
+<section id="ch02" class="chapter" data-chapter="02" aria-labelledby="ch02-h">
+  <header class="c2-head">
+    <p class="c2-kicker">Chapter 2</p>
+    <h2 id="ch02-h">Meet the loop</h2>
+    <p class="c2-hook">Picture a chipmaker that writes a check to a customer so the customer can buy the chipmaker's chips. Fine so far. Companies invest in customers all the time. Now add a neocloud (a newer company that rents out racks of AI chips) that borrows against that customer's contract, a bank that lends to the neocloud, and a promise from the chipmaker to cover the rent if the customer stumbles. Same dollars, many name tags. Below is every deal we could source. Some lines are cash that moved. Plenty are only promises. The trick is telling them apart.</p>
+    <p class="c2-counts" data-slot="counts"></p>
+  </header>
+
+  <div class="c2-controls" role="group" aria-label="Map filters">
+    <div class="c2-row">
+      <span class="c2-lab" id="c2-lab-type">Deal type</span>
+      <div class="c2-chips" data-slot="typechips" aria-labelledby="c2-lab-type"></div>
+    </div>
+    <div class="c2-row">
+      <span class="c2-lab" id="c2-lab-kind">Kind of money</span>
+      <div class="c2-chips" data-slot="kindchips" aria-labelledby="c2-lab-kind"></div>
+      <label class="c2-search"><span class="c2-sr">Search companies and deals</span>
+        <input type="search" data-slot="search" placeholder="Search a company or deal" autocomplete="off"></label>
+      <div class="c2-viewtoggle" role="group" aria-label="View">
+        <button type="button" class="c2-btn" data-view="map" aria-expanded="true" hidden>Hide company cards</button>
+        <button type="button" class="c2-btn" data-view="list" aria-expanded="false">Show company cards</button>
+        <button type="button" class="c2-btn" data-slot="pause" aria-pressed="false">Pause pulses</button>
+        <button type="button" class="c2-btn" data-slot="clear">Clear focus</button>
+      </div>
+    </div>
+  </div>
+
+  <details class="c2-gloss">
+    <summary>What the deal types mean</summary>
+    <dl>
+      <dt>Equity (E)</dt><dd>Cash for a share of ownership.</dd>
+      <dt>Debt (D)</dt><dd>A loan that has to be repaid with interest.</dd>
+      <dt>Compute contract (C)</dt><dd>A promise to rent computing power for years. Not cash until the rent is paid.</dd>
+      <dt>Chip purchase ($)</dt><dd>An agreement to buy chips, often over several years.</dd>
+      <dt>Backstop (B)</dt><dd>A promise to step in and pay if the tenant can't.</dd>
+      <dt>Guarantee (G)</dt><dd>A promise to cover someone else's debt or lease payments if they miss them.</dd>
+      <dt>Warrant (W)</dt><dd>The right to buy a company's shares later at a price fixed today.</dd>
+      <dt>Lease (L)</dt><dd>Rent paid for use of a building or machines.</dd>
+      <dt>Revenue share (R)</dt><dd>Paying a slice of sales to a partner.</dd>
+      <dt>Letter of intent (?)</dt><dd>A non-binding note saying two sides plan to make a deal. It commits no money.</dd>
+      <dt>Mixed round</dt><dd>One funding round whose money came partly from vendors and partly from outside investors.</dd>
+    </dl>
+  </details>
+
+  <div class="c2-main">
+    <div class="c2-stage" data-slot="stage">
+      <svg data-slot="svg" role="group" aria-label="Network map of AI deals. Tab to a company or a line. Enter selects it." viewBox="0 0 1180 700" preserveAspectRatio="xMidYMin meet"></svg>
+      <p class="c2-caption" data-slot="caption"></p>
+      <p class="c2-edgecap" data-slot="edgecap"></p>
+    </div>
+    <aside class="c2-panel" data-slot="panel" aria-live="polite" aria-label="Details"></aside>
+  </div>
+
+  <div class="c2-list" data-slot="list" hidden></div>
+  <div class="c2-legend" data-slot="legend"></div>
+
+  <div class="c2-reads">
+    <details class="c2-read c2-bull">
+      <summary>The bull reading</summary>
+      <p>Backers point to the fact that most of these lines are written contracts, often with large, well-resourced customers who committed to years of demand before the buildings were finished. They argue that a chipmaker holding a stake in its customers shares their upside, and they point to reports that spending by end users has been growing.</p>
+    </details>
+    <details class="c2-read c2-bear">
+      <summary>The bear reading</summary>
+      <p>Skeptics point to how many of these lines run back to a small set of names, so that one dollar can show up as an investment, as someone else's revenue and as a backlog number. They note that the dashed lines are promises rather than cash, and they warn that if end users spend less than hoped, many of these lines could weaken together because they lean on the same future spending.</p>
+    </details>
+  </div>
+
+  <p class="c2-means"><strong>What this means.</strong> Read the solid lines and the dashed lines as two different maps. Solid is money that moved. Dashed is an agreement that might. The loop is real. How much of it is paid for by outsiders is the question we'll chase through the rest of this page, and we don't know the full answer yet.</p>
+</section>

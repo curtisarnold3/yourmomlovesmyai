@@ -1,0 +1,61 @@
+<section id="ch03" class="chapter" data-chapter="03" aria-labelledby="ch03-h">
+  <div class="ch-head">
+    <div class="ch-num">03</div>
+    <div class="ch-q">Where does the money actually go?</div>
+    <h2 id="ch03-h">Follow the $100</h2>
+  </div>
+  <div class="prose c3-intro">
+    <p class="hook" id="c3-hook"></p>
+    <div class="c3-legend-intro" id="c3-legend-intro"></div>
+  </div>
+
+  <div class="c3-scrolly" id="c3-scrolly">
+    <div class="c3-stage" id="c3-stage" role="group" tabindex="0" aria-label="The route of the seed dollars. Use the arrow keys or the buttons to move one hop.">
+      <div class="panel c3-panel">
+        <div class="c3-bar">
+          <button class="btn small" type="button" id="c3-prev" aria-label="Back, to the previous hop">&#9664; Back</button>
+          <div class="c3-count" id="c3-count" aria-live="polite"></div>
+          <button class="btn small" type="button" id="c3-next" aria-label="Next, to the following hop">Next &#9654;</button>
+          <button class="btn small" type="button" id="c3-play" aria-pressed="false">&#9654; Play</button>
+          <span class="c3-playhint" id="c3-playhint" hidden>Autoplay is off because your device asks for reduced motion. Use Back and Next.</span>
+        </div>
+        <svg id="c3-svg" role="img" aria-labelledby="c3-svg-t c3-svg-d" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="c3-legend-stage" id="c3-legend-stage"></div>
+      </div>
+      <div class="c3-tallies" id="c3-tallies" role="list" aria-label="Tallies for this lap so far"></div>
+      <p class="c3-notecash" id="c3-notecash"></p>
+    </div>
+    <ol class="c3-steps" id="c3-steps" aria-label="The eleven stops, numbered 0 to 10, in order"></ol>
+  </div>
+
+  <div class="panel c3-laps" id="c3-laps">
+    <h3>Lap after lap</h3>
+    <p class="c3-lap-lead" id="c3-lap-lead"></p>
+    <div class="controls" role="group" aria-label="Number of laps">
+      <span class="lbl">Laps</span>
+      <button class="btn" type="button" data-laps="1" aria-pressed="false">1 lap</button>
+      <button class="btn" type="button" data-laps="2" aria-pressed="false">2 laps</button>
+      <button class="btn" type="button" data-laps="3" aria-pressed="false">3 laps</button>
+      <button class="btn" type="button" data-laps="n" aria-pressed="false" id="c3-nbtn">N laps</button>
+      <label class="c3-nlab"><span class="sr">Choose N, from 4 to 50 laps</span>
+        <input type="range" id="c3-n" min="4" max="50" step="1" value="12" aria-label="N laps"></label>
+      <output id="c3-nout" class="mono"></output>
+    </div>
+    <div class="c3-lapgrid">
+      <div class="c3-chartwrap"><svg id="c3-chart" role="img" aria-labelledby="c3-chart-t" preserveAspectRatio="xMidYMid meet"></svg>
+        <ul class="c3-chartkey" id="c3-chartkey"></ul></div>
+      <div class="c3-lapnums" id="c3-lapnums" role="group" aria-label="Totals after the chosen number of laps"></div>
+    </div>
+    <p class="explain" id="c3-lap-says" aria-live="polite"></p>
+    <p class="explain c3-bridge" id="c3-bridge"></p>
+    <details class="c3-math" id="c3-math">
+      <summary>Show the math: the geometric series</summary>
+      <div class="c3-mathbody" id="c3-mathbody"></div>
+    </details>
+  </div>
+
+  <div class="takeaway" id="c3-take">
+    <h3>What this means</h3>
+    <p id="c3-take-p"></p>
+  </div>
+</section>

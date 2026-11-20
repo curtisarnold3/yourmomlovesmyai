@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Episode 11 gauntlet progress</title>
+<style>:root{color-scheme:dark}body{margin:0;background:#060b18;color:#eef2fb;font:16px/1.5 system-ui,sans-serif;padding:24px 16px}main{max-width:900px;margin:auto}h1,h2{font-weight:700}table{border-collapse:collapse;width:100%;margin:12px 0}th,td{border:1px solid #2a3552;padding:8px;text-align:left;vertical-align:top}th{background:#111a33}code{background:#111a33;padding:1px 5px;border-radius:4px}.ok{color:#16a37a}.bad{color:#ec5a76}a{color:#2aa9e0}</style></head>
+<body><main>
+<h1>Episode 11 "The Loop": gauntlet dashboard</h1>
+<p>Dev-only page (not served on the site). As of 2026-11-20. Final status is in the table at the bottom.</p>
+<h2>Assumptions made (no one was available to ask)</h2>
+<ul>
+<li>Seed-list facts were treated as leads only; each was checked against filings or press, and anything unconfirmed is shown as <code>unverified</code> or dropped.</li>
+<li>Model parameters with no source (Nvidia share of build cost, lab funding mix, back-leverage, stress knobs, P/E) are <code>hypothetical</code>, with the reason written in <code>data/loop-defaults.json</code>.</li>
+<li>"External cash" is split into customers and lenders/investors because lender money must be repaid. The headline number to watch is the customer-paid share.</li>
+<li>Claims per $1 of asset counts only claims ranked on the asset; the bank back-leverage slice is nested inside the senior loan and adds claimants, not dollars.</li>
+<li>Page is neutral on Nvidia's leadership change: only dated, filed facts appear, in the events list.</li>
+</ul>
+<h2>Blocking findings by round</h2>
+<table><thead><tr><th>Round</th><th>Finance</th><th>Fairness</th><th>Blind reader</th><th>Browser</th></tr></thead><tbody>
+<tr><td>1</td><td>7</td><td>5</td><td>1 (7/8)</td><td>2</td></tr>
+<tr><td>2</td><td>5</td><td>3</td><td>0 (7.5/8)</td><td>run stopped, redone in round 3</td></tr>
+<tr><td>3</td><td>4</td><td>2</td><td>2</td><td>2</td></tr>
+<tr><td>4</td><td>6 (2 fixed by lead, 4 fixed after)</td><td class="ok">0</td><td>1 (fixed)</td><td>1 (fixed)</td></tr>
+</tbody></table>
+<p>Freshness check (round 2): 0 blocking, four updates applied. Reports live in <code>audits/round1</code> to <code>audits/round3</code> and the current <code>*-audit.md</code> files.</p>
+<h2>Open items</h2>
+<ul>
+<li>Two consecutive clean rounds were not reached within the four-round cap. Round 4 fairness was clean; round 4 finance, browser and reader findings were fixed afterward but not re-audited by a fresh critic.</li>
+<li>Minor items logged in the audits and fix logs remain (for example dense chapters 7 and 8, one off-topic inquiry line next to the resignation event in chapter 9).</li>
+<li>Several figures are press-reported, not primary, and are tagged <code>reported</code>.</li>
+</ul>
+<h2>Checks that pass now</h2>
+<ul>
+<li><code>node --test tests/*.test.js</code>: 44 tests pass.</li>
+<li>axe-core: zero violations at 1440, 1280, 820 and 390 wide; Lighthouse accessibility 100 (round 4).</li>
+<li>No console errors; no horizontal overflow from 320 to 1600 px; opens from <code>file://</code>.</li>
+</ul>
+</main></body></html>
