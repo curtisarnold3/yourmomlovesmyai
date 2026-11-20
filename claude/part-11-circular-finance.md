@@ -1,6 +1,6 @@
 # Part 11: The Loop (circular finance)
 
-Live at https://yourmomlovesmyai.com/circular-finance/ once pushed. Source: `pages/11-circular-finance/`.
+Live at https://yourmomlovesmyai.com/circular-finance/ (pushed in commit d92c811). Source: `pages/11-circular-finance/`.
 
 ## Sections
 Ten chapters and an epilogue: the $20 dinner table; the ecosystem map; follow the $100 (11 hops, laps, geometric series); leverage calculator; the claims stack; promises vs cash; who is on both sides; off the balance sheet; a payment-slowdown stress tool; "is this 2000 again?"; the one number to watch.
@@ -18,4 +18,4 @@ Every one of these depends on hypothetical knobs; the page says so next to each 
 - Round 4 of the critic gauntlet was not clean (see `pages/11-circular-finance/PROGRESS.md` and the fixes logs). Two consecutive clean rounds were not reached within the four-round cap.
 
 ## Artifact preview
-(Added after publishing.)
+No separate artifact was published; the live page is the phone preview: https://yourmomlovesmyai.com/circular-finance/ (single-file build also at `pages/11-circular-finance/dist/circular-finance.html`).
