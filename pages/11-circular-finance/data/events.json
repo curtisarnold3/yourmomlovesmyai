@@ -121,7 +121,7 @@
    "id": "ev-coreweave-q3",
    "date": "2026-11-10",
    "title": "CoreWeave Q3: revenue +168%, backlog ~$132.5B, 2026 guidance raised; will avoid unsecured bonds at current yields",
-   "detail": "Revenue ~$3.66B; adjusted operating income $379M; GAAP net loss $709M; interest expense $846M vs $310M a year earlier; 2026 capex guided $37-39B; backlog ~$132.5B (about $104B in June). Management said it will not use the unsecured bond market at current yields and expects to finance via delayed-draw term loans tied to customer contracts. Co-founder Brian Venturo says he bought $30M of unsecured bonds (CNBC Nov 18).",
+   "detail": "Revenue ~$3.66B; adjusted operating income $379M; GAAP (standard US accounting) net loss $709M; interest expense $846M vs $310M a year earlier; 2026 capex guided $37-39B; backlog ~$132.5B (about $104B in June). Management said it will not use the unsecured bond market at current yields and expects to finance via delayed-draw term loans tied to customer contracts. Co-founder Brian Venturo says he bought $30M of unsecured bonds (CNBC Nov 18).",
    "why_it_matters": "Operating demand is strong (bull evidence) while financing cost and net losses are the stress point (bear evidence). Shut of unsecured market shifts reliance to contract-backed secured loans.",
    "status": "reported",
    "source_ids": [
@@ -182,7 +182,7 @@
    "id": "ev-nvda-q3fy27",
    "date": "2026-11-17",
    "title": "Nvidia Q3 FY2027: revenue $115.8B (+103% y/y); Q4 guide $130B; Rubin ships; stock falls",
-   "detail": "Quarter ended Oct 25, 2026. Data Center $107.6B; GAAP net income $65.3B; GAAP gross margin 74.8%; Q4 guide $130B +/-3% (includes an extra week; gross margin guide 71-72%) with no China data-center compute revenue assumed. Consensus ~$109.1B revenue and ~$125.1B guide (LSEG via CNBC). Balance sheet: non-marketable securities $65.5B (from $22.3B), marketable equity securities $44.2B (from $12.9B), long-term debt $32.4B (from $7.5B); new $150B buyback authorization; pending Hugging Face acquisition. Stock closed -2.89% at $150.96 on Nov 18 and is down >13% over the week; reported 36-39% below its October high (sources differ). CoreWeave -4.13%, Iren -3.61% on Nov 18.",
+   "detail": "Quarter ended Oct 25, 2026. Data Center $107.6B; GAAP (standard US accounting) net income $65.3B; GAAP gross margin 74.8%; Q4 guide $130B +/-3% (includes an extra week; gross margin guide 71-72%) with no China data-center compute revenue assumed. Consensus ~$109.1B revenue and ~$125.1B guide (LSEG via CNBC). Balance sheet: non-marketable securities $65.5B (from $22.3B), marketable equity securities $44.2B (from $12.9B), long-term debt $32.4B (from $7.5B); new $150B buyback authorization; pending Hugging Face acquisition. Stock closed -2.89% at $150.96 on Nov 18 and is down >13% over the week; reported 36-39% below its October high (sources differ). CoreWeave -4.13%, Iren -3.61% on Nov 18.",
    "why_it_matters": "Operating results are very strong, but Nvidia's own balance sheet shows rapid growth in equity stakes and debt, which is the heart of the circularity debate. The release gives no dollar figure for guarantees.",
    "status": "verified",
    "source_ids": [

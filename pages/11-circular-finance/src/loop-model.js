@@ -349,7 +349,7 @@
       { bank_back_leverage: T(ctx, N.Bank), lp_money: T(ctx, N.LP) });
     // hop 9
     push(9, 'marks', 'Neocloud stock and bonds sit in portfolios, some on margin; Nvidia marks its stake to market', 'markets', 'nvidia', 'paper',
-      "Neocloud stock and bonds are held by investors, some with borrowed money (claim #9). Nvidia marks its stake to market; gains or losses flow to its earnings (non-operating, excluded from its non-GAAP figures). Falling prices hurt margin borrowers and Nvidia's earnings at once: the loop is reflexive.", N.EqMV,
+      "Neocloud stock and bonds are held by investors, some with borrowed money (claim #9). Nvidia marks its stake to market; gains or losses flow to its earnings (non-operating, and left out of its adjusted figures, which are called non-GAAP; GAAP is the standard US accounting rulebook). Falling prices hurt margin borrowers and Nvidia's earnings at once: the loop is reflexive.", N.EqMV,
       { neocloud_equity_at_market: T(ctx, N.EqMV), nvidia_mark_to_market_gain: T(ctx, N.MTM), margin_debt: T(ctx, N.Margin), parent_bonds_converts: T(ctx, N.Mezz) });
     // hop 10
     push(10, 'loop-closes', 'The loop closes: profit and market value support the next round', 'nvidia', 'neocloud', 'recycled',
@@ -625,7 +625,7 @@
     slabs.forEach(function (s) { s.q.d.forEach(function (d) { if (allDeps.indexOf(d) < 0) allDeps.push(d); }); });
     ['gpu_useful_life_years', 'gpu_rental_decline_per_year'].forEach(function (d) { if (allDeps.indexOf(d) < 0) allDeps.push(d); });
     function ratio(num, den, f) {
-      return { value: den > 1e-12 ? num / den : null, status: ctx.status(allDeps, true), formula_text: f + (den > 1e-12 ? '' : ' (asset value is zero: undefined)') };
+      return { value: den > 1e-12 ? num / den : null, status: ctx.status(allDeps, true), formula_text: f + (den > 1e-12 ? '' : ' (not shown because the asset is worth zero)') };
     }
     // recovery waterfall (cash claims, not nested, recoverable from the asset), by seniority
     var remaining = asset;
@@ -864,7 +864,7 @@
       triggered_promises: promises,
       loop_back_to_nvidia: {
         backstop_cash_paid: { value: backstopPaid, status: 'hypothetical', formula_text: 'cash out of Nvidia if the backstop is called', money_kind: 'external-to-recycled reversal: cash leaves Nvidia' },
-        equity_markdown_neocloud: hy(eqMarkdown, 'equity at market × loss fraction (flows to Nvidia GAAP earnings)'),
+        equity_markdown_neocloud: hy(eqMarkdown, 'equity at market × loss fraction (flows to the reported (GAAP, standard-accounting) earnings of Nvidia)'),
         lab_stake_markdown: hy(nvLabLoss, 'Nvidia stake in lab × lab shortfall %'),
         next_lap_revenue_lost_to_financing: hy(lostFinancing, 'lap-2 Nvidia revenue × (1 − share of senior debt service paid)'),
         next_lap_revenue_lost_to_stock_drop: hy(lostStock, 'lap-2 revenue × funding factor × Nvidia stock drop'),

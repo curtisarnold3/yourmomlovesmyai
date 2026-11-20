@@ -93,7 +93,7 @@ Chapters["10"] = function (root, ctx) {
       then: function () { return [
         ["Top customers were established carriers: Verizon about 13% and AT&T about 10% of FY2000 revenue, together ", N("lu-concentration", function (v) { return "about " + v + "%"; }), "."],
         ["Some financed customers were young, leveraged startups. Winstar filed for bankruptcy in April 2001 and One.Tel went into administration in 2001 (both named in Lucent's later filings)."],
-        { parts: ["How much of Lucent's revenue came from startups and CLECs isn't disclosed in the filings we read: ", C(null, "unverified", "not disclosed in the filings reviewed", function () { return "we don't know"; }), "."], dk: true }
+        { parts: ["How much of Lucent's revenue came from startups and CLECs (competitive local exchange carriers, the upstart phone and data companies of that era) isn't disclosed in the filings we read: ", C(null, "unverified", "not disclosed in the filings reviewed", function () { return "we don't know"; }), "."], dk: true }
       ]; },
       now: function () { return [
         ["Buyers include some of the largest companies in the world, and also smaller, heavily indebted names. Market pricing of default risk differs a lot: ", el("span", "num", plain("nv-cds").label), " ", ctx.tag(plain("nv-cds").status), " (sources differ on exact levels)."],
@@ -124,7 +124,7 @@ Chapters["10"] = function (root, ctx) {
       id: "outside", title: "Share of revenue from outside the loop", q: "How much of the vendor's growth came from money that did not start with the vendor?",
       then: function () { return [
         ["Established carriers (Verizon, AT&T) were about ", N("lu-concentration", function (v) { return v + "%"; }), " of FY2000 revenue."],
-        { parts: ["The startup and CLEC share isn't disclosed in what we read: ", C(null, "unverified", "not disclosed in the filings reviewed", function () { return "we don't know"; }), "."], dk: true }
+        { parts: ["The startup and CLEC (upstart phone and data carrier) share isn't disclosed in what we read: ", C(null, "unverified", "not disclosed in the filings reviewed", function () { return "we don't know"; }), "."], dk: true }
       ]; },
       now: function () { return [
         ["We don't have Nvidia's actual revenue mix by who funded the buyer, so we can't put a real number here."],

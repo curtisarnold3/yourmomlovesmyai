@@ -15,7 +15,7 @@ Every one of these depends on hypothetical knobs; the page says so next to each 
 - Toy model, not a forecast, not investment advice. No verdict on fairness or fraud; bull and bear readings are shown side by side.
 - Several inputs are press-reported rather than primary (tagged `reported`). Customer letters in CoreWeave's 10-Q may refer to different customers each period.
 - Facts are as of 2026-11-20 and several are moving (Nvidia leadership, OpenAI funding round, Anthropic IPO).
-- Round 4 of the critic gauntlet was not clean (see `pages/11-circular-finance/PROGRESS.md` and the fixes logs). Two consecutive clean rounds were not reached within the four-round cap.
+- Critic gauntlet: five rounds run. Round 5 was clean for fairness, blind reader and browser; its three finance blockers were fixed afterward without a fresh finance re-audit. Two consecutive fully clean rounds were not reached (see the fixes logs).
 
 ## Artifact preview
 No separate artifact was published; the live page is the phone preview: https://yourmomlovesmyai.com/circular-finance/ (single-file build also at `pages/11-circular-finance/dist/circular-finance.html`).

@@ -327,14 +327,14 @@ Chapters["02"] = function (root, ctx) {
   function detailEl(d) {
     var T = TYPES[d.type] || { label: d.type };
     var box = h("div", { "class": "c2-detail" });
-    var parts = Array.isArray(d.parties) ? d.parties.filter(function (x) { return nodes[x] && x !== d.to; }) : [];
-    if (parts.length < 2) parts = [];
+    /* only explicit placements list participants; only an explicit `includes` list prints "Includes" lines */
+    var parts = d.placement === true && Array.isArray(d.parties) ? d.parties.filter(function (x) { return nodes[x] && x !== d.to; }) : [];
     box.appendChild(h("h3", { text: (d._k === "mixed" ? "Mixed round" : parts.length ? "Placement participants" : name(d.from)) + " → " + name(d.to) }));
-    if (parts.length) {
-      box.appendChild(h("p", { "class": "c2-note", text: "Participants named in our data: " + parts.map(name).join(", ") + "." }));
-      var inner = deals.filter(function (x) { return x.id !== d.id && x.to === d.to && parts.indexOf(x.from) >= 0 && x.headline_usd_b != null; });
-      inner.forEach(function (x) { box.appendChild(h("p", { "class": "c2-note", text: "Includes " + name(x.from) + "’s " + fmtB(x.headline_usd_b) + " (shown on its own line, so it is not added again)." })); });
-    }
+    if (parts.length) box.appendChild(h("p", { "class": "c2-note", text: "Participants named in our data: " + parts.map(name).join(", ") + "." }));
+    (Array.isArray(d.includes) ? d.includes : []).forEach(function (id) {
+      var x = dealById[id];
+      if (x && x.headline_usd_b != null) box.appendChild(h("p", { "class": "c2-note", text: "Includes " + name(x.from) + "’s " + fmtB(x.headline_usd_b) + " (shown on its own line, so it is not added again)." }));
+    });
     var line = h("p");
     line.appendChild(h("span", { "class": "c2-pill k-" + d._k, text: kindInfo(d._k).label }));
     line.appendChild(document.createTextNode(" " + T.label + " · "));

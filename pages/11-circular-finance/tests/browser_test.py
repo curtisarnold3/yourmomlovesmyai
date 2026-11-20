@@ -2,8 +2,8 @@
 """Real-browser QA for the circular-finance page (file://, system Chrome, Playwright).
 
 Run:  /private/tmp/claude-501/gauntlet/venv/bin/python tests/browser_test.py
-Writes screenshots to /private/tmp/claude-501/gauntlet/shots4 and JSON results to
-/private/tmp/claude-501/gauntlet/shots4/results.json. Exit code 1 if any BLOCK finding.
+Writes screenshots to /private/tmp/claude-501/gauntlet/shots5 and JSON results to
+/private/tmp/claude-501/gauntlet/shots5/results.json. Exit code 1 if any BLOCK finding.
 Round 3 (shots4): clicks the collapse toggles first (ch02 company cards, ch04 advanced, ch07 full list,
 ch08 real examples), runs axe on every viewport, sweeps widths 861-1439.
 """
@@ -12,7 +12,7 @@ from playwright.sync_api import sync_playwright
 
 HERE = pathlib.Path(__file__).resolve().parent.parent
 URL = 'file://' + str(HERE / 'index.html')
-SHOTS = pathlib.Path('/private/tmp/claude-501/gauntlet/shots4'); SHOTS.mkdir(parents=True, exist_ok=True)
+SHOTS = pathlib.Path('/private/tmp/claude-501/gauntlet/shots5'); SHOTS.mkdir(parents=True, exist_ok=True)
 AXE = pathlib.Path('/private/tmp/claude-501/gauntlet/node_modules/axe-core/axe.min.js')
 VIEWPORTS = [('1440x900', 1440, 900, False), ('1280x800', 1280, 800, False),
              ('820x1180', 820, 1180, False), ('390x844', 390, 844, False),
@@ -30,6 +30,30 @@ def set_range(pg, sel, frac):
     return pg.evaluate('''([sel,f])=>{const e=document.querySelector(sel); if(!e) return null;
       const mn=+e.min||0, mx=+e.max||100, st=+e.step||1; let v=mn+(mx-mn)*f; v=Math.round(v/st)*st;
       e.value=v; e.dispatchEvent(new Event('input',{bubbles:true})); e.dispatchEvent(new Event('change',{bubbles:true})); return e.value}''', [sel, frac])
+
+
+BAD_RE = r"NaN|undefined|\[object|\u2014\s*of seed"
+SCAN_JS = """(re)=>{const R=new RegExp(re),out=[];
+  const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
+  while(n=w.nextNode()){const p=n.parentElement;if(!p||/^(SCRIPT|STYLE|TEMPLATE|NOSCRIPT)$/.test(p.tagName))continue;
+    if(R.test(n.nodeValue)){const r=p.getClientRects().length>0&&getComputedStyle(p).visibility!=='hidden';out.push((r?'visible':'hidden')+' <'+p.tagName+(p.id?'#'+p.id:'')+'> "'+n.nodeValue.trim().slice(0,80)+'"')}}
+  document.querySelectorAll('[aria-label],[title],[aria-valuetext],[alt],[value]').forEach(e=>{for(const a of ['aria-label','title','aria-valuetext','alt']){const v=e.getAttribute(a);if(v&&R.test(v))out.push('attr '+a+' <'+e.tagName+(e.id?'#'+e.id:'')+'> "'+v.slice(0,80)+'"')}});
+  return out.slice(0,10)}"""
+SEEN_BAD = set()
+def scan_bad(pg, vp, label):
+    try: r = pg.evaluate(SCAN_JS, BAD_RE)
+    except Exception as e: return
+    for t in r:
+        k = (vp, t)
+        if k in SEEN_BAD: continue
+        SEEN_BAD.add(k); log(vp, 'bad-text', f'after "{label}": {t}', 'MINOR' if (t.startswith('attr') and 'asset value is zero: undefined' in t) else 'BLOCK')
+
+def sig_of(pg, sels):
+    return pg.evaluate("(s)=>s.map(x=>{const e=document.querySelector(x);return e?(e.outerHTML+'|'+e.textContent):'MISSING:'+x}).join('##')", sels)
+
+def changed(pg, sels, action, wait=800):
+    a = sig_of(pg, sels); action(); pg.wait_for_timeout(wait); b = sig_of(pg, sels)
+    return a != b
 
 def run_vp(p, name, w, h, rm):
     b = p.chromium.launch(executable_path=CHROME)
@@ -51,7 +75,7 @@ def run_vp(p, name, w, h, rm):
         before = len(errs)
         try:
             r = fn()
-            pg.wait_for_timeout(120)
+            pg.wait_for_timeout(120); scan_bad(pg, name, label)
             if len(errs) > before: log(name, 'console', f'{label}: ' + ' | '.join(errs[before:]), 'BLOCK')
             if r is False: log(name, 'interaction', f'{label}: no effect / unusable', 'BLOCK')
             elif isinstance(r, str): log(name, 'interaction', f'{label}: {r}', 'MINOR')
@@ -65,6 +89,7 @@ def run_vp(p, name, w, h, rm):
         loc.click(timeout=4000)
 
     # ---------- load checks ----------
+    scan_bad(pg, name, 'load')
     if errs: log(name, 'console', ' | '.join(errs), 'BLOCK')
     else: ok(name, 'no console/page errors on load')
     sw, iw = pg.evaluate('[document.documentElement.scrollWidth, window.innerWidth]')
@@ -201,6 +226,19 @@ def run_vp(p, name, w, h, rm):
             set_range(pg, '#' + i, .9); set_range(pg, '#' + i, .1)
         return len(ids) >= 4
     step('ch04 every slider + advanced toggle', c4_sliders)
+    def c4_values():
+        pg.locator('#c4-headline').scroll_into_view_if_needed()
+        pg.evaluate("document.querySelector('#ch04 details.c4-more').open=true")
+        S = ['#c4-headline', '#c4-wf', '#c4-tbody', '#c4-mults', '#c4-changed', '#c4-claims', '#c4-dl', '#c4-bull', '#c4-bear', '#c4-mini']
+        ids = pg.evaluate("[...document.querySelectorAll('#c4-rows input[type=range],#c4-rows-more input[type=range]')].map(e=>e.id)")
+        dead = []
+        for i in ids:
+            set_range(pg, '#' + i, .5); pg.wait_for_timeout(300)
+            if not changed(pg, S, lambda: set_range(pg, '#' + i, .95)):
+                if not changed(pg, S, lambda: set_range(pg, '#' + i, .05)): dead.append(i)
+        click('#c4-reset'); pg.wait_for_timeout(300)
+        return True if (not dead and ids) else f'ch04 sliders with no effect on waterfall/headline/table: {dead} of {ids}'
+    step('ch04 sliders change waterfall/headline', c4_values)
     def c4_presets():
         for i in range(3):
             pg.locator('#ch04 .btn:has-text("-like")').nth(i).scroll_into_view_if_needed(); pg.locator('#ch04 .btn:has-text("-like")').nth(i).click()
@@ -235,9 +273,34 @@ def run_vp(p, name, w, h, rm):
         if a0 == a1: return 'debt-paydown toggle did not flip aria-pressed'
         return n >= 7
     step('ch05 slabs/life/year/ratio', c5)
+    def c5v():
+        pg.locator('#ch05-year').scroll_into_view_if_needed()
+        S = ['#ch05 [data-ratio]', '#ch05 figure', '#ch05 [data-yearlabel]']
+        set_range(pg, '#ch05-year', 0); pg.wait_for_timeout(500)
+        if not changed(pg, S, lambda: set_range(pg, '#ch05-year', 1)): return 'DEAD: ch05 year slider changed nothing'
+        S2 = ['#ch05 [data-ratio]', '#ch05 figure']
+        if not changed(pg, S2, lambda: pg.locator('#ch05 button:has-text("The senior loan")').click()): return 'ch05 ratio-mode toggle changed nothing'
+        pg.locator('#ch05 button:has-text("The GPU\'s value")').click()
+        if not changed(pg, S2, lambda: click('#ch05 [data-life] button', 2)): return 'ch05 GPU-life buttons changed nothing'
+        click('#ch05 [data-life] button', 0)
+        return True
+    step('ch05 year/life/mode change values', c5v)
 
     # ---------- ch06 ----------
-    step('ch06 growth slider', lambda: set_range(pg, '#ch06-g', .9) is not None and set_range(pg, '#ch06-g', .1) is not None)
+    def c6():
+        pg.locator('#ch06 [data-ch06-growth]').scroll_into_view_if_needed()
+        S = ['#ch06 .ch06-labs', '#ch06 [data-gout]', '#ch06 [data-gnote]']
+        r0 = pg.evaluate("[...document.querySelectorAll('#ch06 .ch06-yrs')].map(e=>e.textContent)")
+        if not changed(pg, S, lambda: set_range(pg, '#ch06 [data-ch06-growth]', .5)): return 'DEAD SLIDER: ch06 growth slider changed nothing'
+        r1 = pg.evaluate("[...document.querySelectorAll('#ch06 .ch06-yrs')].map(e=>e.textContent)")
+        o = pg.locator('#ch06 [data-gout]').text_content()
+        if r0 == r1: return f'ch06 gauge values unchanged after slider ({r0[:2]})'
+        if '150' not in o: return f'ch06 output label not updated: {o!r}'
+        pg.screenshot(path=str(SHOTS / f'{name}-ch06-grown.png'))
+        set_range(pg, '#ch06 [data-ch06-growth]', 0); pg.wait_for_timeout(800)
+        r2 = pg.evaluate("[...document.querySelectorAll('#ch06 .ch06-yrs')].map(e=>e.textContent)")
+        return True if r2 == r0 else 'ch06 gauges did not return to baseline at 0%'
+    step('ch06 growth slider changes gauges (no NaN)', c6)
 
     # ---------- ch07 ----------
     def c7():
@@ -284,6 +347,20 @@ def run_vp(p, name, w, h, rm):
             set_range(pg, '#' + sid, .8)
         click('#ch09 input[type=checkbox]'); click('#ch09 .btn-reset'); return True
     step('ch09 presets/sliders/missed payment/reset', c9)
+    def c9v():
+        pg.locator('#ch09 .knobs').scroll_into_view_if_needed(); click('#ch09 .btn-reset'); pg.wait_for_timeout(300)
+        S = ['#ch09 .readout-list', '#ch09 .svg-wrap', '#ch09 .num-table tbody']
+        ids = pg.evaluate("[...document.querySelectorAll('#ch09 input[type=range]')].map(e=>e.id)")
+        dead = []
+        for i in ids:
+            if not changed(pg, S, lambda: set_range(pg, '#' + i, .9), 500): dead.append(i)
+            set_range(pg, '#' + i, 0)
+        if len(ids) < 4: return f'ch09 only {len(ids)} knobs'
+        if not changed(pg, S, lambda: click('#ch09 .presets button', 3), 500): return 'ch09 preset changed nothing'
+        if not changed(pg, S, lambda: click('#ch09 input[type=checkbox]'), 500): dead.append('missed-payment checkbox')
+        click('#ch09 .btn-reset')
+        return True if not dead else f'ch09 controls with no effect: {dead}'
+    step('ch09 knobs change outputs', c9v)
 
     # ---------- ch10 ----------
     def c10():
@@ -292,6 +369,26 @@ def run_vp(p, name, w, h, rm):
             if b_.get_attribute('aria-pressed') != 'true': return f'{t} not aria-pressed after click'
         return True
     step('ch10 toggles', c10)
+    def c10v():
+        S = ['#ch10']
+        b_ = pg.locator('#ch10 button:text-is("Then")'); b_.scroll_into_view_if_needed()
+        pg.locator('#ch10 button:text-is("Both")').click(); pg.wait_for_timeout(300)
+        if not changed(pg, S, lambda: pg.locator('#ch10 button:text-is("Then")').click(), 400): return 'ch10 Then toggle changed nothing'
+        if not changed(pg, S, lambda: pg.locator('#ch10 button:text-is("Facts only")').click(), 400): return 'ch10 Facts only changed nothing'
+        return True
+    step('ch10 toggles change content', c10v)
+    def c1v():
+        pg.locator('#ch01-n').scroll_into_view_if_needed(); S = ['#ch01-svg', '#ch01-stats', '#ch01-nout']
+        if not changed(pg, S, lambda: set_range(pg, '#ch01-n', 0), 400): return 'ch01 friends slider changed nothing'
+        if not changed(pg, S, lambda: set_range(pg, '#ch01-n', 1), 400): return 'ch01 friends slider (2) changed nothing'
+        if not changed(pg, ['#ch01-svg', '#ch01-stats', '#ch01-lout'], lambda: set_range(pg, '#ch01-l', 1), 400): return 'ch01 laps slider changed nothing'
+        return True
+    step('ch01 sliders change values', c1v)
+    def c3v():
+        pg.locator('#c3-n').scroll_into_view_if_needed(); S = ['#ch03']
+        if not changed(pg, S, lambda: set_range(pg, '#c3-n', 1), 500): return 'ch03 laps slider changed nothing'
+        set_range(pg, '#c3-n', .1); return True
+    step('ch03 laps slider changes values', c3v)
 
     # ---------- ch11 ----------
     def c11():
@@ -302,6 +399,16 @@ def run_vp(p, name, w, h, rm):
         m = pg.locator('#ch11-sharemsg').text_content().strip()
         return True if m else 'copy-link gave no confirmation message'
     step('ch11 target slider/apply/reset/copy link', c11)
+    def c11v():
+        pg.locator('#ch11-target').scroll_into_view_if_needed(); click('#ch11-resetm'); pg.wait_for_timeout(300)
+        S = ['#ch11-tout', '#ch11-combo', '#ch11-range', '#ch11-table']
+        if not changed(pg, S, lambda: set_range(pg, '#ch11-target', .2), 400): return 'DEAD: ch11 explorer slider changed nothing'
+        S2 = ['#ch11-sentence', '#ch11-bar', '#ch11-key']
+        set_range(pg, '#ch11-target', .4)
+        if pg.locator('#ch11-apply').is_disabled(): return 'ch11 apply disabled at a reachable target'
+        if not changed(pg, S2, lambda: click('#ch11-apply'), 600): return 'ch11 apply did not alter sentence/bar'
+        click('#ch11-resetm'); return True
+    step('ch11 explorer changes values', c11v)
 
     # ---------- tag popover: hover, focus, tap ----------
     def tags():
@@ -370,6 +477,7 @@ def run_vp(p, name, w, h, rm):
     if name in ('1280x800', '390x844'):
         step('keyboard-only Tab traversal', kbd)
 
+    scan_bad(pg, name, 'end of session')
     # final console
     if errs: log(name, 'console', 'errors during session: ' + ' | '.join(sorted(set(errs))[:5]), 'BLOCK')
     b.close()
@@ -394,7 +502,7 @@ def main():
     with sync_playwright() as p:
         for v in VIEWPORTS: run_vp(p, *v)
         sweep(p)
-    json.dump(RES, open('/private/tmp/claude-501/gauntlet/shots4/results.json', 'w'), indent=1)
+    json.dump(RES, open('/private/tmp/claude-501/gauntlet/shots5/results.json', 'w'), indent=1)
     blocks = sum(1 for k, v in RES.items() if isinstance(v, dict) for f in v.get('findings', []) if f['sev'] == 'BLOCK')
     print('BLOCK findings:', blocks)
     sys.exit(1 if blocks else 0)

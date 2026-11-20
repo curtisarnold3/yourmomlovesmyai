@@ -358,7 +358,7 @@ Chapters["09"] = function (root, ctx) {
   ];
   var NVNEWS = [
     { id: "ev-huang-resigns", why: "Dated company news, shown for context. The filing gives no reason, and we draw no conclusion from it." },
-    { id: "ev-congress-huang-hearings", why: "The inquiry is about Nvidia's dealings with Megaspeed International and export controls. The date is tentative." }
+    { id: "ev-congress-huang-hearings", why: "This inquiry is about export controls, not about circular financing. It concerns Nvidia's dealings with Megaspeed International, and the date is tentative." }
   ];
   var STRENGTH = [
     { id: "ev-nvda-q3fy27", why: "Revenue, profit and next-quarter guidance all came in above what analysts expected. The stock still fell, which shows markets are weighing more than one quarter's results." },
@@ -369,7 +369,7 @@ Chapters["09"] = function (root, ctx) {
   ];
   var NVNEWS = [
     { id: "ev-huang-resigns", why: "Dated company news, shown for context. The filing gives no reason, and we draw no conclusion from it." },
-    { id: "ev-congress-huang-hearings", why: "The inquiry is about Nvidia's dealings with Megaspeed International and export controls. The date is tentative." }
+    { id: "ev-congress-huang-hearings", why: "This inquiry is about export controls, not about circular financing. It concerns Nvidia's dealings with Megaspeed International, and the date is tentative." }
   ];
   (function () {
     var byId = {}, DL = ctx.data.deals; DL = Array.isArray(DL) ? DL : (DL && DL.deals) || [];

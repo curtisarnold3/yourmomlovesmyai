@@ -1523,7 +1523,7 @@
    "quote_anchor": null
   },
   "nvda-cloud-commitments": {
-   "status": "verified",
+   "status": "calculated",
    "source_ids": [
     "s_c429436a",
     "s_7c4c573c"
@@ -1791,7 +1791,7 @@
    "quote_anchor": null
   },
   "coreweave-ddtl-5-5-and-converts": {
-   "status": "verified",
+   "status": "calculated",
    "source_ids": [
     "s_f30d204e"
    ],

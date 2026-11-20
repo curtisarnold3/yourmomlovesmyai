@@ -180,8 +180,7 @@ Chapters["11"] = function(root, ctx){
     'How much of AI companies’ revenue comes from end customers, and how much was funded by the chip and cloud companies that sell to them? Filings rarely split it.',
     'How long AI chips stay useful, and what they are worth when the loans against them come due.',
     'Which of the promises (contracts, backstops, guarantees) are firm, how many will actually be drawn, and when.',
-    'Whether lenders keep lending on today’s terms if credit ratings or markets move. A few market prices, such as the cost of insuring some neocloud and Oracle debt, are already moving.',
-    'Who leads Nvidia from here. In a filing, the company said Jensen Huang resigned as chief executive, president and director and that Colette Kress is interim chief executive. The filing gives no reason, and we don’t add one.'
+    'Whether lenders keep lending on today’s terms if credit ratings or markets move. A few market prices, such as the cost of insuring some neocloud and Oracle debt, are already moving.'
   ].map(function(t){ return el('li', t); }));
 
   // go deeper

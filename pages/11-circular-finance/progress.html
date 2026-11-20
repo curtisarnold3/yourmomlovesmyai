@@ -19,17 +19,18 @@
 <tr><td>2</td><td>5</td><td>3</td><td>0 (7.5/8)</td><td>run stopped, redone in round 3</td></tr>
 <tr><td>3</td><td>4</td><td>2</td><td>2</td><td>2</td></tr>
 <tr><td>4</td><td>6 (2 fixed by lead, 4 fixed after)</td><td class="ok">0</td><td>1 (fixed)</td><td>1 (fixed)</td></tr>
+<tr><td>5</td><td>3 (fixed after)</td><td class="ok">0</td><td class="ok">0</td><td class="ok">0</td></tr>
 </tbody></table>
 <p>Freshness check (round 2): 0 blocking, four updates applied. Reports live in <code>audits/round1</code> to <code>audits/round3</code> and the current <code>*-audit.md</code> files.</p>
 <h2>Open items</h2>
 <ul>
-<li>Two consecutive clean rounds were not reached within the four-round cap. Round 4 fairness was clean; round 4 finance, browser and reader findings were fixed afterward but not re-audited by a fresh critic.</li>
+<li>Two consecutive clean rounds were not reached. Round 5 was clean for fairness, blind reader and browser; its three finance blockers (false 'Includes' lines in chapter 2, two derived sums tagged verified) were fixed afterward and not re-audited by a fresh finance critic.</li>
 <li>Minor items logged in the audits and fix logs remain (for example dense chapters 7 and 8, one off-topic inquiry line next to the resignation event in chapter 9).</li>
 <li>Several figures are press-reported, not primary, and are tagged <code>reported</code>.</li>
 </ul>
 <h2>Checks that pass now</h2>
 <ul>
-<li><code>node --test tests/*.test.js</code>: 44 tests pass.</li>
+<li><code>node --test tests/*.test.js</code>: 45 tests pass.</li>
 <li>axe-core: zero violations at 1440, 1280, 820 and 390 wide; Lighthouse accessibility 100 (round 4).</li>
 <li>No console errors; no horizontal overflow from 320 to 1600 px; opens from <code>file://</code>.</li>
 </ul>

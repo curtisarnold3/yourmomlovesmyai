@@ -1,72 +1,81 @@
 # Educational audit: blind reader, page 11 (The Loop)
 
-Read from the rendered page text plus chapter explanatory strings. Answers are in my own words, from the page alone.
+Reader profile: intelligent adult, no finance background. Source: rendered page text plus chapter strings revealed after interaction. Answers are from the page alone, in my own words.
 
 ## Answers
 
-1. **Recycled vs external cash.** External (outside) cash comes from people or institutions that are not part of the chipmaker/cloud/lab circle: customers, lenders, outside investors. Recycled cash started with a member of the loop and comes back to it, e.g. a chipmaker invests in a customer and the customer spends it on the chipmaker's chips. Lenders' money counts as outside, but it must be repaid, so it is not the same as customers paying. I could not tell exactly how the page treats a mixed round beyond "shown as a split."
+**1. Recycled cash vs external cash.**
+External cash is money that comes from outside the group of companies in the loop: customers, lenders, outside investors. Recycled cash is money that started with a loop member (e.g. the chipmaker) and returns to it, like Nvidia investing in a customer who then buys Nvidia chips. One wrinkle I had to work out: "outside" includes lenders, but the page says lenders' money is not end-customer demand because it must be repaid. So there are really three piles (end customers, lenders/investors, recycled), and the word "external/outside" covers the first two.
 
-2. **Why a promise is not cash.** A promise (backlog, backstop, guarantee, letter of intent) is a signed or stated plan to pay later. No money has moved, and it may never be paid in full. A backstop only pays if someone else fails. A letter of intent commits nothing. Promises can also shrink (the page says OpenAI's headline reportedly fell from $1.4T to $600B). The lease analogy ($4,000 rent on a $2,000 income) makes the point: real contract, not money in the bank.
+**2. Why a promise is not cash.**
+A promise (backlog, backstop, guarantee, letter of intent) is a contract about money that might move later. Nothing has been paid. A backstop only pays if something goes wrong, a letter of intent commits nothing, and a backlog is future rent. The page uses a lease analogy: you can sign for a $4,000 apartment on $2,000 income. It is not a lie, but it is not money in the bank. So promises get dashed lines and their own tally, never added to cash.
 
-3. **Why the asset slab shrinks but claims don't.** The GPU wears out and rents fall, so it is worth less each year. The debts and ownership claims stay at their original face value unless rent keeps paying the loan down. If rent stops, claims stay full while the chip's value heads toward zero, so claims per $1 of chip rise past 100 to 1. With "debt paydown" on, the senior loan does shrink, so the gap is smaller. The claims that never shrink are equity and the dashed ones.
+**3. Why the asset slab shrinks but the claims don't.**
+The GPU wears out and its rental value falls, so the dotted "asset now" line drops each year. The claims are fixed face amounts (what each party is owed or put in), so they stay the same height unless someone pays them down. With "debt paydown" on, the senior loan shrinks as rent pays it. With it off ("rent stops"), claims stay full while the chip is worth almost nothing, so claims per $1 of asset balloons (>100 to 1). I understood this once I toggled paydown; the base picture alone doesn't say it.
 
-4. **Several claimants on one GPU vs double-pledging.** No. Double-pledging is promising the same thing to two lenders without telling them. Layered claims, each with its own place in line and visible to all, are an ordinary capital structure, like a mortgage plus a home-equity loan. The page's real worry is that all of them are paid from the same future AI user spending, so they could fail together (correlation).
+**4. Several claimants on one GPU = double-pledging?**
+No. The page says double-pledging means promising the same thing to two lenders without telling them. Layered claims, each with a known place in line, are normal (like a house with a mortgage plus a home-equity loan). The concern is correlation: nearly all layers are paid from the same future AI customer spending, so they rise and fall together.
 
-5. **"Revenue counted N times."** At the dinner table one $20 bill makes four sales, so $80 of sales on $20 of real money is 4.0x. The AI version is 1.6x: $160 of chipmaker revenue per $100 of seed cash. About $60 of it traces to the chipmaker's own money and $100 to lender cash. So it is not literal double counting; lenders' cash explains the part above 1x. Both ask how much of booked revenue came from outside. I could only partly tell how the two numbers should be compared. The page says they are "not literally the same count."
+**5. "Revenue counted N times," and dinner table vs AI model.**
+Dinner table: four friends pass one $20 bill around, each books a $20 sale, so $80 of sales on $20 of real money = counted 4.0 times (sales divided by real money). AI model: the page divides Nvidia's revenue by the $100 seed cash and gets 1.6x ($160 revenue; $60 is Nvidia's own cash returning, $100 is lender money). The page itself says this is not double counting in the dinner sense and that the arithmetic differs. I understood both numbers separately; the relationship is "same question (how much is on the books vs how much real new money came in), different arithmetic." I found that bridge thin.
 
-6. **The $100B Nvidia-OpenAI letter of intent.** It was a non-binding Sept 2025 letter saying Nvidia intended to invest up to $100B as OpenAI deployed its systems. It never became a signed deal and $0 moved under it. In Feb 2026 it was replaced by about $30B of actual equity in a funding round. Both numbers are shown because the gap between headline and actual is the lesson: a promise versus cash.
+**6. The "up to $100B" Nvidia-OpenAI letter of intent.**
+It was a non-binding Sept 2025 letter of intent (up to $100B as OpenAI deployed Nvidia systems). It never became a signed agreement, no money moved under it, and in Feb 2026 it was replaced by about $30B of actual equity, not tied to deployments. Both numbers are shown to separate headline from actual, a promise from cash. The page says "the gap between headline and actual is the point" (ch. 7) but never states in one sentence why that matters to a reader.
 
-7. **The one number to watch.** The share of the loop's cash paid by end customers (people and businesses actually using AI). The toy model says about 13% (range 3% to 31%). A low share means much of the loop still depends on future customers showing up. It does not mean anything is wrong. It is a toy assumption, not a measurement.
+**7. The one number to watch.**
+The share of the loop's cash that is paid by end customers, the people and businesses actually using AI. Toy estimate about 13% (range 3% to 31% one assumption at a time). It means how much of the loop still depends on real customers showing up. A low share is not proof anything is wrong. It says how much rests on future demand. It comes from a toy model with an assumed 50% knob, not a measurement.
 
-8. **Fraud? 2000 again?** The page says nothing implies wrongdoing: layered claims are ordinary, and "nobody lied" in the dinner table story. It gives no verdict on 2000. Some things line up (vendors financing customers, contingent promises), some differ (buyers are richer, the vendor has far more cash, collateral life is different), and some are unknown ("we don't know yet").
+**8. Fraud? 2000 again?**
+Not alleged. The page says nothing implies wrongdoing; layered claims are ordinary and not double-pledging. On 2000: some things line up (vendors supporting customers, contingent promises), some differ (buyers are richer, vendor has large cash flow, collateral may be shorter-lived), and others are "we don't know yet." Explicitly no verdict.
 
-## Jargon and confusing passages
+## Confusions
 
-| # | Quote | Chapter | Why | Plain rewrite | Severity |
+| # | Quote / passage | Chapter | Why confusing | Plain rewrite | Severity |
 |---|---|---|---|---|---|
-| 1 | "revenue counted N times" / "Revenue counted 0.0x" vs "1.6x ... isn't double counting in the dinner-table sense" | 1, 3 | Same phrase means two different things (4.0x literal vs 1.6x with lender cash). The reader has to hold both. | "On the table, $80 of sales from $20 of money. In the AI model, $160 of revenue from $100 of seed, and $100 of that is borrowed money, not repeat counting." | BLOCKING (core idea of Q5 muddy) |
-| 2 | "loan-to-cost 62.5%", "first-loss slice" | 3, 4 | Used before being plainly explained (the gloss is a parenthetical) | "Lenders cover 62.5% of the bill. The owners' own money takes the first losses." | MINOR |
-| 3 | "SOFR bank rate" (ch 4 knob) | 4 | Defined only later in ch 8 | "A standard short-term bank interest rate" | MINOR |
-| 4 | "back-leverage" / "Fund's own bank borrowing" knob | 4 | Defined in ch 3 hop 8; the ch 4 knob assumes you remember | "The fund borrowed from a bank too, so more parties claim the same loan" | MINOR |
-| 5 | "SPV", "DDTL", "non-recourse", "ABS/CMBS", "residual value guarantee", "take-or-pay", "haircut", "bp", "CDS" | 3, 8, 9 | All defined in context, but ch 8 is very dense, with seven structures at once | Fine, but ch 8 is heavy | MINOR |
-| 6 | "reflexive", "mark-to-market", "paper value" | 3 | Explained, but in a rush | "Prices and borrowing push each other down" | MINOR |
-| 7 | "Claims / claimants 9 / 8", "claim #6", "c7", "c8, c2" | 3, 9 | Internal claim IDs shown to the reader | Drop the c-codes | MINOR |
-| 8 | Badges Reported / Verified / Hypothetical / Calculated / Unverified | all | The hero says "tap a badge", but I never learned what each means in a sentence | Add a one-line legend | MINOR |
-| 9 | "Share of new profit the market treats as repeating", "Rental contract size versus the bill" | 4 | Knobs with no plain meaning | Cut from the default view | MINOR |
-| 10 | "NaN%" in "If the lab's revenue grows NaN% a year", and "n/a" gauges | 6 | A visible bug, or an extraction-timing artifact; I can't tell | Fix or confirm | MINOR (uncertain) |
-| 11 | "— of seed cash → ~— of lender debt → ~— of Nvidia revenue" | hero | Placeholder dashes in the headline sentence; may fill in later | Fill in or hide until ready | MINOR (uncertain) |
-| 12 | 12.5% (ch 4, 10) vs "about 13%" (epilogue) vs 65.6% / "66%" | 4, 10, End | Rounding differs between places | Pick one form | MINOR |
-| 13 | Outside money 66% vs end-customer 13% | 10, End | Easy to confuse. Handled, but the reader needs the distinction twice. | Keep both labels visible together | MINOR |
+| 1 | "Outside money" for both customers and lenders, vs "outside" cash | Hops 2/6, ch 4, epilogue, ch 10 | Two meanings. Ch 10 bull reading "most of the cash comes from outside the vendor" sits next to 13% customers. | Use "money from outside the loop" only for customer+lender, and always say "of which customers ~13%." | MINOR |
+| 2 | "It isn't double counting in the dinner-table sense... how much of the rest started with the chipmaker. We'll get there in a few chapters" | Ch 1 | Q5 bridge is vague; the promised payoff is never clearly delivered. | "Dinner table: 4.0x sales per real dollar. AI: 1.6x. Of the $160, $60 is Nvidia's own money coming back." | MINOR |
+| 3 | "loan-to-cost 62.5%", "first-loss slice", "SPV" | Hop 2 | Defined inline, OK, but fast. "Special-purpose vehicle" is a legal-box idea a lay reader may not hold. | "a separate company set up just to own the chips" | MINOR |
+| 4 | "back-leverage... claims nest inside claim #2 and add claimants, not dollars" | Hop 8, ch 5 | Hard to grasp. | "The fund borrowed against its loan, so one loan now has two sets of lenders behind it." | MINOR |
+| 5 | "paper value", "price-to-earnings multiple", "recurring share" | Hop 4, ch 4 | "Paper value" is explained, but the $538 number is unintuitive; knobs ("Share of new profit the market treats as repeating") are opaque. | Fine for core idea; hide advanced knobs. | MINOR |
+| 6 | "Seven layers (some of chapter 3's nine claims are grouped)" | Ch 5 | Nine vs seven vs eight claimants is confusing. | Show one count. | MINOR |
+| 7 | "claims ... per $1 of GPU: 1.00 ... $1.84 ... >100 to 1" | Ch 5 | Three different ratios; the ">100 to 1" worst case is startling and a reader may not trust it. Core idea needs the toggle to be understood. | Lead with a sentence: "If rent stops, the chip is worth ~0 but the debts are still owed." | MINOR |
+| 8 | "RPO", "backlog", "take-or-pay" | Ch 6 | Defined well. | none | none |
+| 9 | "hyperscaler", "neocloud" | Ch 2-8 | Neocloud defined repeatedly; "hyperscaler" never defined. | "hyperscaler = a giant cloud company like Microsoft or Amazon" | MINOR |
+| 10 | "LOI to fund:", "Warrant", "CDS", "bp", "SOFR", "DDTL", "ABS/CMBS", "capex", "P/E", "GAAP", "residual value guarantee", "haircut", "mezzanine/converts" | Company cards, ch 8-10 | Most defined at point of use. SOFR/DDTL defined in ch 8 only; ch 9 mentions "SOFR bank rate" in knob; "mezzanine" appears in the claims list with no gloss; "GAAP" and "CLEC" appear unexplained. | Gloss "mezzanine = debt that ranks below the senior loan", "CLEC = small upstart phone carrier". | MINOR |
+| 11 | Company cards (about 40) of "Out of X / Into X, External cash none..." | Ch 2 | Dense, repetitive "headline $X; actual $A to $B (+1 undisclosed)" strings. Unreadable to a lay reader. | Cut or collapse behind a toggle. | MINOR |
+| 12 | Stress-test waterfall: "claim c7", "P1 × o × (1 − shortfall)", "Paper markdown of neocloud stake" | Ch 9 | Variable-style formulas and claim codes in tooltips; the plain-words paragraph is OK. | Remove formulas from reader tooltips. | MINOR |
+| 13 | Market-events list (Oracle BBB-, CoreWeave CDS 1,280 bp, Huang resigns, Senate hearing) | Ch 9 | Not inputs to the model, many jargon items, and the Huang/Senate items feel off-topic. | Cut or trim to 3 headline items. | MINOR |
+| 14 | "Hop 1... Recycled", Hop 3 "$60 of it traces to Nvidia's own equity and $100 to lender cash" with total $160 but seed is $100 | Ch 3 | I stumbled that $100 seed yields $160 revenue before reading the lender part. Resolved on a re-read. | Add one line: "Nvidia's own $100 plus lenders' $166.67 = $266.67 spent; 60% goes to Nvidia = $160." | MINOR |
+| 15 | Toggle-dependent explanation for shrinking asset (Q3) | Ch 5 | Without interaction, text says only "chip loses value" and the claims point is made in the worst case line. | Add a static sentence near the picture. | MINOR |
 
 ## Chapters that lost me
+- Ch 2 company cards (data dump). Not blocking since the intro, legend and key example (Nvidia-OpenAI) taught the point.
+- Ch 8 (seven structures): each card is understandable on its own via the "Plain English" analogy, but I couldn't tell how they connect to the loop beyond the closing line.
+- Ch 9 market-events list.
 
-- **Ch 8 (off the balance sheet)** and **ch 7 (pair grid)** are too much detail for a newcomer. The core idea survived (risk hides in separate legal boxes; roles overlap) but I skimmed.
-- **Ch 2** is a 39-company map. The ideas (cash lines vs dashed promise lines) came through, but the hidden company cards are about a thousand lines of near-duplicate text.
-- Ch 4's 30-plus knobs.
+## Would cut
+- The 40 company cards' "none/headline/actual" rows.
+- The pair grid and every-pair list in ch 7 (the three examples suffice).
+- Ch 9 market-event lists, especially the CEO resignation and Senate hearing items.
+- Advanced knobs in ch 4.
 
-## What I'd cut
+## Internal builder-note look
+Nothing visible reads as raw builder notes. Close calls: "source" link labels such as "Benzinga: Benzinga article", "cryptobriefing.com article", "Vantagemarkets.com article" (MINOR, unhelpful source labels); the "Reported/Calculated/Hypothetical/Verified/Unverified" badges are explained by the header line but not strictly defined anywhere I saw. The status tag "source" repeated with no content. Sentence in ch 4: "no source gives the exact number" (reader-facing, fine).
 
-- Ch 2 company cards (collapse by default). Ch 4 advanced knobs. Ch 7 full pair list. Ch 8 "real example" blocks (SOFR spreads, CB-5, tranche detail).
-- Ch 9 news feed. Items such as the Nvidia CEO resignation and the Senate hearing are off the topic of the loop and read as gossip.
-- Ch 10 long list of named quotes. The 190-source list is fine for a footer.
+## NaN / undefined / em-dash numbers
+None found in the rendered text (no NaN, undefined, null, Infinity). Cards that say "none" or "not disclosed" are intentional. Ch 5 ">100 to 1" is a deliberate cap.
 
-## Text that reads like internal builder notes
-
-- "We chose 12 times profit ... No source gives the multiple", "no source gives a number", "Our data holds only deals we could source", "The counts come straight from the data", "We left out one report ... because we couldn't confirm it", "The first two lists use the same layout and the same rules for dates and status tags."
-- Formula strings: "P1 × o × (1 − shortfall)", "seed_usd = 100", "D = E × L/(1−L)". Claim IDs "c7", "c8, c2". "Autoplay is off because your device asks for reduced motion."
-- Source labels such as "Yahoo Finance: Yahoo Finance article, Nov 19, 2026 (1 of 2)", "X (The Information post): Status", "SEC EDGAR: Q3fy27pr", "T26083ke10 k405.txt", "cryptobriefing.com: Cryptobriefing.com article", "Benzinga: Benzinga article".
-
-All of these are MINOR.
+## Blocking assessment
+No question left me without an answer. Q5's bridge and Q3 were the weakest; I got both, but Q3 needed the toggle semantics and Q5 needed the "different arithmetic" caveat. None rises to BLOCKING in my judgment.
 
 ## SELF-ASSESSED CONFIDENCE
+- Q1 recycled vs external: 85% (the "outside" naming overlap is the risk)
+- Q2 promise not cash: 95%
+- Q3 slab shrinks / claims don't: 75%
+- Q4 several claimants vs double-pledging: 95%
+- Q5 revenue counted N times / dinner vs AI: 70%
+- Q6 $100B LOI to $30B, why both: 85% (the "why both" is partly inferred)
+- Q7 one number to watch: 90%
+- Q8 fraud / 2000: 90%
 
-1. Recycled vs external: medium-high
-2. Why promises aren't cash: high
-3. Slab shrinks, claims don't: medium-high
-4. Several claimants vs double-pledging: high
-5. Revenue counted N times, dinner table vs AI: medium
-6. $100B letter of intent vs $30B: high
-7. One number to watch: high
-8. Fraud / 2000: high
-
-BLOCKING ISSUES: 1
+BLOCKING ISSUES: 0

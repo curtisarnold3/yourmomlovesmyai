@@ -240,6 +240,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -279,6 +281,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -318,6 +322,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -356,6 +362,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -394,6 +402,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": true,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -433,6 +443,10 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": true,
+   "placement": true,
+   "includes": [
+    "nvda-anthropic-equity"
+   ],
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -471,6 +485,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -509,6 +525,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -547,6 +565,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -583,6 +603,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -623,6 +645,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -660,6 +684,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -697,6 +723,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -733,6 +761,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -769,6 +799,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -804,6 +836,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -839,6 +873,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -874,6 +910,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -887,13 +925,13 @@
    "actual_usd_b_high": 102,
    "date": "2026-10",
    "structure": "Nvidia's own R&D cloud and data-center commitments at Oct 25, 2026: cloud service agreements $28B plus data-center leases not yet commenced $74B = $102B (from $74B at Jul 26). Per Nvidia these provide the infrastructure that powers its research and development (chips, networking, systems engineering, open models); leases run up to 20 years, and Nvidia says it may assign some leases to third parties.",
-   "status": "verified",
+   "status": "calculated",
    "what_changed_since_announcement": "Rose in the quarter. This is Nvidia buying compute and space for itself, not financing a neocloud customer. The separate neocloud agreements are the $32B line.",
    "source_ids": [
     "s_c429436a",
     "s_7c4c573c"
    ],
-   "internal_notes": "NOT a neocloud-loop edge (reclassified after audit): shown as a fact only and excluded from loop totals. Counterparties are not named. Company statement (Nvidia CFO commentary).",
+   "internal_notes": "NOT a neocloud-loop edge (reclassified after audit): shown as a fact only and excluded from loop totals. Counterparties are not named. Company statement (Nvidia CFO commentary). Nvidia states the two parts; the $102B total is our sum, tagged calculated.",
    "reader_note": "Nvidia's own commitments for cloud services ($28B) and data-center leases not yet started ($74B), which Nvidia says support its own research and development. This is Nvidia buying for itself, not financing a customer, so it is not part of the loop totals.",
    "amount_split": null,
    "parties": [
@@ -906,10 +944,29 @@
     "nvidia:nvda-cloud-commitments"
    ],
    "money_split": null,
-   "components": null,
-   "formula_text": null,
+   "components": [
+    {
+     "label": "Cloud service agreements, Oct 25, 2026",
+     "usd_b": 28,
+     "status": "verified",
+     "source_ids": [
+      "s_c429436a"
+     ]
+    },
+    {
+     "label": "Data-center leases not yet commenced, Oct 25, 2026",
+     "usd_b": 74,
+     "status": "verified",
+     "source_ids": [
+      "s_c429436a"
+     ]
+    }
+   ],
+   "formula_text": "$28B cloud service agreements + $74B data-center leases not yet commenced",
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -944,6 +1001,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -979,6 +1038,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1015,6 +1076,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1051,6 +1114,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1093,6 +1158,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1148,6 +1215,8 @@
    "formula_text": "$38B + $100B expansion",
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1189,6 +1258,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1224,6 +1295,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1259,6 +1332,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1294,6 +1369,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1332,6 +1409,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1384,6 +1463,8 @@
     }
    ],
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1433,6 +1514,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1471,6 +1554,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1507,6 +1592,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1543,6 +1630,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1581,6 +1670,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1616,6 +1707,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1652,6 +1745,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1688,6 +1783,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1724,6 +1821,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1759,6 +1858,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1794,6 +1895,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1829,6 +1932,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1865,6 +1970,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1901,6 +2008,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1937,6 +2046,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -1972,6 +2083,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2010,6 +2123,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2048,6 +2163,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2084,6 +2201,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2118,6 +2237,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2154,6 +2275,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2167,12 +2290,12 @@
    "actual_usd_b_high": 6.8,
    "date": "2026-09",
    "structure": "Q3 2026: $2.6B DDTL 5.5 facility (shorter-duration customer contracts) plus about $4.2B convertible senior notes; new ATM program for up to 35M shares.",
-   "status": "verified",
+   "status": "calculated",
    "what_changed_since_announcement": "n/a",
    "source_ids": [
     "s_f30d204e"
    ],
-   "internal_notes": "Convert coupon not captured.",
+   "internal_notes": "Convert coupon not captured. The $6.8B total is our sum of the $2.6B facility and the about-$4.2B notes, so it is tagged calculated; each part keeps its own tag.",
    "reader_note": "In the third quarter of 2026 CoreWeave arranged a $2.6B term loan and about $4.2B of convertible notes. The loan comes from banks and lenders; the convertible notes were sold to investors.",
    "amount_split": null,
    "parties": [
@@ -2185,10 +2308,29 @@
     "neoclouds:coreweave-ddtl-5-5-and-converts"
    ],
    "money_split": null,
-   "components": null,
-   "formula_text": null,
+   "components": [
+    {
+     "label": "DDTL 5.5 facility, Q3 2026",
+     "usd_b": 2.6,
+     "status": "verified",
+     "source_ids": [
+      "s_f30d204e"
+     ]
+    },
+    {
+     "label": "Convertible senior notes (about), Q3 2026",
+     "usd_b": 4.2,
+     "status": "reported",
+     "source_ids": [
+      "s_f30d204e"
+     ]
+    }
+   ],
+   "formula_text": "$2.6B DDTL 5.5 facility + about $4.2B convertible senior notes",
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2225,6 +2367,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2265,6 +2409,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2303,6 +2449,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2336,6 +2484,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2370,6 +2520,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2404,6 +2556,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": true,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2440,6 +2594,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   },
   {
@@ -2474,6 +2630,8 @@
    "formula_text": null,
    "alt_reports": null,
    "contingent": false,
+   "placement": false,
+   "includes": null,
    "arrow_means": "payer to payee for cash and contracts; grantor to beneficiary for backstops, guarantees and warrants"
   }
  ],
@@ -2563,7 +2721,7 @@
   },
   {
    "id": "s_bb03465b",
-   "title": "Benzinga article",
+   "title": "Benzinga: Michael Burry on Nvidia's $105B OpenAI guarantee (Aug 2026)",
    "title_is_derived": false,
    "publisher": "Benzinga",
    "url": "https://www.benzinga.com/markets/earnings/26/08/61486426/michael-burry-points-to-nvidias-105b-openai-guarantee-as-circular-financing-red-flag-whistling-past-the-graveyard",
@@ -3460,7 +3618,7 @@
   },
   {
    "id": "s_e9ca65b0",
-   "title": "Yahoo Finance article",
+   "title": "Yahoo Finance: Jensen Huang on the circular-financing criticism",
    "title_is_derived": false,
    "publisher": "Yahoo Finance",
    "url": "https://finance.yahoo.com/markets/stocks/articles/jensen-huang-mocks-nvidia-circular-141958748.html",
@@ -3718,7 +3876,7 @@
   },
   {
    "id": "s_3a858efa",
-   "title": "cryptobriefing.com article",
+   "title": "Crypto Briefing: Nvidia's CEO responds to Michael Burry",
    "title_is_derived": false,
    "publisher": "cryptobriefing.com",
    "url": "https://cryptobriefing.com/nvidia-huang-counters-burry-bear-case/",
@@ -3729,7 +3887,7 @@
   },
   {
    "id": "s_1eb0facb",
-   "title": "cycledesk.substack.com article",
+   "title": "Cycle Desk (Substack): the internet-era buildout compared with today's AI buildout",
    "title_is_derived": false,
    "publisher": "cycledesk.substack.com",
    "url": "https://cycledesk.substack.com/p/internet-bubble-vs-todays-ai-buildout",
@@ -4226,7 +4384,7 @@
   },
   {
    "id": "s_7235e1b3",
-   "title": "vantagemarkets.com article",
+   "title": "Vantage Markets analysis: circular AI deals explained",
    "title_is_derived": false,
    "publisher": "vantagemarkets.com",
    "url": "https://www.vantagemarkets.com/en/market-analysis/ai-financing-bubble-nvidia-openai-circular-deals-explained/",

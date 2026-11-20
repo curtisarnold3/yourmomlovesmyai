@@ -163,6 +163,11 @@ OTHER_MAP = {
     'tokenpost.com/news/business/61712': 'TokenPost news report',
     'theglobeandmail.com/report-on-business/nortel-clients-give-warning': 'The Globe and Mail, Nortel customers warn on finances',
     'stocktitan.net/sec-filings/CRWV/8-k': 'CoreWeave 8-K (StockTitan copy)',
+    'benzinga.com/markets/earnings/26/08/61486426': "Benzinga: Michael Burry on Nvidia's $105B OpenAI guarantee (Aug 2026)",
+    'finance.yahoo.com/markets/stocks/articles/jensen-huang-mocks-nvidia-circular': "Yahoo Finance: Jensen Huang on the circular-financing criticism",
+    'cryptobriefing.com/nvidia-huang-counters-burry-bear-case': "Crypto Briefing: Nvidia's CEO responds to Michael Burry",
+    'cycledesk.substack.com/p/internet-bubble-vs-todays-ai-buildout': "Cycle Desk (Substack): the internet-era buildout compared with today's AI buildout",
+    'vantagemarkets.com/en/market-analysis/ai-financing-bubble-nvidia-openai': "Vantage Markets analysis: circular AI deals explained",
     'seekingalpha.com/news/4523396': 'Seeking Alpha: Microsoft, Nvidia and Anthropic announce partnership',
 }
 

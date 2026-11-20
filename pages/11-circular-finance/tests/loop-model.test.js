@@ -699,3 +699,20 @@ test('round 3 fixer A: placement buyers, calculated investment assets, Anthropic
   assert.ok(!/Nvidia.s CEO/.test(JSON.stringify(deals)));
   assert.ok(by('anthropic-spacexai-compute').headline_usd_b === 120.5);
 });
+
+test('summed deal headlines are tagged calculated, with sourced parts and explicit placement data', () => {
+  const deals = J('data/deals.json').deals;
+  const by = (id) => deals.find((d) => d.id === id);
+  [['nvda-cloud-commitments', 102], ['coreweave-ddtl-5-5-and-converts', 6.8], ['openai-aws-compute', 138]].forEach(([id, total]) => {
+    const d = by(id);
+    assert.equal(d.status, 'calculated', id);
+    assert.ok(d.components && d.components.length >= 2 && d.formula_text, id);
+    close(d.components.reduce((a, c) => a + c.usd_b, 0), total);
+    d.components.forEach((c) => { assert.ok(c.status && c.source_ids.length > 0, id); });
+  });
+  // any verified deal whose components exist must not be a sum
+  deals.filter((d) => d.status === 'verified').forEach((d) => assert.ok(!d.components, d.id));
+  // only explicit placements carry participant lists / includes
+  deals.filter((d) => d.placement).forEach((d) => assert.equal(d.id, 'anthropic-ipo-placement'));
+  deals.filter((d) => d.includes).forEach((d) => d.includes.forEach((i) => assert.ok(by(i), i)));
+});

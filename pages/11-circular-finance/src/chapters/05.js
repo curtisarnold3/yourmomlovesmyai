@@ -8,7 +8,7 @@ Chapters["05"] = function (root, ctx) {
     return el;
   }
   function usd(n, d) {
-    if (n == null || !isFinite(n)) return "n/a";
+    if (n == null || !isFinite(n)) return "not defined";
     var digits = d == null ? (Math.abs(n) >= 100 ? 0 : 1) : d;
     return "$" + n.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
   }
@@ -211,7 +211,7 @@ Chapters["05"] = function (root, ctx) {
       ratioEl.appendChild(h("p", { "class": "ch05-note", text: "What is counted: " + r.labels.headline + ". " + r.labels.counted }));
       var p = h("p", { "class": "ch05-note" });
       p.appendChild(document.createTextNode("If you also count the promises and the claims on the parent or the lab (the dashed slabs), but still not the nested bank slice: "));
-      p.appendChild(tagged(r.claims_per_usd_asset_all_in, function (v) { return v == null ? "n/a" : usd(v, 2); }));
+      p.appendChild(tagged(r.claims_per_usd_asset_all_in, function (v) { return v == null ? "not defined" : usd(v, 2); }));
       p.appendChild(document.createTextNode(". That is a wider picture, not dollars lent against this chip."));
       ratioEl.appendChild(p);
       if (r.no_paydown_caveat) ratioEl.appendChild(h("p", { "class": "ch05-note", text: r.no_paydown_caveat }));
@@ -275,7 +275,7 @@ Chapters["05"] = function (root, ctx) {
     var stack = M.claimsStack(ctx.state.params, state.yearT, { amortize: state.amortize });
     var am = stack.amortization;
     amortNote.textContent = state.amortize
-      ? "On: the senior loan is paid down from the lab's rent on a made-up schedule (a level payment over " + ctx.state.params.debt_term_years + " years). That is the case where the lab keeps paying: rent covers the loan payment about " + (am.rent_covers_debt_service_x.value == null ? "n/a" : am.rent_covers_debt_service_x.value.toFixed(1)) + " times after running costs. Equity and the other layers are not paid down."
+      ? "On: the senior loan is paid down from the lab's rent on a made-up schedule (a level payment over " + ctx.state.params.debt_term_years + " years). That is the case where the lab keeps paying: rent covers the loan payment about " + (am.rent_covers_debt_service_x.value == null ? "not defined" : am.rent_covers_debt_service_x.value.toFixed(1)) + " times after running costs. Equity and the other layers are not paid down."
       : "Off: every claim stays at its full face value. This is the 'rent stops' case: a worst case for lenders, not a forecast. Real loans are repaid from rent while the customer keeps paying.";
     listNote.textContent = state.amortize ? "Senior loan amounts shrink as rent pays them down (hypothetical schedule); the other layers stay at face value." : "Face values are held constant here to show the worst case, where rent stops; only the asset changes.";
     if (total0 == null) total0 = M.claimsStack(ctx.state.params, 0).ratios.total_face_all.value;
